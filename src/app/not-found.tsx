@@ -8,7 +8,7 @@ export default function NotFound() {
       <div className="max-w-md">
         <p className="text-sm font-bold tracking-[0.14em] text-primary uppercase">404</p>
         <h1 className="mt-3 text-4xl font-semibold tracking-[-0.05em]">That page is not here.</h1>
-        <p className="mt-4 text-muted-foreground">Let’s take you back to the USMCP career portal.</p>
+        <p className="mt-4 text-muted-foreground">Let’s take you back to the USHCE career ecosystem.</p>
         <Button asChild className="mt-7 h-11 rounded-xl px-5">
           <Link href="/">Return home</Link>
         </Button>
