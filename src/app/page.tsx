@@ -214,7 +214,7 @@ export default function Home() {
           <div className="mx-auto max-w-7xl px-5 lg:px-8">
             <SectionHeading
               align="center"
-              eyebrow="Why USMCP"
+              eyebrow="Why USHCE"
               title="A more human approach to healthcare careers."
               description="We are building tools that make important decisions feel less overwhelming and more informed."
               tone="inverted"
@@ -281,7 +281,7 @@ export default function Home() {
             <div className="relative grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
               <div>
                 <p className="text-xs font-bold tracking-[0.16em] text-teal-100 uppercase">Early access</p>
-                <h2 className="mt-3 max-w-xl text-3xl font-semibold tracking-[-0.05em] sm:text-4xl">Be first to know when USMCP opens its doors.</h2>
+                <h2 className="mt-3 max-w-xl text-3xl font-semibold tracking-[-0.05em] sm:text-4xl">Be first to know when USHCE opens its doors.</h2>
                 <p className="mt-4 max-w-xl text-base leading-7 text-blue-100/85">Get launch updates, thoughtful career resources, and a first look at the portal.</p>
               </div>
               <form className="flex w-full max-w-md flex-col gap-2 sm:flex-row">

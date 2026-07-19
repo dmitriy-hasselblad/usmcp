@@ -1,4 +1,4 @@
-# USMCP — U.S. Medical Career Portal
+# USHCE — The U.S. Healthcare Career Ecosystem
 
 The initial production-ready foundation for a healthcare-focused career platform. It includes a responsive marketing homepage, reusable shadcn/ui components, a Supabase SSR-ready integration layer, and Vercel-ready Next.js configuration.
 
@@ -24,7 +24,7 @@ The marketing page works without Supabase credentials. When credentials are supp
 src/
 ├── app/                    # App Router routes, loading/error states, global styles
 ├── components/
-│   ├── brand/              # USMCP logo and visual identity
+│   ├── brand/              # USHCE logo and visual identity
 │   ├── layout/             # Header and footer
 │   ├── marketing/          # Homepage-specific building blocks
 │   └── ui/                 # Owned shadcn/ui components

@@ -15,11 +15,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "USMCP | U.S. Medical Career Portal",
-    template: "%s | USMCP",
+    default: "USHCE | The U.S. Healthcare Career Ecosystem",
+    template: "%s | USHCE",
   },
   description:
-    "USMCP connects healthcare professionals with meaningful opportunities, trusted organizations, and practical career guidance.",
+    "USHCE connects healthcare professionals with meaningful opportunities, trusted organizations, and practical career guidance.",
 }
 
 export default function RootLayout({

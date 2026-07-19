@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { Menu } from "lucide-react"
 
-import { UsmcpLogo } from "@/components/brand/usmcp-logo"
+import { UshceLogo } from "@/components/brand/ushce-logo"
 import { Button } from "@/components/ui/button"
 import {
   Sheet,
@@ -26,8 +26,8 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-border/80 bg-background/85 backdrop-blur-xl">
       <div className="mx-auto flex h-[4.5rem] max-w-7xl items-center justify-between px-5 lg:px-8">
-        <Link href="#top" aria-label="USMCP home">
-          <UsmcpLogo />
+        <Link href="#top" aria-label="USHCE home">
+          <UshceLogo />
         </Link>
 
         <nav className="hidden items-center gap-6 lg:flex" aria-label="Primary navigation">
@@ -65,10 +65,10 @@ export function SiteHeader() {
           <SheetContent className="w-[min(22rem,90vw)] p-0" side="right">
             <SheetHeader className="border-b border-border px-6 py-5">
               <SheetTitle className="text-left">
-                <UsmcpLogo />
+                <UshceLogo />
               </SheetTitle>
               <SheetDescription className="sr-only">
-                Main navigation for the USMCP website.
+                Main navigation for the USHCE website.
               </SheetDescription>
             </SheetHeader>
             <nav className="flex flex-col gap-1 px-4 py-5" aria-label="Mobile navigation">
