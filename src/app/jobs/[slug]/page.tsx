@@ -18,6 +18,10 @@ import { SiteHeader } from "@/components/layout/site-header"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+  getPublishedJobBySlug,
+  getPublishedJobs,
+} from "@/lib/jobs/public-jobs"
 import { featuredJobs, getJobBySlug } from "@/lib/marketing-data"
 
 type JobPageProps = {
@@ -32,7 +36,7 @@ export async function generateMetadata({
   params,
 }: JobPageProps): Promise<Metadata> {
   const { slug } = await params
-  const job = getJobBySlug(slug)
+  const job = (await getPublishedJobBySlug(slug)) ?? getJobBySlug(slug)
 
   if (!job) {
     return { title: "Job not found" }
@@ -40,19 +44,21 @@ export async function generateMetadata({
 
   return {
     title: `${job.title} at ${job.employer}`,
-    description: `${job.title} product-preview listing in ${job.location}.`,
+    description: `${job.title} healthcare opportunity in ${job.location}.`,
   }
 }
 
 export default async function JobPage({ params }: JobPageProps) {
   const { slug } = await params
-  const job = getJobBySlug(slug)
+  const job = (await getPublishedJobBySlug(slug)) ?? getJobBySlug(slug)
 
   if (!job) {
     notFound()
   }
 
-  const relatedJobs = featuredJobs
+  const isLive = job.source === "live"
+  const liveJobs = await getPublishedJobs()
+  const relatedJobs = [...liveJobs, ...featuredJobs]
     .filter(
       (candidate) =>
         candidate.slug !== job.slug &&
@@ -78,7 +84,16 @@ export default async function JobPage({ params }: JobPageProps) {
             <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-end">
               <div>
                 <div className="flex flex-wrap gap-2">
-                  <Badge>Product preview</Badge>
+                  <Badge
+                    className={
+                      isLive
+                        ? "border-emerald-200 bg-emerald-50 text-emerald-800"
+                        : undefined
+                    }
+                    variant={isLive ? "outline" : "default"}
+                  >
+                    {isLive ? "Live opportunity" : "Product preview"}
+                  </Badge>
                   <Badge variant="outline">{job.specialty}</Badge>
                   {job.visaSupport && (
                     <Badge variant="outline">Potential visa support</Badge>
@@ -107,7 +122,7 @@ export default async function JobPage({ params }: JobPageProps) {
               </div>
               <div className="lg:text-right">
                 <p className="text-sm text-muted-foreground">
-                  Estimated annual salary
+                  Compensation
                 </p>
                 <p className="mt-1 text-2xl font-semibold tracking-[-0.035em]">
                   {job.salary}
@@ -124,13 +139,21 @@ export default async function JobPage({ params }: JobPageProps) {
                 <CardTitle>About this role</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="leading-7 text-muted-foreground">{job.summary}</p>
+                <p className="whitespace-pre-line leading-7 text-muted-foreground">
+                  {job.summary}
+                </p>
               </CardContent>
             </Card>
 
-            <JobSection items={job.responsibilities} title="What you will do" />
-            <JobSection items={job.qualifications} title="Qualifications" />
-            <JobSection items={job.benefits} title="Benefits" />
+            {job.responsibilities.length > 0 && (
+              <JobSection items={job.responsibilities} title="What you will do" />
+            )}
+            {job.qualifications.length > 0 && (
+              <JobSection items={job.qualifications} title="Qualifications" />
+            )}
+            {job.benefits.length > 0 && (
+              <JobSection items={job.benefits} title="Benefits" />
+            )}
           </div>
 
           <aside>
@@ -143,12 +166,14 @@ export default async function JobPage({ params }: JobPageProps) {
                   Interested in this role?
                 </h2>
                 <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                  This sample listing demonstrates the planned application
-                  experience. It is not an active vacancy.
+                  {isLive
+                    ? "This opportunity was published directly by the employer. Candidate applications are the next marketplace feature."
+                    : "This sample listing demonstrates the planned application experience. It is not an active vacancy."}
                 </p>
                 <Button asChild className="mt-6 h-11 w-full rounded-xl">
                   <Link href="/sign-up">
-                    Prepare your profile <ArrowRight />
+                    {isLive ? "Create your profile" : "Prepare your profile"}{" "}
+                    <ArrowRight />
                   </Link>
                 </Button>
                 <Button
@@ -162,8 +187,9 @@ export default async function JobPage({ params }: JobPageProps) {
                 </Button>
                 <div className="mt-5 flex gap-2 border-t border-border pt-5 text-xs leading-5 text-muted-foreground">
                   <ShieldCheck className="mt-0.5 size-4 shrink-0 text-primary" />
-                  Employer verification and live applications will be enabled
-                  before marketplace launch.
+                  {isLive
+                    ? "USHCE displays this role while the employer keeps it in Published status."
+                    : "Employer verification and live applications will be enabled before marketplace launch."}
                 </div>
               </CardContent>
             </Card>
@@ -179,7 +205,7 @@ export default async function JobPage({ params }: JobPageProps) {
                     Continue exploring
                   </p>
                   <h2 className="mt-3 text-3xl font-semibold tracking-[-0.05em]">
-                    Related preview roles
+                    Related roles
                   </h2>
                 </div>
                 <Button

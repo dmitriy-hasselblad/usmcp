@@ -11,6 +11,7 @@ import {
 } from "lucide-react"
 
 export type Job = {
+  id?: string
   slug: string
   title: string
   employer: string
@@ -27,6 +28,9 @@ export type Job = {
   benefits: string[]
   visaSupport?: boolean
   featured?: boolean
+  source?: "preview" | "live"
+  organizationType?: string
+  organizationWebsite?: string
 }
 
 export type Employer = {

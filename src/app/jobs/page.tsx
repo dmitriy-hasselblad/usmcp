@@ -9,12 +9,13 @@ import { HeroSearch } from "@/components/marketing/hero-search"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import { getPublishedJobs } from "@/lib/jobs/public-jobs"
 import { featuredJobs } from "@/lib/marketing-data"
 
 export const metadata: Metadata = {
   title: "Healthcare Jobs",
   description:
-    "Search the USHCE product-preview experience for healthcare jobs by specialty, employer, and location.",
+    "Search live and preview healthcare jobs by specialty, employer, and location.",
 }
 
 type JobsSearchParams = Promise<{
@@ -43,8 +44,10 @@ export default async function JobsPage({
 
   const normalizedQuery = normalize(query)
   const normalizedLocation = normalize(location)
+  const liveJobs = await getPublishedJobs()
+  const allJobs = [...liveJobs, ...featuredJobs]
 
-  const jobs = featuredJobs.filter((job) => {
+  const jobs = allJobs.filter((job) => {
     const matchesQuery =
       !normalizedQuery ||
       [job.title, job.employer, job.specialty, job.setting].some((value) =>
@@ -65,8 +68,8 @@ export default async function JobsPage({
     )
   })
 
-  const specialties = [...new Set(featuredJobs.map((job) => job.specialty))].sort()
-  const employmentTypes = [...new Set(featuredJobs.map((job) => job.type))].sort()
+  const specialties = [...new Set(allJobs.map((job) => job.specialty))].sort()
+  const employmentTypes = [...new Set(allJobs.map((job) => job.type))].sort()
   const hasFilters = Boolean(query || location || specialty || type || visaOnly)
 
   return (
@@ -84,13 +87,22 @@ export default async function JobsPage({
             </Link>
             <div className="mt-8 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
               <div>
-                <Badge variant="outline">Product preview</Badge>
+                <Badge
+                  className={
+                    liveJobs.length
+                      ? "border-emerald-200 bg-emerald-50 text-emerald-800"
+                      : undefined
+                  }
+                  variant="outline"
+                >
+                  {liveJobs.length ? "Live marketplace beta" : "Product preview"}
+                </Badge>
                 <h1 className="mt-4 text-4xl font-semibold tracking-[-0.055em] sm:text-5xl">
                   Healthcare jobs
                 </h1>
                 <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
-                  Test the first USHCE search experience with clearly labeled sample
-                  listings. Live employer vacancies will replace this preview data.
+                  Search employer-published healthcare opportunities alongside
+                  clearly labeled sample listings.
                 </p>
               </div>
               <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
@@ -161,7 +173,7 @@ export default async function JobsPage({
                     <span>
                       <span className="block font-medium">Visa support</span>
                       <span className="mt-1 block text-xs leading-5 text-muted-foreground">
-                        Show preview roles marked for potential sponsorship support.
+                        Show roles marked for potential sponsorship support.
                       </span>
                     </span>
                   </label>
@@ -194,14 +206,13 @@ export default async function JobsPage({
                       <SearchX className="size-5" />
                     </span>
                     <h2 className="mt-5 text-xl font-semibold">
-                      No preview roles match these filters
+                      No roles match these filters
                     </h2>
                     <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-muted-foreground">
-                      Try a broader specialty or location. The live marketplace will
-                      include a much larger healthcare taxonomy.
+                      Try a broader specialty, employer, or location.
                     </p>
                     <Button asChild className="mt-6 rounded-xl">
-                      <Link href="/jobs">View all preview roles</Link>
+                      <Link href="/jobs">View all roles</Link>
                     </Button>
                   </div>
                 </CardContent>

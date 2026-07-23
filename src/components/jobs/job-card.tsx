@@ -20,7 +20,16 @@ export function JobCard({ job, compact = false }: JobCardProps) {
             <Building2 className="size-5" />
           </div>
           <div className="flex flex-wrap justify-end gap-2">
-            <Badge variant="outline">Product preview</Badge>
+            <Badge
+              className={
+                job.source === "live"
+                  ? "border-emerald-200 bg-emerald-50 text-emerald-800"
+                  : undefined
+              }
+              variant="outline"
+            >
+              {job.source === "live" ? "Live opportunity" : "Product preview"}
+            </Badge>
             {job.visaSupport && (
               <Badge className="bg-emerald-50 text-emerald-700 hover:bg-emerald-50">
                 Visa support
