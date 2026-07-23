@@ -3,7 +3,7 @@
 The production foundation for a U.S.-focused healthcare career platform. The
 current MVP includes a responsive public website, working product-preview job
 search, job-detail pages, organization and employer sections, career resources,
-and Supabase-ready account architecture.
+and role-aware Supabase authentication.
 
 ## Stack
 
@@ -20,7 +20,10 @@ and Supabase-ready account architecture.
 - `/companies` - preview healthcare organization profiles
 - `/for-employers` - employer product introduction
 - `/resources` - career resource library preview
-- `/sign-in` and `/sign-up` - non-collecting account previews
+- `/sign-in` and `/sign-up` - Supabase email and password access
+- `/forgot-password` and `/update-password` - account recovery
+- `/onboarding` - protected role-aware profile setup
+- `/dashboard` - protected account workspace
 
 All public interface content is written in English for a U.S. audience. Sample
 jobs and organizations are clearly labeled as product-preview content and are
@@ -33,9 +36,11 @@ not presented as live or verified records.
 3. Add the Supabase URL and publishable key from the project Connect dialog.
 4. Start the app with `pnpm dev`.
 
-The public website works without Supabase credentials. When credentials are
-supplied, the included proxy can refresh authentication sessions. Protected
-routes must still validate identity and authorization server-side.
+The public website works without Supabase credentials. Authentication remains
+disabled until the database schema has been applied and
+`NEXT_PUBLIC_AUTH_ENABLED=true` is configured. The included proxy refreshes
+sessions, while protected routes and actions validate identity again on the
+server.
 
 ## Project layout
 
@@ -43,26 +48,30 @@ routes must still validate identity and authorization server-side.
 src/
   app/                    App Router pages, metadata, and loading states
   components/
-    auth/                 Account-access preview components
+    auth/                 Account access and status components
     brand/                USHCE identity
     jobs/                 Reusable job components
     layout/               Shared header and footer
     marketing/            Homepage and search components
     ui/                   Owned shadcn/ui primitives
   lib/
+    auth/                 Validation and protected-session helpers
     marketing-data.ts     Typed preview content
     supabase/             Browser, server, and session clients
   proxy.ts                Next.js session refresh proxy
+supabase/
+  schema.sql              Authentication tables, triggers, grants, and RLS
+  README.md               Supabase dashboard and email configuration
 ```
 
 ## Deployment
 
 Push the project to its connected GitHub repository. Vercel detects Next.js and
-builds it automatically. Add the `NEXT_PUBLIC_SUPABASE_*` variables in Vercel
-before enabling authentication or database-backed pages.
+builds it automatically. Follow `supabase/README.md`, apply the schema, configure
+the public environment variables, and enable authentication only after the
+database checks pass.
 
 ## Recommended next milestone
 
-Connect Supabase authentication and create role-aware onboarding for healthcare
-professionals and employers. Then introduce schema migrations for profiles,
-organizations, jobs, and applications with row-level security.
+Build the professional and employer dashboard modules on top of the protected
+account and onboarding foundation.
