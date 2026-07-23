@@ -20,6 +20,18 @@ import { createClient } from "@/lib/supabase/server"
 const configurationError =
   "Authentication is not configured for this deployment yet."
 
+function organizationSlug(name: string, userId: string) {
+  const base =
+    name
+      .normalize("NFKD")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 140) || "organization"
+
+  return `${base}-${userId.slice(0, 8)}`
+}
+
 export async function signIn(formData: FormData) {
   if (!isAuthEnabled()) {
     redirect(messagePath("/sign-in", "error", configurationError))
@@ -377,6 +389,27 @@ export async function completeOnboarding(formData: FormData) {
           "/onboarding",
           "error",
           "We could not save the employer profile.",
+        ),
+      )
+    }
+
+    const { error: organizationError } = await supabase.rpc(
+      "bootstrap_employer_organization",
+      {
+        organization_name: organizationName,
+        organization_slug: organizationSlug(organizationName, userId),
+        organization_type: organizationType,
+        organization_state_code: stateCode,
+        member_position_title: positionTitle,
+      },
+    )
+
+    if (organizationError) {
+      redirect(
+        messagePath(
+          "/onboarding",
+          "error",
+          "The employer profile was saved, but the organization workspace could not be created.",
         ),
       )
     }

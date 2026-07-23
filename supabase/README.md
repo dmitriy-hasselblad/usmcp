@@ -11,6 +11,7 @@ The script creates:
 
 - private trigger functions;
 - role-aware public profile tables;
+- organization memberships and organization-owned jobs;
 - row-level security policies;
 - minimum Data API grants;
 - automatic profile creation after signup.
@@ -67,4 +68,16 @@ NEXT_PUBLIC_AUTH_ENABLED=true
 ```
 
 After deployment, test professional signup, employer signup, email
-confirmation, sign-in, onboarding, sign-out, and password recovery.
+confirmation, sign-in, onboarding, organization editing, job draft creation,
+job status changes, sign-out, and password recovery.
+
+## Employer workspace migrations
+
+Existing environments should apply the versioned SQL files in
+`supabase/migrations/` in filename order. The employer workspace migration
+moves each existing employer profile into an organization, assigns that user as
+the owner, and preserves the original onboarding data.
+
+Organization, membership, and job access is protected by row-level security.
+The application uses the authenticated user's publishable-key session; no
+service-role key is required or permitted in the web application.
