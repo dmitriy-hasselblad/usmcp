@@ -15,18 +15,17 @@ import {
 } from "@/components/ui/sheet"
 
 const navigation = [
-  { href: "#featured-jobs", label: "Jobs" },
-  { href: "#employers", label: "For employers" },
-  { href: "#career-paths", label: "Residency" },
-  { href: "#resources", label: "Career resources" },
-  { href: "#get-started", label: "Pricing" },
+  { href: "/jobs", label: "Jobs" },
+  { href: "/companies", label: "Organizations" },
+  { href: "/resources", label: "Career resources" },
+  { href: "/for-employers", label: "For employers" },
 ]
 
 export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-border/80 bg-background/85 backdrop-blur-xl">
       <div className="mx-auto flex h-[4.5rem] max-w-7xl items-center justify-between px-5 lg:px-8">
-        <Link href="#top" aria-label="USHCE home">
+        <Link href="/" aria-label="USHCE home">
           <UshceLogo />
         </Link>
 
@@ -44,10 +43,10 @@ export function SiteHeader() {
 
         <div className="hidden items-center gap-2 sm:flex">
           <Button asChild className="h-10 px-4" variant="ghost">
-            <Link href="#get-started">Sign in</Link>
+            <Link href="/sign-in">Sign in</Link>
           </Button>
           <Button asChild className="h-10 rounded-xl px-4 shadow-sm">
-            <Link href="#get-started">Create an account</Link>
+            <Link href="/sign-up">Create an account</Link>
           </Button>
         </div>
 
@@ -84,10 +83,10 @@ export function SiteHeader() {
             </nav>
             <div className="mt-auto grid gap-2 border-t border-border p-4">
               <Button asChild className="h-11" variant="outline">
-                <Link href="#get-started">Sign in</Link>
+                <Link href="/sign-in">Sign in</Link>
               </Button>
               <Button asChild className="h-11">
-                <Link href="#get-started">Create an account</Link>
+                <Link href="/sign-up">Create an account</Link>
               </Button>
             </div>
           </SheetContent>

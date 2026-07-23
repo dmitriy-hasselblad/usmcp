@@ -3,12 +3,12 @@ import Link from "next/link"
 import { UshceLogo } from "@/components/brand/ushce-logo"
 
 const footerLinks = [
-  "About USHCE",
-  "For professionals",
-  "For employers",
-  "Career resources",
-  "Privacy",
-  "Terms",
+  { href: "/#why-ushce", label: "About USHCE" },
+  { href: "/jobs", label: "Find jobs" },
+  { href: "/companies", label: "Organizations" },
+  { href: "/for-employers", label: "For employers" },
+  { href: "/resources", label: "Career resources" },
+  { href: "/sign-up", label: "Create an account" },
 ]
 
 export function SiteFooter() {
@@ -18,13 +18,18 @@ export function SiteFooter() {
         <div>
           <UshceLogo />
           <p className="mt-4 max-w-sm text-sm leading-6 text-muted-foreground">
-            A more thoughtful way for healthcare professionals and organizations to move forward.
+            A more thoughtful way for healthcare professionals and organizations
+            to move forward.
           </p>
         </div>
         <div className="grid grid-cols-2 gap-x-6 gap-y-3 text-sm sm:grid-cols-3">
           {footerLinks.map((link) => (
-            <Link className="text-muted-foreground transition-colors hover:text-foreground" href="#top" key={link}>
-              {link}
+            <Link
+              className="text-muted-foreground transition-colors hover:text-foreground"
+              href={link.href}
+              key={link.label}
+            >
+              {link.label}
             </Link>
           ))}
         </div>
