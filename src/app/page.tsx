@@ -16,6 +16,7 @@ import { SectionHeading } from "@/components/marketing/section-heading"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import { getPublishedJobs } from "@/lib/jobs/public-jobs"
 import {
   benefits,
   careerPaths,
@@ -26,7 +27,13 @@ import {
   resources,
 } from "@/lib/marketing-data"
 
-export default function Home() {
+export default async function Home() {
+  const liveJobs = await getPublishedJobs()
+  const featuredMarketplaceJobs = [
+    ...liveJobs,
+    ...featuredJobs.filter((job) => job.featured),
+  ].slice(0, 3)
+
   return (
     <div className="min-h-dvh overflow-hidden bg-background">
       <SiteHeader />
@@ -91,7 +98,7 @@ export default function Home() {
                 </div>
                 <div className="mt-4 flex items-center gap-3 px-2 pb-1 text-xs text-blue-100/80">
                   <ShieldCheck className="size-4 text-teal-200" />
-                  Preview content is clearly labeled until verified data is live.
+                  Published jobs are live; sample content remains clearly labeled.
                 </div>
               </div>
             </div>
@@ -158,22 +165,28 @@ export default function Home() {
           <div className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28">
             <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
               <SectionHeading
-                eyebrow="Product preview"
-                title="See how focused healthcare opportunities will work."
-                description="These sample listings demonstrate the search and job-detail experience. They are not active vacancies."
+                eyebrow={liveJobs.length ? "Live opportunities" : "Product preview"}
+                title={
+                  liveJobs.length
+                    ? "Explore newly published healthcare opportunities."
+                    : "See how focused healthcare opportunities will work."
+                }
+                description={
+                  liveJobs.length
+                    ? "Employer-published roles appear alongside clearly labeled sample listings while the marketplace grows."
+                    : "These sample listings demonstrate the search and job-detail experience. They are not active vacancies."
+                }
               />
               <Button asChild className="h-10 w-fit rounded-xl" variant="outline">
                 <Link href="/jobs">
-                  Browse preview roles <ArrowRight />
+                  Browse all roles <ArrowRight />
                 </Link>
               </Button>
             </div>
             <div className="mt-10 grid gap-4 lg:grid-cols-3">
-              {featuredJobs
-                .filter((job) => job.featured)
-                .map((job) => (
-                  <JobCard job={job} key={job.slug} />
-                ))}
+              {featuredMarketplaceJobs.map((job) => (
+                <JobCard job={job} key={job.slug} />
+              ))}
             </div>
           </div>
         </section>
@@ -340,8 +353,8 @@ export default function Home() {
                   Explore the first working USHCE career experience.
                 </h2>
                 <p className="mt-4 max-w-2xl text-base leading-7 text-blue-100/85">
-                  Search preview roles now, or create a candidate account to prepare
-                  for the live marketplace.
+                  Search live and preview roles, or create a candidate account
+                  to prepare for applications.
                 </p>
               </div>
               <div className="flex flex-col gap-3 sm:flex-row">
@@ -364,8 +377,8 @@ export default function Home() {
             </div>
             <p className="relative mt-5 flex items-center gap-2 text-xs text-blue-100/70">
               <Check className="size-3.5" />
-              Account access will be connected to the USHCE authentication system in
-              the next implementation step.
+              Employer publishing is live. Candidate applications are the next
+              implementation step.
             </p>
           </div>
         </section>

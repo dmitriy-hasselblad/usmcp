@@ -81,3 +81,9 @@ the owner, and preserves the original onboarding data.
 Organization, membership, and job access is protected by row-level security.
 The application uses the authenticated user's publishable-key session; no
 service-role key is required or permitted in the web application.
+
+The `published_jobs` view is the intentionally public, read-only marketplace
+surface. It uses `security_invoker`, so underlying table grants and RLS remain
+enforced. Anonymous visitors can read only jobs with `status = 'published'` and
+the limited organization fields selected by the view. Internal ownership and
+membership fields are not granted to the anonymous role.

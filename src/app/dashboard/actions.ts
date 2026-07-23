@@ -43,6 +43,18 @@ function isValidWebsite(value: string) {
   }
 }
 
+function createJobSlug(title: string) {
+  const base =
+    title
+      .normalize("NFKD")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 140) || "healthcare-job"
+
+  return `${base}-${crypto.randomUUID().slice(0, 8)}`
+}
+
 const allowedJobTransitions: Record<JobStatus, JobStatus[]> = {
   draft: ["published"],
   published: ["paused", "closed"],
@@ -172,6 +184,7 @@ export async function createJobDraft(formData: FormData) {
   const { error } = await workspace.supabase.from("jobs").insert({
     organization_id: workspace.organization.id,
     created_by: workspace.userId,
+    slug: createJobSlug(title),
     title,
     specialty: specialty || null,
     city,
@@ -237,13 +250,14 @@ export async function changeJobStatus(formData: FormData) {
 
   const { data: existingJob } = await workspace.supabase
     .from("jobs")
-    .select("status")
+    .select("status, slug")
     .eq("id", jobId)
     .eq("organization_id", workspace.organization.id)
     .maybeSingle()
 
   const currentStatus = existingJob?.status as JobStatus | undefined
   if (
+    !existingJob ||
     !currentStatus ||
     !allowedJobTransitions[currentStatus]?.includes(status)
   ) {
@@ -279,6 +293,9 @@ export async function changeJobStatus(formData: FormData) {
 
   revalidatePath("/dashboard")
   revalidatePath("/dashboard/jobs")
+  revalidatePath("/")
+  revalidatePath("/jobs")
+  revalidatePath(`/jobs/${existingJob.slug}`)
   redirect(
     messagePath(
       "/dashboard/jobs",

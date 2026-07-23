@@ -54,6 +54,10 @@ create table public.jobs (
   id uuid primary key default gen_random_uuid(),
   organization_id uuid not null references public.organizations (id) on delete cascade,
   created_by uuid not null references public.profiles (id) on delete restrict,
+  slug text not null unique check (
+    char_length(slug) between 3 and 180
+    and slug ~ '^[a-z0-9]+(?:-[a-z0-9]+)*$'
+  ),
   title text not null check (char_length(title) between 3 and 160),
   specialty text check (
     specialty is null or char_length(specialty) between 2 and 120
@@ -382,6 +386,7 @@ grant select on table public.jobs to authenticated;
 grant insert (
   organization_id,
   created_by,
+  slug,
   title,
   specialty,
   city,

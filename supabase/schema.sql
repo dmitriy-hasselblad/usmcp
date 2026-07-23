@@ -290,6 +290,10 @@ create table public.jobs (
   id uuid primary key default gen_random_uuid(),
   organization_id uuid not null references public.organizations (id) on delete cascade,
   created_by uuid not null references public.profiles (id) on delete restrict,
+  slug text not null unique check (
+    char_length(slug) between 3 and 180
+    and slug ~ '^[a-z0-9]+(?:-[a-z0-9]+)*$'
+  ),
   title text not null check (char_length(title) between 3 and 160),
   specialty text check (
     specialty is null or char_length(specialty) between 2 and 120
@@ -617,6 +621,7 @@ grant select on table public.jobs to authenticated;
 grant insert (
   organization_id,
   created_by,
+  slug,
   title,
   specialty,
   city,
@@ -746,3 +751,126 @@ grant execute on function public.bootstrap_employer_organization(
   text,
   text
 ) to authenticated;
+
+-- Public job marketplace.
+
+create index jobs_published_at_idx
+on public.jobs (published_at desc)
+where status = 'published';
+
+drop policy "Members can read organization jobs"
+on public.jobs;
+
+drop policy "Members can read their organization"
+on public.organizations;
+
+create policy "Anonymous can read published jobs"
+on public.jobs
+for select
+to anon
+using (status = 'published');
+
+create policy "Authenticated users can read available jobs"
+on public.jobs
+for select
+to authenticated
+using (
+  status = 'published'
+  or private.is_organization_member(organization_id)
+);
+
+create policy "Anonymous can read published job organizations"
+on public.organizations
+for select
+to anon
+using (
+  exists (
+    select 1
+    from public.jobs
+    where jobs.organization_id = organizations.id
+      and jobs.status = 'published'
+  )
+);
+
+create policy "Authenticated users can read available organizations"
+on public.organizations
+for select
+to authenticated
+using (
+  private.is_organization_member(id)
+  or exists (
+    select 1
+    from public.jobs
+    where jobs.organization_id = organizations.id
+      and jobs.status = 'published'
+  )
+);
+
+grant select (
+  id,
+  organization_id,
+  slug,
+  title,
+  specialty,
+  city,
+  state_code,
+  employment_type,
+  workplace_type,
+  salary_min,
+  salary_max,
+  salary_period,
+  visa_support,
+  description,
+  status,
+  published_at,
+  created_at,
+  updated_at
+) on table public.jobs to anon;
+
+grant select (
+  id,
+  name,
+  slug,
+  organization_type,
+  state_code,
+  description,
+  website,
+  verification_status,
+  created_at,
+  updated_at
+) on table public.organizations to anon;
+
+create view public.published_jobs
+with (security_invoker = true)
+as
+select
+  jobs.id,
+  jobs.slug,
+  jobs.title,
+  jobs.specialty,
+  jobs.city,
+  jobs.state_code,
+  jobs.employment_type,
+  jobs.workplace_type,
+  jobs.salary_min,
+  jobs.salary_max,
+  jobs.salary_period,
+  jobs.visa_support,
+  jobs.description,
+  jobs.published_at,
+  jobs.created_at,
+  organizations.id as organization_id,
+  organizations.name as organization_name,
+  organizations.slug as organization_slug,
+  organizations.organization_type,
+  organizations.state_code as organization_state_code,
+  organizations.description as organization_description,
+  organizations.website as organization_website,
+  organizations.verification_status
+from public.jobs
+join public.organizations
+  on organizations.id = jobs.organization_id
+where jobs.status = 'published';
+
+revoke all on table public.published_jobs from public, anon, authenticated;
+grant select on table public.published_jobs to anon, authenticated;

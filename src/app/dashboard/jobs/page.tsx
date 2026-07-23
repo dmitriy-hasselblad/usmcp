@@ -46,7 +46,7 @@ export default async function EmployerJobsPage({
   const { data: jobs } = await workspace.supabase
     .from("jobs")
     .select(
-      "id, title, specialty, city, state_code, employment_type, workplace_type, status, created_at",
+      "id, slug, title, specialty, city, state_code, employment_type, workplace_type, status, created_at",
     )
     .eq("organization_id", workspace.organization.id)
     .order("created_at", { ascending: false })
@@ -117,12 +117,19 @@ export default async function EmployerJobsPage({
                     </p>
                   )}
                 </div>
-                {canEdit && (
-                  <StatusActions
-                    jobId={job.id}
-                    status={job.status as JobStatus}
-                  />
-                )}
+                <div className="flex flex-wrap gap-2 lg:justify-end">
+                  {job.status === "published" && (
+                    <Button asChild variant="outline">
+                      <Link href={`/jobs/${job.slug}`}>View live</Link>
+                    </Button>
+                  )}
+                  {canEdit && (
+                    <StatusActions
+                      jobId={job.id}
+                      status={job.status as JobStatus}
+                    />
+                  )}
+                </div>
               </CardContent>
             </Card>
           ))}
@@ -165,7 +172,7 @@ function StatusActions({
   }
 
   return (
-    <div className="flex flex-wrap gap-2 lg:justify-end">
+    <>
       {transitions[status]?.map((nextStatus) => (
         <form action={changeJobStatus} key={nextStatus}>
           <input name="jobId" type="hidden" value={jobId} />
@@ -184,6 +191,6 @@ function StatusActions({
           </Button>
         </form>
       ))}
-    </div>
+    </>
   )
 }

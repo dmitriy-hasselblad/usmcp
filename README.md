@@ -1,9 +1,10 @@
 # USHCE - The U.S. Healthcare Career Ecosystem
 
 The production foundation for a U.S.-focused healthcare career platform. The
-current MVP includes a responsive public website, working product-preview job
-search, job-detail pages, organization and employer sections, career resources,
-role-aware Supabase authentication, and a data-backed employer workspace.
+current MVP includes a responsive public website, live and product-preview job
+search, public job-detail pages, organization and employer sections, career
+resources, role-aware Supabase authentication, and a data-backed employer
+workspace.
 
 ## Stack
 
@@ -15,8 +16,8 @@ role-aware Supabase authentication, and a data-backed employer workspace.
 ## Public routes
 
 - `/` - product homepage and career pathways
-- `/jobs` - searchable and filterable preview job listings
-- `/jobs/[slug]` - preview job details
+- `/jobs` - searchable live and preview job listings
+- `/jobs/[slug]` - public live or preview job details
 - `/companies` - preview healthcare organization profiles
 - `/for-employers` - employer product introduction
 - `/resources` - career resource library preview
@@ -80,11 +81,10 @@ database checks pass.
 ## Current employer milestone
 
 Employer accounts can manage their organization, create job drafts, and move
-jobs between draft, published, paused, and closed workspace states. Public job
-delivery remains intentionally separate until employer verification and the
-candidate application workflow are implemented.
+jobs between draft, published, paused, and closed workspace states. Published
+jobs appear in the public marketplace and receive a stable public URL. Draft,
+paused, and closed jobs remain private.
 
 ## Recommended next milestone
 
-Connect verified, published employer jobs to the public marketplace and add the
-candidate application workflow.
+Add the candidate application workflow and employer-facing candidate pipeline.
