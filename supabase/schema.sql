@@ -1105,7 +1105,7 @@ grant usage on type public.application_status to authenticated;
 
 -- Professional profile editing and private document storage.
 -- Keep this section synchronized with
--- migrations/20260729120000_professional_profiles_documents.sql.
+-- migrations/20260729092005_professional_profiles_documents.sql.
 
 create type public.professional_document_type as enum (
   'resume',
