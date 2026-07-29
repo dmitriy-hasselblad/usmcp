@@ -4,7 +4,8 @@ The production foundation for a U.S.-focused healthcare career platform. The
 current MVP includes a responsive public website, live and product-preview job
 search, public job-detail pages, organization and employer sections, career
 resources, role-aware Supabase authentication, and a data-backed employer
-workspace with secure candidate applications.
+workspace with secure candidate applications, professional profile editing,
+and private resume and credential storage.
 
 ## Stack
 
@@ -26,6 +27,8 @@ workspace with secure candidate applications.
 - `/forgot-password` and `/update-password` - account recovery
 - `/onboarding` - protected role-aware profile setup
 - `/dashboard` - protected role-aware account workspace
+- `/dashboard/profile` - professional profile and private document management
+- `/dashboard/documents/[id]/download` - authorized short-lived document access
 - `/dashboard/jobs` - employer job management
 - `/dashboard/jobs/new` - private employer job-draft creation
 - `/dashboard/organization` - employer organization settings
@@ -69,6 +72,7 @@ src/
     applications/         Application types and status rules
     employer/             Employer roles, validation, and workspace access
     jobs/                 Public marketplace data access
+    professional/         Professional profile and document rules
     marketing-data.ts     Typed preview content
     supabase/             Browser, server, and session clients
   proxy.ts                Next.js session refresh proxy
@@ -94,8 +98,11 @@ paused, and closed jobs remain private. Professional accounts can apply to live
 jobs, track status, and withdraw active applications. Authorized hiring teams
 can review applicant details and move applications through submitted, review,
 interview, offer, and not-selected stages.
+Professional accounts can edit career details and upload resumes, licenses,
+and certifications to a private Supabase Storage bucket. A hiring team can
+open only the resume attached to an application for its own organization.
 
 ## Recommended next milestone
 
-Add secure resume and credential uploads with Supabase Storage, followed by
-professional profile editing.
+Add structured education, experience, licenses, and certifications, followed
+by employer verification and interview scheduling.

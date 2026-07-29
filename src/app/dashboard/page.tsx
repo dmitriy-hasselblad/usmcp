@@ -280,6 +280,7 @@ async function ProfessionalDashboard({
   const [
     { data: roleProfile },
     { count: applicationCount },
+    { count: documentCount },
     { data: recentApplicationData },
   ] = await Promise.all([
     supabase
@@ -291,6 +292,10 @@ async function ProfessionalDashboard({
       .from("applications")
       .select("id", { count: "exact", head: true })
       .eq("candidate_id", userId),
+    supabase
+      .from("professional_documents")
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", userId),
     supabase
       .from("applications")
       .select("*")
@@ -317,113 +322,126 @@ async function ProfessionalDashboard({
       </div>
 
       <div className="mt-10 grid gap-6 lg:grid-cols-[0.75fr_1.25fr]">
-          <Card className="bg-white">
-            <CardContent className="p-6">
-              <span className="grid size-11 place-items-center rounded-xl bg-primary/8 text-primary">
-                <UserRound className="size-5" />
+        <Card className="bg-white">
+          <CardContent className="p-6">
+            <span className="grid size-11 place-items-center rounded-xl bg-primary/8 text-primary">
+              <UserRound className="size-5" />
+            </span>
+            <h2 className="mt-5 text-xl font-semibold">Account profile</h2>
+            <p className="mt-5 text-sm text-muted-foreground">Name</p>
+            <p className="mt-1 font-semibold">{fullName}</p>
+            <div className="mt-5 flex items-center justify-between rounded-xl bg-muted/50 p-4">
+              <span className="text-sm text-muted-foreground">
+                Applications
               </span>
-              <h2 className="mt-5 text-xl font-semibold">Account profile</h2>
-              <p className="mt-5 text-sm text-muted-foreground">Name</p>
-              <p className="mt-1 font-semibold">{fullName}</p>
-              <div className="mt-5 flex items-center justify-between rounded-xl bg-muted/50 p-4">
-                <span className="text-sm text-muted-foreground">
-                  Applications
-                </span>
-                <span className="text-xl font-semibold">
-                  {applicationCount ?? 0}
-                </span>
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="bg-white">
-            <CardContent className="p-6">
-              <span className="grid size-11 place-items-center rounded-xl bg-teal-100 text-teal-700">
-                <Stethoscope className="size-5" />
+              <span className="text-xl font-semibold">
+                {applicationCount ?? 0}
               </span>
-              <h2 className="mt-5 text-xl font-semibold">Career profile</h2>
-              {roleProfile ? (
-                <dl className="mt-5 grid gap-4 text-sm sm:grid-cols-2">
-                  {[
-                    ["Profession", roleProfile.profession],
-                    ["Specialty", roleProfile.specialty || "Not specified"],
-                    ["Career stage", roleProfile.career_stage],
-                    ["State", roleProfile.state_code],
-                  ].map(([label, value]) => (
-                    <div key={label}>
-                      <dt className="text-muted-foreground">{label}</dt>
-                      <dd className="mt-1 font-semibold">{value}</dd>
-                    </div>
-                  ))}
-                </dl>
-              ) : (
-                <p className="mt-4 text-sm text-muted-foreground">
-                  The career profile could not be loaded.
-                </p>
-              )}
-            </CardContent>
-          </Card>
-      </div>
-
-      <Card className="mt-6 bg-white">
-          <CardContent className="p-0">
-            <div className="flex items-center justify-between gap-4 border-b border-border px-5 py-4 sm:px-6">
-              <div>
-                <h2 className="text-lg font-semibold tracking-[-0.03em]">
-                  Recent applications
-                </h2>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  Your latest hiring activity
-                </p>
-              </div>
-              <Button asChild size="sm" variant="outline">
-                <Link href="/dashboard/applications">View all</Link>
-              </Button>
             </div>
-            {recentApplications.length ? (
-              <div className="divide-y divide-border">
-                {recentApplications.map((application) => (
-                  <Link
-                    className="flex flex-col gap-3 px-5 py-4 transition-colors hover:bg-muted/35 sm:flex-row sm:items-center sm:justify-between sm:px-6"
-                    href={`/dashboard/applications/${application.id}`}
-                    key={application.id}
-                  >
-                    <div className="min-w-0">
-                      <p className="truncate font-semibold">
-                        {application.job_title}
-                      </p>
-                      <p className="mt-1 text-xs text-muted-foreground">
-                        {application.organization_name}
-                      </p>
-                    </div>
-                    <ApplicationStatusBadge status={application.status} />
-                  </Link>
-                ))}
-              </div>
-            ) : (
-              <div className="grid place-items-center px-6 py-10 text-center">
-                <FileText className="size-5 text-muted-foreground" />
-                <p className="mt-3 text-sm text-muted-foreground">
-                  Your submitted applications will appear here.
-                </p>
-              </div>
-            )}
-          </CardContent>
-      </Card>
-
-      <Card className="mt-6 bg-primary text-white">
-          <CardContent className="grid gap-6 p-6 sm:grid-cols-[1fr_auto] sm:items-center">
-            <div>
-              <p className="text-sm font-semibold text-teal-100">Next step</p>
-              <h2 className="mt-2 text-2xl font-semibold">
-                Explore healthcare opportunities
-              </h2>
+            <div className="mt-3 flex items-center justify-between rounded-xl bg-muted/50 p-4">
+              <span className="text-sm text-muted-foreground">
+                Private documents
+              </span>
+              <span className="text-xl font-semibold">
+                {documentCount ?? 0}
+              </span>
             </div>
-            <Button asChild className="bg-white text-primary hover:bg-blue-50">
-              <Link href="/jobs">
-                Browse jobs <ArrowRight />
+            <Button asChild className="mt-5 w-full" variant="outline">
+              <Link href="/dashboard/profile">
+                Manage professional profile
               </Link>
             </Button>
           </CardContent>
+        </Card>
+        <Card className="bg-white">
+          <CardContent className="p-6">
+            <span className="grid size-11 place-items-center rounded-xl bg-teal-100 text-teal-700">
+              <Stethoscope className="size-5" />
+            </span>
+            <h2 className="mt-5 text-xl font-semibold">Career profile</h2>
+            {roleProfile ? (
+              <dl className="mt-5 grid gap-4 text-sm sm:grid-cols-2">
+                {[
+                  ["Profession", roleProfile.profession],
+                  ["Specialty", roleProfile.specialty || "Not specified"],
+                  ["Career stage", roleProfile.career_stage],
+                  ["State", roleProfile.state_code],
+                ].map(([label, value]) => (
+                  <div key={label}>
+                    <dt className="text-muted-foreground">{label}</dt>
+                    <dd className="mt-1 font-semibold">{value}</dd>
+                  </div>
+                ))}
+              </dl>
+            ) : (
+              <p className="mt-4 text-sm text-muted-foreground">
+                The career profile could not be loaded.
+              </p>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+
+      <Card className="mt-6 bg-white">
+        <CardContent className="p-0">
+          <div className="flex items-center justify-between gap-4 border-b border-border px-5 py-4 sm:px-6">
+            <div>
+              <h2 className="text-lg font-semibold tracking-[-0.03em]">
+                Recent applications
+              </h2>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Your latest hiring activity
+              </p>
+            </div>
+            <Button asChild size="sm" variant="outline">
+              <Link href="/dashboard/applications">View all</Link>
+            </Button>
+          </div>
+          {recentApplications.length ? (
+            <div className="divide-y divide-border">
+              {recentApplications.map((application) => (
+                <Link
+                  className="flex flex-col gap-3 px-5 py-4 transition-colors hover:bg-muted/35 sm:flex-row sm:items-center sm:justify-between sm:px-6"
+                  href={`/dashboard/applications/${application.id}`}
+                  key={application.id}
+                >
+                  <div className="min-w-0">
+                    <p className="truncate font-semibold">
+                      {application.job_title}
+                    </p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {application.organization_name}
+                    </p>
+                  </div>
+                  <ApplicationStatusBadge status={application.status} />
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <div className="grid place-items-center px-6 py-10 text-center">
+              <FileText className="size-5 text-muted-foreground" />
+              <p className="mt-3 text-sm text-muted-foreground">
+                Your submitted applications will appear here.
+              </p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      <Card className="mt-6 bg-primary text-white">
+        <CardContent className="grid gap-6 p-6 sm:grid-cols-[1fr_auto] sm:items-center">
+          <div>
+            <p className="text-sm font-semibold text-teal-100">Next step</p>
+            <h2 className="mt-2 text-2xl font-semibold">
+              Strengthen your professional profile
+            </h2>
+          </div>
+          <Button asChild className="bg-white text-primary hover:bg-blue-50">
+            <Link href="/dashboard/profile">
+              Add resume and credentials <ArrowRight />
+            </Link>
+          </Button>
+        </CardContent>
       </Card>
     </ProfessionalDashboardShell>
   )

@@ -339,24 +339,36 @@ function ApplicationBody({
         </CardContent>
       </Card>
 
-      {application.resume_url && (
+      {(application.resume_document_id || application.resume_url) && (
         <Card className="bg-white">
           <CardContent className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h2 className="font-semibold">Resume or CV</h2>
               <p className="mt-1 text-sm text-muted-foreground">
-                Open the document link supplied with this application.
+                {application.resume_document_id
+                  ? "Access is granted through this application using a short-lived secure link."
+                  : "Open the legacy document link supplied with this application."}
               </p>
             </div>
-            <Button asChild>
-              <a
-                href={application.resume_url}
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                Open document <ExternalLink />
-              </a>
-            </Button>
+            {application.resume_document_id ? (
+              <Button asChild>
+                <Link
+                  href={`/dashboard/documents/${application.resume_document_id}/download`}
+                >
+                  Download secure resume <ExternalLink />
+                </Link>
+              </Button>
+            ) : (
+              <Button asChild>
+                <a
+                  href={application.resume_url ?? undefined}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Open document <ExternalLink />
+                </a>
+              </Button>
+            )}
           </CardContent>
         </Card>
       )}

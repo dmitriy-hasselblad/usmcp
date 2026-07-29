@@ -46,6 +46,7 @@ export type ApplicationRecord = {
   career_stage: string
   state_code: string
   phone: string
+  resume_document_id: string | null
   resume_url: string | null
   cover_letter: string
   status: ApplicationStatus

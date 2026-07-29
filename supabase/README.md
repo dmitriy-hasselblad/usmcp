@@ -13,6 +13,9 @@ The script creates:
 - role-aware public profile tables;
 - organization memberships and organization-owned jobs;
 - candidate applications with immutable profile and job snapshots;
+- editable professional career profiles and private document metadata;
+- a private `professional-documents` Storage bucket with owner and
+  application-scoped hiring-team access;
 - row-level security policies;
 - minimum Data API grants;
 - automatic profile creation after signup.
@@ -101,3 +104,15 @@ Candidates can read only their own applications and can change only the status
 to withdrawn. Organization members can read applications for their own
 organization, while only owners, admins, and recruiters can update hiring
 statuses. Direct deletes are not granted to authenticated users.
+
+## Professional document access
+
+Resume, license, and certification files are stored in the private
+`professional-documents` bucket. Object paths begin with the professional
+user's ID and are protected by Storage RLS. Professionals can manage their own
+files. Organization members can read only a resume that is referenced by an
+application belonging to their organization.
+
+The web application uses the authenticated user's publishable-key session for
+uploads and creates one-minute signed download URLs after RLS authorization.
+Do not make this bucket public and do not add a service-role key to Vercel.
