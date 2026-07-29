@@ -353,8 +353,8 @@ export default async function Home() {
                   Explore the first working USHCE career experience.
                 </h2>
                 <p className="mt-4 max-w-2xl text-base leading-7 text-blue-100/85">
-                  Search live and preview roles, or create a candidate account
-                  to prepare for applications.
+                  Search live and preview roles, or create a professional
+                  account to build a private profile and apply securely.
                 </p>
               </div>
               <div className="flex flex-col gap-3 sm:flex-row">
@@ -377,8 +377,8 @@ export default async function Home() {
             </div>
             <p className="relative mt-5 flex items-center gap-2 text-xs text-blue-100/70">
               <Check className="size-3.5" />
-              Employer publishing is live. Candidate applications are the next
-              implementation step.
+              Employer publishing, candidate applications, and private profile
+              documents are live.
             </p>
           </div>
         </section>

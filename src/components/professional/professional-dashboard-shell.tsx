@@ -1,13 +1,18 @@
 import Link from "next/link"
 import type { ReactNode } from "react"
-import { BriefcaseBusiness, FileText, LayoutDashboard } from "lucide-react"
+import {
+  BriefcaseBusiness,
+  FileText,
+  LayoutDashboard,
+  UserRound,
+} from "lucide-react"
 
 import { UshceLogo } from "@/components/brand/ushce-logo"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
-type ProfessionalRoute = "overview" | "applications"
+type ProfessionalRoute = "overview" | "profile" | "applications"
 
 const routes = [
   {
@@ -15,6 +20,12 @@ const routes = [
     href: "/dashboard",
     label: "Overview",
     icon: LayoutDashboard,
+  },
+  {
+    key: "profile",
+    href: "/dashboard/profile",
+    label: "Professional profile",
+    icon: UserRound,
   },
   {
     key: "applications",

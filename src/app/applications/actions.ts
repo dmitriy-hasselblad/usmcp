@@ -18,25 +18,13 @@ function isUuid(value: string) {
   )
 }
 
-function isValidOptionalUrl(value: string) {
-  if (!value) return true
-  if (value.length > 500) return false
-
-  try {
-    const url = new URL(value)
-    return url.protocol === "https:" || url.protocol === "http:"
-  } catch {
-    return false
-  }
-}
-
 export async function submitApplication(formData: FormData) {
   const jobSlug = formString(formData, "jobSlug")
   const nextPath = jobSlug ? `/jobs/${jobSlug}/apply` : "/jobs"
   const identity = await requireIdentity(nextPath)
   const jobId = formString(formData, "jobId")
   const phone = formString(formData, "phone")
-  const resumeUrl = formString(formData, "resumeUrl")
+  const resumeDocumentId = formString(formData, "resumeDocumentId")
   const coverLetter = formString(formData, "coverLetter")
 
   if (
@@ -44,7 +32,7 @@ export async function submitApplication(formData: FormData) {
     !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(jobSlug) ||
     phone.length < 7 ||
     phone.length > 30 ||
-    !isValidOptionalUrl(resumeUrl) ||
+    (resumeDocumentId.length > 0 && !isUuid(resumeDocumentId)) ||
     coverLetter.length < 30 ||
     coverLetter.length > 5000
   ) {
@@ -83,7 +71,7 @@ export async function submitApplication(formData: FormData) {
       job_id: jobId,
       candidate_id: identity.userId,
       phone,
-      resume_url: resumeUrl || null,
+      resume_document_id: resumeDocumentId || null,
       cover_letter: coverLetter,
     })
     .select("id")

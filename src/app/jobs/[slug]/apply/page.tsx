@@ -56,7 +56,11 @@ export default async function ApplyPage({
     notFound()
   }
 
-  const [{ data: profile }, { data: professionalProfile }] = await Promise.all([
+  const [
+    { data: profile },
+    { data: professionalProfile },
+    { data: resumeData },
+  ] = await Promise.all([
     identity.supabase
       .from("profiles")
       .select("account_type, first_name, last_name, onboarding_completed")
@@ -64,9 +68,16 @@ export default async function ApplyPage({
       .single(),
     identity.supabase
       .from("professional_profiles")
-      .select("profession, specialty, career_stage, state_code")
+      .select("profession, specialty, career_stage, state_code, phone")
       .eq("user_id", identity.userId)
       .maybeSingle(),
+    identity.supabase
+      .from("professional_documents")
+      .select("id, title, is_primary")
+      .eq("user_id", identity.userId)
+      .eq("document_type", "resume")
+      .order("is_primary", { ascending: false })
+      .order("created_at", { ascending: false }),
   ])
 
   if (!profile?.onboarding_completed) {
@@ -157,6 +168,9 @@ export default async function ApplyPage({
   const fullName = [profile.first_name, profile.last_name]
     .filter(Boolean)
     .join(" ")
+  const resumes = (resumeData ?? []) as ApplicationResumeOption[]
+  const selectedResumeId =
+    resumes.find((resume) => resume.is_primary)?.id ?? resumes[0]?.id ?? ""
 
   return (
     <ApplyPageShell>
@@ -215,27 +229,50 @@ export default async function ApplyPage({
                   placeholder="+1 (312) 555-0147"
                   required
                   type="tel"
+                  defaultValue={professionalProfile.phone ?? ""}
                 />
               </label>
 
-              <label className="grid gap-2 text-sm font-medium">
-                Resume or CV link{" "}
-                <span className="font-normal text-muted-foreground">
-                  (optional)
-                </span>
-                <Input
-                  className="h-11"
-                  maxLength={500}
-                  name="resumeUrl"
-                  placeholder="https://..."
-                  type="url"
-                />
-                <span className="text-xs font-normal leading-5 text-muted-foreground">
-                  Add a private sharing link from your document provider. Secure
-                  file uploads will be introduced in the profile documents
-                  stage.
-                </span>
-              </label>
+              {resumes.length ? (
+                <label className="grid gap-2 text-sm font-medium">
+                  Resume or CV{" "}
+                  <span className="font-normal text-muted-foreground">
+                    (optional)
+                  </span>
+                  <select
+                    className="h-11 w-full rounded-lg border border-input bg-background px-3 text-sm outline-none transition-shadow focus:border-ring focus:ring-3 focus:ring-ring/20"
+                    defaultValue={selectedResumeId}
+                    name="resumeDocumentId"
+                  >
+                    <option value="">Apply without a resume</option>
+                    {resumes.map((resume) => (
+                      <option key={resume.id} value={resume.id}>
+                        {resume.title}
+                        {resume.is_primary ? " (Primary)" : ""}
+                      </option>
+                    ))}
+                  </select>
+                  <span className="text-xs font-normal leading-5 text-muted-foreground">
+                    Only this employer&apos;s authorized hiring team can open
+                    the resume attached to this application.
+                  </span>
+                </label>
+              ) : (
+                <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
+                  <p className="text-sm font-semibold text-amber-950">
+                    No resume saved
+                  </p>
+                  <p className="mt-1 text-sm leading-6 text-amber-900/80">
+                    You can apply without a resume or upload one to your private
+                    professional profile first.
+                  </p>
+                  <Button asChild className="mt-3" size="sm" variant="outline">
+                    <Link href="/dashboard/profile">
+                      Manage profile documents
+                    </Link>
+                  </Button>
+                </div>
+              )}
 
               <label className="grid gap-2 text-sm font-medium">
                 Message to the hiring team
@@ -312,4 +349,10 @@ function ProfileField({ label, value }: { label: string; value: string }) {
       <p className="mt-1 font-semibold">{value}</p>
     </div>
   )
+}
+
+type ApplicationResumeOption = {
+  id: string
+  title: string
+  is_primary: boolean
 }
