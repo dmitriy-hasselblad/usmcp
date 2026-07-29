@@ -7,6 +7,8 @@ email redirects are configured. Complete these steps before setting
 ## 1. Apply the database schema
 
 Open the Supabase SQL Editor for the intended project and run `schema.sql`.
+Then apply any newer files in `supabase/migrations/` in filename order,
+including `20260729150000_structured_professional_profile.sql`.
 The script creates:
 
 - private trigger functions;
@@ -14,6 +16,7 @@ The script creates:
 - organization memberships and organization-owned jobs;
 - candidate applications with immutable profile and job snapshots;
 - editable professional career profiles and private document metadata;
+- structured professional education, experience, licenses, and certifications;
 - a private `professional-documents` Storage bucket with owner and
   application-scoped hiring-team access;
 - row-level security policies;
@@ -116,3 +119,11 @@ application belonging to their organization.
 The web application uses the authenticated user's publishable-key session for
 uploads and creates one-minute signed download URLs after RLS authorization.
 Do not make this bucket public and do not add a service-role key to Vercel.
+
+## Structured career records
+
+Education, training, work experience, license, and certification rows are
+owned by the professional account. Row-level security allows an organization
+member to read these records only while the candidate has a non-withdrawn
+application in that member's organization. Professionals retain exclusive
+create, update, and delete access.
