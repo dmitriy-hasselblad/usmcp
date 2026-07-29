@@ -1,6 +1,7 @@
 import Link from "next/link"
 
 import { UshceLogo } from "@/components/brand/ushce-logo"
+import { PrivacyChoicesButton } from "@/components/privacy/privacy-choices-button"
 
 const footerLinks = [
   { href: "/#why-ushce", label: "About USHCE" },
@@ -9,6 +10,8 @@ const footerLinks = [
   { href: "/for-employers", label: "For employers" },
   { href: "/resources", label: "Career resources" },
   { href: "/sign-up", label: "Create an account" },
+  { href: "/privacy", label: "Privacy Policy" },
+  { href: "/cookies", label: "Cookie Notice" },
 ]
 
 export function SiteFooter() {
@@ -32,6 +35,7 @@ export function SiteFooter() {
               {link.label}
             </Link>
           ))}
+          <PrivacyChoicesButton />
         </div>
       </div>
       <div className="border-t border-border">
