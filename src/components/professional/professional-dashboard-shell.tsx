@@ -3,6 +3,7 @@ import type { ReactNode } from "react"
 import {
   BriefcaseBusiness,
   FileText,
+  GraduationCap,
   LayoutDashboard,
   UserRound,
 } from "lucide-react"
@@ -12,7 +13,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
-type ProfessionalRoute = "overview" | "profile" | "applications"
+type ProfessionalRoute = "overview" | "profile" | "career" | "applications"
 
 const routes = [
   {
@@ -26,6 +27,12 @@ const routes = [
     href: "/dashboard/profile",
     label: "Professional profile",
     icon: UserRound,
+  },
+  {
+    key: "career",
+    href: "/dashboard/profile/career",
+    label: "Career history",
+    icon: GraduationCap,
   },
   {
     key: "applications",

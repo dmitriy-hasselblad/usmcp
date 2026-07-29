@@ -2,12 +2,15 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import {
   ArrowLeft,
+  Award,
   BriefcaseBusiness,
   CalendarDays,
   ExternalLink,
+  GraduationCap,
   Mail,
   MapPin,
   Phone,
+  ShieldCheck,
   Stethoscope,
   UserRound,
 } from "lucide-react"
@@ -37,6 +40,14 @@ import {
 import { requireIdentity } from "@/lib/auth/session"
 import { canManageJobs } from "@/lib/employer/constants"
 import { requireEmployerWorkspace } from "@/lib/employer/session"
+import {
+  educationTypeLabels,
+  type CertificationRecord,
+  type EducationRecord,
+  type ExperienceRecord,
+  type LicenseRecord,
+  type StructuredCareerProfile,
+} from "@/lib/professional/career-records"
 
 export const metadata: Metadata = {
   title: "Application details",
@@ -173,6 +184,35 @@ async function EmployerApplication({
 
   const application = data as ApplicationRecord
   const canEdit = canManageJobs(workspace.membership.role)
+  const [educationResult, experienceResult, licenseResult, certificationResult] =
+    await Promise.all([
+      workspace.supabase
+        .from("professional_education")
+        .select("*")
+        .eq("user_id", application.candidate_id)
+        .order("start_date", { ascending: false }),
+      workspace.supabase
+        .from("professional_experience")
+        .select("*")
+        .eq("user_id", application.candidate_id)
+        .order("start_date", { ascending: false }),
+      workspace.supabase
+        .from("professional_licenses")
+        .select("*")
+        .eq("user_id", application.candidate_id)
+        .order("expires_on", { ascending: true }),
+      workspace.supabase
+        .from("professional_certifications")
+        .select("*")
+        .eq("user_id", application.candidate_id)
+        .order("issued_on", { ascending: false }),
+    ])
+  const careerProfile: StructuredCareerProfile = {
+    education: (educationResult.data ?? []) as EducationRecord[],
+    experience: (experienceResult.data ?? []) as ExperienceRecord[],
+    licenses: (licenseResult.data ?? []) as LicenseRecord[],
+    certifications: (certificationResult.data ?? []) as CertificationRecord[],
+  }
 
   return (
     <EmployerDashboardShell
@@ -190,7 +230,11 @@ async function EmployerApplication({
       </div>
 
       <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_21rem]">
-        <ApplicationBody application={application} showCandidateContact />
+        <ApplicationBody
+          application={application}
+          careerProfile={careerProfile}
+          showCandidateContact
+        />
         <Card className="h-fit bg-white">
           <CardContent className="p-5">
             <p className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
@@ -268,9 +312,11 @@ function ApplicationHeading({
 
 function ApplicationBody({
   application,
+  careerProfile,
   showCandidateContact = false,
 }: {
   application: ApplicationRecord
+  careerProfile?: StructuredCareerProfile
   showCandidateContact?: boolean
 }) {
   return (
@@ -328,6 +374,8 @@ function ApplicationBody({
         </CardContent>
       </Card>
 
+      {careerProfile && <CareerProfileSummary profile={careerProfile} />}
+
       <Card className="bg-white">
         <CardHeader>
           <CardTitle>Message to the hiring team</CardTitle>
@@ -374,6 +422,122 @@ function ApplicationBody({
       )}
     </div>
   )
+}
+
+function CareerProfileSummary({
+  profile,
+}: {
+  profile: StructuredCareerProfile
+}) {
+  const hasRecords =
+    profile.education.length > 0 ||
+    profile.experience.length > 0 ||
+    profile.licenses.length > 0 ||
+    profile.certifications.length > 0
+
+  return (
+    <Card className="bg-white">
+      <CardHeader>
+        <CardTitle>Structured career history</CardTitle>
+      </CardHeader>
+      <CardContent>
+        {hasRecords ? (
+          <div className="grid gap-6">
+            <CareerGroup
+              icon={BriefcaseBusiness}
+              items={profile.experience.map((record) => ({
+                id: record.id,
+                title: record.role_title,
+                subtitle: `${record.organization_name} · ${careerDateRange(record.start_date, record.end_date, record.is_current)}`,
+              }))}
+              title="Experience"
+            />
+            <CareerGroup
+              icon={GraduationCap}
+              items={profile.education.map((record) => ({
+                id: record.id,
+                title: `${record.program} — ${record.institution}`,
+                subtitle: `${educationTypeLabels[record.education_type]} · ${careerDateRange(record.start_date, record.end_date, record.is_current)}`,
+              }))}
+              title="Education and training"
+            />
+            <CareerGroup
+              icon={ShieldCheck}
+              items={profile.licenses.map((record) => ({
+                id: record.id,
+                title: record.license_type,
+                subtitle: `${record.issuing_state} · License ${record.license_number}${record.expires_on ? ` · Expires ${formatCareerDate(record.expires_on)}` : ""}`,
+              }))}
+              title="Licenses"
+            />
+            <CareerGroup
+              icon={Award}
+              items={profile.certifications.map((record) => ({
+                id: record.id,
+                title: record.name,
+                subtitle: `${record.issuing_organization}${record.expires_on ? ` · Expires ${formatCareerDate(record.expires_on)}` : ""}`,
+              }))}
+              title="Certifications"
+            />
+          </div>
+        ) : (
+          <p className="text-sm leading-6 text-muted-foreground">
+            The candidate has not added structured career records yet.
+          </p>
+        )}
+      </CardContent>
+    </Card>
+  )
+}
+
+function CareerGroup({
+  icon: Icon,
+  items,
+  title,
+}: {
+  icon: typeof UserRound
+  items: { id: string; subtitle: string; title: string }[]
+  title: string
+}) {
+  if (!items.length) {
+    return null
+  }
+
+  return (
+    <section>
+      <h3 className="flex items-center gap-2 font-semibold">
+        <Icon className="size-4 text-primary" />
+        {title}
+      </h3>
+      <div className="mt-3 grid gap-3">
+        {items.map((item) => (
+          <div className="rounded-xl border border-border p-4" key={item.id}>
+            <p className="font-medium">{item.title}</p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {item.subtitle}
+            </p>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+function careerDateRange(
+  startDate: string | null,
+  endDate: string | null,
+  isCurrent: boolean,
+) {
+  const start = startDate ? formatCareerDate(startDate) : "Date not provided"
+  return `${start}–${isCurrent ? "Present" : endDate ? formatCareerDate(endDate) : "Not provided"}`
+}
+
+function formatCareerDate(value: string) {
+  return new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(new Date(`${value}T00:00:00Z`))
 }
 
 function Detail({

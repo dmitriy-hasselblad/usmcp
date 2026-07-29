@@ -28,6 +28,7 @@ and private resume and credential storage.
 - `/onboarding` - protected role-aware profile setup
 - `/dashboard` - protected role-aware account workspace
 - `/dashboard/profile` - professional profile and private document management
+- `/dashboard/profile/career` - structured education, experience, licenses, and certifications
 - `/dashboard/documents/[id]/download` - authorized short-lived document access
 - `/dashboard/jobs` - employer job management
 - `/dashboard/jobs/new` - private employer job-draft creation
@@ -78,7 +79,7 @@ src/
   proxy.ts                Next.js session refresh proxy
 supabase/
   migrations/             Versioned database changes
-  schema.sql              Complete authentication and employer schema
+  schema.sql              Consolidated foundation; apply newer migrations after it
   README.md               Supabase dashboard and email configuration
 ```
 
@@ -101,8 +102,12 @@ interview, offer, and not-selected stages.
 Professional accounts can edit career details and upload resumes, licenses,
 and certifications to a private Supabase Storage bucket. A hiring team can
 open only the resume attached to an application for its own organization.
+Professionals can also maintain structured education, training, experience,
+license, and certification records. These records remain private until the
+professional applies to an organization's job, and are removed from that
+organization's access if the application is withdrawn.
 
 ## Recommended next milestone
 
-Add structured education, experience, licenses, and certifications, followed
-by employer verification and interview scheduling.
+Add employer verification and interview scheduling, followed by notifications
+and candidate search.
