@@ -167,12 +167,12 @@ export default async function JobPage({ params }: JobPageProps) {
                 </h2>
                 <p className="mt-2 text-sm leading-6 text-muted-foreground">
                   {isLive
-                    ? "This opportunity was published directly by the employer. Candidate applications are the next marketplace feature."
+                    ? "This opportunity was published directly by the employer. Submit your profile and application securely through USHCE."
                     : "This sample listing demonstrates the planned application experience. It is not an active vacancy."}
                 </p>
                 <Button asChild className="mt-6 h-11 w-full rounded-xl">
-                  <Link href="/sign-up">
-                    {isLive ? "Create your profile" : "Prepare your profile"}{" "}
+                  <Link href={isLive ? `/jobs/${job.slug}/apply` : "/sign-up"}>
+                    {isLive ? "Apply now" : "Prepare your profile"}{" "}
                     <ArrowRight />
                   </Link>
                 </Button>
@@ -188,7 +188,7 @@ export default async function JobPage({ params }: JobPageProps) {
                 <div className="mt-5 flex gap-2 border-t border-border pt-5 text-xs leading-5 text-muted-foreground">
                   <ShieldCheck className="mt-0.5 size-4 shrink-0 text-primary" />
                   {isLive
-                    ? "USHCE displays this role while the employer keeps it in Published status."
+                    ? "Your application is shared only with this employer's authorized hiring team."
                     : "Employer verification and live applications will be enabled before marketplace launch."}
                 </div>
               </CardContent>

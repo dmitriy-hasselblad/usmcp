@@ -4,7 +4,7 @@ The production foundation for a U.S.-focused healthcare career platform. The
 current MVP includes a responsive public website, live and product-preview job
 search, public job-detail pages, organization and employer sections, career
 resources, role-aware Supabase authentication, and a data-backed employer
-workspace.
+workspace with secure candidate applications.
 
 ## Stack
 
@@ -18,6 +18,7 @@ workspace.
 - `/` - product homepage and career pathways
 - `/jobs` - searchable live and preview job listings
 - `/jobs/[slug]` - public live or preview job details
+- `/jobs/[slug]/apply` - protected application form for live jobs
 - `/companies` - preview healthcare organization profiles
 - `/for-employers` - employer product introduction
 - `/resources` - career resource library preview
@@ -28,6 +29,8 @@ workspace.
 - `/dashboard/jobs` - employer job management
 - `/dashboard/jobs/new` - private employer job-draft creation
 - `/dashboard/organization` - employer organization settings
+- `/dashboard/applications` - role-aware candidate and employer application list
+- `/dashboard/applications/[id]` - protected application review and status page
 
 All public interface content is written in English for a U.S. audience. Sample
 jobs and organizations are clearly labeled as product-preview content and are
@@ -53,15 +56,19 @@ src/
   app/                    App Router pages, metadata, and loading states
   components/
     auth/                 Account access and status components
+    applications/         Application status components
     brand/                USHCE identity
     employer/             Employer workspace shell and job components
     jobs/                 Reusable job components
     layout/               Shared header and footer
     marketing/            Homepage and search components
+    professional/         Professional workspace shell
     ui/                   Owned shadcn/ui primitives
   lib/
     auth/                 Validation and protected-session helpers
+    applications/         Application types and status rules
     employer/             Employer roles, validation, and workspace access
+    jobs/                 Public marketplace data access
     marketing-data.ts     Typed preview content
     supabase/             Browser, server, and session clients
   proxy.ts                Next.js session refresh proxy
@@ -78,13 +85,17 @@ builds it automatically. Follow `supabase/README.md`, apply the schema, configur
 the public environment variables, and enable authentication only after the
 database checks pass.
 
-## Current employer milestone
+## Current application milestone
 
 Employer accounts can manage their organization, create job drafts, and move
 jobs between draft, published, paused, and closed workspace states. Published
 jobs appear in the public marketplace and receive a stable public URL. Draft,
-paused, and closed jobs remain private.
+paused, and closed jobs remain private. Professional accounts can apply to live
+jobs, track status, and withdraw active applications. Authorized hiring teams
+can review applicant details and move applications through submitted, review,
+interview, offer, and not-selected stages.
 
 ## Recommended next milestone
 
-Add the candidate application workflow and employer-facing candidate pipeline.
+Add secure resume and credential uploads with Supabase Storage, followed by
+professional profile editing.

@@ -12,6 +12,7 @@ The script creates:
 - private trigger functions;
 - role-aware public profile tables;
 - organization memberships and organization-owned jobs;
+- candidate applications with immutable profile and job snapshots;
 - row-level security policies;
 - minimum Data API grants;
 - automatic profile creation after signup.
@@ -69,7 +70,8 @@ NEXT_PUBLIC_AUTH_ENABLED=true
 
 After deployment, test professional signup, employer signup, email
 confirmation, sign-in, onboarding, organization editing, job draft creation,
-job status changes, sign-out, and password recovery.
+job status changes, candidate application submission, employer application
+review, candidate withdrawal, sign-out, and password recovery.
 
 ## Employer workspace migrations
 
@@ -87,3 +89,15 @@ surface. It uses `security_invoker`, so underlying table grants and RLS remain
 enforced. Anonymous visitors can read only jobs with `status = 'published'` and
 the limited organization fields selected by the view. Internal ownership and
 membership fields are not granted to the anonymous role.
+
+## Candidate application access
+
+Applications are never exposed to anonymous visitors. A professional can insert
+an application only for their own completed profile and only while the selected
+job is published. The database trigger captures trusted candidate, job, and
+organization details; clients cannot supply or overwrite those snapshot fields.
+
+Candidates can read only their own applications and can change only the status
+to withdrawn. Organization members can read applications for their own
+organization, while only owners, admins, and recruiters can update hiring
+statuses. Direct deletes are not granted to authenticated users.

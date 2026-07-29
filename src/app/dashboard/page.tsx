@@ -13,13 +13,14 @@ import {
   UsersRound,
 } from "lucide-react"
 
-import { UshceLogo } from "@/components/brand/ushce-logo"
+import { ApplicationStatusBadge } from "@/components/applications/application-status-badge"
 import { EmployerDashboardShell } from "@/components/employer/employer-dashboard-shell"
 import { EmployerPageHeader } from "@/components/employer/employer-page-header"
 import { JobStatusBadge } from "@/components/employer/job-status-badge"
-import { Badge } from "@/components/ui/badge"
+import { ProfessionalDashboardShell } from "@/components/professional/professional-dashboard-shell"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import type { ApplicationRecord } from "@/lib/applications/constants"
 import { requireIdentity } from "@/lib/auth/session"
 import type { JobStatus } from "@/lib/employer/constants"
 import { requireEmployerWorkspace } from "@/lib/employer/session"
@@ -65,7 +66,7 @@ async function EmployerOverview() {
   const [
     { count: totalJobs },
     { count: publishedJobs },
-    { count: draftJobs },
+    { count: totalApplications },
     { count: teamMembers },
     { data: recentJobs },
   ] = await Promise.all([
@@ -79,10 +80,9 @@ async function EmployerOverview() {
       .eq("organization_id", organizationId)
       .eq("status", "published"),
     workspace.supabase
-      .from("jobs")
+      .from("applications")
       .select("id", { count: "exact", head: true })
-      .eq("organization_id", organizationId)
-      .eq("status", "draft"),
+      .eq("organization_id", organizationId),
     workspace.supabase
       .from("organization_members")
       .select("user_id", { count: "exact", head: true })
@@ -130,9 +130,9 @@ async function EmployerOverview() {
         />
         <StatCard
           icon={FileText}
-          label="Drafts"
+          label="Applications"
           tone="amber"
-          value={draftJobs ?? 0}
+          value={totalApplications ?? 0}
         />
         <StatCard
           icon={UsersRound}
@@ -277,43 +277,46 @@ async function ProfessionalDashboard({
   supabase: Awaited<ReturnType<typeof requireIdentity>>["supabase"]
   userId: string
 }) {
-  const { data: roleProfile } = await supabase
-    .from("professional_profiles")
-    .select("profession, specialty, state_code, career_stage")
-    .eq("user_id", userId)
-    .single()
+  const [
+    { data: roleProfile },
+    { count: applicationCount },
+    { data: recentApplicationData },
+  ] = await Promise.all([
+    supabase
+      .from("professional_profiles")
+      .select("profession, specialty, state_code, career_stage")
+      .eq("user_id", userId)
+      .single(),
+    supabase
+      .from("applications")
+      .select("id", { count: "exact", head: true })
+      .eq("candidate_id", userId),
+    supabase
+      .from("applications")
+      .select("*")
+      .eq("candidate_id", userId)
+      .order("submitted_at", { ascending: false })
+      .limit(3),
+  ])
+  const recentApplications =
+    (recentApplicationData as ApplicationRecord[] | null) ?? []
 
   return (
-    <div className="min-h-dvh bg-muted/35">
-      <header className="border-b border-border bg-white">
-        <div className="mx-auto flex h-[4.5rem] max-w-7xl items-center justify-between px-5 lg:px-8">
-          <Link aria-label="USHCE home" href="/">
-            <UshceLogo />
-          </Link>
-          <div className="flex items-center gap-3">
-            <span className="hidden text-sm text-muted-foreground sm:inline">
-              {email}
-            </span>
-            <form action="/auth/sign-out" method="post">
-              <Button type="submit" variant="outline">
-                Sign out
-              </Button>
-            </form>
-          </div>
-        </div>
-      </header>
-
-      <main className="mx-auto max-w-7xl px-5 py-10 lg:px-8 lg:py-14">
-        <Badge variant="outline">Professional workspace</Badge>
-        <h1 className="mt-5 text-4xl font-semibold tracking-[-0.055em] sm:text-5xl">
+    <ProfessionalDashboardShell active="overview" email={email}>
+      <div>
+        <p className="text-xs font-bold tracking-[0.14em] text-primary uppercase">
+          Professional overview
+        </p>
+        <h1 className="mt-3 text-4xl font-semibold tracking-[-0.055em] sm:text-5xl">
           Welcome, {firstName}.
         </h1>
         <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
-          Your secure USHCE profile is ready. Career tools will be added in the
-          next professional workspace stage.
+          Manage your healthcare career profile and track applications from one
+          secure workspace.
         </p>
+      </div>
 
-        <div className="mt-10 grid gap-6 lg:grid-cols-[0.8fr_1.2fr]">
+      <div className="mt-10 grid gap-6 lg:grid-cols-[0.75fr_1.25fr]">
           <Card className="bg-white">
             <CardContent className="p-6">
               <span className="grid size-11 place-items-center rounded-xl bg-primary/8 text-primary">
@@ -322,6 +325,14 @@ async function ProfessionalDashboard({
               <h2 className="mt-5 text-xl font-semibold">Account profile</h2>
               <p className="mt-5 text-sm text-muted-foreground">Name</p>
               <p className="mt-1 font-semibold">{fullName}</p>
+              <div className="mt-5 flex items-center justify-between rounded-xl bg-muted/50 p-4">
+                <span className="text-sm text-muted-foreground">
+                  Applications
+                </span>
+                <span className="text-xl font-semibold">
+                  {applicationCount ?? 0}
+                </span>
+              </div>
             </CardContent>
           </Card>
           <Card className="bg-white">
@@ -351,9 +362,55 @@ async function ProfessionalDashboard({
               )}
             </CardContent>
           </Card>
-        </div>
+      </div>
 
-        <Card className="mt-6 bg-primary text-white">
+      <Card className="mt-6 bg-white">
+          <CardContent className="p-0">
+            <div className="flex items-center justify-between gap-4 border-b border-border px-5 py-4 sm:px-6">
+              <div>
+                <h2 className="text-lg font-semibold tracking-[-0.03em]">
+                  Recent applications
+                </h2>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Your latest hiring activity
+                </p>
+              </div>
+              <Button asChild size="sm" variant="outline">
+                <Link href="/dashboard/applications">View all</Link>
+              </Button>
+            </div>
+            {recentApplications.length ? (
+              <div className="divide-y divide-border">
+                {recentApplications.map((application) => (
+                  <Link
+                    className="flex flex-col gap-3 px-5 py-4 transition-colors hover:bg-muted/35 sm:flex-row sm:items-center sm:justify-between sm:px-6"
+                    href={`/dashboard/applications/${application.id}`}
+                    key={application.id}
+                  >
+                    <div className="min-w-0">
+                      <p className="truncate font-semibold">
+                        {application.job_title}
+                      </p>
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        {application.organization_name}
+                      </p>
+                    </div>
+                    <ApplicationStatusBadge status={application.status} />
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              <div className="grid place-items-center px-6 py-10 text-center">
+                <FileText className="size-5 text-muted-foreground" />
+                <p className="mt-3 text-sm text-muted-foreground">
+                  Your submitted applications will appear here.
+                </p>
+              </div>
+            )}
+          </CardContent>
+      </Card>
+
+      <Card className="mt-6 bg-primary text-white">
           <CardContent className="grid gap-6 p-6 sm:grid-cols-[1fr_auto] sm:items-center">
             <div>
               <p className="text-sm font-semibold text-teal-100">Next step</p>
@@ -367,8 +424,7 @@ async function ProfessionalDashboard({
               </Link>
             </Button>
           </CardContent>
-        </Card>
-      </main>
-    </div>
+      </Card>
+    </ProfessionalDashboardShell>
   )
 }
