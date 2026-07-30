@@ -1,0 +1,210 @@
+# USHCE Blueprint Roadmap
+
+Last updated: 2026-07-30
+
+## Source of truth
+
+This roadmap maps the current codebase to:
+
+`USHCE_Healthcare_Career_Ecosystem_Product_Blueprint_RU.pdf`
+
+Relevant Blueprint references:
+
+- Page 3: recommended implementation order
+- Pages 264-271: detailed MVP plan
+- Chapter 43: MVP scope, monthly plan, and exclusions
+
+The Blueprint is a product blueprint, not a single sprint and not a strict
+table-of-contents implementation order. When chapters repeat or conflict, use
+the recommended implementation order on page 3 as the governing sequence.
+
+## Status definitions
+
+- **Completed**: implemented, stored correctly, access-controlled, and verified.
+- **In progress**: useful functionality exists, but required scope remains.
+- **Not started**: no production implementation exists.
+- **Deferred**: intentionally postponed until its dependencies are stable.
+
+## Governing implementation sequence
+
+| Phase | Blueprint focus | Current status |
+| --- | --- | --- |
+| 1. Foundation | Auth, roles, Supabase schema/RLS, reference data, design system | Completed with minor reference-data gaps |
+| 2. Marketplace MVP | Jobs, companies, search, profiles, applications, employer/admin | In progress |
+| 3. Trust & Revenue | Verification, payments, subscriptions, audit, notifications | Not started; privacy foundation exists |
+| 4. Engagement | Messaging, interviews, content, SEO, analytics | Not started |
+| 5. Intelligence | CV tools, matching, recommendations, broader marketplace, mobile | Deferred |
+
+## Phase 1: Foundation
+
+### Completed
+
+- [x] USHCE terminology and product identity
+- [x] English-only public product language
+- [x] Next.js App Router foundation
+- [x] Shared UI system and reusable components
+- [x] Supabase project integration
+- [x] Email/password authentication
+- [x] Session persistence
+- [x] Professional and employer account types
+- [x] Role-aware onboarding
+- [x] PostgreSQL schema migrations
+- [x] Row Level Security foundation
+- [x] Vercel Preview and Production workflow
+- [x] Privacy Policy, Cookie Notice, and cookie choices
+
+### Remaining foundation refinements
+
+- [ ] Centralized profession and specialty reference data
+- [ ] Centralized geographic reference data beyond the current U.S. state list
+- [ ] Formal audit-event model for privileged actions
+- [ ] Automated test coverage for critical role boundaries
+
+## Phase 2: Marketplace MVP
+
+### Public website
+
+- [x] Homepage
+- [x] Job search entry point
+- [x] Public job listing
+- [x] Public job detail
+- [x] Basic job filters
+- [x] Public supporting pages
+- [ ] Live public organization directory
+- [ ] Live public organization profile route
+- [ ] Complete Blueprint job filters
+- [ ] Remove or replace remaining fictional marketplace listings before launch
+
+### Candidate platform
+
+- [x] Candidate registration
+- [x] Candidate onboarding
+- [x] Professional profile
+- [x] Resume/document storage
+- [x] Career History
+- [x] Job application submission
+- [x] Application tracking
+- [x] Application withdrawal
+- [ ] Skills model
+- [ ] Extended healthcare profile sections
+- [ ] Recommended jobs
+- [ ] Resume/CV Builder
+- [ ] Google sign-in
+- [ ] LinkedIn sign-in
+
+### Employer platform
+
+- [x] Employer registration
+- [x] Organization creation
+- [x] Organization profile management
+- [x] Employer dashboard
+- [x] Job creation and publishing
+- [x] Job management
+- [x] Applicant review
+- [x] Hiring status management
+- [x] Structured candidate career history
+- [ ] Employer verification
+- [ ] Public live organization profile
+- [ ] Candidate search
+- [ ] Saved candidates
+- [ ] Team member invitation and access administration
+- [ ] Billing area
+
+### Admin platform
+
+- [ ] Admin authentication and authorization
+- [ ] User management
+- [ ] Organization moderation
+- [ ] Employer verification queue
+- [ ] Job moderation
+- [ ] Application and abuse reporting oversight
+- [ ] Basic platform metrics
+- [ ] Audit log viewer
+
+## Phase 3: Trust & Revenue
+
+- [ ] Organization email-domain verification
+- [ ] Manual employer verification
+- [ ] Verification badges and rules
+- [ ] Stripe integration
+- [ ] Subscription plans
+- [ ] One-time job-posting payments
+- [ ] Billing portal
+- [ ] Invoice history
+- [ ] Payment webhook handling
+- [ ] Email notifications
+- [ ] In-product notifications
+- [ ] Formal audit trail
+
+## Phase 4: Engagement
+
+- [ ] Candidate-employer messaging
+- [ ] Message attachments
+- [ ] Interview scheduling
+- [ ] Calendar integration
+- [ ] Career content platform
+- [ ] Production SEO program
+- [ ] Product analytics
+- [ ] Employer funnel analytics
+- [ ] Candidate application analytics
+
+## Phase 5: Intelligence
+
+- [ ] Resume/CV generation and export
+- [ ] AI Resume Assistant
+- [ ] Basic job recommendations
+- [ ] AI Job Description Assistant
+- [ ] Candidate-job matching
+- [ ] Advanced recommendations
+- [ ] Mobile applications
+
+AI is intentionally deferred until the data model, access controls, auditability,
+and core hiring loop are stable.
+
+## Chapter 43 monthly-plan comparison
+
+| Blueprint month | Expected scope | Current state |
+| --- | --- | --- |
+| Month 1 | Architecture, database, design, registration | Substantially completed |
+| Month 2 | Candidate profile, CV, search | Profile and search in progress; CV deferred |
+| Month 3 | Companies, jobs, employer dashboards | Substantially completed; live public company pages missing |
+| Month 4 | Stripe, subscriptions, payments | Not started |
+| Month 5 | Admin, management, analytics, security | Security foundation exists; Admin and analytics not started |
+| Month 6 | Testing, SEO, first users | Not started as a formal launch phase |
+
+## Sequence decisions
+
+### Employer workflow before the complete candidate profile
+
+The employer workspace was implemented before all Candidate MVP fields. This was
+an intentional dependency decision that made the first complete hiring loop
+possible:
+
+`Employer publishes job -> candidate applies -> employer reviews candidate`
+
+### Career History before CV Builder
+
+Career History is not a separate invention. It implements the structured
+Education, Experience, Licenses, and Certifications data required by Candidate
+MVP. It is also the data foundation for a future Resume/CV Builder.
+
+### CV Builder deferral
+
+The Blueprint contains two competing signals: Chapter 43 includes a simple
+form-to-PDF Resume Builder in MVP, while the recommended phase table places CV
+tools in the later Intelligence phase. Current decision:
+
+- finish the remaining Marketplace MVP boundaries first;
+- retain Career History as the source data;
+- implement CV export after public organization profiles, search completion,
+  skills, and the basic Admin Panel.
+
+## Roadmap maintenance rule
+
+After every merged product PR:
+
+1. Update the relevant checklist item.
+2. Add any newly discovered gap.
+3. Record intentional deferrals.
+4. Keep `docs/NEXT_STEPS.md` limited to the nearest actionable priorities.
+5. Do not mark an item Completed until the end-to-end flow has been verified.
