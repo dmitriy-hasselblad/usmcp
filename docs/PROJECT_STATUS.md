@@ -1,6 +1,6 @@
 # USHCE Project Status
 
-Last updated: 2026-07-30
+Last updated: 2026-07-31
 
 ## Purpose
 
@@ -55,8 +55,8 @@ completion state and records in all four categories.
 - Homepage and hero job search
 - Public jobs listing
 - Public job details
-- Specialty, employment type, location, and visa-support filtering
-- Healthcare organizations preview page
+- Complete Blueprint job filters with shareable URLs and empty states
+- Live Supabase-backed healthcare organization directory and profile pages
 - For Employers page
 - Career Resources page
 - Privacy Policy
@@ -128,6 +128,8 @@ The repository currently contains these applied migration groups:
 6. Application update policy consolidation
 7. Professional profiles and documents
 8. Structured professional career profile
+9. Restricted public organization and published-job views
+10. Complete job-filter fields and public view updates
 
 Migration files are stored in `supabase/migrations/`.
 
@@ -138,10 +140,9 @@ schema migrations. Migrations must be reusable in a clean environment.
 
 The following areas are not complete:
 
-- Public organization profiles are still preview data rather than live,
-  organization-specific Supabase pages.
-- Job search does not yet have all Blueprint filters, including experience and
-  salary ranges.
+- Public organization profiles and complete job filters are implemented and
+  verified in Vercel Preview; they still require product-owner approval, merge,
+  and Production verification.
 - The professional profile does not yet include a complete skills model and
   other extended healthcare profile sections.
 - Resume/CV Builder is not implemented.

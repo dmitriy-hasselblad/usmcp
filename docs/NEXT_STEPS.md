@@ -1,6 +1,6 @@
 # USHCE Next Steps
 
-Last updated: 2026-07-30
+Last updated: 2026-07-31
 
 ## Current product phase
 
@@ -13,6 +13,9 @@ The core hiring loop works:
 The next work must complete Marketplace MVP before payments, messaging, or AI.
 
 ## Priority 1: Live public organization profiles
+
+**Delivery status:** Implemented and verified in Vercel Preview. Awaiting
+product-owner approval, merge, and Production verification.
 
 ### Goal
 
@@ -50,6 +53,9 @@ Supabase-backed public organization pages.
 - Vercel Preview build and browser flow are verified.
 
 ## Priority 2: Complete job search filters
+
+**Delivery status:** Implemented and verified in Vercel Preview. Awaiting
+product-owner approval, merge, and Production verification.
 
 ### Required scope
 
@@ -141,23 +147,23 @@ roadmap:
 
 ## Immediate next ticket
 
-**Ticket:** Build Supabase-backed public organization directory and profile.
+**Ticket:** Review and approve the combined Marketplace Preview for Priorities 1
+and 2, then begin candidate skills and extended profile work after Production
+verification.
 
-**Branch name:** `agent/public-organization-profiles`
+**Review branch:** `agent/complete-job-filters`
 
 **Implementation order:**
 
-1. Inspect current organization schema and RLS.
-2. Define the safe public organization data contract.
-3. Add a migration only if the existing schema cannot support it safely.
-4. Implement the public data-access helper.
-5. Replace preview organization cards with live cards.
-6. Add the organization detail route.
-7. Link published jobs to the organization page.
-8. Verify anonymous, candidate, employer, and unrelated-employer access.
-9. Deploy Preview.
-10. Verify the full public flow.
-11. Update the roadmap documents before merge.
+1. Review the Vercel Preview for public organizations and complete job filters.
+2. Confirm that the Supabase migrations and RLS verification are acceptable.
+3. Approve and merge the Pull Request only after product-owner review.
+4. Confirm the resulting Production deployment and public flows.
+5. Create a new feature branch for Priority 3.
+6. Inspect the existing professional-profile migrations and RLS.
+7. Design structured skills, languages, summary, photo, and visibility controls.
+8. Implement and verify Priority 3 in Vercel Preview before another Production
+   proposal.
 
 ## Definition of done for every future stage
 
@@ -178,7 +184,8 @@ A stage is complete only when:
 
 > Read `docs/PROJECT_STATUS.md`, `docs/BLUEPRINT_ROADMAP.md`, and
 > `docs/NEXT_STEPS.md`. Check `git status`, confirm that `main` is current, and
-> begin Priority 1 on a new `agent/public-organization-profiles` branch. Do not
+> review the current Priority 1 and 2 delivery branch, then continue with the
+> first incomplete stage. Do not
 > change Supabase schema before inspecting the existing migrations and RLS. Keep
 > all website content in English. Verify the entire flow in Vercel Preview
 > before requesting a Production merge.

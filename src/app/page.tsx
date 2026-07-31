@@ -13,14 +13,15 @@ import { SiteFooter } from "@/components/layout/site-footer"
 import { SiteHeader } from "@/components/layout/site-header"
 import { HeroSearch } from "@/components/marketing/hero-search"
 import { SectionHeading } from "@/components/marketing/section-heading"
+import { OrganizationCard } from "@/components/organizations/organization-card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { getPublishedJobs } from "@/lib/jobs/public-jobs"
+import { getPublicOrganizations } from "@/lib/organizations/public-organizations"
 import {
   benefits,
   careerPaths,
-  employers,
   featuredJobs,
   platformPrinciples,
   popularSpecialties,
@@ -28,7 +29,10 @@ import {
 } from "@/lib/marketing-data"
 
 export default async function Home() {
-  const liveJobs = await getPublishedJobs()
+  const [liveJobs, publicOrganizations] = await Promise.all([
+    getPublishedJobs(),
+    getPublicOrganizations(),
+  ])
   const featuredMarketplaceJobs = [
     ...liveJobs,
     ...featuredJobs.filter((job) => job.featured),
@@ -204,39 +208,34 @@ export default async function Home() {
               />
               <Button asChild className="mt-7 h-11 rounded-xl px-5">
                 <Link href="/companies">
-                  Explore preview organizations <ArrowRight />
+                  Explore healthcare organizations <ArrowRight />
                 </Link>
               </Button>
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              {employers.map((employer) => (
-                <Card
-                  className="border-border/80 bg-white transition-shadow hover:shadow-lg"
-                  key={employer.slug}
-                >
-                  <CardContent className="p-5 sm:p-6">
-                    <span
-                      className={`grid size-11 place-items-center rounded-xl text-sm font-bold ${employer.tone}`}
-                    >
-                      {employer.name
-                        .split(" ")
-                        .map((word) => word[0])
-                        .join("")
-                        .slice(0, 2)}
-                    </span>
-                    <h2 className="mt-5 text-base font-semibold tracking-[-0.03em]">
-                      {employer.name}
-                    </h2>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      {employer.openings} preview {employer.openings === 1 ? "role" : "roles"}
-                    </p>
-                    <Badge className="mt-4" variant="outline">
-                      Product preview
-                    </Badge>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+            {publicOrganizations.length > 0 ? (
+              <div className="grid gap-4 sm:grid-cols-2">
+                {publicOrganizations.slice(0, 4).map((organization) => (
+                  <OrganizationCard
+                    compact
+                    key={organization.id}
+                    organization={organization}
+                  />
+                ))}
+              </div>
+            ) : (
+              <Card className="border-border/80 bg-white">
+                <CardContent className="p-7 sm:p-8">
+                  <ShieldCheck className="size-7 text-primary" />
+                  <h2 className="mt-5 text-2xl font-semibold tracking-[-0.04em]">
+                    Live organization profiles are coming online.
+                  </h2>
+                  <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                    Organizations will appear here after they publish an active
+                    healthcare opportunity on USHCE.
+                  </p>
+                </CardContent>
+              </Card>
+            )}
           </div>
         </section>
 

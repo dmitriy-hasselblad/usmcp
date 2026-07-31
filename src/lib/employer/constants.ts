@@ -8,6 +8,25 @@ export const employmentTypes = [
 
 export const workplaceTypes = ["On-site", "Hybrid", "Remote"] as const
 
+export const healthcareProfessions = [
+  "Physician",
+  "Registered Nurse",
+  "Advanced Practice Provider",
+  "Pharmacist",
+  "Therapist",
+  "Technologist or Technician",
+  "Healthcare Administration",
+  "Other Healthcare Professional",
+] as const
+
+export const experienceLevels = [
+  "Entry level",
+  "Mid level",
+  "Senior level",
+  "Executive",
+  "Not specified",
+] as const
+
 export const salaryPeriods = ["year", "hour"] as const
 
 export const jobStatuses = ["draft", "published", "paused", "closed"] as const
@@ -25,6 +44,14 @@ export function isEmploymentType(value: string) {
 
 export function isWorkplaceType(value: string) {
   return workplaceTypes.some((option) => option === value)
+}
+
+export function isHealthcareProfession(value: string) {
+  return healthcareProfessions.some((option) => option === value)
+}
+
+export function isExperienceLevel(value: string) {
+  return experienceLevels.some((option) => option === value)
 }
 
 export function isSalaryPeriod(value: string) {

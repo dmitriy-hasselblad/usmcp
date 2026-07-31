@@ -12,7 +12,9 @@ import {
 import {
   canManageJobs,
   canManageOrganization,
+  isExperienceLevel,
   isEmploymentType,
+  isHealthcareProfession,
   isJobStatus,
   isSalaryPeriod,
   isWorkplaceType,
@@ -143,7 +145,9 @@ export async function createJobDraft(formData: FormData) {
   }
 
   const title = formString(formData, "title")
+  const profession = formString(formData, "profession")
   const specialty = formString(formData, "specialty")
+  const experienceLevel = formString(formData, "experienceLevel")
   const city = formString(formData, "city")
   const stateCode = formString(formData, "stateCode")
   const employmentType = formString(formData, "employmentType")
@@ -162,7 +166,9 @@ export async function createJobDraft(formData: FormData) {
   if (
     title.length < 3 ||
     title.length > 160 ||
+    !isHealthcareProfession(profession) ||
     specialty.length > 120 ||
+    !isExperienceLevel(experienceLevel) ||
     city.length < 2 ||
     city.length > 120 ||
     !isUsState(stateCode) ||
@@ -186,7 +192,9 @@ export async function createJobDraft(formData: FormData) {
     created_by: workspace.userId,
     slug: createJobSlug(title),
     title,
+    profession,
     specialty: specialty || null,
+    experience_level: experienceLevel,
     city,
     state_code: stateCode,
     employment_type: employmentType,

@@ -49,7 +49,18 @@ export function JobCard({ job, compact = false }: JobCardProps) {
             {job.title}
           </Link>
         </h3>
-        <p className="mt-1 text-sm text-muted-foreground">{job.employer}</p>
+        <p className="mt-1 text-sm text-muted-foreground">
+          {job.source === "live" && job.employerSlug ? (
+            <Link
+              className="hover:text-primary hover:underline"
+              href={`/companies/${job.employerSlug}`}
+            >
+              {job.employer}
+            </Link>
+          ) : (
+            job.employer
+          )}
+        </p>
 
         <div className="mt-5 space-y-2.5 text-sm text-muted-foreground">
           <p className="flex items-center gap-2">
