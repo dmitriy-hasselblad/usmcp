@@ -34,6 +34,9 @@ English.
 The structured professional profile was verified in Production with a 100%
 completion state and records in all four categories.
 
+Public organization profiles and complete job filters were merged in PR #11
+and verified in Production on 2026-07-31.
+
 ## Technology stack
 
 - Next.js 16 App Router
@@ -130,6 +133,7 @@ The repository currently contains these applied migration groups:
 8. Structured professional career profile
 9. Restricted public organization and published-job views
 10. Complete job-filter fields and public view updates
+11. Candidate extended profile, structured skills, and private photos
 
 Migration files are stored in `supabase/migrations/`.
 
@@ -140,11 +144,8 @@ schema migrations. Migrations must be reusable in a clean environment.
 
 The following areas are not complete:
 
-- Public organization profiles and complete job filters are implemented and
-  verified in Vercel Preview; they still require product-owner approval, merge,
-  and Production verification.
-- The professional profile does not yet include a complete skills model and
-  other extended healthcare profile sections.
+- Candidate skills and extended profile are implemented with RLS and Data API
+  checks; Vercel Preview and browser-flow verification are still pending.
 - Resume/CV Builder is not implemented.
 - Google and LinkedIn authentication are not implemented.
 - Employer verification and manual moderation are not implemented.

@@ -70,12 +70,9 @@ the recommended implementation order on page 3 as the governing sequence.
 - [x] Public job detail
 - [x] Basic job filters
 - [x] Public supporting pages
-- [ ] Live public organization directory — implemented and Preview-verified;
-  awaiting approved merge and Production verification
-- [ ] Live public organization profile route — implemented and Preview-verified;
-  awaiting approved merge and Production verification
-- [ ] Complete Blueprint job filters — implemented and Preview-verified;
-  awaiting approved merge and Production verification
+- [x] Live public organization directory
+- [x] Live public organization profile route
+- [x] Complete Blueprint job filters
 - [ ] Remove or replace remaining fictional marketplace listings before launch
 
 ### Candidate platform
@@ -88,8 +85,9 @@ the recommended implementation order on page 3 as the governing sequence.
 - [x] Job application submission
 - [x] Application tracking
 - [x] Application withdrawal
-- [ ] Skills model
-- [ ] Extended healthcare profile sections
+- [ ] Skills model — implemented and RLS-verified; awaiting Preview verification
+- [ ] Extended healthcare profile sections — implemented and RLS-verified;
+  awaiting Preview verification
 - [ ] Recommended jobs
 - [ ] Resume/CV Builder
 - [ ] Google sign-in
@@ -107,8 +105,7 @@ the recommended implementation order on page 3 as the governing sequence.
 - [x] Hiring status management
 - [x] Structured candidate career history
 - [ ] Employer verification
-- [ ] Public live organization profile — implemented and Preview-verified;
-  awaiting approved merge and Production verification
+- [x] Public live organization profile
 - [ ] Candidate search
 - [ ] Saved candidates
 - [ ] Team member invitation and access administration

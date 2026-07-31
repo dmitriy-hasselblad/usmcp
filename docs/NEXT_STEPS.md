@@ -14,8 +14,7 @@ The next work must complete Marketplace MVP before payments, messaging, or AI.
 
 ## Priority 1: Live public organization profiles
 
-**Delivery status:** Implemented and verified in Vercel Preview. Awaiting
-product-owner approval, merge, and Production verification.
+**Delivery status:** Completed and verified in Production through PR #11.
 
 ### Goal
 
@@ -54,8 +53,7 @@ Supabase-backed public organization pages.
 
 ## Priority 2: Complete job search filters
 
-**Delivery status:** Implemented and verified in Vercel Preview. Awaiting
-product-owner approval, merge, and Production verification.
+**Delivery status:** Completed and verified in Production through PR #11.
 
 ### Required scope
 
@@ -81,6 +79,10 @@ product-owner approval, merge, and Production verification.
 - Mobile filter experience is usable.
 
 ## Priority 3: Candidate skills and extended profile
+
+**Delivery status:** Implemented with Supabase migration, RLS, private Storage,
+TypeScript, and anonymous Data API checks. Awaiting Vercel Preview and browser
+verification before a Pull Request is proposed.
 
 ### Required scope
 
@@ -147,23 +149,20 @@ roadmap:
 
 ## Immediate next ticket
 
-**Ticket:** Review and approve the combined Marketplace Preview for Priorities 1
-and 2, then begin candidate skills and extended profile work after Production
-verification.
+**Ticket:** Complete Vercel Preview and role-based browser verification for
+candidate skills and extended profiles.
 
-**Review branch:** `agent/complete-job-filters`
+**Review branch:** `codex/candidate-extended-profile`
 
 **Implementation order:**
 
-1. Review the Vercel Preview for public organizations and complete job filters.
-2. Confirm that the Supabase migrations and RLS verification are acceptable.
-3. Approve and merge the Pull Request only after product-owner review.
-4. Confirm the resulting Production deployment and public flows.
-5. Create a new feature branch for Priority 3.
-6. Inspect the existing professional-profile migrations and RLS.
-7. Design structured skills, languages, summary, photo, and visibility controls.
-8. Implement and verify Priority 3 in Vercel Preview before another Production
-   proposal.
+1. Push `codex/candidate-extended-profile` when GitHub connectivity is restored.
+2. Wait for the Vercel Preview build and inspect build logs.
+3. Verify candidate add, edit, duplicate prevention, and remove skill flows.
+4. Verify languages, summary, photo, and visibility controls.
+5. Verify an authorized hiring team can view an application-shared profile.
+6. Verify unrelated employers and anonymous visitors cannot access profile data.
+7. Update this delivery status and open a draft Pull Request.
 
 ## Definition of done for every future stage
 
