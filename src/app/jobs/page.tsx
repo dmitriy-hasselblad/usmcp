@@ -9,68 +9,46 @@ import { HeroSearch } from "@/components/marketing/hero-search"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { usStates } from "@/lib/auth/validation"
+import {
+  employmentTypes,
+  experienceLevels,
+  healthcareProfessions,
+  workplaceTypes,
+} from "@/lib/employer/constants"
+import { filterJobs, type JobFilters } from "@/lib/jobs/job-filters"
 import { getPublishedJobs } from "@/lib/jobs/public-jobs"
 import { featuredJobs } from "@/lib/marketing-data"
 
 export const metadata: Metadata = {
   title: "Healthcare Jobs",
   description:
-    "Search live and preview healthcare jobs by specialty, employer, and location.",
+    "Search U.S. healthcare jobs by profession, specialty, location, experience, and compensation.",
 }
 
-type JobsSearchParams = Promise<{
-  query?: string
-  location?: string
-  specialty?: string
-  type?: string
-  visa?: string
-}>
+type RawSearchParams = Promise<
+  Record<string, string | string[] | undefined>
+>
 
-function normalize(value: string | undefined) {
-  return value?.trim().toLowerCase() ?? ""
-}
+const selectClassName =
+  "h-10 w-full rounded-lg border border-input bg-background px-3 text-sm outline-none transition-shadow focus:border-ring focus:ring-3 focus:ring-ring/20"
 
 export default async function JobsPage({
   searchParams,
 }: {
-  searchParams: JobsSearchParams
+  searchParams: RawSearchParams
 }) {
   const params = await searchParams
-  const query = params.query?.trim() ?? ""
-  const location = params.location?.trim() ?? ""
-  const specialty = params.specialty?.trim() ?? ""
-  const type = params.type?.trim() ?? ""
-  const visaOnly = params.visa === "true"
-
-  const normalizedQuery = normalize(query)
-  const normalizedLocation = normalize(location)
+  const filters = getFilters(params)
   const liveJobs = await getPublishedJobs()
   const allJobs = [...liveJobs, ...featuredJobs]
-
-  const jobs = allJobs.filter((job) => {
-    const matchesQuery =
-      !normalizedQuery ||
-      [job.title, job.employer, job.specialty, job.setting].some((value) =>
-        value.toLowerCase().includes(normalizedQuery)
-      )
-    const matchesLocation =
-      !normalizedLocation || job.location.toLowerCase().includes(normalizedLocation)
-    const matchesSpecialty = !specialty || job.specialty === specialty
-    const matchesType = !type || job.type === type
-    const matchesVisa = !visaOnly || job.visaSupport
-
-    return (
-      matchesQuery &&
-      matchesLocation &&
-      matchesSpecialty &&
-      matchesType &&
-      matchesVisa
-    )
-  })
-
-  const specialties = [...new Set(allJobs.map((job) => job.specialty))].sort()
-  const employmentTypes = [...new Set(allJobs.map((job) => job.type))].sort()
-  const hasFilters = Boolean(query || location || specialty || type || visaOnly)
+  const jobs = filterJobs(allJobs, filters)
+  const specialties = [...new Set(allJobs.map((job) => job.specialty))].sort(
+    (a, b) => a.localeCompare(b, "en-US"),
+  )
+  const activeFilterCount = getActiveFilterCount(filters)
+  const preservedSearchFilters = getPreservedSearchFilters(filters)
 
   return (
     <div className="min-h-dvh bg-background">
@@ -101,8 +79,8 @@ export default async function JobsPage({
                   Healthcare jobs
                 </h1>
                 <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
-                  Search employer-published healthcare opportunities alongside
-                  clearly labeled sample listings.
+                  Search U.S. healthcare opportunities by profession,
+                  specialty, location, work setting, experience, and pay.
                 </p>
               </div>
               <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
@@ -111,61 +89,123 @@ export default async function JobsPage({
               </div>
             </div>
             <div className="mt-8">
-              <HeroSearch compact location={location} query={query} />
+              <HeroSearch
+                compact
+                location={filters.location}
+                preservedFilters={preservedSearchFilters}
+                query={filters.query}
+              />
             </div>
           </div>
         </section>
 
-        <section className="mx-auto grid max-w-7xl gap-8 px-5 py-10 lg:grid-cols-[17rem_minmax(0,1fr)] lg:px-8 lg:py-14">
+        <section className="mx-auto grid max-w-7xl gap-8 px-5 py-10 lg:grid-cols-[18rem_minmax(0,1fr)] lg:px-8 lg:py-14">
           <aside>
-            <Card className="sticky top-24 border-border/80 bg-card">
+            <Card className="border-border/80 bg-card lg:sticky lg:top-24">
               <CardContent className="p-5">
-                <div className="flex items-center gap-2">
-                  <Filter className="size-4 text-primary" />
-                  <h2 className="font-semibold">Filter results</h2>
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2">
+                    <Filter className="size-4 text-primary" />
+                    <h2 className="font-semibold">Filter results</h2>
+                  </div>
+                  {activeFilterCount > 0 && (
+                    <Badge variant="secondary">{activeFilterCount} active</Badge>
+                  )}
                 </div>
-                <form action="/jobs" className="mt-5 grid gap-5" method="get">
-                  {query && <input name="query" type="hidden" value={query} />}
-                  {location && (
-                    <input name="location" type="hidden" value={location} />
+                <form action="/jobs" className="mt-5 grid gap-4" method="get">
+                  {filters.query && (
+                    <input name="query" type="hidden" value={filters.query} />
+                  )}
+                  {filters.location && (
+                    <input
+                      name="location"
+                      type="hidden"
+                      value={filters.location}
+                    />
                   )}
 
-                  <label className="grid gap-2 text-sm font-medium">
-                    Specialty
-                    <select
-                      className="h-10 rounded-lg border border-input bg-background px-3 text-sm outline-none transition-shadow focus:border-ring focus:ring-3 focus:ring-ring/20"
-                      defaultValue={specialty}
-                      name="specialty"
-                    >
-                      <option value="">All specialties</option>
-                      {specialties.map((item) => (
-                        <option key={item} value={item}>
-                          {item}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
+                  <FilterSelect
+                    defaultValue={filters.profession}
+                    label="Profession"
+                    name="profession"
+                    options={healthcareProfessions}
+                    placeholder="All professions"
+                  />
+                  <FilterSelect
+                    defaultValue={filters.specialty}
+                    label="Specialty"
+                    name="specialty"
+                    options={specialties}
+                    placeholder="All specialties"
+                  />
+                  <FilterSelect
+                    defaultValue={filters.state}
+                    label="State"
+                    name="state"
+                    options={usStates.map(([code, name]) => ({
+                      label: name,
+                      value: code,
+                    }))}
+                    placeholder="All states"
+                  />
+                  <FilterSelect
+                    defaultValue={filters.employmentType}
+                    label="Employment type"
+                    name="employmentType"
+                    options={employmentTypes}
+                    placeholder="All employment types"
+                  />
+                  <FilterSelect
+                    defaultValue={filters.workplaceType}
+                    label="Workplace type"
+                    name="workplaceType"
+                    options={workplaceTypes}
+                    placeholder="All workplace types"
+                  />
+                  <FilterSelect
+                    defaultValue={filters.experienceLevel}
+                    label="Experience level"
+                    name="experienceLevel"
+                    options={experienceLevels}
+                    placeholder="All experience levels"
+                  />
 
-                  <label className="grid gap-2 text-sm font-medium">
-                    Employment type
-                    <select
-                      className="h-10 rounded-lg border border-input bg-background px-3 text-sm outline-none transition-shadow focus:border-ring focus:ring-3 focus:ring-ring/20"
-                      defaultValue={type}
-                      name="type"
-                    >
-                      <option value="">All types</option>
-                      {employmentTypes.map((item) => (
-                        <option key={item} value={item}>
-                          {item}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
+                  <fieldset className="grid gap-2">
+                    <legend className="text-sm font-medium">
+                      Annual salary range
+                    </legend>
+                    <div className="grid grid-cols-2 gap-2">
+                      <Input
+                        aria-label="Minimum annual salary"
+                        className="h-10"
+                        defaultValue={filters.salaryMin}
+                        min={0}
+                        name="salaryMin"
+                        placeholder="Minimum"
+                        step={1000}
+                        type="number"
+                      />
+                      <Input
+                        aria-label="Maximum annual salary"
+                        className="h-10"
+                        defaultValue={filters.salaryMax}
+                        min={0}
+                        name="salaryMax"
+                        placeholder="Maximum"
+                        step={1000}
+                        type="number"
+                      />
+                    </div>
+                    <p className="text-xs leading-5 text-muted-foreground">
+                      Salary filters compare annual ranges. Hourly roles remain
+                      visible only when no salary range is selected.
+                    </p>
+                  </fieldset>
 
                   <label className="flex items-start gap-3 rounded-xl border border-border p-3 text-sm">
                     <input
                       className="mt-0.5 size-4 rounded border-input accent-primary"
-                      defaultChecked={visaOnly}
+                      defaultChecked={filters.visaOnly}
                       name="visa"
                       type="checkbox"
                       value="true"
@@ -181,7 +221,7 @@ export default async function JobsPage({
                   <Button className="h-10 rounded-xl" type="submit">
                     Apply filters
                   </Button>
-                  {hasFilters && (
+                  {activeFilterCount > 0 && (
                     <Button asChild className="h-10 rounded-xl" variant="ghost">
                       <Link href="/jobs">Clear all filters</Link>
                     </Button>
@@ -209,7 +249,8 @@ export default async function JobsPage({
                       No roles match these filters
                     </h2>
                     <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-muted-foreground">
-                      Try a broader specialty, employer, or location.
+                      Clear one or more filters, broaden the location, or try a
+                      different salary range.
                     </p>
                     <Button asChild className="mt-6 rounded-xl">
                       <Link href="/jobs">View all roles</Link>
@@ -223,5 +264,109 @@ export default async function JobsPage({
       </main>
       <SiteFooter />
     </div>
+  )
+}
+
+type FilterOption = string | { label: string; value: string }
+
+function FilterSelect({
+  defaultValue,
+  label,
+  name,
+  options,
+  placeholder,
+}: {
+  defaultValue: string
+  label: string
+  name: string
+  options: readonly FilterOption[]
+  placeholder: string
+}) {
+  return (
+    <label className="grid gap-2 text-sm font-medium">
+      {label}
+      <select
+        className={selectClassName}
+        defaultValue={defaultValue}
+        name={name}
+      >
+        <option value="">{placeholder}</option>
+        {options.map((option) => {
+          const value = typeof option === "string" ? option : option.value
+          const optionLabel =
+            typeof option === "string" ? option : option.label
+
+          return (
+            <option key={value} value={value}>
+              {optionLabel}
+            </option>
+          )
+        })}
+      </select>
+    </label>
+  )
+}
+
+function getFilters(
+  params: Record<string, string | string[] | undefined>,
+): JobFilters {
+  return {
+    query: getString(params.query),
+    location: getString(params.location),
+    profession: getString(params.profession),
+    specialty: getString(params.specialty),
+    state: getString(params.state).toUpperCase(),
+    employmentType: getString(params.employmentType),
+    workplaceType: getString(params.workplaceType),
+    experienceLevel: getString(params.experienceLevel),
+    salaryMin: getNonnegativeNumber(params.salaryMin),
+    salaryMax: getNonnegativeNumber(params.salaryMax),
+    visaOnly: getString(params.visa) === "true",
+  }
+}
+
+function getString(value: string | string[] | undefined) {
+  return (Array.isArray(value) ? value[0] : value)?.trim() ?? ""
+}
+
+function getNonnegativeNumber(value: string | string[] | undefined) {
+  const rawValue = getString(value)
+  if (!rawValue) {
+    return undefined
+  }
+
+  const parsed = Number(rawValue)
+  return Number.isFinite(parsed) && parsed >= 0 ? parsed : undefined
+}
+
+function getActiveFilterCount(filters: JobFilters) {
+  return [
+    filters.query,
+    filters.location,
+    filters.profession,
+    filters.specialty,
+    filters.state,
+    filters.employmentType,
+    filters.workplaceType,
+    filters.experienceLevel,
+    filters.salaryMin,
+    filters.salaryMax,
+    filters.visaOnly,
+  ].filter(Boolean).length
+}
+
+function getPreservedSearchFilters(filters: JobFilters) {
+  return Object.fromEntries(
+    [
+      ["profession", filters.profession],
+      ["specialty", filters.specialty],
+      ["state", filters.state],
+      ["employmentType", filters.employmentType],
+      ["workplaceType", filters.workplaceType],
+      ["experienceLevel", filters.experienceLevel],
+      ["salaryMin", filters.salaryMin?.toString() ?? ""],
+      ["salaryMax", filters.salaryMax?.toString() ?? ""],
+      ["visa", filters.visaOnly ? "true" : ""],
+    ].filter((entry) => entry[1]),
   )
 }

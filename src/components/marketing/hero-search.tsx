@@ -7,12 +7,14 @@ type HeroSearchProps = {
   query?: string
   location?: string
   compact?: boolean
+  preservedFilters?: Record<string, string>
 }
 
 export function HeroSearch({
   query = "",
   location = "",
   compact = false,
+  preservedFilters = {},
 }: HeroSearchProps) {
   return (
     <form
@@ -25,6 +27,9 @@ export function HeroSearch({
       method="get"
       role="search"
     >
+      {Object.entries(preservedFilters).map(([name, value]) => (
+        <input key={name} name={name} type="hidden" value={value} />
+      ))}
       <div className="grid gap-2 md:grid-cols-[minmax(0,1.35fr)_minmax(0,0.85fr)_auto]">
         <label className="group relative flex h-12 items-center gap-3 rounded-xl px-3 transition-colors focus-within:bg-muted/70">
           <span className="sr-only">Role, specialty, or employer</span>

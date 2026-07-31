@@ -15,6 +15,8 @@ import { usStates } from "@/lib/auth/validation"
 import {
   canManageJobs,
   employmentTypes,
+  experienceLevels,
+  healthcareProfessions,
   salaryPeriods,
   workplaceTypes,
 } from "@/lib/employer/constants"
@@ -83,6 +85,42 @@ export default async function NewJobPage({
                     required
                   />
                 </label>
+
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <label className="grid gap-2 text-sm font-medium">
+                    Profession
+                    <select
+                      className={selectClassName}
+                      defaultValue=""
+                      name="profession"
+                      required
+                    >
+                      <option disabled value="">
+                        Select a profession
+                      </option>
+                      {healthcareProfessions.map((profession) => (
+                        <option key={profession} value={profession}>
+                          {profession}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label className="grid gap-2 text-sm font-medium">
+                    Experience level
+                    <select
+                      className={selectClassName}
+                      defaultValue="Not specified"
+                      name="experienceLevel"
+                      required
+                    >
+                      {experienceLevels.map((level) => (
+                        <option key={level} value={level}>
+                          {level}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                </div>
 
                 <label className="grid gap-2 text-sm font-medium">
                   Specialty or department

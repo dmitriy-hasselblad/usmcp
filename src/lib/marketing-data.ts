@@ -31,6 +31,14 @@ export type Job = {
   source?: "preview" | "live"
   organizationType?: string
   organizationWebsite?: string
+  profession: string
+  experienceLevel: string
+  city: string
+  stateCode: string
+  workplaceType: string
+  salaryMin?: number
+  salaryMax?: number
+  salaryPeriod?: "hour" | "year"
 }
 
 export type Employer = {
@@ -96,6 +104,14 @@ export const featuredJobs: Job[] = [
     type: "Full-time",
     specialty: "Emergency Medicine",
     setting: "Hospital",
+    profession: "Physician",
+    experienceLevel: "Senior level",
+    city: "Boston",
+    stateCode: "MA",
+    workplaceType: "On-site",
+    salaryMin: 320000,
+    salaryMax: 380000,
+    salaryPeriod: "year",
     posted: "Preview listing",
     summary:
       "Join a collaborative emergency medicine team serving a diverse urban patient population in a modern teaching environment.",
@@ -127,6 +143,14 @@ export const featuredJobs: Job[] = [
     type: "Full-time",
     specialty: "Nursing",
     setting: "Hospital",
+    profession: "Registered Nurse",
+    experienceLevel: "Mid level",
+    city: "New York",
+    stateCode: "NY",
+    workplaceType: "On-site",
+    salaryMin: 98000,
+    salaryMax: 127000,
+    salaryPeriod: "year",
     posted: "Preview listing",
     summary:
       "Support complex cardiac patients in a high-acuity ICU with strong clinical mentorship and interdisciplinary collaboration.",
@@ -157,6 +181,14 @@ export const featuredJobs: Job[] = [
     type: "Full-time",
     specialty: "Pharmacy",
     setting: "Academic Medical Center",
+    profession: "Pharmacist",
+    experienceLevel: "Mid level",
+    city: "Chicago",
+    stateCode: "IL",
+    workplaceType: "On-site",
+    salaryMin: 135000,
+    salaryMax: 158000,
+    salaryPeriod: "year",
     posted: "Preview listing",
     summary:
       "Partner with physicians and care teams to optimize medication therapy in an academic medical center.",
@@ -188,6 +220,14 @@ export const featuredJobs: Job[] = [
     type: "Full-time",
     specialty: "Family Medicine",
     setting: "Outpatient Clinic",
+    profession: "Physician",
+    experienceLevel: "Mid level",
+    city: "Austin",
+    stateCode: "TX",
+    workplaceType: "On-site",
+    salaryMin: 235000,
+    salaryMax: 285000,
+    salaryPeriod: "year",
     posted: "Preview listing",
     summary:
       "Build long-term patient relationships in a growing outpatient practice with modern clinical support.",
@@ -217,6 +257,14 @@ export const featuredJobs: Job[] = [
     type: "Full-time",
     specialty: "Allied Health",
     setting: "Rehabilitation Center",
+    profession: "Therapist",
+    experienceLevel: "Entry level",
+    city: "Seattle",
+    stateCode: "WA",
+    workplaceType: "On-site",
+    salaryMin: 92000,
+    salaryMax: 118000,
+    salaryPeriod: "year",
     posted: "Preview listing",
     summary:
       "Help patients regain mobility and independence through evidence-based rehabilitation care.",
@@ -246,6 +294,14 @@ export const featuredJobs: Job[] = [
     type: "Full-time",
     specialty: "Nursing",
     setting: "Urgent Care",
+    profession: "Advanced Practice Provider",
+    experienceLevel: "Mid level",
+    city: "Phoenix",
+    stateCode: "AZ",
+    workplaceType: "On-site",
+    salaryMin: 128000,
+    salaryMax: 151000,
+    salaryPeriod: "year",
     posted: "Preview listing",
     summary:
       "Provide accessible, same-day care in a patient-centered urgent care network.",

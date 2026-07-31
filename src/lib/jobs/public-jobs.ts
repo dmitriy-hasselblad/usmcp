@@ -28,6 +28,8 @@ export type PublishedJobRow = {
   organization_description?: string | null
   organization_website: string | null
   verification_status: string
+  profession: string
+  experience_level: string
 }
 
 export const getPublishedJobs = cache(async (): Promise<Job[]> => {
@@ -39,7 +41,7 @@ export const getPublishedJobs = cache(async (): Promise<Job[]> => {
   const { data, error } = await supabase
     .from("published_jobs")
     .select(
-      "id, slug, title, specialty, city, state_code, employment_type, workplace_type, salary_min, salary_max, salary_period, visa_support, description, published_at, organization_id, organization_name, organization_slug, organization_type, organization_website, verification_status",
+      "id, slug, title, specialty, city, state_code, employment_type, workplace_type, salary_min, salary_max, salary_period, visa_support, description, published_at, organization_id, organization_name, organization_slug, organization_type, organization_website, verification_status, profession, experience_level",
     )
     .order("published_at", { ascending: false })
     .limit(200)
@@ -61,7 +63,7 @@ export const getPublishedJobBySlug = cache(
     const { data, error } = await supabase
       .from("published_jobs")
       .select(
-        "id, slug, title, specialty, city, state_code, employment_type, workplace_type, salary_min, salary_max, salary_period, visa_support, description, published_at, organization_id, organization_name, organization_slug, organization_type, organization_website, verification_status",
+        "id, slug, title, specialty, city, state_code, employment_type, workplace_type, salary_min, salary_max, salary_period, visa_support, description, published_at, organization_id, organization_name, organization_slug, organization_type, organization_website, verification_status, profession, experience_level",
       )
       .eq("slug", slug)
       .maybeSingle()
@@ -104,6 +106,14 @@ export function toMarketplaceJob(row: PublishedJobRow): Job {
     benefits: [],
     visaSupport: row.visa_support,
     source: "live",
+    profession: row.profession,
+    experienceLevel: row.experience_level,
+    city: row.city,
+    stateCode: row.state_code,
+    workplaceType: row.workplace_type,
+    salaryMin: row.salary_min ?? undefined,
+    salaryMax: row.salary_max ?? undefined,
+    salaryPeriod: row.salary_period,
   }
 }
 

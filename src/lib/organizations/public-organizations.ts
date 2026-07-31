@@ -22,7 +22,7 @@ export type PublicOrganization = {
 }
 
 const publicOrganizationSelection =
-  "id, slug, title, specialty, city, state_code, employment_type, workplace_type, salary_min, salary_max, salary_period, visa_support, description, published_at, organization_id, organization_name, organization_slug, organization_type, organization_state_code, organization_description, organization_website, verification_status"
+  "id, slug, title, specialty, city, state_code, employment_type, workplace_type, salary_min, salary_max, salary_period, visa_support, description, published_at, organization_id, organization_name, organization_slug, organization_type, organization_state_code, organization_description, organization_website, verification_status, profession, experience_level"
 
 export const getPublicOrganizations = cache(
   async (): Promise<PublicOrganization[]> => {
