@@ -25,17 +25,22 @@ English.
 ## Production baseline
 
 - Production branch: `main`
-- Latest confirmed product merge: PR #9
-- Merge commit: `edf4a4a7021fe6c54a34aa293eb17a375c075a6a`
+- Latest confirmed product Pull Request: PR #11
+- PR #11 merge commit: `eed0233710dc29779334648fc14170fd02befcea`
+- Current `main` commit: `62ed7153593e74a47e9916cedac19c320af95b8f`
 - Production deployment status at verification: `Ready`
-- Production build duration: 48 seconds
-- Production verification date: 2026-07-29
+- Latest Production verification date: 2026-07-31
 
 The structured professional profile was verified in Production with a 100%
 completion state and records in all four categories.
 
 Public organization profiles and complete job filters were merged in PR #11
 and verified in Production on 2026-07-31.
+
+Candidate skills and extended-profile code are also present on `main`. They
+reached `main` without a separate Pull Request, so stabilization and complete
+role-based browser verification are being handled in
+`agent/candidate-profile-stabilization` before the feature is marked complete.
 
 ## Technology stack
 
@@ -144,8 +149,9 @@ schema migrations. Migrations must be reusable in a clean environment.
 
 The following areas are not complete:
 
-- Candidate skills and extended profile are implemented with RLS and Data API
-  checks; Vercel Preview and browser-flow verification are still pending.
+- Candidate skills and extended profile are present on `main` with RLS and
+  Data API checks. Photo-upload verification is being hardened, and complete
+  candidate/employer browser-flow verification is still pending.
 - Resume/CV Builder is not implemented.
 - Google and LinkedIn authentication are not implemented.
 - Employer verification and manual moderation are not implemented.
