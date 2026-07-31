@@ -244,8 +244,22 @@ export async function registerProfessionalPhoto(formData: FormData): Promise<Upl
   const storagePath = formString(formData, "storagePath")
   const mimeType = formString(formData, "mimeType")
   const fileSize = Number(formString(formData, "fileSize"))
+  const pathParts = storagePath.split("/")
+  const [ownerId, photoId, fileName] = pathParts
+  const expectedFileName =
+    mimeType === "image/png"
+      ? "profile.png"
+      : mimeType === "image/webp"
+        ? "profile.webp"
+        : mimeType === "image/jpeg"
+          ? "profile.jpg"
+          : ""
+
   if (
-    !storagePath.startsWith(`${identity.userId}/`) ||
+    pathParts.length !== 3 ||
+    ownerId !== identity.userId ||
+    !uuidPattern.test(photoId ?? "") ||
+    fileName !== expectedFileName ||
     !professionalPhotoMimeTypes.some((value) => value === mimeType) ||
     !Number.isInteger(fileSize) ||
     fileSize < 1 ||
@@ -253,19 +267,53 @@ export async function registerProfessionalPhoto(formData: FormData): Promise<Upl
   ) {
     return { ok: false, message: "The photo details are invalid." }
   }
-  const { data: current } = await identity.supabase
+
+  const folderPath = `${identity.userId}/${photoId}`
+  const { data: objects, error: storageError } = await identity.supabase.storage
+    .from(professionalPhotosBucket)
+    .list(folderPath, {
+      limit: 10,
+      search: fileName,
+    })
+
+  const uploadedObject = objects?.find((object) => object.name === fileName)
+  const metadata = uploadedObject?.metadata as
+    | { mimetype?: string; size?: number }
+    | null
+    | undefined
+
+  if (
+    storageError ||
+    !uploadedObject ||
+    metadata?.size !== fileSize ||
+    (metadata?.mimetype && metadata.mimetype !== mimeType)
+  ) {
+    return { ok: false, message: "We could not verify the uploaded photo." }
+  }
+
+  const { data: current, error: profileError } = await identity.supabase
     .from("professional_profiles")
     .select("photo_path")
     .eq("user_id", identity.userId)
     .single()
+
+  if (profileError) {
+    return { ok: false, message: "We could not access your professional profile." }
+  }
+
   const { error } = await identity.supabase
     .from("professional_profiles")
     .update({ photo_path: storagePath })
     .eq("user_id", identity.userId)
+
   if (error) return { ok: false, message: "We could not activate this photo." }
-  if (current?.photo_path && current.photo_path !== storagePath) {
-    await identity.supabase.storage.from(professionalPhotosBucket).remove([current.photo_path])
+
+  if (current.photo_path && current.photo_path !== storagePath) {
+    await identity.supabase.storage
+      .from(professionalPhotosBucket)
+      .remove([current.photo_path])
   }
+
   revalidatePath("/dashboard/profile")
   return { ok: true, message: "Professional photo updated." }
 }
