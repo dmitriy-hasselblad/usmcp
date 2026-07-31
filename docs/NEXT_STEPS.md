@@ -80,9 +80,10 @@ Supabase-backed public organization pages.
 
 ## Priority 3: Candidate skills and extended profile
 
-**Delivery status:** Implemented with Supabase migration, RLS, private Storage,
-TypeScript, and anonymous Data API checks. Awaiting Vercel Preview and browser
-verification before a Pull Request is proposed.
+**Delivery status:** The implementation is already present on `main` with a
+Supabase migration, RLS, private Storage, TypeScript, and anonymous Data API
+checks. Stabilization and complete candidate/employer browser verification are
+in progress before this priority is marked complete.
 
 ### Required scope
 
@@ -149,20 +150,23 @@ roadmap:
 
 ## Immediate next ticket
 
-**Ticket:** Complete Vercel Preview and role-based browser verification for
-candidate skills and extended profiles.
+**Ticket:** Stabilize and complete role-based browser verification for candidate
+skills and extended profiles already present on `main`.
 
-**Review branch:** `codex/candidate-extended-profile`
+**Review branch:** `agent/candidate-profile-stabilization`
 
 **Implementation order:**
 
-1. Push `codex/candidate-extended-profile` when GitHub connectivity is restored.
-2. Wait for the Vercel Preview build and inspect build logs.
-3. Verify candidate add, edit, duplicate prevention, and remove skill flows.
-4. Verify languages, summary, photo, and visibility controls.
-5. Verify an authorized hiring team can view an application-shared profile.
-6. Verify unrelated employers and anonymous visitors cannot access profile data.
-7. Update this delivery status and open a draft Pull Request.
+1. Preserve the tracked `.env.example` template and remove duplicate ignore rules.
+2. Verify the uploaded professional photo object and metadata server-side before
+   activating it.
+3. Wait for the Vercel Preview build and inspect its status.
+4. Verify candidate add, edit, duplicate prevention, and remove skill flows.
+5. Verify languages, summary, photo upload/removal, and visibility controls.
+6. Verify an authorized hiring team can view an application-shared profile.
+7. Verify unrelated employers and anonymous visitors cannot access profile data.
+8. Update this delivery status and open a Pull Request for the stabilization
+   changes. Merge only after product-owner approval.
 
 ## Definition of done for every future stage
 
