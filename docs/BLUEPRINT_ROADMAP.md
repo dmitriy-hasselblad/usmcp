@@ -1,6 +1,6 @@
 # USHCE Blueprint Roadmap
 
-Last updated: 2026-07-30
+Last updated: 2026-07-31
 
 ## Source of truth
 
@@ -70,9 +70,12 @@ the recommended implementation order on page 3 as the governing sequence.
 - [x] Public job detail
 - [x] Basic job filters
 - [x] Public supporting pages
-- [ ] Live public organization directory
-- [ ] Live public organization profile route
-- [ ] Complete Blueprint job filters
+- [ ] Live public organization directory — implemented and Preview-verified;
+  awaiting approved merge and Production verification
+- [ ] Live public organization profile route — implemented and Preview-verified;
+  awaiting approved merge and Production verification
+- [ ] Complete Blueprint job filters — implemented and Preview-verified;
+  awaiting approved merge and Production verification
 - [ ] Remove or replace remaining fictional marketplace listings before launch
 
 ### Candidate platform
@@ -104,7 +107,8 @@ the recommended implementation order on page 3 as the governing sequence.
 - [x] Hiring status management
 - [x] Structured candidate career history
 - [ ] Employer verification
-- [ ] Public live organization profile
+- [ ] Public live organization profile — implemented and Preview-verified;
+  awaiting approved merge and Production verification
 - [ ] Candidate search
 - [ ] Saved candidates
 - [ ] Team member invitation and access administration
