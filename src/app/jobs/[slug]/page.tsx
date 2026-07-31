@@ -103,7 +103,16 @@ export default async function JobPage({ params }: JobPageProps) {
                   {job.title}
                 </h1>
                 <p className="mt-3 text-lg font-semibold text-primary">
-                  {job.employer}
+                  {isLive && job.employerSlug ? (
+                    <Link
+                      className="hover:underline"
+                      href={`/companies/${job.employerSlug}`}
+                    >
+                      {job.employer}
+                    </Link>
+                  ) : (
+                    job.employer
+                  )}
                 </p>
                 <div className="mt-5 flex flex-wrap gap-x-5 gap-y-3 text-sm text-muted-foreground">
                   <span className="inline-flex items-center gap-2">
@@ -181,7 +190,13 @@ export default async function JobPage({ params }: JobPageProps) {
                   className="mt-2 h-11 w-full rounded-xl"
                   variant="outline"
                 >
-                  <Link href={`/jobs?query=${encodeURIComponent(job.employer)}`}>
+                  <Link
+                    href={
+                      isLive && job.employerSlug
+                        ? `/companies/${job.employerSlug}`
+                        : `/jobs?query=${encodeURIComponent(job.employer)}`
+                    }
+                  >
                     More from this organization
                   </Link>
                 </Button>

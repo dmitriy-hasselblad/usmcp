@@ -5,7 +5,7 @@ import type { Job } from "@/lib/marketing-data"
 import { isSupabaseConfigured } from "@/lib/supabase/env"
 import { createClient } from "@/lib/supabase/server"
 
-type PublishedJobRow = {
+export type PublishedJobRow = {
   id: string
   slug: string
   title: string
@@ -24,6 +24,8 @@ type PublishedJobRow = {
   organization_name: string
   organization_slug: string
   organization_type: string
+  organization_state_code?: string
+  organization_description?: string | null
   organization_website: string | null
   verification_status: string
 }
@@ -72,7 +74,7 @@ export const getPublishedJobBySlug = cache(
   },
 )
 
-function toMarketplaceJob(row: PublishedJobRow): Job {
+export function toMarketplaceJob(row: PublishedJobRow): Job {
   const stateName =
     usStates.find(([code]) => code === row.state_code)?.[1] ?? row.state_code
 
