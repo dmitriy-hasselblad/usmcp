@@ -1,4 +1,22 @@
 export const professionalDocumentsBucket = "professional-documents"
+export const professionalPhotosBucket = "professional-photos"
+export const professionalPhotoMaxBytes = 5 * 1024 * 1024
+export const professionalPhotoMimeTypes = [
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+] as const
+
+export const profileVisibilities = ["application_only", "private"] as const
+export type ProfileVisibility = (typeof profileVisibilities)[number]
+
+export const skillProficiencies = [
+  "developing",
+  "proficient",
+  "advanced",
+  "expert",
+] as const
+export type SkillProficiency = (typeof skillProficiencies)[number]
 export const professionalDocumentMaxBytes = 8 * 1024 * 1024
 
 export const professionalDocumentTypes = [
@@ -72,6 +90,19 @@ export type ProfessionalProfileRecord = {
   city: string | null
   phone: string | null
   biography: string | null
+  years_experience: number | null
+  languages: string[]
+  profile_visibility: ProfileVisibility
+  photo_path: string | null
+  created_at: string
+  updated_at: string
+}
+
+export type ProfessionalSkillRecord = {
+  id: string
+  user_id: string
+  name: string
+  proficiency: SkillProficiency
   years_experience: number | null
   created_at: string
   updated_at: string

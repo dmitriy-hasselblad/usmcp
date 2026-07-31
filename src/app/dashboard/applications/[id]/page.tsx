@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Image from "next/image"
 import Link from "next/link"
 import {
   ArrowLeft,
@@ -48,6 +49,10 @@ import {
   type LicenseRecord,
   type StructuredCareerProfile,
 } from "@/lib/professional/career-records"
+import type {
+  ProfessionalProfileRecord,
+  ProfessionalSkillRecord,
+} from "@/lib/professional/constants"
 
 export const metadata: Metadata = {
   title: "Application details",
@@ -184,7 +189,7 @@ async function EmployerApplication({
 
   const application = data as ApplicationRecord
   const canEdit = canManageJobs(workspace.membership.role)
-  const [educationResult, experienceResult, licenseResult, certificationResult] =
+  const [educationResult, experienceResult, licenseResult, certificationResult, extendedResult, skillsResult] =
     await Promise.all([
       workspace.supabase
         .from("professional_education")
@@ -206,6 +211,16 @@ async function EmployerApplication({
         .select("*")
         .eq("user_id", application.candidate_id)
         .order("issued_on", { ascending: false }),
+      workspace.supabase
+        .from("professional_profiles")
+        .select("*")
+        .eq("user_id", application.candidate_id)
+        .maybeSingle(),
+      workspace.supabase
+        .from("professional_skills")
+        .select("*")
+        .eq("user_id", application.candidate_id)
+        .order("name"),
     ])
   const careerProfile: StructuredCareerProfile = {
     education: (educationResult.data ?? []) as EducationRecord[],
@@ -213,6 +228,10 @@ async function EmployerApplication({
     licenses: (licenseResult.data ?? []) as LicenseRecord[],
     certifications: (certificationResult.data ?? []) as CertificationRecord[],
   }
+  const extendedProfile = extendedResult.data
+    ? (extendedResult.data as ProfessionalProfileRecord)
+    : null
+  const skills = (skillsResult.data ?? []) as ProfessionalSkillRecord[]
 
   return (
     <EmployerDashboardShell
@@ -233,6 +252,8 @@ async function EmployerApplication({
         <ApplicationBody
           application={application}
           careerProfile={careerProfile}
+          extendedProfile={extendedProfile}
+          skills={skills}
           showCandidateContact
         />
         <Card className="h-fit bg-white">
@@ -313,10 +334,14 @@ function ApplicationHeading({
 function ApplicationBody({
   application,
   careerProfile,
+  extendedProfile,
+  skills = [],
   showCandidateContact = false,
 }: {
   application: ApplicationRecord
   careerProfile?: StructuredCareerProfile
+  extendedProfile?: ProfessionalProfileRecord | null
+  skills?: ProfessionalSkillRecord[]
   showCandidateContact?: boolean
 }) {
   return (
@@ -376,6 +401,10 @@ function ApplicationBody({
 
       {careerProfile && <CareerProfileSummary profile={careerProfile} />}
 
+      {showCandidateContact && (
+        <ExtendedProfileSummary profile={extendedProfile} skills={skills} />
+      )}
+
       <Card className="bg-white">
         <CardHeader>
           <CardTitle>Message to the hiring team</CardTitle>
@@ -421,6 +450,47 @@ function ApplicationBody({
         </Card>
       )}
     </div>
+  )
+}
+
+function ExtendedProfileSummary({
+  profile,
+  skills,
+}: {
+  profile?: ProfessionalProfileRecord | null
+  skills: ProfessionalSkillRecord[]
+}) {
+  if (!profile) {
+    return (
+      <Card className="bg-white">
+        <CardHeader><CardTitle>Extended professional profile</CardTitle></CardHeader>
+        <CardContent><p className="text-sm text-muted-foreground">The candidate has kept their extended profile private.</p></CardContent>
+      </Card>
+    )
+  }
+  return (
+    <Card className="bg-white">
+      <CardHeader><CardTitle>Extended professional profile</CardTitle></CardHeader>
+      <CardContent className="grid gap-5">
+        {profile.photo_path && (
+          <Image alt="Candidate profile" className="size-24 rounded-2xl object-cover" height={96} src={`/dashboard/profile/photo/${profile.user_id}`} unoptimized width={96} />
+        )}
+        {profile.headline && <p className="font-semibold">{profile.headline}</p>}
+        {profile.biography && <p className="whitespace-pre-wrap leading-7 text-muted-foreground">{profile.biography}</p>}
+        <div>
+          <h3 className="font-semibold">Skills</h3>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {skills.length ? skills.map((skill) => (
+              <span className="rounded-full bg-muted px-3 py-1.5 text-sm" key={skill.id}>{skill.name} · {skill.proficiency}</span>
+            )) : <span className="text-sm text-muted-foreground">No structured skills added.</span>}
+          </div>
+        </div>
+        <div>
+          <h3 className="font-semibold">Languages</h3>
+          <p className="mt-2 text-sm text-muted-foreground">{profile.languages.length ? profile.languages.join(", ") : "No languages added."}</p>
+        </div>
+      </CardContent>
+    </Card>
   )
 }
 

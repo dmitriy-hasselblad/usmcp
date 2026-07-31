@@ -84,7 +84,7 @@ export default async function CareerHistoryPage({
     redirect("/dashboard/organization")
   }
 
-  const [educationResult, experienceResult, licenseResult, certificationResult] =
+  const [educationResult, experienceResult, licenseResult, certificationResult, extendedResult, skillResult] =
     await Promise.all([
       identity.supabase
         .from("professional_education")
@@ -106,6 +106,15 @@ export default async function CareerHistoryPage({
         .select("*")
         .eq("user_id", identity.userId)
         .order("issued_on", { ascending: false }),
+      identity.supabase
+        .from("professional_profiles")
+        .select("biography, languages, photo_path")
+        .eq("user_id", identity.userId)
+        .single(),
+      identity.supabase
+        .from("professional_skills")
+        .select("id", { count: "exact", head: true })
+        .eq("user_id", identity.userId),
     ])
 
   const education = (educationResult.data ?? []) as EducationRecord[]
@@ -118,8 +127,14 @@ export default async function CareerHistoryPage({
     experience.length > 0,
     licenses.length > 0,
     certifications.length > 0,
+    Boolean(
+      extendedResult.data?.biography &&
+      extendedResult.data.languages?.length &&
+      extendedResult.data.photo_path,
+    ),
+    (skillResult.count ?? 0) > 0,
   ].filter(Boolean).length
-  const completion = completedSections * 25
+  const completion = Math.round((completedSections / 6) * 100)
   const editingEducation = education.find(
     (record) => record.id === query.editEducation,
   )

@@ -16,6 +16,11 @@ import {
   isProfessionalDocumentType,
   professionalDocumentMaxBytes,
   professionalDocumentsBucket,
+  professionalPhotoMaxBytes,
+  professionalPhotoMimeTypes,
+  professionalPhotosBucket,
+  profileVisibilities,
+  skillProficiencies,
   type ProfessionalDocumentType,
 } from "@/lib/professional/constants"
 
@@ -42,6 +47,15 @@ export async function updateProfessionalProfile(formData: FormData) {
   const city = formString(formData, "city")
   const phone = formString(formData, "phone")
   const biography = formString(formData, "biography")
+  const languages = Array.from(
+    new Set(
+      formString(formData, "languages")
+        .split(",")
+        .map((value) => value.trim())
+        .filter(Boolean),
+    ),
+  )
+  const profileVisibility = formString(formData, "profileVisibility")
   const yearsExperienceValue = formString(formData, "yearsExperience")
   const yearsExperience = yearsExperienceValue
     ? Number(yearsExperienceValue)
@@ -64,6 +78,9 @@ export async function updateProfessionalProfile(formData: FormData) {
     (phone.length > 0 && phone.length < 7) ||
     phone.length > 30 ||
     biography.length > 2000 ||
+    languages.length > 12 ||
+    languages.some((language) => language.length < 2 || language.length > 60) ||
+    !profileVisibilities.some((value) => value === profileVisibility) ||
     (yearsExperience !== null &&
       (!Number.isInteger(yearsExperience) ||
         yearsExperience < 0 ||
@@ -103,6 +120,8 @@ export async function updateProfessionalProfile(formData: FormData) {
       phone: phone || null,
       biography: biography || null,
       years_experience: yearsExperience,
+      languages,
+      profile_visibility: profileVisibility,
     })
     .eq("user_id", identity.userId)
 
@@ -143,6 +162,131 @@ export async function updateProfessionalProfile(formData: FormData) {
       "Professional profile updated.",
     ),
   )
+}
+
+export async function saveProfessionalSkill(formData: FormData) {
+  const identity = await requireIdentity("/dashboard/profile")
+  const skillId = formString(formData, "skillId")
+  const name = formString(formData, "name")
+  const proficiency = formString(formData, "proficiency")
+  const yearsValue = formString(formData, "yearsExperience")
+  const yearsExperience = yearsValue ? Number(yearsValue) : null
+
+  if (
+    (skillId && !uuidPattern.test(skillId)) ||
+    name.length < 2 ||
+    name.length > 80 ||
+    !skillProficiencies.some((value) => value === proficiency) ||
+    (yearsExperience !== null &&
+      (!Number.isInteger(yearsExperience) || yearsExperience < 0 || yearsExperience > 70))
+  ) {
+    redirect(messagePath("/dashboard/profile", "error", "Review the skill details and try again."))
+  }
+
+  const query = skillId
+    ? identity.supabase
+        .from("professional_skills")
+        .update({ name, proficiency, years_experience: yearsExperience })
+        .eq("id", skillId)
+        .eq("user_id", identity.userId)
+    : identity.supabase.from("professional_skills").insert({
+        user_id: identity.userId,
+        name,
+        proficiency,
+        years_experience: yearsExperience,
+      })
+
+  if (!skillId) {
+    const { count } = await identity.supabase
+      .from("professional_skills")
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", identity.userId)
+    if ((count ?? 0) >= 30) {
+      redirect(messagePath("/dashboard/profile", "error", "A profile can include up to 30 skills."))
+    }
+  }
+  const { error } = await query
+
+  if (error) {
+    redirect(
+      messagePath(
+        "/dashboard/profile",
+        "error",
+        error.code === "23505" ? "This skill is already in your profile." : "We could not save this skill.",
+      ),
+    )
+  }
+
+  revalidatePath("/dashboard/profile")
+  redirect(messagePath("/dashboard/profile", "success", skillId ? "Skill updated." : "Skill added."))
+}
+
+export async function deleteProfessionalSkill(formData: FormData) {
+  const identity = await requireIdentity("/dashboard/profile")
+  const skillId = formString(formData, "skillId")
+  if (!uuidPattern.test(skillId)) {
+    redirect(messagePath("/dashboard/profile", "error", "The selected skill is invalid."))
+  }
+  const { error } = await identity.supabase
+    .from("professional_skills")
+    .delete()
+    .eq("id", skillId)
+    .eq("user_id", identity.userId)
+  if (error) {
+    redirect(messagePath("/dashboard/profile", "error", "We could not remove this skill."))
+  }
+  revalidatePath("/dashboard/profile")
+  redirect(messagePath("/dashboard/profile", "success", "Skill removed."))
+}
+
+export async function registerProfessionalPhoto(formData: FormData): Promise<UploadActionResult> {
+  const identity = await requireIdentity("/dashboard/profile")
+  const storagePath = formString(formData, "storagePath")
+  const mimeType = formString(formData, "mimeType")
+  const fileSize = Number(formString(formData, "fileSize"))
+  if (
+    !storagePath.startsWith(`${identity.userId}/`) ||
+    !professionalPhotoMimeTypes.some((value) => value === mimeType) ||
+    !Number.isInteger(fileSize) ||
+    fileSize < 1 ||
+    fileSize > professionalPhotoMaxBytes
+  ) {
+    return { ok: false, message: "The photo details are invalid." }
+  }
+  const { data: current } = await identity.supabase
+    .from("professional_profiles")
+    .select("photo_path")
+    .eq("user_id", identity.userId)
+    .single()
+  const { error } = await identity.supabase
+    .from("professional_profiles")
+    .update({ photo_path: storagePath })
+    .eq("user_id", identity.userId)
+  if (error) return { ok: false, message: "We could not activate this photo." }
+  if (current?.photo_path && current.photo_path !== storagePath) {
+    await identity.supabase.storage.from(professionalPhotosBucket).remove([current.photo_path])
+  }
+  revalidatePath("/dashboard/profile")
+  return { ok: true, message: "Professional photo updated." }
+}
+
+export async function removeProfessionalPhoto() {
+  const identity = await requireIdentity("/dashboard/profile")
+  const { data: current } = await identity.supabase
+    .from("professional_profiles")
+    .select("photo_path")
+    .eq("user_id", identity.userId)
+    .single()
+  const { error } = await identity.supabase
+    .from("professional_profiles")
+    .update({ photo_path: null })
+    .eq("user_id", identity.userId)
+  if (error) redirect(messagePath("/dashboard/profile", "error", "We could not remove this photo."))
+  if (current?.photo_path) {
+    await identity.supabase.storage.from(professionalPhotosBucket).remove([current.photo_path])
+  }
+  revalidatePath("/dashboard/profile")
+  redirect(messagePath("/dashboard/profile", "success", "Professional photo removed."))
 }
 
 export async function registerProfessionalDocument(

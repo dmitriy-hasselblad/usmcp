@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Image from "next/image"
 import Link from "next/link"
 import type { ReactNode } from "react"
 import {
@@ -15,12 +16,16 @@ import { redirect } from "next/navigation"
 
 import {
   deleteProfessionalDocument,
+  deleteProfessionalSkill,
+  removeProfessionalPhoto,
+  saveProfessionalSkill,
   setPrimaryResume,
   updateProfessionalProfile,
 } from "@/app/dashboard/profile/actions"
 import { AuthNotice } from "@/components/auth/auth-notice"
 import { AuthSubmitButton } from "@/components/auth/auth-submit-button"
 import { DocumentUploadForm } from "@/components/professional/document-upload-form"
+import { ProfessionalPhotoForm } from "@/components/professional/professional-photo-form"
 import { ProfessionalDashboardShell } from "@/components/professional/professional-dashboard-shell"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -41,8 +46,11 @@ import {
 } from "@/lib/auth/validation"
 import {
   professionalDocumentTypeLabels,
+  profileVisibilities,
+  skillProficiencies,
   type ProfessionalDocumentRecord,
   type ProfessionalProfileRecord,
+  type ProfessionalSkillRecord,
 } from "@/lib/professional/constants"
 
 export const metadata: Metadata = {
@@ -87,6 +95,7 @@ export default async function ProfessionalProfilePage({
     { data: professionalProfileData },
     { data: documentData },
     { data: applicationData },
+    { data: skillData },
   ] = await Promise.all([
     identity.supabase
       .from("professional_profiles")
@@ -103,6 +112,11 @@ export default async function ProfessionalProfilePage({
       .select("resume_document_id")
       .eq("candidate_id", identity.userId)
       .not("resume_document_id", "is", null),
+    identity.supabase
+      .from("professional_skills")
+      .select("*")
+      .eq("user_id", identity.userId)
+      .order("name"),
   ])
 
   if (!professionalProfileData) {
@@ -112,6 +126,7 @@ export default async function ProfessionalProfilePage({
   const professionalProfile =
     professionalProfileData as ProfessionalProfileRecord
   const documents = (documentData ?? []) as ProfessionalDocumentRecord[]
+  const skills = (skillData ?? []) as ProfessionalSkillRecord[]
   const attachedDocumentIds = new Set(
     (applicationData ?? [])
       .map((application) => application.resume_document_id)
@@ -282,6 +297,31 @@ export default async function ProfessionalProfilePage({
                 </span>
               </Field>
 
+              <Field label="Languages">
+                <Input
+                  className="h-11"
+                  defaultValue={professionalProfile.languages.join(", ")}
+                  maxLength={720}
+                  name="languages"
+                  placeholder="English, Spanish"
+                />
+                <span className="text-xs font-normal text-muted-foreground">
+                  Separate up to 12 languages with commas.
+                </span>
+              </Field>
+
+              <SelectField
+                defaultValue={professionalProfile.profile_visibility}
+                label="Extended profile visibility"
+                name="profileVisibility"
+                options={profileVisibilities.map((value) => [
+                  value,
+                  value === "application_only"
+                    ? "Organizations I apply to"
+                    : "Private to me",
+                ] as const)}
+              />
+
               <AuthSubmitButton pendingLabel="Saving profile...">
                 Save profile
               </AuthSubmitButton>
@@ -305,6 +345,62 @@ export default async function ProfessionalProfilePage({
               hasPrimaryResume={hasPrimaryResume}
               userId={identity.userId}
             />
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="mt-6 grid gap-6 lg:grid-cols-2">
+        <Card className="bg-white">
+          <CardHeader>
+            <CardTitle>Professional photo</CardTitle>
+            <CardDescription>Optional and private by default.</CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-5">
+            {professionalProfile.photo_path && (
+              <div className="flex items-center gap-4">
+                <Image
+                  alt={`${profile.first_name ?? "Professional"} profile photo`}
+                  className="size-24 rounded-2xl object-cover"
+                  height={96}
+                  src={`/dashboard/profile/photo/${identity.userId}`}
+                  unoptimized
+                  width={96}
+                />
+                <form action={removeProfessionalPhoto}>
+                  <Button type="submit" variant="outline">Remove photo</Button>
+                </form>
+              </div>
+            )}
+            <ProfessionalPhotoForm userId={identity.userId} />
+          </CardContent>
+        </Card>
+
+        <Card className="bg-white">
+          <CardHeader>
+            <CardTitle>Structured skills</CardTitle>
+            <CardDescription>Add, edit, or remove healthcare skills.</CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-4">
+            <form action={saveProfessionalSkill} className="grid gap-3 sm:grid-cols-2">
+              <Input maxLength={80} minLength={2} name="name" placeholder="Patient assessment" required />
+              <select className="h-11 rounded-lg border border-input bg-background px-3 text-sm" defaultValue="proficient" name="proficiency">
+                {skillProficiencies.map((value) => <option key={value} value={value}>{value}</option>)}
+              </select>
+              <Input max={70} min={0} name="yearsExperience" placeholder="Years" type="number" />
+              <Button type="submit">Add skill</Button>
+            </form>
+            {skills.map((skill) => (
+              <form action={saveProfessionalSkill} className="grid gap-3 rounded-xl border border-border p-4 sm:grid-cols-[1fr_10rem_6rem_auto_auto]" key={skill.id}>
+                <input name="skillId" type="hidden" value={skill.id} />
+                <Input defaultValue={skill.name} maxLength={80} minLength={2} name="name" required />
+                <select className="h-11 rounded-lg border border-input bg-background px-3 text-sm" defaultValue={skill.proficiency} name="proficiency">
+                  {skillProficiencies.map((value) => <option key={value} value={value}>{value}</option>)}
+                </select>
+                <Input defaultValue={skill.years_experience ?? undefined} max={70} min={0} name="yearsExperience" type="number" />
+                <Button type="submit" variant="outline">Save</Button>
+                <Button formAction={deleteProfessionalSkill} type="submit" variant="destructive">Remove</Button>
+              </form>
+            ))}
           </CardContent>
         </Card>
       </div>
