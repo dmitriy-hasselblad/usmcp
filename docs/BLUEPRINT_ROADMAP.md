@@ -58,7 +58,7 @@ the recommended implementation order on page 3 as the governing sequence.
 - [ ] Centralized profession and specialty reference data
 - [ ] Centralized geographic reference data beyond the current U.S. state list
 - [x] Formal audit-event model for privileged actions (organization
-  verification integration verified in Preview)
+  verification integration verified in Production)
 - [ ] Automated test coverage for critical role boundaries
 
 ## Phase 2: Marketplace MVP
@@ -104,7 +104,7 @@ the recommended implementation order on page 3 as the governing sequence.
 - [x] Applicant review
 - [x] Hiring status management
 - [x] Structured candidate career history
-- [x] Employer verification (verified in Preview; Production merge pending)
+- [x] Employer verification (verified in Production)
 - [x] Public live organization profile
 - [ ] Candidate search
 - [ ] Saved candidates
@@ -114,14 +114,14 @@ the recommended implementation order on page 3 as the governing sequence.
 ### Admin platform
 
 Priority 4 is in progress. Authorization, the secure route foundation, minimal
-metrics, the privileged audit-event boundary, and read-only directories are in
-Production. Organization verification moderation is verified in Preview; job
-and user-state moderation remain.
+metrics, the privileged audit-event boundary, read-only directories, and
+organization verification moderation are in Production. Job and user-state
+moderation remain.
 
 - [x] Admin authentication and authorization
 - [ ] User management
-- [x] Organization moderation (verification workflow; Preview verified)
-- [x] Employer verification queue (Preview verified)
+- [x] Organization moderation (verification workflow; Production verified)
+- [x] Employer verification queue (Production verified)
 - [ ] Job moderation
 - [ ] Application and abuse reporting oversight
 - [x] Basic platform metrics
@@ -175,7 +175,7 @@ and core hiring loop are stable.
 | Month 2 | Candidate profile, CV, search | Profile and search in progress; CV deferred |
 | Month 3 | Companies, jobs, employer dashboards | Substantially completed; public company pages and complete job filters are live |
 | Month 4 | Stripe, subscriptions, payments | Not started |
-| Month 5 | Admin, management, analytics, security | Admin authorization and audit foundation are in Preview; management and analytics remain |
+| Month 5 | Admin, management, analytics, security | Admin authorization, directories, metrics, audit foundation, and organization verification are in Production; remaining moderation and analytics work continues |
 | Month 6 | Testing, SEO, first users | Not started as a formal launch phase |
 
 ## Sequence decisions

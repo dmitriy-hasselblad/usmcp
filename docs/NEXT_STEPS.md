@@ -102,10 +102,9 @@ Supabase-backed public organization pages.
 ## Priority 4: Basic Admin Panel
 
 **Delivery status:** In progress. The platform-admin authorization, secure
-route, minimal metrics, audit-event foundation, and read-only directories are
-verified in Production. Organization detail, the pending-verification queue,
-and atomic verification actions are verified in Vercel Preview on
-`codex/admin-organization-verification`; Production merge is pending.
+route, minimal metrics, audit-event foundation, read-only directories,
+organization detail, the pending-verification queue, and atomic verification
+actions are verified in Production through PR #16.
 
 ### Required scope
 
@@ -153,21 +152,25 @@ roadmap:
 
 ## Immediate next ticket
 
-**Ticket:** Complete the Production handoff for the verified organization
-moderation branch, then continue Priority 4 with job moderation.
+**Ticket:** Continue Priority 4 with narrowly scoped job moderation.
 
-**Delivery branch:** `codex/admin-organization-verification`
+**Delivery branch:** Create a new feature branch from updated `main` after this
+Production handoff is merged.
 
 **Implementation order:**
 
-1. Open and review a Pull Request for the verified organization-moderation
-   branch.
-2. Merge only after explicit product-owner approval.
-3. Confirm the resulting Production deployment and organization verification
-   display.
-4. Create a new branch from updated `main` for job moderation.
-5. Apply the same narrow privileged-operation and atomic audit-event boundary
-   to job moderation actions.
+1. Review the existing job schema, migrations, publication policies, and RLS
+   before changing the database.
+2. Add an admin job directory and moderation detail view with clear status
+   filters and empty/error states.
+3. Define the smallest necessary moderation actions without disrupting the
+   employer draft/published workflow.
+4. Require explicit confirmation for destructive or visibility-changing
+   actions.
+5. Validate platform-admin access and write the actor, target, action, and
+   timestamp atomically to the privileged audit log.
+6. Verify employer, public marketplace, and admin results in Vercel Preview
+   before requesting a Production merge.
 
 ## Definition of done for every future stage
 
