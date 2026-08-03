@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 }
 
 type OrganizationsPageProps = {
-  searchParams: Promise<{ page?: string; q?: string }>
+  searchParams: Promise<{ page?: string; q?: string; status?: string }>
 }
 
 export default async function AdminOrganizationsPage({ searchParams }: OrganizationsPageProps) {
@@ -32,6 +32,7 @@ export default async function AdminOrganizationsPage({ searchParams }: Organizat
   ])
   const page = parseAdminPage(params.page)
   const query = normalizeAdminQuery(params.q)
+  const pendingOnly = params.status === "pending"
   const from = (page - 1) * ADMIN_DIRECTORY_PAGE_SIZE
   const to = from + ADMIN_DIRECTORY_PAGE_SIZE - 1
 
@@ -45,6 +46,7 @@ export default async function AdminOrganizationsPage({ searchParams }: Organizat
     .range(from, to)
 
   if (query) organizationsQuery = organizationsQuery.ilike("name", `%${query}%`)
+  if (pendingOnly) organizationsQuery = organizationsQuery.eq("verification_status", "pending")
 
   const { data: organizations, count, error } = await organizationsQuery
 
@@ -58,12 +60,22 @@ export default async function AdminOrganizationsPage({ searchParams }: Organizat
           <p className="text-xs font-bold tracking-[0.14em] text-primary uppercase">Platform administration</p>
           <h1 className="mt-2 text-4xl font-semibold tracking-[-0.05em]">Organizations</h1>
           <p className="mt-3 max-w-3xl leading-7 text-muted-foreground">
-            Review organization identity and verification state. Moderation controls will be added only after their audit boundary is verified.
+            Review organization identity and verification state. Every moderation decision is protected by the platform-admin boundary and audit log.
           </p>
         </div>
       </div>
 
-      <form action="/admin/organizations" className="mt-8 flex max-w-xl gap-2" method="get">
+      <div className="mt-8 flex flex-wrap items-center gap-2">
+        <Button asChild size="sm" variant={pendingOnly ? "outline" : "default"}>
+          <Link href="/admin/organizations">All organizations</Link>
+        </Button>
+        <Button asChild size="sm" variant={pendingOnly ? "default" : "outline"}>
+          <Link href="/admin/organizations?status=pending">Pending verification</Link>
+        </Button>
+      </div>
+
+      <form action="/admin/organizations" className="mt-4 flex max-w-xl gap-2" method="get">
+        {pendingOnly && <input name="status" type="hidden" value="pending" />}
         <Input aria-label="Search organizations by name" defaultValue={query} name="q" placeholder="Search by organization name" />
         <Button type="submit" variant="outline"><Search /> Search</Button>
       </form>
@@ -82,7 +94,7 @@ export default async function AdminOrganizationsPage({ searchParams }: Organizat
                     <th className="px-5 py-3 font-semibold">State</th>
                     <th className="px-5 py-3 font-semibold">Verification</th>
                     <th className="px-5 py-3 font-semibold">Created</th>
-                    <th className="px-5 py-3 font-semibold sm:px-6"><span className="sr-only">Public profile</span></th>
+                    <th className="px-5 py-3 font-semibold sm:px-6"><span className="sr-only">Review organization</span></th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
@@ -98,7 +110,7 @@ export default async function AdminOrganizationsPage({ searchParams }: Organizat
                       <td className="px-5 py-4 text-muted-foreground">{formatAdminDate(organization.created_at)}</td>
                       <td className="px-5 py-4 text-right sm:px-6">
                         <Button asChild size="sm" variant="ghost">
-                          <Link href={`/companies/${organization.slug}`}>View <ExternalLink /></Link>
+                          <Link href={`/admin/organizations/${organization.id}`}>Review <ExternalLink /></Link>
                         </Button>
                       </td>
                     </tr>
@@ -118,6 +130,7 @@ export default async function AdminOrganizationsPage({ searchParams }: Organizat
               page={page}
               pageSize={ADMIN_DIRECTORY_PAGE_SIZE}
               query={query}
+              status={pendingOnly ? "pending" : undefined}
               total={count ?? 0}
             />
           )}

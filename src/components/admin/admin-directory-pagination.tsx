@@ -7,12 +7,14 @@ export function AdminDirectoryPagination({
   page,
   pageSize,
   query,
+  status,
   total,
 }: {
   basePath: string
   page: number
   pageSize: number
   query?: string
+  status?: string
   total: number
 }) {
   const totalPages = Math.max(1, Math.ceil(total / pageSize))
@@ -29,14 +31,14 @@ export function AdminDirectoryPagination({
           <Button disabled size="sm" variant="outline">Previous</Button>
         ) : (
           <Button asChild size="sm" variant="outline">
-            <Link href={pageHref(basePath, page - 1, query)}>Previous</Link>
+            <Link href={pageHref(basePath, page - 1, query, status)}>Previous</Link>
           </Button>
         )}
         {page >= totalPages ? (
           <Button disabled size="sm" variant="outline">Next</Button>
         ) : (
           <Button asChild size="sm" variant="outline">
-            <Link href={pageHref(basePath, page + 1, query)}>Next</Link>
+            <Link href={pageHref(basePath, page + 1, query, status)}>Next</Link>
           </Button>
         )}
       </div>
@@ -44,9 +46,10 @@ export function AdminDirectoryPagination({
   )
 }
 
-function pageHref(basePath: string, page: number, query?: string) {
+function pageHref(basePath: string, page: number, query?: string, status?: string) {
   const params = new URLSearchParams()
   if (query) params.set("q", query)
+  if (status) params.set("status", status)
   params.set("page", String(Math.max(1, page)))
   return `${basePath}?${params.toString()}`
 }

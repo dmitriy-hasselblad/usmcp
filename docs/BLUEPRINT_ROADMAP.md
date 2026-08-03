@@ -57,8 +57,8 @@ the recommended implementation order on page 3 as the governing sequence.
 
 - [ ] Centralized profession and specialty reference data
 - [ ] Centralized geographic reference data beyond the current U.S. state list
-- [ ] Formal audit-event model for privileged actions (foundation verified in
-  Preview; moderation integrations remain)
+- [x] Formal audit-event model for privileged actions (organization
+  verification integration verified in Preview)
 - [ ] Automated test coverage for critical role boundaries
 
 ## Phase 2: Marketplace MVP
@@ -104,7 +104,7 @@ the recommended implementation order on page 3 as the governing sequence.
 - [x] Applicant review
 - [x] Hiring status management
 - [x] Structured candidate career history
-- [ ] Employer verification
+- [x] Employer verification (verified in Preview; Production merge pending)
 - [x] Public live organization profile
 - [ ] Candidate search
 - [ ] Saved candidates
@@ -114,17 +114,17 @@ the recommended implementation order on page 3 as the governing sequence.
 ### Admin platform
 
 Priority 4 is in progress. Authorization, the secure route foundation, minimal
-metrics, and the privileged audit-event boundary are in Production. Read-only
-user and organization directories are verified in Preview; moderation actions
-remain.
+metrics, the privileged audit-event boundary, and read-only directories are in
+Production. Organization verification moderation is verified in Preview; job
+and user-state moderation remain.
 
-- [ ] Admin authentication and authorization
+- [x] Admin authentication and authorization
 - [ ] User management
-- [ ] Organization moderation
-- [ ] Employer verification queue
+- [x] Organization moderation (verification workflow; Preview verified)
+- [x] Employer verification queue (Preview verified)
 - [ ] Job moderation
 - [ ] Application and abuse reporting oversight
-- [ ] Basic platform metrics
+- [x] Basic platform metrics
 - [ ] Audit log viewer
 
 ## Phase 3: Trust & Revenue

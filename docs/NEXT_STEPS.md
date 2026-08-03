@@ -102,9 +102,10 @@ Supabase-backed public organization pages.
 ## Priority 4: Basic Admin Panel
 
 **Delivery status:** In progress. The platform-admin authorization, secure
-route, minimal metrics, and audit-event foundation are implemented and verified
-in Production. Read-only user and organization directories are implemented and
-verified in Vercel Preview on `codex/admin-directory`.
+route, minimal metrics, audit-event foundation, and read-only directories are
+verified in Production. Organization detail, the pending-verification queue,
+and atomic verification actions are verified in Vercel Preview on
+`codex/admin-organization-verification`; Production merge is pending.
 
 ### Required scope
 
@@ -152,20 +153,21 @@ roadmap:
 
 ## Immediate next ticket
 
-**Ticket:** Continue Priority 4 with organization detail, a pending employer
-verification queue, and narrowly scoped verification actions.
+**Ticket:** Complete the Production handoff for the verified organization
+moderation branch, then continue Priority 4 with job moderation.
 
-**Delivery branch:** Finish and merge the verified `codex/admin-directory`
-delivery before creating the next feature branch from updated `main`.
+**Delivery branch:** `codex/admin-organization-verification`
 
 **Implementation order:**
 
-1. Add organization detail and a pending-verification queue.
-2. Implement verification changes as narrow database operations that validate
-   platform-admin access and write audit events atomically.
-3. Require an explicit confirmation before verification or rejection changes.
-4. Confirm verification changes on public organization profiles.
-5. Add job moderation only after the verification boundary is verified.
+1. Open and review a Pull Request for the verified organization-moderation
+   branch.
+2. Merge only after explicit product-owner approval.
+3. Confirm the resulting Production deployment and organization verification
+   display.
+4. Create a new branch from updated `main` for job moderation.
+5. Apply the same narrow privileged-operation and atomic audit-event boundary
+   to job moderation actions.
 
 ## Definition of done for every future stage
 
