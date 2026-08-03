@@ -103,7 +103,8 @@ Supabase-backed public organization pages.
 
 **Delivery status:** In progress. The platform-admin authorization, secure
 route, minimal metrics, and audit-event foundation are implemented and verified
-in Vercel Preview on `codex/admin-platform-foundation`.
+in Production. Read-only user and organization directories are implemented and
+verified in Vercel Preview on `codex/admin-directory`.
 
 ### Required scope
 
@@ -151,20 +152,18 @@ roadmap:
 
 ## Immediate next ticket
 
-**Ticket:** Continue Priority 4 with read-only admin user and organization
-workspaces, followed by narrowly scoped employer-verification actions.
+**Ticket:** Continue Priority 4 with organization detail, a pending employer
+verification queue, and narrowly scoped verification actions.
 
-**Delivery branch:** Finish and merge the verified
-`codex/admin-platform-foundation` delivery before creating the next feature
-branch from updated `main`.
+**Delivery branch:** Finish and merge the verified `codex/admin-directory`
+delivery before creating the next feature branch from updated `main`.
 
 **Implementation order:**
 
-1. Add paginated, read-only user and organization lists with clear empty and
-   error states.
-2. Add organization detail and a pending-verification queue.
-3. Implement verification changes as narrow database operations that validate
+1. Add organization detail and a pending-verification queue.
+2. Implement verification changes as narrow database operations that validate
    platform-admin access and write audit events atomically.
+3. Require an explicit confirmation before verification or rejection changes.
 4. Confirm verification changes on public organization profiles.
 5. Add job moderation only after the verification boundary is verified.
 

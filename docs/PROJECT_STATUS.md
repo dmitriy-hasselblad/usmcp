@@ -127,15 +127,16 @@ deployment were verified on 2026-08-03.
 - Secure server-side `/admin` authorization boundary
 - RLS-protected privileged audit-event foundation
 
-### Current delivery in Preview
+### Current Admin delivery status
 
-- Priority 4 authorization foundation is implemented on
-  `codex/admin-platform-foundation`.
-- Vercel Preview build and the authorized `/admin` dashboard were verified on
-  2026-08-03.
+- Priority 4 authorization foundation was merged through PR #14 and verified
+  in Production on 2026-08-03.
 - Database role-boundary checks confirmed that a platform administrator can
   read admin-scoped data while a normal authenticated user cannot.
-- This delivery has not been approved or merged to Production yet.
+- Read-only Admin Users and Organizations directories are implemented on
+  `codex/admin-directory` and were verified in Vercel Preview on 2026-08-03.
+- The directories include server-side search, pagination, responsive tables,
+  and explicit empty and error states without exposing Auth credentials.
 
 ## Supabase migrations
 

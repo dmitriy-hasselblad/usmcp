@@ -114,8 +114,9 @@ the recommended implementation order on page 3 as the governing sequence.
 ### Admin platform
 
 Priority 4 is in progress. Authorization, the secure route foundation, minimal
-metrics, and the privileged audit-event boundary are verified in Preview but
-not yet merged to Production.
+metrics, and the privileged audit-event boundary are in Production. Read-only
+user and organization directories are verified in Preview; moderation actions
+remain.
 
 - [ ] Admin authentication and authorization
 - [ ] User management
