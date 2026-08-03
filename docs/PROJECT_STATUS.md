@@ -25,9 +25,9 @@ English.
 ## Production baseline
 
 - Production branch: `main`
-- Latest confirmed product Pull Request: PR #12
-- PR #12 merge commit: `79e45377a1c828817a2a110f54391ed417fb1b34`
-- Current `main` commit: `79e45377a1c828817a2a110f54391ed417fb1b34`
+- Latest confirmed product Pull Request: PR #15
+- PR #15 merge commit: `4f5a97674f59c442e7ba718ec64c4757b2095713`
+- Current `main` commit: `4f5a97674f59c442e7ba718ec64c4757b2095713`
 - Production deployment status at verification: `Ready`
 - Latest Production verification date: 2026-08-03
 
@@ -134,9 +134,15 @@ deployment were verified on 2026-08-03.
 - Database role-boundary checks confirmed that a platform administrator can
   read admin-scoped data while a normal authenticated user cannot.
 - Read-only Admin Users and Organizations directories are implemented on
-  `codex/admin-directory` and were verified in Vercel Preview on 2026-08-03.
+  `codex/admin-directory`, merged through PR #15, and verified in Production on
+  2026-08-03.
 - The directories include server-side search, pagination, responsive tables,
   and explicit empty and error states without exposing Auth credentials.
+- Organization detail, the pending-verification queue, and atomic verification
+  actions are implemented on `codex/admin-organization-verification` and were
+  verified end to end in Vercel Preview on 2026-08-03. The USMCP organization
+  changed from `unverified` to `verified`, and the corresponding privileged
+  audit event was confirmed in Supabase.
 
 ## Supabase migrations
 
@@ -154,6 +160,7 @@ The repository currently contains these applied migration groups:
 10. Complete job-filter fields and public view updates
 11. Candidate extended profile, structured skills, and private photos
 12. Platform-admin authorization and privileged audit-event foundation
+13. Atomic organization-verification moderation
 
 Migration files are stored in `supabase/migrations/`.
 
@@ -166,9 +173,10 @@ The following areas are not complete:
 
 - Resume/CV Builder is not implemented.
 - Google and LinkedIn authentication are not implemented.
-- Employer verification and manual moderation are not implemented.
-- Platform Admin Panel authorization and metrics foundation is implemented in
-  Preview; user, organization, verification, and job moderation remain.
+- Employer verification and manual moderation are implemented and verified in
+  Preview; Production publication is pending.
+- Platform Admin Panel authorization, metrics, directories, and organization
+  verification are implemented; job and user-state moderation remain.
 - Stripe payments, subscriptions, invoices, and billing are not implemented.
 - Messaging, notifications, and interview scheduling are not implemented.
 - AI features are intentionally deferred.
