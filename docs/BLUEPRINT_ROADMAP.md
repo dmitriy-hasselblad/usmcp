@@ -1,6 +1,6 @@
 # USHCE Blueprint Roadmap
 
-Last updated: 2026-07-31
+Last updated: 2026-08-03
 
 ## Source of truth
 
@@ -85,11 +85,11 @@ the recommended implementation order on page 3 as the governing sequence.
 - [x] Job application submission
 - [x] Application tracking
 - [x] Application withdrawal
-- [ ] Skills model — present on `main` and RLS-verified; stabilization Preview
-  and role-based browser verification are in progress
+- [ ] Skills model — stabilization Preview and role-based verification passed
+  in PR #12; Production approval, merge, and verification remain
 - [ ] Extended healthcare profile sections — present on `main` and
-  RLS-verified; stabilization Preview and role-based browser verification are
-  in progress
+  RLS-verified; stabilization Preview and role-based verification passed in
+  PR #12; Production approval, merge, and verification remain
 - [ ] Recommended jobs
 - [ ] Resume/CV Builder
 - [ ] Google sign-in

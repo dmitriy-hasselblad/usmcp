@@ -1,6 +1,6 @@
 # USHCE Next Steps
 
-Last updated: 2026-07-31
+Last updated: 2026-08-03
 
 ## Current product phase
 
@@ -80,10 +80,10 @@ Supabase-backed public organization pages.
 
 ## Priority 3: Candidate skills and extended profile
 
-**Delivery status:** The implementation is already present on `main` with a
-Supabase migration, RLS, private Storage, TypeScript, and anonymous Data API
-checks. Stabilization and complete candidate/employer browser verification are
-in progress before this priority is marked complete.
+**Delivery status:** Stabilization Preview and complete candidate/employer role
+verification passed in PR #12. The implementation remains pending
+product-owner approval, merge, and Production verification before this priority
+is marked complete.
 
 ### Required scope
 
@@ -150,23 +150,24 @@ roadmap:
 
 ## Immediate next ticket
 
-**Ticket:** Stabilize and complete role-based browser verification for candidate
-skills and extended profiles already present on `main`.
+**Ticket:** Obtain product-owner approval for PR #12, merge it, and verify the
+resulting Production deployment.
 
 **Review branch:** `agent/candidate-profile-stabilization`
 
 **Implementation order:**
 
-1. Preserve the tracked `.env.example` template and remove duplicate ignore rules.
-2. Verify the uploaded professional photo object and metadata server-side before
-   activating it.
-3. Wait for the Vercel Preview build and inspect its status.
-4. Verify candidate add, edit, duplicate prevention, and remove skill flows.
-5. Verify languages, summary, photo upload/removal, and visibility controls.
-6. Verify an authorized hiring team can view an application-shared profile.
-7. Verify unrelated employers and anonymous visitors cannot access profile data.
-8. Update this delivery status and open a Pull Request for the stabilization
-   changes. Merge only after product-owner approval.
+1. [x] Preserve the tracked `.env.example` template and remove duplicate ignore rules.
+2. [x] Verify the uploaded professional photo object and metadata server-side
+   before activating it.
+3. [x] Wait for the Vercel Preview build and inspect its status.
+4. [x] Verify candidate add, edit, duplicate prevention, and remove skill flows.
+5. [x] Verify languages, summary, photo upload/removal, and visibility controls.
+6. [x] Verify an authorized hiring team can view an application-shared profile.
+7. [x] Verify unrelated employers and anonymous visitors cannot access profile data.
+8. [x] Update this delivery status and open a Pull Request for the stabilization
+   changes.
+9. [ ] Obtain product-owner approval, merge PR #12, and verify Production.
 
 ## Definition of done for every future stage
 
