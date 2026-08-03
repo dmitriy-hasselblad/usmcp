@@ -123,6 +123,19 @@ deployment were verified on 2026-08-03.
 - Secure document ownership checks
 - Consolidated public-job and application policies
 - Cookie consent controls
+- Platform-admin assignments separated from organization membership
+- Secure server-side `/admin` authorization boundary
+- RLS-protected privileged audit-event foundation
+
+### Current delivery in Preview
+
+- Priority 4 authorization foundation is implemented on
+  `codex/admin-platform-foundation`.
+- Vercel Preview build and the authorized `/admin` dashboard were verified on
+  2026-08-03.
+- Database role-boundary checks confirmed that a platform administrator can
+  read admin-scoped data while a normal authenticated user cannot.
+- This delivery has not been approved or merged to Production yet.
 
 ## Supabase migrations
 
@@ -139,6 +152,7 @@ The repository currently contains these applied migration groups:
 9. Restricted public organization and published-job views
 10. Complete job-filter fields and public view updates
 11. Candidate extended profile, structured skills, and private photos
+12. Platform-admin authorization and privileged audit-event foundation
 
 Migration files are stored in `supabase/migrations/`.
 
@@ -152,7 +166,8 @@ The following areas are not complete:
 - Resume/CV Builder is not implemented.
 - Google and LinkedIn authentication are not implemented.
 - Employer verification and manual moderation are not implemented.
-- Platform Admin Panel is not implemented.
+- Platform Admin Panel authorization and metrics foundation is implemented in
+  Preview; user, organization, verification, and job moderation remain.
 - Stripe payments, subscriptions, invoices, and billing are not implemented.
 - Messaging, notifications, and interview scheduling are not implemented.
 - AI features are intentionally deferred.
