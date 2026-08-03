@@ -101,6 +101,10 @@ Supabase-backed public organization pages.
 
 ## Priority 4: Basic Admin Panel
 
+**Delivery status:** In progress. The platform-admin authorization, secure
+route, minimal metrics, and audit-event foundation are implemented and verified
+in Vercel Preview on `codex/admin-platform-foundation`.
+
 ### Required scope
 
 - Platform-admin role separate from organization admin
@@ -147,20 +151,22 @@ roadmap:
 
 ## Immediate next ticket
 
-**Ticket:** Begin Priority 4 with the secure platform-admin authorization and
-audit-event foundation.
+**Ticket:** Continue Priority 4 with read-only admin user and organization
+workspaces, followed by narrowly scoped employer-verification actions.
 
-**Delivery branch:** Create a new feature branch from the current `main` before
-implementation.
+**Delivery branch:** Finish and merge the verified
+`codex/admin-platform-foundation` delivery before creating the next feature
+branch from updated `main`.
 
 **Implementation order:**
 
-1. Review every existing migration, role check, grant, and RLS policy before
-   proposing schema changes.
-2. Define a platform-admin role that is separate from organization membership.
-3. Define the minimal privileged audit-event model and access boundaries.
-4. Implement the secure admin route foundation and deny all non-admin users.
-5. Verify the complete role boundary in Vercel Preview before proposing merge.
+1. Add paginated, read-only user and organization lists with clear empty and
+   error states.
+2. Add organization detail and a pending-verification queue.
+3. Implement verification changes as narrow database operations that validate
+   platform-admin access and write audit events atomically.
+4. Confirm verification changes on public organization profiles.
+5. Add job moderation only after the verification boundary is verified.
 
 ## Definition of done for every future stage
 

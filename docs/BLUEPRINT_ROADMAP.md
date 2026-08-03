@@ -57,7 +57,8 @@ the recommended implementation order on page 3 as the governing sequence.
 
 - [ ] Centralized profession and specialty reference data
 - [ ] Centralized geographic reference data beyond the current U.S. state list
-- [ ] Formal audit-event model for privileged actions
+- [ ] Formal audit-event model for privileged actions (foundation verified in
+  Preview; moderation integrations remain)
 - [ ] Automated test coverage for critical role boundaries
 
 ## Phase 2: Marketplace MVP
@@ -111,6 +112,10 @@ the recommended implementation order on page 3 as the governing sequence.
 - [ ] Billing area
 
 ### Admin platform
+
+Priority 4 is in progress. Authorization, the secure route foundation, minimal
+metrics, and the privileged audit-event boundary are verified in Preview but
+not yet merged to Production.
 
 - [ ] Admin authentication and authorization
 - [ ] User management
@@ -169,7 +174,7 @@ and core hiring loop are stable.
 | Month 2 | Candidate profile, CV, search | Profile and search in progress; CV deferred |
 | Month 3 | Companies, jobs, employer dashboards | Substantially completed; public company pages and complete job filters are live |
 | Month 4 | Stripe, subscriptions, payments | Not started |
-| Month 5 | Admin, management, analytics, security | Security foundation exists; Admin and analytics not started |
+| Month 5 | Admin, management, analytics, security | Admin authorization and audit foundation are in Preview; management and analytics remain |
 | Month 6 | Testing, SEO, first users | Not started as a formal launch phase |
 
 ## Sequence decisions
