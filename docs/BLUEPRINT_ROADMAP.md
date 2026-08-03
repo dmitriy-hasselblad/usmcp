@@ -1,6 +1,6 @@
 # USHCE Blueprint Roadmap
 
-Last updated: 2026-07-31
+Last updated: 2026-08-03
 
 ## Source of truth
 
@@ -85,9 +85,11 @@ the recommended implementation order on page 3 as the governing sequence.
 - [x] Job application submission
 - [x] Application tracking
 - [x] Application withdrawal
-- [ ] Skills model — implemented and RLS-verified; awaiting Preview verification
-- [ ] Extended healthcare profile sections — implemented and RLS-verified;
-  awaiting Preview verification
+- [ ] Skills model — stabilization Preview and role-based verification passed
+  in PR #12; Production approval, merge, and verification remain
+- [ ] Extended healthcare profile sections — present on `main` and
+  RLS-verified; stabilization Preview and role-based verification passed in
+  PR #12; Production approval, merge, and verification remain
 - [ ] Recommended jobs
 - [ ] Resume/CV Builder
 - [ ] Google sign-in
@@ -168,7 +170,7 @@ and core hiring loop are stable.
 | --- | --- | --- |
 | Month 1 | Architecture, database, design, registration | Substantially completed |
 | Month 2 | Candidate profile, CV, search | Profile and search in progress; CV deferred |
-| Month 3 | Companies, jobs, employer dashboards | Substantially completed; live public company pages missing |
+| Month 3 | Companies, jobs, employer dashboards | Substantially completed; public company pages and complete job filters are live |
 | Month 4 | Stripe, subscriptions, payments | Not started |
 | Month 5 | Admin, management, analytics, security | Security foundation exists; Admin and analytics not started |
 | Month 6 | Testing, SEO, first users | Not started as a formal launch phase |

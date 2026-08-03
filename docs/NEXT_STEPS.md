@@ -1,6 +1,6 @@
 # USHCE Next Steps
 
-Last updated: 2026-07-31
+Last updated: 2026-08-03
 
 ## Current product phase
 
@@ -80,9 +80,10 @@ Supabase-backed public organization pages.
 
 ## Priority 3: Candidate skills and extended profile
 
-**Delivery status:** Implemented with Supabase migration, RLS, private Storage,
-TypeScript, and anonymous Data API checks. Awaiting Vercel Preview and browser
-verification before a Pull Request is proposed.
+**Delivery status:** Stabilization Preview and complete candidate/employer role
+verification passed in PR #12. The implementation remains pending
+product-owner approval, merge, and Production verification before this priority
+is marked complete.
 
 ### Required scope
 
@@ -149,20 +150,24 @@ roadmap:
 
 ## Immediate next ticket
 
-**Ticket:** Complete Vercel Preview and role-based browser verification for
-candidate skills and extended profiles.
+**Ticket:** Obtain product-owner approval for PR #12, merge it, and verify the
+resulting Production deployment.
 
-**Review branch:** `codex/candidate-extended-profile`
+**Review branch:** `agent/candidate-profile-stabilization`
 
 **Implementation order:**
 
-1. Push `codex/candidate-extended-profile` when GitHub connectivity is restored.
-2. Wait for the Vercel Preview build and inspect build logs.
-3. Verify candidate add, edit, duplicate prevention, and remove skill flows.
-4. Verify languages, summary, photo, and visibility controls.
-5. Verify an authorized hiring team can view an application-shared profile.
-6. Verify unrelated employers and anonymous visitors cannot access profile data.
-7. Update this delivery status and open a draft Pull Request.
+1. [x] Preserve the tracked `.env.example` template and remove duplicate ignore rules.
+2. [x] Verify the uploaded professional photo object and metadata server-side
+   before activating it.
+3. [x] Wait for the Vercel Preview build and inspect its status.
+4. [x] Verify candidate add, edit, duplicate prevention, and remove skill flows.
+5. [x] Verify languages, summary, photo upload/removal, and visibility controls.
+6. [x] Verify an authorized hiring team can view an application-shared profile.
+7. [x] Verify unrelated employers and anonymous visitors cannot access profile data.
+8. [x] Update this delivery status and open a Pull Request for the stabilization
+   changes.
+9. [ ] Obtain product-owner approval, merge PR #12, and verify Production.
 
 ## Definition of done for every future stage
 
