@@ -1,13 +1,13 @@
 import Link from "next/link"
 import type { ReactNode } from "react"
-import { Building2, LayoutDashboard, ShieldCheck, UsersRound } from "lucide-react"
+import { BriefcaseBusiness, Building2, LayoutDashboard, ShieldCheck, UsersRound } from "lucide-react"
 
 import { UshceLogo } from "@/components/brand/ushce-logo"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
-type AdminRoute = "overview" | "users" | "organizations"
+type AdminRoute = "overview" | "users" | "organizations" | "jobs"
 
 const routes = [
   { key: "overview", href: "/admin", label: "Overview", icon: LayoutDashboard },
@@ -18,6 +18,7 @@ const routes = [
     label: "Organizations",
     icon: Building2,
   },
+  { key: "jobs", href: "/admin/jobs", label: "Jobs", icon: BriefcaseBusiness },
 ] as const
 
 export function AdminShell({
