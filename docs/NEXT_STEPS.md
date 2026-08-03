@@ -80,10 +80,7 @@ Supabase-backed public organization pages.
 
 ## Priority 3: Candidate skills and extended profile
 
-**Delivery status:** Stabilization Preview and complete candidate/employer role
-verification passed in PR #12. The implementation remains pending
-product-owner approval, merge, and Production verification before this priority
-is marked complete.
+**Delivery status:** Completed and verified in Production through PR #12.
 
 ### Required scope
 
@@ -150,24 +147,20 @@ roadmap:
 
 ## Immediate next ticket
 
-**Ticket:** Obtain product-owner approval for PR #12, merge it, and verify the
-resulting Production deployment.
+**Ticket:** Begin Priority 4 with the secure platform-admin authorization and
+audit-event foundation.
 
-**Review branch:** `agent/candidate-profile-stabilization`
+**Delivery branch:** Create a new feature branch from the current `main` before
+implementation.
 
 **Implementation order:**
 
-1. [x] Preserve the tracked `.env.example` template and remove duplicate ignore rules.
-2. [x] Verify the uploaded professional photo object and metadata server-side
-   before activating it.
-3. [x] Wait for the Vercel Preview build and inspect its status.
-4. [x] Verify candidate add, edit, duplicate prevention, and remove skill flows.
-5. [x] Verify languages, summary, photo upload/removal, and visibility controls.
-6. [x] Verify an authorized hiring team can view an application-shared profile.
-7. [x] Verify unrelated employers and anonymous visitors cannot access profile data.
-8. [x] Update this delivery status and open a Pull Request for the stabilization
-   changes.
-9. [ ] Obtain product-owner approval, merge PR #12, and verify Production.
+1. Review every existing migration, role check, grant, and RLS policy before
+   proposing schema changes.
+2. Define a platform-admin role that is separate from organization membership.
+3. Define the minimal privileged audit-event model and access boundaries.
+4. Implement the secure admin route foundation and deny all non-admin users.
+5. Verify the complete role boundary in Vercel Preview before proposing merge.
 
 ## Definition of done for every future stage
 

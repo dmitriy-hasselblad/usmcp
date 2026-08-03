@@ -25,11 +25,11 @@ English.
 ## Production baseline
 
 - Production branch: `main`
-- Latest confirmed product Pull Request: PR #11
-- PR #11 merge commit: `eed0233710dc29779334648fc14170fd02befcea`
-- Current `main` commit: `62ed7153593e74a47e9916cedac19c320af95b8f`
+- Latest confirmed product Pull Request: PR #12
+- PR #12 merge commit: `79e45377a1c828817a2a110f54391ed417fb1b34`
+- Current `main` commit: `79e45377a1c828817a2a110f54391ed417fb1b34`
 - Production deployment status at verification: `Ready`
-- Latest Production verification date: 2026-07-31
+- Latest Production verification date: 2026-08-03
 
 The structured professional profile was verified in Production with a 100%
 completion state and records in all four categories.
@@ -37,11 +37,10 @@ completion state and records in all four categories.
 Public organization profiles and complete job filters were merged in PR #11
 and verified in Production on 2026-07-31.
 
-Candidate skills and extended-profile code are also present on `main`. PR #12
-stabilizes that delivery. Its Vercel Preview, candidate flow, authorized hiring
-team view, unrelated-employer denial, anonymous denial, migrations, and RLS
-were verified on 2026-08-03. Product-owner approval, merge, and Production
-confirmation are still required before the feature is marked complete.
+Candidate skills and extended profiles were stabilized in PR #12. Vercel
+Preview, candidate flows, authorized hiring-team access, unrelated-employer and
+anonymous denial, migrations, RLS, the merge, and the resulting Production
+deployment were verified on 2026-08-03.
 
 ## Technology stack
 
@@ -150,9 +149,6 @@ schema migrations. Migrations must be reusable in a clean environment.
 
 The following areas are not complete:
 
-- Candidate skills and extended profile passed stabilization Preview and
-  role-boundary verification in PR #12. Production approval, merge, and
-  post-merge verification are still pending.
 - Resume/CV Builder is not implemented.
 - Google and LinkedIn authentication are not implemented.
 - Employer verification and manual moderation are not implemented.
