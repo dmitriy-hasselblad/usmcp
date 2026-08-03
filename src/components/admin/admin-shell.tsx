@@ -1,15 +1,31 @@
 import Link from "next/link"
 import type { ReactNode } from "react"
-import { LayoutDashboard, ShieldCheck } from "lucide-react"
+import { Building2, LayoutDashboard, ShieldCheck, UsersRound } from "lucide-react"
 
 import { UshceLogo } from "@/components/brand/ushce-logo"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
+
+type AdminRoute = "overview" | "users" | "organizations"
+
+const routes = [
+  { key: "overview", href: "/admin", label: "Overview", icon: LayoutDashboard },
+  { key: "users", href: "/admin/users", label: "Users", icon: UsersRound },
+  {
+    key: "organizations",
+    href: "/admin/organizations",
+    label: "Organizations",
+    icon: Building2,
+  },
+] as const
 
 export function AdminShell({
+  active = "overview",
   children,
   email,
 }: {
+  active?: AdminRoute
   children: ReactNode
   email?: string
 }) {
@@ -40,14 +56,25 @@ export function AdminShell({
           <Badge className="mb-5 hidden bg-violet-100 text-violet-800 lg:inline-flex" variant="secondary">
             Platform administration
           </Badge>
-          <nav aria-label="Platform administration">
-            <Link
-              className="flex h-10 items-center gap-2.5 rounded-lg bg-primary px-3 text-sm font-medium text-primary-foreground"
-              href="/admin"
-            >
-              <LayoutDashboard className="size-4" />
-              Overview
-            </Link>
+          <nav aria-label="Platform administration" className="flex gap-1.5 overflow-x-auto lg:grid">
+            {routes.map((route) => {
+              const Icon = route.icon
+              return (
+                <Link
+                  className={cn(
+                    "flex h-10 shrink-0 items-center gap-2.5 rounded-lg px-3 text-sm font-medium transition-colors",
+                    active === route.key
+                      ? "bg-primary text-primary-foreground"
+                      : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                  )}
+                  href={route.href}
+                  key={route.key}
+                >
+                  <Icon className="size-4" />
+                  {route.label}
+                </Link>
+              )
+            })}
           </nav>
           <div className="mt-7 hidden border-t border-border pt-5 lg:block">
             <div className="flex items-start gap-2.5 px-3 text-xs leading-5 text-muted-foreground">
