@@ -85,11 +85,8 @@ the recommended implementation order on page 3 as the governing sequence.
 - [x] Job application submission
 - [x] Application tracking
 - [x] Application withdrawal
-- [ ] Skills model — stabilization Preview and role-based verification passed
-  in PR #12; Production approval, merge, and verification remain
-- [ ] Extended healthcare profile sections — present on `main` and
-  RLS-verified; stabilization Preview and role-based verification passed in
-  PR #12; Production approval, merge, and verification remain
+- [x] Skills model
+- [x] Extended healthcare profile sections
 - [ ] Recommended jobs
 - [ ] Resume/CV Builder
 - [ ] Google sign-in
