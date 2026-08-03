@@ -25,9 +25,9 @@ English.
 ## Production baseline
 
 - Production branch: `main`
-- Latest confirmed product Pull Request: PR #15
-- PR #15 merge commit: `4f5a97674f59c442e7ba718ec64c4757b2095713`
-- Current `main` commit: `4f5a97674f59c442e7ba718ec64c4757b2095713`
+- Latest confirmed product Pull Request: PR #16
+- PR #16 merge commit: `d7edcbc`
+- Current `main` commit: `d7edcbc`
 - Production deployment status at verification: `Ready`
 - Latest Production verification date: 2026-08-03
 
@@ -139,10 +139,10 @@ deployment were verified on 2026-08-03.
 - The directories include server-side search, pagination, responsive tables,
   and explicit empty and error states without exposing Auth credentials.
 - Organization detail, the pending-verification queue, and atomic verification
-  actions are implemented on `codex/admin-organization-verification` and were
-  verified end to end in Vercel Preview on 2026-08-03. The USMCP organization
-  changed from `unverified` to `verified`, and the corresponding privileged
-  audit event was confirmed in Supabase.
+  actions were merged through PR #16 and verified end to end in Production on
+  2026-08-03. The USMCP organization changed from `unverified` to `verified`,
+  the public/admin result was confirmed, and the corresponding privileged audit
+  event was confirmed in Supabase.
 
 ## Supabase migrations
 
@@ -174,7 +174,7 @@ The following areas are not complete:
 - Resume/CV Builder is not implemented.
 - Google and LinkedIn authentication are not implemented.
 - Employer verification and manual moderation are implemented and verified in
-  Preview; Production publication is pending.
+  Production.
 - Platform Admin Panel authorization, metrics, directories, and organization
   verification are implemented; job and user-state moderation remain.
 - Stripe payments, subscriptions, invoices, and billing are not implemented.
