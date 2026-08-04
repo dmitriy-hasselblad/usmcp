@@ -1,6 +1,6 @@
 # USHCE Next Steps
 
-Last updated: 2026-08-03
+Last updated: 2026-08-04
 
 ## Current product phase
 
@@ -101,11 +101,13 @@ Supabase-backed public organization pages.
 
 ## Priority 4: Basic Admin Panel
 
-**Delivery status:** In progress. The platform-admin authorization, secure
+**Delivery status:** Completed and verified in Production. The platform-admin authorization, secure
 route, minimal metrics, audit-event foundation, read-only directories,
 organization detail, the pending-verification queue, and atomic verification
 actions are verified in Production through PR #16.
-Job moderation is verified end to end in Production through PR #18.
+Job moderation is verified end to end through PR #18. User suspension,
+blocked-access behavior, reactivation, restored access, and both audit events
+are verified through PR #20.
 
 ### Required scope
 
@@ -153,22 +155,25 @@ roadmap:
 
 ## Immediate next ticket
 
-**Ticket:** Continue Priority 4 with narrowly scoped user-state moderation.
+**Ticket:** Start Priority 5 with a narrowly scoped transactional email
+notification foundation.
 
 **Delivery branch:** Create a new feature branch from updated `main` after this
 Production handoff is merged.
 
 **Implementation order:**
 
-1. Review the existing account/profile status model, Auth integration, RLS, and
-   platform-admin boundary before changing the database.
-2. Define the smallest suspend/reactivate operation without deleting Auth
-   users or relying on user-editable metadata.
-3. Require explicit confirmation and an internal reason for suspension.
-4. Record actor, target, previous/new state, reason, and timestamp atomically in
-   the privileged audit log.
-5. Verify suspended and reactivated access behavior in Vercel Preview before
-   requesting a Production merge.
+1. Review existing application and hiring-status actions, environment handling,
+   and Vercel Preview configuration before selecting an email provider.
+2. Define the smallest reusable server-only email boundary without exposing a
+   provider key to the browser or storing credentials in the repository.
+3. Implement one high-value notification first: notify a professional when an
+   employer changes an application hiring status.
+4. Keep the database action successful if external email delivery fails, and
+   record enough server-side context for safe diagnosis without logging private
+   message content or secrets.
+5. Verify the status change and email behavior with non-production recipients
+   in Vercel Preview before requesting a Production merge.
 
 ## Definition of done for every future stage
 

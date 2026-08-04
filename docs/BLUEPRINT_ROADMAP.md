@@ -1,6 +1,6 @@
 # USHCE Blueprint Roadmap
 
-Last updated: 2026-08-03
+Last updated: 2026-08-04
 
 ## Source of truth
 
@@ -113,13 +113,13 @@ the recommended implementation order on page 3 as the governing sequence.
 
 ### Admin platform
 
-Priority 4 is in progress. Authorization, the secure route foundation, minimal
-metrics, the privileged audit-event boundary, read-only directories, and
-organization verification moderation, and job moderation are in Production.
-User-state moderation remains.
+The scoped Priority 4 Basic Admin Panel is complete in Production. Authorization,
+the secure route foundation, minimal metrics, the privileged audit-event
+boundary, directories, organization and job moderation, and reversible
+user-state moderation are verified.
 
 - [x] Admin authentication and authorization
-- [ ] User management
+- [x] User management (suspend/reactivate workflow; Production verified)
 - [x] Organization moderation (verification workflow; Production verified)
 - [x] Employer verification queue (Production verified)
 - [x] Job moderation (Production verified)
@@ -175,7 +175,7 @@ and core hiring loop are stable.
 | Month 2 | Candidate profile, CV, search | Profile and search in progress; CV deferred |
 | Month 3 | Companies, jobs, employer dashboards | Substantially completed; public company pages and complete job filters are live |
 | Month 4 | Stripe, subscriptions, payments | Not started |
-| Month 5 | Admin, management, analytics, security | Admin authorization, directories, metrics, audit foundation, and organization verification are in Production; remaining moderation and analytics work continues |
+| Month 5 | Admin, management, analytics, security | Scoped Basic Admin Panel is in Production; abuse reporting, audit viewer, and advanced analytics remain |
 | Month 6 | Testing, SEO, first users | Not started as a formal launch phase |
 
 ## Sequence decisions

@@ -1,6 +1,6 @@
 # USHCE Project Status
 
-Last updated: 2026-08-03
+Last updated: 2026-08-04
 
 ## Purpose
 
@@ -25,9 +25,9 @@ English.
 ## Production baseline
 
 - Production branch: `main`
-- Latest confirmed product Pull Request: PR #18
-- PR #18 merge commit: `d462bf7`
-- Current `main` commit: `d462bf7`
+- Latest confirmed product Pull Request: PR #20
+- PR #20 merge commit: `90b8e2f`
+- Current `main` commit: `90b8e2f`
 - Production deployment status at verification: `Ready`
 - Latest Production verification date: 2026-08-03
 
@@ -148,6 +148,11 @@ deployment were verified on 2026-08-03.
   2026-08-04. The `Test` job moved from `approved` to `under_review` and
   disappeared from the public view, then returned to `approved` and public
   visibility. Both privileged audit events were confirmed in Supabase.
+- Admin user-state moderation was merged through PR #20 and verified end to
+  end in Preview and Production on 2026-08-04. A non-admin test user moved
+  from `active` to `suspended`, was denied protected application access, then
+  returned to `active` with Dashboard access restored. Both transitions and
+  their reasons were confirmed in the privileged Supabase audit log.
 
 ## Supabase migrations
 
@@ -167,6 +172,7 @@ The repository currently contains these applied migration groups:
 12. Platform-admin authorization and privileged audit-event foundation
 13. Atomic organization-verification moderation
 14. Atomic job-visibility moderation
+15. Atomic user-state moderation
 
 Migration files are stored in `supabase/migrations/`.
 
@@ -181,9 +187,9 @@ The following areas are not complete:
 - Google and LinkedIn authentication are not implemented.
 - Employer verification and manual moderation are implemented and verified in
   Production.
-- Platform Admin Panel authorization, metrics, directories, and organization
-  verification and job moderation are in Production. User-state moderation
-  remains.
+- The scoped Basic Admin Panel is in Production: authorization, metrics,
+  directories, organization verification, job moderation, user suspension and
+  reactivation, and privileged audit events.
 - Stripe payments, subscriptions, invoices, and billing are not implemented.
 - Messaging, notifications, and interview scheduling are not implemented.
 - AI features are intentionally deferred.
