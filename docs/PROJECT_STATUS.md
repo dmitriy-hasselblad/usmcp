@@ -25,9 +25,9 @@ English.
 ## Production baseline
 
 - Production branch: `main`
-- Latest confirmed product Pull Request: PR #16
-- PR #16 merge commit: `d7edcbc`
-- Current `main` commit: `d7edcbc`
+- Latest confirmed product Pull Request: PR #18
+- PR #18 merge commit: `d462bf7`
+- Current `main` commit: `d462bf7`
 - Production deployment status at verification: `Ready`
 - Latest Production verification date: 2026-08-03
 
@@ -144,11 +144,10 @@ deployment were verified on 2026-08-03.
   the public/admin result was confirmed, and the corresponding privileged audit
   event was confirmed in Supabase.
 - Admin job directory, moderation detail, and marketplace visibility controls
-  are implemented on `codex/admin-job-moderation` and verified end to end in
-  Vercel Preview on 2026-08-04. The `Test` job moved from `approved` to
-  `under_review` and disappeared from the public view, then returned to
-  `approved` and public visibility. Both privileged audit events were confirmed
-  in Supabase.
+  were merged through PR #18 and verified end to end in Production on
+  2026-08-04. The `Test` job moved from `approved` to `under_review` and
+  disappeared from the public view, then returned to `approved` and public
+  visibility. Both privileged audit events were confirmed in Supabase.
 
 ## Supabase migrations
 
@@ -183,8 +182,8 @@ The following areas are not complete:
 - Employer verification and manual moderation are implemented and verified in
   Production.
 - Platform Admin Panel authorization, metrics, directories, and organization
-  verification are in Production. Job moderation is verified in Preview;
-  Production publication and user-state moderation remain.
+  verification and job moderation are in Production. User-state moderation
+  remains.
 - Stripe payments, subscriptions, invoices, and billing are not implemented.
 - Messaging, notifications, and interview scheduling are not implemented.
 - AI features are intentionally deferred.

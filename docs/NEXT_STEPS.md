@@ -105,8 +105,7 @@ Supabase-backed public organization pages.
 route, minimal metrics, audit-event foundation, read-only directories,
 organization detail, the pending-verification queue, and atomic verification
 actions are verified in Production through PR #16.
-Job moderation is implemented and verified end to end in Vercel Preview on
-`codex/admin-job-moderation`; Production merge is pending.
+Job moderation is verified end to end in Production through PR #18.
 
 ### Required scope
 
@@ -154,19 +153,22 @@ roadmap:
 
 ## Immediate next ticket
 
-**Ticket:** Complete the Production handoff for the verified job-moderation
-branch, then continue Priority 4 with narrowly scoped user-state moderation.
+**Ticket:** Continue Priority 4 with narrowly scoped user-state moderation.
 
-**Delivery branch:** `codex/admin-job-moderation`
+**Delivery branch:** Create a new feature branch from updated `main` after this
+Production handoff is merged.
 
 **Implementation order:**
 
-1. Push the Preview-verification documentation commit.
-2. Open and review a Pull Request for `codex/admin-job-moderation`.
-3. Merge only after explicit product-owner approval.
-4. Confirm the resulting Production deployment, admin job directory, and
-   public marketplace visibility.
-5. Create a new branch from updated `main` for user-state moderation.
+1. Review the existing account/profile status model, Auth integration, RLS, and
+   platform-admin boundary before changing the database.
+2. Define the smallest suspend/reactivate operation without deleting Auth
+   users or relying on user-editable metadata.
+3. Require explicit confirmation and an internal reason for suspension.
+4. Record actor, target, previous/new state, reason, and timestamp atomically in
+   the privileged audit log.
+5. Verify suspended and reactivated access behavior in Vercel Preview before
+   requesting a Production merge.
 
 ## Definition of done for every future stage
 
