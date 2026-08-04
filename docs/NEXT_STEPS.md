@@ -1,6 +1,6 @@
 # USHCE Next Steps
 
-Last updated: 2026-08-03
+Last updated: 2026-08-04
 
 ## Current product phase
 
@@ -101,11 +101,13 @@ Supabase-backed public organization pages.
 
 ## Priority 4: Basic Admin Panel
 
-**Delivery status:** In progress. The platform-admin authorization, secure
+**Delivery status:** Completed and verified in Production. The platform-admin authorization, secure
 route, minimal metrics, audit-event foundation, read-only directories,
 organization detail, the pending-verification queue, and atomic verification
 actions are verified in Production through PR #16.
-Job moderation is verified end to end in Production through PR #18.
+Job moderation is verified end to end through PR #18. User suspension,
+blocked-access behavior, reactivation, restored access, and both audit events
+are verified through PR #20.
 
 ### Required scope
 
@@ -126,16 +128,23 @@ Job moderation is verified end to end in Production through PR #18.
 - Destructive actions require clear confirmation.
 - Verification changes appear correctly on public organization profiles.
 
-## Priority 5: Trust and Revenue preparation
+## Priority 5: Early Access growth and trust preparation
 
-Start only after Priorities 1-4 are stable:
+Priorities 1-4 are stable. The product-owner decision for the initial launch is
+a free Early Access pilot focused on building the employer and candidate base.
+Payments are not a launch dependency.
 
 1. Employer verification workflow
 2. Email notifications
-3. Stripe product and price model
-4. Subscription entitlements
-5. One-time job-posting payments
-6. Billing portal and webhook processing
+3. Candidate search and saved candidates
+4. Employer team invitations
+5. Organization News & Insights
+6. Abuse oversight and audit viewer
+7. Automated boundary tests, SEO, analytics, and soft-launch readiness
+
+Stripe, subscriptions, one-time payments, invoices, and billing are deferred
+until 6-12 months after Early Access. Preserve a clean future entitlement
+boundary, but do not implement or prioritize payment functionality before then.
 
 ## Deferred work
 
@@ -153,22 +162,25 @@ roadmap:
 
 ## Immediate next ticket
 
-**Ticket:** Continue Priority 4 with narrowly scoped user-state moderation.
+**Ticket:** Start Priority 5 with a narrowly scoped transactional email
+notification foundation.
 
 **Delivery branch:** Create a new feature branch from updated `main` after this
 Production handoff is merged.
 
 **Implementation order:**
 
-1. Review the existing account/profile status model, Auth integration, RLS, and
-   platform-admin boundary before changing the database.
-2. Define the smallest suspend/reactivate operation without deleting Auth
-   users or relying on user-editable metadata.
-3. Require explicit confirmation and an internal reason for suspension.
-4. Record actor, target, previous/new state, reason, and timestamp atomically in
-   the privileged audit log.
-5. Verify suspended and reactivated access behavior in Vercel Preview before
-   requesting a Production merge.
+1. Review existing application and hiring-status actions, environment handling,
+   and Vercel Preview configuration before selecting an email provider.
+2. Define the smallest reusable server-only email boundary without exposing a
+   provider key to the browser or storing credentials in the repository.
+3. Implement one high-value notification first: notify a professional when an
+   employer changes an application hiring status.
+4. Keep the database action successful if external email delivery fails, and
+   record enough server-side context for safe diagnosis without logging private
+   message content or secrets.
+5. Verify the status change and email behavior with non-production recipients
+   in Vercel Preview before requesting a Production merge.
 
 ## Definition of done for every future stage
 
