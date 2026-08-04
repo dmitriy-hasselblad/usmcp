@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import {
   ArrowRight,
   BookOpenText,
@@ -14,11 +15,11 @@ import { SiteHeader } from "@/components/layout/site-header"
 import { HeroSearch } from "@/components/marketing/hero-search"
 import { SectionHeading } from "@/components/marketing/section-heading"
 import { OrganizationCard } from "@/components/organizations/organization-card"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { getPublishedJobs } from "@/lib/jobs/public-jobs"
 import { getPublicOrganizations } from "@/lib/organizations/public-organizations"
+import healthcareTeamImage from "../../public/images/ushce-healthcare-team.png"
 import {
   benefits,
   careerPaths,
@@ -120,6 +121,24 @@ export default async function Home() {
               <span>Recruiters</span>
               <span>Residency candidates</span>
               <span>International professionals</span>
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-white px-5 pt-8 lg:px-8 lg:pt-12">
+          <div className="relative mx-auto aspect-[2/1] max-w-7xl overflow-hidden rounded-[2rem] bg-slate-100 shadow-[0_24px_65px_rgba(15,76,129,0.14)] sm:aspect-[2.25/1]">
+            <Image
+              alt="A diverse team of healthcare professionals collaborating in a modern U.S. hospital"
+              className="object-cover"
+              fill
+              placeholder="blur"
+              sizes="(max-width: 1280px) calc(100vw - 40px), 1216px"
+              src={healthcareTeamImage}
+            />
+            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/75 via-slate-950/20 to-transparent px-6 pt-20 pb-6 text-white sm:px-9 sm:pt-28 sm:pb-8">
+              <p className="max-w-2xl text-xl font-semibold tracking-[-0.035em] sm:text-2xl">
+                Built around the people who keep U.S. healthcare moving.
+              </p>
             </div>
           </div>
         </section>
