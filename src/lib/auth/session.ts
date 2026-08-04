@@ -21,6 +21,12 @@ export async function requireIdentity(nextPath = "/dashboard") {
     redirect(`/sign-in?next=${encodeURIComponent(next)}`)
   }
 
+  const { data: accountStatus, error: accountStatusError } = await supabase.rpc(
+    "get_current_account_status",
+  )
+  if (accountStatusError) redirect("/sign-in?error=Account%20status%20could%20not%20be%20verified.")
+  if (accountStatus === "suspended") redirect("/account-suspended")
+
   return {
     supabase,
     userId,

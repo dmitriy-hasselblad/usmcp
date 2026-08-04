@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
-import { Search, UsersRound } from "lucide-react"
+import Link from "next/link"
+import { ExternalLink, Search, UsersRound } from "lucide-react"
 
 import { AdminDirectoryPagination } from "@/components/admin/admin-directory-pagination"
 import { AdminShell } from "@/components/admin/admin-shell"
@@ -50,6 +51,10 @@ export default async function AdminUsersPage({ searchParams }: UsersPageProps) {
   }
 
   const { data: users, count, error } = await usersQuery
+  const { data: moderation } = users?.length
+    ? await identity.supabase.from("account_moderation").select("user_id, status").in("user_id", users.map((user) => user.id))
+    : { data: [] }
+  const statusByUser = new Map(moderation?.map((row) => [row.user_id, row.status]))
 
   return (
     <AdminShell active="users" email={identity.email}>
@@ -76,7 +81,9 @@ export default async function AdminUsersPage({ searchParams }: UsersPageProps) {
                     <th className="px-5 py-3 font-semibold sm:px-6">User</th>
                     <th className="px-5 py-3 font-semibold">Account</th>
                     <th className="px-5 py-3 font-semibold">Onboarding</th>
+                    <th className="px-5 py-3 font-semibold">Status</th>
                     <th className="px-5 py-3 font-semibold sm:px-6">Registered</th>
+                    <th className="px-5 py-3 font-semibold"><span className="sr-only">Actions</span></th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
@@ -94,9 +101,11 @@ export default async function AdminUsersPage({ searchParams }: UsersPageProps) {
                           {user.onboarding_completed ? "Completed" : "Incomplete"}
                         </Badge>
                       </td>
+                      <td className="px-5 py-4"><Badge variant={statusByUser.get(user.id) === "suspended" ? "destructive" : "secondary"}>{statusByUser.get(user.id) ?? "active"}</Badge></td>
                       <td className="px-5 py-4 text-muted-foreground sm:px-6">
                         {formatAdminDate(user.created_at)}
                       </td>
+                      <td className="px-5 py-4"><Button asChild size="sm" variant="outline"><Link href={`/admin/users/${user.id}`}>Review <ExternalLink /></Link></Button></td>
                     </tr>
                   ))}
                 </tbody>
