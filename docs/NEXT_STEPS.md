@@ -105,6 +105,8 @@ Supabase-backed public organization pages.
 route, minimal metrics, audit-event foundation, read-only directories,
 organization detail, the pending-verification queue, and atomic verification
 actions are verified in Production through PR #16.
+Job moderation is implemented and verified end to end in Vercel Preview on
+`codex/admin-job-moderation`; Production merge is pending.
 
 ### Required scope
 
@@ -152,25 +154,19 @@ roadmap:
 
 ## Immediate next ticket
 
-**Ticket:** Continue Priority 4 with narrowly scoped job moderation.
+**Ticket:** Complete the Production handoff for the verified job-moderation
+branch, then continue Priority 4 with narrowly scoped user-state moderation.
 
-**Delivery branch:** Create a new feature branch from updated `main` after this
-Production handoff is merged.
+**Delivery branch:** `codex/admin-job-moderation`
 
 **Implementation order:**
 
-1. Review the existing job schema, migrations, publication policies, and RLS
-   before changing the database.
-2. Add an admin job directory and moderation detail view with clear status
-   filters and empty/error states.
-3. Define the smallest necessary moderation actions without disrupting the
-   employer draft/published workflow.
-4. Require explicit confirmation for destructive or visibility-changing
-   actions.
-5. Validate platform-admin access and write the actor, target, action, and
-   timestamp atomically to the privileged audit log.
-6. Verify employer, public marketplace, and admin results in Vercel Preview
-   before requesting a Production merge.
+1. Push the Preview-verification documentation commit.
+2. Open and review a Pull Request for `codex/admin-job-moderation`.
+3. Merge only after explicit product-owner approval.
+4. Confirm the resulting Production deployment, admin job directory, and
+   public marketplace visibility.
+5. Create a new branch from updated `main` for user-state moderation.
 
 ## Definition of done for every future stage
 
