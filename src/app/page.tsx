@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import {
   ArrowRight,
   BookOpenText,
@@ -14,11 +15,11 @@ import { SiteHeader } from "@/components/layout/site-header"
 import { HeroSearch } from "@/components/marketing/hero-search"
 import { SectionHeading } from "@/components/marketing/section-heading"
 import { OrganizationCard } from "@/components/organizations/organization-card"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { getPublishedJobs } from "@/lib/jobs/public-jobs"
 import { getPublicOrganizations } from "@/lib/organizations/public-organizations"
+import healthcareTeamImage from "../../public/images/ushce-healthcare-team.png"
 import {
   benefits,
   careerPaths,
@@ -42,8 +43,18 @@ export default async function Home() {
     <div className="min-h-dvh overflow-hidden bg-background">
       <SiteHeader />
       <main id="top">
-        <section className="relative isolate border-b border-border bg-[linear-gradient(135deg,#f8fcff_0%,#eef8f8_45%,#f6fbff_100%)]">
-          <div className="pointer-events-none absolute inset-0 -z-10 opacity-75 [background-image:radial-gradient(circle_at_15%_20%,rgba(108,207,193,0.18),transparent_25%),radial-gradient(circle_at_90%_0%,rgba(77,144,209,0.2),transparent_28%)]" />
+        <section className="relative isolate overflow-hidden border-b border-border bg-slate-100">
+          <Image
+            alt=""
+            aria-hidden="true"
+            className="-z-20 object-cover object-[58%_center]"
+            fill
+            placeholder="blur"
+            priority
+            sizes="100vw"
+            src={healthcareTeamImage}
+          />
+          <div className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(248,252,255,0.98)_0%,rgba(248,252,255,0.94)_36%,rgba(238,248,248,0.54)_62%,rgba(8,42,70,0.18)_100%)] max-lg:bg-[linear-gradient(180deg,rgba(248,252,255,0.97)_0%,rgba(248,252,255,0.92)_48%,rgba(15,76,129,0.3)_100%)]" />
           <div className="mx-auto grid max-w-7xl gap-14 px-5 py-16 sm:py-24 lg:grid-cols-[minmax(0,1.08fr)_minmax(23rem,0.92fr)] lg:items-center lg:px-8 lg:py-28">
             <div>
               <div className="inline-flex items-center gap-2 rounded-full border border-primary/10 bg-white/80 px-3 py-1.5 text-xs font-semibold text-primary shadow-sm">
@@ -76,7 +87,7 @@ export default async function Home() {
 
             <div className="relative mx-auto w-full max-w-lg lg:mx-0 lg:justify-self-end">
               <div className="absolute -inset-4 -z-10 rounded-[2.5rem] bg-primary/10 blur-2xl" />
-              <div className="rounded-[2rem] border border-white/90 bg-[#0e416c] p-5 shadow-[0_28px_70px_rgba(15,76,129,0.28)] sm:p-6">
+              <div className="rounded-[2rem] border border-white/80 bg-[#0e416c]/95 p-5 shadow-[0_28px_70px_rgba(15,76,129,0.32)] backdrop-blur-sm sm:p-6">
                 <div className="rounded-[1.45rem] border border-white/10 bg-white/[0.07] p-5 text-white backdrop-blur sm:p-6">
                   <p className="text-sm font-medium text-white/70">
                     Start with your goal
