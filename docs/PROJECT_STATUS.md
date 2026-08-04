@@ -143,6 +143,12 @@ deployment were verified on 2026-08-03.
   2026-08-03. The USMCP organization changed from `unverified` to `verified`,
   the public/admin result was confirmed, and the corresponding privileged audit
   event was confirmed in Supabase.
+- Admin job directory, moderation detail, and marketplace visibility controls
+  are implemented on `codex/admin-job-moderation` and verified end to end in
+  Vercel Preview on 2026-08-04. The `Test` job moved from `approved` to
+  `under_review` and disappeared from the public view, then returned to
+  `approved` and public visibility. Both privileged audit events were confirmed
+  in Supabase.
 
 ## Supabase migrations
 
@@ -161,6 +167,7 @@ The repository currently contains these applied migration groups:
 11. Candidate extended profile, structured skills, and private photos
 12. Platform-admin authorization and privileged audit-event foundation
 13. Atomic organization-verification moderation
+14. Atomic job-visibility moderation
 
 Migration files are stored in `supabase/migrations/`.
 
@@ -176,7 +183,8 @@ The following areas are not complete:
 - Employer verification and manual moderation are implemented and verified in
   Production.
 - Platform Admin Panel authorization, metrics, directories, and organization
-  verification are implemented; job and user-state moderation remain.
+  verification are in Production. Job moderation is verified in Preview;
+  Production publication and user-state moderation remain.
 - Stripe payments, subscriptions, invoices, and billing are not implemented.
 - Messaging, notifications, and interview scheduling are not implemented.
 - AI features are intentionally deferred.

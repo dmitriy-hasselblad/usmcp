@@ -116,13 +116,13 @@ the recommended implementation order on page 3 as the governing sequence.
 Priority 4 is in progress. Authorization, the secure route foundation, minimal
 metrics, the privileged audit-event boundary, read-only directories, and
 organization verification moderation are in Production. Job and user-state
-moderation remain.
+moderation remain; job moderation is verified in Preview.
 
 - [x] Admin authentication and authorization
 - [ ] User management
 - [x] Organization moderation (verification workflow; Production verified)
 - [x] Employer verification queue (Production verified)
-- [ ] Job moderation
+- [x] Job moderation (Preview verified; Production merge pending)
 - [ ] Application and abuse reporting oversight
 - [x] Basic platform metrics
 - [ ] Audit log viewer
