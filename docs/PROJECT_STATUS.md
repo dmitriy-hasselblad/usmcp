@@ -190,7 +190,9 @@ The following areas are not complete:
 - The scoped Basic Admin Panel is in Production: authorization, metrics,
   directories, organization verification, job moderation, user suspension and
   reactivation, and privileged audit events.
-- Stripe payments, subscriptions, invoices, and billing are not implemented.
+- Stripe payments, subscriptions, invoices, and billing are intentionally
+  deferred until 6-12 months after Early Access. The initial launch will use a
+  free pilot model focused on building the employer and candidate base.
 - Messaging, notifications, and interview scheduling are not implemented.
 - AI features are intentionally deferred.
 - Full SEO, analytics, and soft-launch operations are not implemented.

@@ -128,16 +128,23 @@ are verified through PR #20.
 - Destructive actions require clear confirmation.
 - Verification changes appear correctly on public organization profiles.
 
-## Priority 5: Trust and Revenue preparation
+## Priority 5: Early Access growth and trust preparation
 
-Start only after Priorities 1-4 are stable:
+Priorities 1-4 are stable. The product-owner decision for the initial launch is
+a free Early Access pilot focused on building the employer and candidate base.
+Payments are not a launch dependency.
 
 1. Employer verification workflow
 2. Email notifications
-3. Stripe product and price model
-4. Subscription entitlements
-5. One-time job-posting payments
-6. Billing portal and webhook processing
+3. Candidate search and saved candidates
+4. Employer team invitations
+5. Organization News & Insights
+6. Abuse oversight and audit viewer
+7. Automated boundary tests, SEO, analytics, and soft-launch readiness
+
+Stripe, subscriptions, one-time payments, invoices, and billing are deferred
+until 6-12 months after Early Access. Preserve a clean future entitlement
+boundary, but do not implement or prioritize payment functionality before then.
 
 ## Deferred work
 
