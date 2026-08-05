@@ -181,7 +181,7 @@ and core hiring loop are stable.
 | Blueprint month | Expected scope | Current state |
 | --- | --- | --- |
 | Month 1 | Architecture, database, design, registration | Substantially completed |
-| Month 2 | Candidate profile, CV, search | Profile and search in progress; CV deferred |
+| Month 2 | Candidate profile, CV, search | Profile and candidate search are live; CV deferred |
 | Month 3 | Companies, jobs, employer dashboards | Substantially completed; public company pages and complete job filters are live |
 | Month 4 | Stripe, subscriptions, payments | Intentionally deferred until 6-12 months after Early Access |
 | Month 5 | Admin, management, analytics, security | Scoped Basic Admin Panel is in Production; abuse reporting, audit viewer, and advanced analytics remain |

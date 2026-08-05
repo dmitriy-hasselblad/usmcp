@@ -4,8 +4,8 @@ import {
   Building2,
   BriefcaseBusiness,
   LayoutDashboard,
-  LockKeyhole,
   Search,
+  ShieldCheck,
   UsersRound,
 } from "lucide-react"
 
@@ -20,8 +20,15 @@ type EmployerRoute =
   | "applications"
   | "candidates"
   | "organization"
+  | "team"
 
 const routes = [
+  {
+    key: "team",
+    href: "/dashboard/team",
+    label: "Team & access",
+    icon: ShieldCheck,
+  },
   {
     key: "overview",
     href: "/dashboard",
@@ -119,35 +126,9 @@ export function EmployerDashboardShell({
               )
             })}
           </nav>
-          <div className="mt-7 hidden border-t border-border pt-5 lg:block">
-            <p className="px-3 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
-              Coming next
-            </p>
-            <div className="mt-2 grid gap-1">
-              <SoonItem icon={LockKeyhole} label="Team & access" />
-            </div>
-          </div>
         </aside>
         <main className="min-w-0 px-5 py-8 lg:px-10 lg:py-10">{children}</main>
       </div>
-    </div>
-  )
-}
-
-function SoonItem({
-  icon: Icon,
-  label,
-}: {
-  icon: typeof UsersRound
-  label: string
-}) {
-  return (
-    <div className="flex h-10 items-center gap-2.5 px-3 text-sm text-muted-foreground/70">
-      <Icon className="size-4" />
-      <span>{label}</span>
-      <span className="ml-auto text-[0.65rem] font-semibold tracking-wide uppercase">
-        Soon
-      </span>
     </div>
   )
 }

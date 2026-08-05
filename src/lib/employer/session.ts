@@ -47,13 +47,27 @@ export async function requireEmployerWorkspace(
     redirect("/dashboard")
   }
 
-  const { data: membership } = await supabase
+  const { data: employerProfile } = await supabase
+    .from("employer_profiles")
+    .select("organization_id")
+    .eq("user_id", userId)
+    .maybeSingle()
+
+  let membershipQuery = supabase
     .from("organization_members")
     .select("organization_id, role, position_title")
     .eq("user_id", userId)
     .order("created_at")
     .limit(1)
-    .maybeSingle()
+
+  if (employerProfile?.organization_id) {
+    membershipQuery = membershipQuery.eq(
+      "organization_id",
+      employerProfile.organization_id,
+    )
+  }
+
+  const { data: membership } = await membershipQuery.maybeSingle()
 
   if (!membership) {
     redirect("/dashboard/workspace-unavailable")

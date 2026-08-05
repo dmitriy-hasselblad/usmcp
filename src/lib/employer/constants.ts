@@ -38,6 +38,14 @@ export type OrganizationMemberRole =
   | "recruiter"
   | "viewer"
 
+export const assignableOrganizationRoles = ["admin", "recruiter", "viewer"] as const
+
+export function isAssignableOrganizationRole(
+  value: string,
+): value is (typeof assignableOrganizationRoles)[number] {
+  return assignableOrganizationRoles.some((role) => role === value)
+}
+
 export function isEmploymentType(value: string) {
   return employmentTypes.some((option) => option === value)
 }

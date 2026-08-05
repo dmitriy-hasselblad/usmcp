@@ -167,27 +167,30 @@ roadmap:
 
 ## Immediate next ticket
 
-**Ticket:** Implement employer Candidate Search and Saved Candidates.
+**Ticket:** Implement employer team invitations and access administration.
 
-**Delivery branch:** `codex/candidate-search-saved`, created from Production
-commit `833ab27`.
+**Delivery branch:** `codex/employer-team-invitations`, created from Production
+commit `cffb93d`.
 
-**Preview verification status:** Completed on 2026-08-05. Candidate opt-in,
-employer search visibility, filters, save/remove behavior, saved-candidate
-view, and opt-out removal were confirmed. Supabase RLS transaction checks also
-confirmed unrelated-organization denial. Production verification remains.
+**Previous ticket:** Candidate Search and Saved Candidates were merged through
+PR #24 and verified end to end in Production on 2026-08-05.
+
+**Preview verification status:** Completed on 2026-08-05. The organization
+owner created a role-based invitation, the generated link used the correct
+Vercel Preview domain, and a second employer account accepted it successfully.
 
 **Implementation order:**
 
-1. Add an explicit professional opt-in visibility state for employer discovery;
-   keep contact data, documents, and applications private.
-2. Add a server-side candidate directory with profession, specialty, state,
-   location, and keyword filters.
-3. Add organization-scoped saved candidates with RLS for authorized hiring-team
-   members.
-4. Verify opt-in, opt-out, unrelated-user denial, save/remove behavior, and
-   responsive empty/filter states in Vercel Preview.
-5. Apply and verify migrations/RLS before requesting a Production merge.
+1. Let organization owners and administrators create a copyable, expiring
+   invitation link with an admin, recruiter, or viewer role.
+2. Require a signed-in employer account whose verified Auth email matches the
+   invitation before membership is created.
+3. Add member role updates, invitation revocation, member removal, and
+   last-owner protection.
+4. Verify owner/admin permissions, unauthorized denial, email mismatch,
+   single-use acceptance, role changes, and removal in Vercel Preview.
+5. Keep Resend delivery disabled; invitation links are shared manually during
+   Early Access.
 
 ## Definition of done for every future stage
 
