@@ -1,6 +1,6 @@
 # USHCE Project Status
 
-Last updated: 2026-08-04
+Last updated: 2026-08-05
 
 ## Purpose
 
@@ -25,11 +25,11 @@ English.
 ## Production baseline
 
 - Production branch: `main`
-- Latest confirmed product Pull Request: PR #20
-- PR #20 merge commit: `90b8e2f`
-- Current `main` commit: `90b8e2f`
+- Latest confirmed product Pull Request: PR #23
+- PR #23 merge commit: `833ab27`
+- Current `main` commit at branch handoff: `833ab27`
 - Production deployment status at verification: `Ready`
-- Latest Production verification date: 2026-08-03
+- Latest Production verification date: 2026-08-05
 
 The structured professional profile was verified in Production with a 100%
 completion state and records in all four categories.
@@ -153,6 +153,9 @@ deployment were verified on 2026-08-03.
   from `active` to `suspended`, was denied protected application access, then
   returned to `active` with Dashboard access restored. Both transitions and
   their reasons were confirmed in the privileged Supabase audit log.
+- The server-only application-status email boundary was merged through PR #23.
+  It is disabled by default and does not send Production email without an
+  explicit delivery mode and server-side provider configuration.
 
 ## Supabase migrations
 
@@ -173,6 +176,8 @@ The repository currently contains these applied migration groups:
 13. Atomic organization-verification moderation
 14. Atomic job-visibility moderation
 15. Atomic user-state moderation
+16. Candidate discovery opt-in, organization-scoped saved candidates, and
+    hardened search boundary
 
 Migration files are stored in `supabase/migrations/`.
 
@@ -193,7 +198,12 @@ The following areas are not complete:
 - Stripe payments, subscriptions, invoices, and billing are intentionally
   deferred until 6-12 months after Early Access. The initial launch will use a
   free pilot model focused on building the employer and candidate base.
-- Messaging, notifications, and interview scheduling are not implemented.
+- The application-status email foundation exists, but Resend setup, domain
+  verification, non-production delivery testing, and live email delivery are
+  intentionally deferred. Until resumed, `EMAIL_DELIVERY_MODE` must remain
+  unset or `disabled` in Production.
+- Messaging, in-product notifications, and interview scheduling are not
+  implemented.
 - AI features are intentionally deferred.
 - Full SEO, analytics, and soft-launch operations are not implemented.
 
@@ -245,6 +255,17 @@ At the end of a work session:
 9. Update these handoff documents when scope or priorities change.
 
 Do not develop directly on `main`.
+
+## Product-owner deferral register
+
+When reporting remaining work, always include these explicit decisions:
+
+1. **Email delivery / Resend:** deferred after PR #23. The code foundation is
+   present, but provider onboarding, domain verification, Preview recipient
+   testing, and Production activation remain unfinished.
+2. **Payments and billing:** Stripe, subscriptions, job-posting payments,
+   invoices, billing portal, and webhooks are deferred until 6-12 months after
+   Early Access launch. The initial pilot remains free.
 
 ## Verification standard
 

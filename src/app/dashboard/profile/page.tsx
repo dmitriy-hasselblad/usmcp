@@ -316,11 +316,18 @@ export default async function ProfessionalProfilePage({
                 name="profileVisibility"
                 options={profileVisibilities.map((value) => [
                   value,
-                  value === "application_only"
-                    ? "Organizations I apply to"
-                    : "Private to me",
+                  value === "employer_search"
+                    ? "Discoverable by verified employer workspaces"
+                    : value === "application_only"
+                      ? "Organizations I apply to"
+                      : "Private to me",
                 ] as const)}
               />
+              <p className="-mt-3 text-sm leading-6 text-muted-foreground">
+                Discoverable profiles can appear in employer candidate search.
+                Your email, phone number, documents, and application history are
+                never included in search results.
+              </p>
 
               <AuthSubmitButton pendingLabel="Saving profile...">
                 Save profile
