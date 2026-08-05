@@ -156,6 +156,11 @@ deployment were verified on 2026-08-03.
 - The server-only application-status email boundary was merged through PR #23.
   It is disabled by default and does not send Production email without an
   explicit delivery mode and server-side provider configuration.
+- Candidate Search and Saved Candidates are implemented on
+  `codex/candidate-search-saved`. Vercel Preview verification on 2026-08-05
+  confirmed professional opt-in, employer discovery, organization-scoped
+  save/remove behavior, and immediate removal from search after opt-out. The
+  feature remains pending Pull Request and Production verification.
 
 ## Supabase migrations
 

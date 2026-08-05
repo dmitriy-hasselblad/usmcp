@@ -172,6 +172,11 @@ roadmap:
 **Delivery branch:** `codex/candidate-search-saved`, created from Production
 commit `833ab27`.
 
+**Preview verification status:** Completed on 2026-08-05. Candidate opt-in,
+employer search visibility, filters, save/remove behavior, saved-candidate
+view, and opt-out removal were confirmed. Supabase RLS transaction checks also
+confirmed unrelated-organization denial. Production verification remains.
+
 **Implementation order:**
 
 1. Add an explicit professional opt-in visibility state for employer discovery;
