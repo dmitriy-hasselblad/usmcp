@@ -108,7 +108,7 @@ export async function updateProfessionalProfile(formData: FormData) {
     redirect("/onboarding")
   }
 
-  const { error: profileError } = await identity.supabase
+  const { data: updatedProfile, error: profileError } = await identity.supabase
     .from("professional_profiles")
     .update({
       profession,
@@ -124,8 +124,14 @@ export async function updateProfessionalProfile(formData: FormData) {
       profile_visibility: profileVisibility,
     })
     .eq("user_id", identity.userId)
+    .select("profile_visibility")
+    .maybeSingle()
 
-  if (profileError) {
+  if (
+    profileError ||
+    !updatedProfile ||
+    updatedProfile.profile_visibility !== profileVisibility
+  ) {
     redirect(
       messagePath(
         "/dashboard/profile",

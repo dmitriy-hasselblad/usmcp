@@ -5,6 +5,7 @@ import {
   BriefcaseBusiness,
   LayoutDashboard,
   LockKeyhole,
+  Search,
   UsersRound,
 } from "lucide-react"
 
@@ -13,7 +14,12 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
-type EmployerRoute = "overview" | "jobs" | "applications" | "organization"
+type EmployerRoute =
+  | "overview"
+  | "jobs"
+  | "applications"
+  | "candidates"
+  | "organization"
 
 const routes = [
   {
@@ -33,6 +39,12 @@ const routes = [
     href: "/dashboard/applications",
     label: "Applicants",
     icon: UsersRound,
+  },
+  {
+    key: "candidates",
+    href: "/dashboard/candidates",
+    label: "Candidates",
+    icon: Search,
   },
   {
     key: "organization",

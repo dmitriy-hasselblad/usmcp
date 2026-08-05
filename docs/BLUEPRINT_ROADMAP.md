@@ -1,6 +1,6 @@
 # USHCE Blueprint Roadmap
 
-Last updated: 2026-08-04
+Last updated: 2026-08-05
 
 ## Source of truth
 
@@ -145,7 +145,9 @@ existing accounts.
 - [ ] Billing portal (deferred)
 - [ ] Invoice history (deferred)
 - [ ] Payment webhook handling (deferred)
-- [ ] Email notifications
+- [ ] Email notifications (server-only application-status foundation merged in
+  PR #23; Resend onboarding, domain verification, delivery testing, and live
+  activation deferred)
 - [ ] In-product notifications
 - [ ] Formal audit trail
 
@@ -221,3 +223,10 @@ After every merged product PR:
 3. Record intentional deferrals.
 4. Keep `docs/NEXT_STEPS.md` limited to the nearest actionable priorities.
 5. Do not mark an item Completed until the end-to-end flow has been verified.
+
+## Explicit deferred dependencies
+
+- **Resend/email delivery:** resume when the product owner is ready to connect
+  and verify a sending domain. Production delivery remains disabled meanwhile.
+- **Stripe/payments/billing:** resume 6-12 months after Early Access launch.
+  These two deferrals must be included in every future remaining-work summary.

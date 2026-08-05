@@ -1,6 +1,6 @@
 # USHCE Next Steps
 
-Last updated: 2026-08-04
+Last updated: 2026-08-05
 
 ## Current product phase
 
@@ -135,7 +135,7 @@ a free Early Access pilot focused on building the employer and candidate base.
 Payments are not a launch dependency.
 
 1. Employer verification workflow
-2. Email notifications
+2. Email notifications (foundation merged in PR #23; delivery deferred)
 3. Candidate search and saved candidates
 4. Employer team invitations
 5. Organization News & Insights
@@ -145,6 +145,11 @@ Payments are not a launch dependency.
 Stripe, subscriptions, one-time payments, invoices, and billing are deferred
 until 6-12 months after Early Access. Preserve a clean future entitlement
 boundary, but do not implement or prioritize payment functionality before then.
+
+Resend onboarding, sending-domain verification, Preview delivery testing, and
+Production email activation are also deferred by the product owner. PR #23
+preserves a disabled-by-default server-only foundation; do not enable it until
+the provider setup is intentionally resumed.
 
 ## Deferred work
 
@@ -162,25 +167,27 @@ roadmap:
 
 ## Immediate next ticket
 
-**Ticket:** Start Priority 5 with a narrowly scoped transactional email
-notification foundation.
+**Ticket:** Implement employer Candidate Search and Saved Candidates.
 
-**Delivery branch:** Create a new feature branch from updated `main` after this
-Production handoff is merged.
+**Delivery branch:** `codex/candidate-search-saved`, created from Production
+commit `833ab27`.
+
+**Preview verification status:** Completed on 2026-08-05. Candidate opt-in,
+employer search visibility, filters, save/remove behavior, saved-candidate
+view, and opt-out removal were confirmed. Supabase RLS transaction checks also
+confirmed unrelated-organization denial. Production verification remains.
 
 **Implementation order:**
 
-1. Review existing application and hiring-status actions, environment handling,
-   and Vercel Preview configuration before selecting an email provider.
-2. Define the smallest reusable server-only email boundary without exposing a
-   provider key to the browser or storing credentials in the repository.
-3. Implement one high-value notification first: notify a professional when an
-   employer changes an application hiring status.
-4. Keep the database action successful if external email delivery fails, and
-   record enough server-side context for safe diagnosis without logging private
-   message content or secrets.
-5. Verify the status change and email behavior with non-production recipients
-   in Vercel Preview before requesting a Production merge.
+1. Add an explicit professional opt-in visibility state for employer discovery;
+   keep contact data, documents, and applications private.
+2. Add a server-side candidate directory with profession, specialty, state,
+   location, and keyword filters.
+3. Add organization-scoped saved candidates with RLS for authorized hiring-team
+   members.
+4. Verify opt-in, opt-out, unrelated-user denial, save/remove behavior, and
+   responsive empty/filter states in Vercel Preview.
+5. Apply and verify migrations/RLS before requesting a Production merge.
 
 ## Definition of done for every future stage
 

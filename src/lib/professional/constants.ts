@@ -7,7 +7,11 @@ export const professionalPhotoMimeTypes = [
   "image/webp",
 ] as const
 
-export const profileVisibilities = ["application_only", "private"] as const
+export const profileVisibilities = [
+  "employer_search",
+  "application_only",
+  "private",
+] as const
 export type ProfileVisibility = (typeof profileVisibilities)[number]
 
 export const skillProficiencies = [
