@@ -175,7 +175,10 @@ commit `36d484e`.
 **Previous ticket:** Employer team invitations were merged through PR #25 and
 verified end to end in Production on 2026-08-05.
 
-**Preview verification status:** Pending.
+**Preview verification status:** Completed on 2026-08-05. Employer draft
+creation, a 7 MB cover upload, editing, review submission, admin approval,
+public listing/detail/image rendering, and blocked-content exclusion were all
+confirmed in Vercel Preview.
 
 **Implementation order:**
 

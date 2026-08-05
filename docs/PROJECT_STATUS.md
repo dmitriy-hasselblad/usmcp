@@ -163,7 +163,11 @@ deployment were verified on 2026-08-03.
   Production on 2026-08-05. Correct Production links and successful acceptance
   by a second employer account were confirmed.
 - Organization News & Insights is in development on
-  `codex/organization-news-insights`.
+  `codex/organization-news-insights`. Vercel Preview verification on
+  2026-08-05 confirmed employer draft creation and editing, a 7 MB cover image,
+  review submission, admin approval, public article/image rendering, and
+  blocked-content exclusion. The feature awaits Pull Request and Production
+  verification.
 
 ## Supabase migrations
 
