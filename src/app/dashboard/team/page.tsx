@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { headers } from "next/headers"
 
 import { createTeamInvitation, removeTeamMember, revokeTeamInvitation, updateTeamMember } from "./actions"
 import { AuthNotice } from "@/components/auth/auth-notice"
@@ -19,14 +20,22 @@ const first = (value: string | string[] | undefined) => Array.isArray(value) ? v
 const selectClass = "h-10 rounded-lg border border-input bg-background px-3 text-sm"
 
 export default async function TeamPage({ searchParams }: { searchParams: SearchParams }) {
-  const [workspace, params] = await Promise.all([requireEmployerWorkspace("/dashboard/team"), searchParams])
+  const [workspace, params, requestHeaders] = await Promise.all([requireEmployerWorkspace("/dashboard/team"), searchParams, headers()])
   const canManage = canManageOrganization(workspace.membership.role)
   const [{ data: members }, { data: invitations }] = await Promise.all([
     workspace.supabase.from("organization_members").select("user_id, role, position_title, created_at, profiles!organization_members_user_id_fkey(first_name, last_name)").eq("organization_id", workspace.organization.id).order("created_at"),
     canManage ? workspace.supabase.from("organization_invitations").select("id, email, role, expires_at, accepted_at, revoked_at, created_at").eq("organization_id", workspace.organization.id).order("created_at", { ascending: false }) : Promise.resolve({ data: [] }),
   ])
   const token = first(params.invite)
-  const inviteUrl = token ? `${getSiteUrl()}/invite/${token}` : null
+  const forwardedHost = requestHeaders.get("x-forwarded-host")
+  const requestHost = forwardedHost ?? requestHeaders.get("host")
+  const forwardedProtocol = requestHeaders.get("x-forwarded-proto")
+  const requestProtocol = forwardedProtocol === "http" ? "http" : "https"
+  const requestOrigin =
+    requestHost && /^[a-z0-9.-]+(?::\d+)?$/i.test(requestHost)
+      ? `${requestProtocol}://${requestHost}`
+      : getSiteUrl()
+  const inviteUrl = token ? `${requestOrigin}/invite/${token}` : null
 
   return <EmployerDashboardShell active="team" email={workspace.email} organizationName={workspace.organization.name}>
     <EmployerPageHeader eyebrow="Workspace settings" title="Team & access" description="Invite colleagues and control who can manage hiring in this organization." />
