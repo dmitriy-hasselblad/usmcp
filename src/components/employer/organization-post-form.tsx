@@ -24,6 +24,7 @@ export function OrganizationPostForm({ organizationId, post }: { organizationId:
     data.set("intent", submitter?.value || "draft")
     const input = form.elements.namedItem("coverImage")
     const file = input instanceof HTMLInputElement ? input.files?.[0] : undefined
+    data.delete("coverImage")
     let storagePath = ""
     if (file) {
       if (!newsImageMimeTypes.some(type => type === file.type) || file.size > newsImageMaxBytes) { setPending(false); return setError("Cover images must be JPG, PNG, or WebP and smaller than 8 MB.") }
