@@ -17,6 +17,7 @@ import { createClient } from "@/lib/supabase/server"
 const navigation = [
   { href: "/jobs", label: "Jobs" },
   { href: "/companies", label: "Organizations" },
+  { href: "/news", label: "News & insights" },
   { href: "/resources", label: "Career resources" },
   { href: "/for-employers", label: "For employers" },
 ]

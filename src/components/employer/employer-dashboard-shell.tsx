@@ -6,6 +6,7 @@ import {
   LayoutDashboard,
   Search,
   ShieldCheck,
+  Newspaper,
   UsersRound,
 } from "lucide-react"
 
@@ -21,8 +22,15 @@ type EmployerRoute =
   | "candidates"
   | "organization"
   | "team"
+  | "news"
 
 const routes = [
+  {
+    key: "news",
+    href: "/dashboard/news",
+    label: "News & insights",
+    icon: Newspaper,
+  },
   {
     key: "team",
     href: "/dashboard/team",

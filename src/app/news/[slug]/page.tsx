@@ -1,0 +1,17 @@
+import type { Metadata } from "next"
+import Image from "next/image"
+import Link from "next/link"
+import { notFound } from "next/navigation"
+
+import { SiteFooter } from "@/components/layout/site-footer"
+import { SiteHeader } from "@/components/layout/site-header"
+import { Badge } from "@/components/ui/badge"
+import { getPublishedOrganizationPost } from "@/lib/news/public-news"
+
+type Props = { params: Promise<{ slug: string }> }
+export async function generateMetadata({ params }: Props): Promise<Metadata> { const post = await getPublishedOrganizationPost((await params).slug); return post ? { title: post.title, description: post.excerpt } : { title: "Article not found" } }
+export default async function PublicNewsDetailPage({ params }: Props) {
+  const post = await getPublishedOrganizationPost((await params).slug); if (!post) notFound()
+  const organization = post.organizations?.[0]
+  return <div className="min-h-dvh bg-white"><SiteHeader/><main><article className="mx-auto max-w-4xl px-5 py-12 lg:px-8 lg:py-16"><Link href="/news" className="text-sm font-semibold text-primary hover:underline">← Back to News & insights</Link><Badge className="mt-8" variant="outline">Organization insight</Badge><h1 className="mt-5 text-4xl font-semibold tracking-[-0.055em] sm:text-5xl">{post.title}</h1><p className="mt-5 text-lg leading-8 text-muted-foreground">{post.excerpt}</p>{organization && <p className="mt-5 text-sm">Published by <Link className="font-semibold text-primary hover:underline" href={`/companies/${organization.slug}`}>{organization.name}</Link></p>}{post.cover_image_path && <div className="relative mt-10 aspect-[16/9] overflow-hidden rounded-3xl"><Image alt="" fill priority sizes="(max-width: 896px) 100vw, 896px" className="object-cover" src={`/news/image/${post.id}`}/></div>}<div className="mt-10 whitespace-pre-wrap text-base leading-8 text-foreground">{post.body}</div></article></main><SiteFooter/></div>
+}

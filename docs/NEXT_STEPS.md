@@ -167,30 +167,30 @@ roadmap:
 
 ## Immediate next ticket
 
-**Ticket:** Implement employer team invitations and access administration.
+**Ticket:** Implement Organization News & Insights.
 
-**Delivery branch:** `codex/employer-team-invitations`, created from Production
-commit `cffb93d`.
+**Delivery branch:** `codex/organization-news-insights`, created from Production
+commit `36d484e`.
 
-**Previous ticket:** Candidate Search and Saved Candidates were merged through
-PR #24 and verified end to end in Production on 2026-08-05.
+**Previous ticket:** Employer team invitations were merged through PR #25 and
+verified end to end in Production on 2026-08-05.
 
-**Preview verification status:** Completed on 2026-08-05. The organization
-owner created a role-based invitation, the generated link used the correct
-Vercel Preview domain, and a second employer account accepted it successfully.
+**Preview verification status:** Completed on 2026-08-05. Employer draft
+creation, a 7 MB cover upload, editing, review submission, admin approval,
+public listing/detail/image rendering, and blocked-content exclusion were all
+confirmed in Vercel Preview.
 
 **Implementation order:**
 
-1. Let organization owners and administrators create a copyable, expiring
-   invitation link with an admin, recruiter, or viewer role.
-2. Require a signed-in employer account whose verified Auth email matches the
-   invitation before membership is created.
-3. Add member role updates, invitation revocation, member removal, and
-   last-owner protection.
-4. Verify owner/admin permissions, unauthorized denial, email mismatch,
-   single-use acceptance, role changes, and removal in Vercel Preview.
-5. Keep Resend delivery disabled; invitation links are shared manually during
-   Early Access.
+1. Let authorized employer teams create English-language drafts with a title,
+   summary, article body, and optional cover image.
+2. Store cover images in a private organization-scoped Storage bucket.
+3. Require platform moderation before publication and record decisions in the
+   privileged audit log.
+4. Add public News & Insights listing and article pages for approved content
+   from verified organizations only.
+5. Verify draft privacy, submission, approval/blocking, public visibility,
+   image access, and responsive layouts in Vercel Preview.
 
 ## Definition of done for every future stage
 

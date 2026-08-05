@@ -25,9 +25,9 @@ English.
 ## Production baseline
 
 - Production branch: `main`
-- Latest confirmed product Pull Request: PR #24
-- PR #24 merge commit: `cffb93d`
-- Current `main` commit at branch handoff: `cffb93d`
+- Latest confirmed product Pull Request: PR #25
+- PR #25 merge commit: `36d484e`
+- Current `main` commit at branch handoff: `36d484e`
 - Production deployment status at verification: `Ready`
 - Latest Production verification date: 2026-08-05
 
@@ -159,9 +159,14 @@ deployment were verified on 2026-08-03.
 - Candidate Search and Saved Candidates were merged through PR #24 and verified
   end to end in Production on 2026-08-05 as both a professional and employer.
 - Employer team invitations and access administration are implemented on
-  `codex/employer-team-invitations`. Vercel Preview verification on 2026-08-05
-  confirmed correct deployment-specific links and successful acceptance by a
-  second employer account. The feature awaits Pull Request and Production
+  `codex/employer-team-invitations`, merged through PR #25, and verified in
+  Production on 2026-08-05. Correct Production links and successful acceptance
+  by a second employer account were confirmed.
+- Organization News & Insights is in development on
+  `codex/organization-news-insights`. Vercel Preview verification on
+  2026-08-05 confirmed employer draft creation and editing, a 7 MB cover image,
+  review submission, admin approval, public article/image rendering, and
+  blocked-content exclusion. The feature awaits Pull Request and Production
   verification.
 
 ## Supabase migrations
@@ -187,6 +192,7 @@ The repository currently contains these applied migration groups:
     hardened search boundary
 17. Employer team invitations, membership administration, and last-owner
     protection
+18. Organization-authored news, private cover images, and moderation boundary
 
 Migration files are stored in `supabase/migrations/`.
 
