@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
+import { after } from "next/server"
 
 import { formString, messagePath } from "@/lib/auth/validation"
 import {
@@ -11,6 +12,7 @@ import {
 } from "@/lib/applications/constants"
 import { requireIdentity } from "@/lib/auth/session"
 import { requireEmployerWorkspace } from "@/lib/employer/session"
+import { sendApplicationStatusEmail } from "@/lib/email/application-status"
 
 function isUuid(value: string) {
   return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
@@ -194,7 +196,7 @@ export async function updateApplicationStatus(formData: FormData) {
     .update({ status })
     .eq("id", applicationId)
     .eq("organization_id", workspace.organization.id)
-    .select("id")
+    .select("id, candidate_email, candidate_first_name, job_title, organization_name, status, updated_at")
     .maybeSingle()
 
   if (error || !data) {
@@ -206,6 +208,25 @@ export async function updateApplicationStatus(formData: FormData) {
       ),
     )
   }
+
+  after(async () => {
+    const delivery = await sendApplicationStatusEmail({
+      applicationId: data.id,
+      candidateEmail: data.candidate_email,
+      candidateFirstName: data.candidate_first_name,
+      jobTitle: data.job_title,
+      organizationName: data.organization_name,
+      status: data.status,
+      updatedAt: data.updated_at,
+    })
+    if (delivery.outcome === "failed") {
+      console.error("Application status email delivery failed", {
+        applicationId: data.id,
+        code: delivery.code,
+        status: data.status,
+      })
+    }
+  })
 
   revalidatePath("/dashboard")
   revalidatePath("/dashboard/applications")
