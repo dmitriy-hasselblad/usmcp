@@ -159,7 +159,10 @@ deployment were verified on 2026-08-03.
 - Candidate Search and Saved Candidates were merged through PR #24 and verified
   end to end in Production on 2026-08-05 as both a professional and employer.
 - Employer team invitations and access administration are implemented on
-  `codex/employer-team-invitations` and await Vercel Preview verification.
+  `codex/employer-team-invitations`. Vercel Preview verification on 2026-08-05
+  confirmed correct deployment-specific links and successful acceptance by a
+  second employer account. The feature awaits Pull Request and Production
+  verification.
 
 ## Supabase migrations
 

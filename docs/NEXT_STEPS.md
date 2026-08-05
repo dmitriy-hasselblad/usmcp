@@ -175,7 +175,9 @@ commit `cffb93d`.
 **Previous ticket:** Candidate Search and Saved Candidates were merged through
 PR #24 and verified end to end in Production on 2026-08-05.
 
-**Preview verification status:** Pending.
+**Preview verification status:** Completed on 2026-08-05. The organization
+owner created a role-based invitation, the generated link used the correct
+Vercel Preview domain, and a second employer account accepted it successfully.
 
 **Implementation order:**
 
