@@ -10,6 +10,7 @@ import {
 } from "lucide-react"
 
 import { JobCard } from "@/components/jobs/job-card"
+import { ReportContentLink } from "@/components/moderation/report-content-link"
 import { SiteFooter } from "@/components/layout/site-footer"
 import { SiteHeader } from "@/components/layout/site-header"
 import { Badge } from "@/components/ui/badge"
@@ -157,6 +158,7 @@ export default async function OrganizationPage({
           </aside>
         </div>
       </main>
+      <div className="mx-auto flex max-w-7xl justify-end px-5 pb-8 lg:px-8"><ReportContentLink returnTo={`/companies/${organization.slug}`} targetId={organization.id} targetType="organization" /></div>
       <SiteFooter />
     </div>
   )

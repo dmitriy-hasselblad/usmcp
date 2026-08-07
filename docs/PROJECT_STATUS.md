@@ -1,6 +1,6 @@
 # USHCE Project Status
 
-Last updated: 2026-08-05
+Last updated: 2026-08-07
 
 ## Purpose
 
@@ -25,9 +25,9 @@ English.
 ## Production baseline
 
 - Production branch: `main`
-- Latest confirmed product Pull Request: PR #26
-- PR #26 merge commit: `5910bd5`
-- Current `main` commit at branch handoff: `5910bd5`
+- Latest confirmed product Pull Request: PR #29
+- PR #29 merge commit: `5d13323`
+- Current `main` commit at branch handoff: `5d13323`
 - Production deployment status at verification: `Ready`
 - Latest Production verification date: 2026-08-05
 
@@ -173,6 +173,10 @@ deployment were verified on 2026-08-03.
   verification on 2026-08-07 confirmed live dates, the four-article August
   2026 filter, URL persistence, and an empty-period state. The enhancement
   awaits Pull Request and Production verification.
+- Admin Audit Log Viewer was merged through PR #29 and verified in Production
+  on 2026-08-07. It provides admin-only search, action/target/date filters, and
+  pagination over append-only privileged events.
+- Abuse reporting is in development on `codex/abuse-reporting-oversight`.
 
 ## Supabase migrations
 

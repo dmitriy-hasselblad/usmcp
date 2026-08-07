@@ -1,6 +1,6 @@
 # USHCE Next Steps
 
-Last updated: 2026-08-05
+Last updated: 2026-08-07
 
 ## Current product phase
 
@@ -167,26 +167,24 @@ roadmap:
 
 ## Immediate next ticket
 
-**Ticket:** Add News publication dates and archive filters.
+**Ticket:** Add authenticated public-content reporting and admin abuse oversight.
 
-**Delivery branch:** `codex/news-date-filters`, created from Production
-commit `5910bd5`.
+**Delivery branch:** `codex/abuse-reporting-oversight`, created from Production
+commit `5d13323`.
 
-**Previous ticket:** Organization News & Insights was merged through PR #26 and
-verified end to end in Production on 2026-08-05.
+**Previous ticket:** Admin Audit Log Viewer was merged through PR #29 and
+verified end to end in Production on 2026-08-07.
 
-**Preview verification status:** Completed on 2026-08-07. Publication dates
-appeared on cards and article pages; the live August 2026 archive returned four
-approved articles, the URL-persisted filter worked, and an empty month showed
-the expected no-results state.
+**Current verification status:** Local Production build passed. Preview and
+role-boundary verification remain pending.
 
 **Implementation order:**
 
-1. Display the publication date on public News cards and article pages.
-2. Add URL-persisted year and month filters using approved publication dates.
-3. Add server-side pagination for a scalable archive.
-4. Verify the live August 2026 archive, no-results state, URL filters, dates,
-   and responsive layouts in Vercel Preview.
+1. Permit signed-in users to report only public jobs, organizations, and News.
+2. Keep reporter identity and report details private through RLS.
+3. Add the platform-admin Reports queue and atomic review decisions.
+4. Record every resolved or dismissed report in the privileged Audit log.
+5. Verify reporter, unrelated-user, admin, and anonymous boundaries in Preview.
 
 ## Definition of done for every future stage
 
