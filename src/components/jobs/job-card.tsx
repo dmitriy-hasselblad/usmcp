@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { ArrowRight, Building2, Clock3, MapPin } from "lucide-react"
+import { ArrowRight, Building2, CalendarDays, Clock3, MapPin } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -71,6 +71,12 @@ export function JobCard({ job, compact = false }: JobCardProps) {
             <Clock3 className="size-4 text-primary" />
             {job.type} · {job.setting}
           </p>
+          {job.source === "live" && (
+            <p className="flex items-center gap-2">
+              <CalendarDays className="size-4 text-primary" />
+              {job.posted}
+            </p>
+          )}
           <p className="font-medium text-foreground">{job.salary}</p>
         </div>
 
