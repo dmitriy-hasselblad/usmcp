@@ -6,6 +6,7 @@ export function AdminDirectoryPagination({
   basePath,
   page,
   pageSize,
+  params,
   query,
   status,
   total,
@@ -13,6 +14,7 @@ export function AdminDirectoryPagination({
   basePath: string
   page: number
   pageSize: number
+  params?: Record<string, string | undefined>
   query?: string
   status?: string
   total: number
@@ -31,14 +33,14 @@ export function AdminDirectoryPagination({
           <Button disabled size="sm" variant="outline">Previous</Button>
         ) : (
           <Button asChild size="sm" variant="outline">
-            <Link href={pageHref(basePath, page - 1, query, status)}>Previous</Link>
+            <Link href={pageHref(basePath, page - 1, query, status, params)}>Previous</Link>
           </Button>
         )}
         {page >= totalPages ? (
           <Button disabled size="sm" variant="outline">Next</Button>
         ) : (
           <Button asChild size="sm" variant="outline">
-            <Link href={pageHref(basePath, page + 1, query, status)}>Next</Link>
+            <Link href={pageHref(basePath, page + 1, query, status, params)}>Next</Link>
           </Button>
         )}
       </div>
@@ -46,10 +48,19 @@ export function AdminDirectoryPagination({
   )
 }
 
-function pageHref(basePath: string, page: number, query?: string, status?: string) {
+function pageHref(
+  basePath: string,
+  page: number,
+  query?: string,
+  status?: string,
+  extraParams?: Record<string, string | undefined>,
+) {
   const params = new URLSearchParams()
   if (query) params.set("q", query)
   if (status) params.set("status", status)
+  Object.entries(extraParams ?? {}).forEach(([key, value]) => {
+    if (value) params.set(key, value)
+  })
   params.set("page", String(Math.max(1, page)))
   return `${basePath}?${params.toString()}`
 }
