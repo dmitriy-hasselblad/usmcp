@@ -167,30 +167,26 @@ roadmap:
 
 ## Immediate next ticket
 
-**Ticket:** Implement Organization News & Insights.
+**Ticket:** Add News publication dates and archive filters.
 
-**Delivery branch:** `codex/organization-news-insights`, created from Production
-commit `36d484e`.
+**Delivery branch:** `codex/news-date-filters`, created from Production
+commit `5910bd5`.
 
-**Previous ticket:** Employer team invitations were merged through PR #25 and
+**Previous ticket:** Organization News & Insights was merged through PR #26 and
 verified end to end in Production on 2026-08-05.
 
-**Preview verification status:** Completed on 2026-08-05. Employer draft
-creation, a 7 MB cover upload, editing, review submission, admin approval,
-public listing/detail/image rendering, and blocked-content exclusion were all
-confirmed in Vercel Preview.
+**Preview verification status:** Completed on 2026-08-07. Publication dates
+appeared on cards and article pages; the live August 2026 archive returned four
+approved articles, the URL-persisted filter worked, and an empty month showed
+the expected no-results state.
 
 **Implementation order:**
 
-1. Let authorized employer teams create English-language drafts with a title,
-   summary, article body, and optional cover image.
-2. Store cover images in a private organization-scoped Storage bucket.
-3. Require platform moderation before publication and record decisions in the
-   privileged audit log.
-4. Add public News & Insights listing and article pages for approved content
-   from verified organizations only.
-5. Verify draft privacy, submission, approval/blocking, public visibility,
-   image access, and responsive layouts in Vercel Preview.
+1. Display the publication date on public News cards and article pages.
+2. Add URL-persisted year and month filters using approved publication dates.
+3. Add server-side pagination for a scalable archive.
+4. Verify the live August 2026 archive, no-results state, URL filters, dates,
+   and responsive layouts in Vercel Preview.
 
 ## Definition of done for every future stage
 

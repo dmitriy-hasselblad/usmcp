@@ -25,9 +25,9 @@ English.
 ## Production baseline
 
 - Production branch: `main`
-- Latest confirmed product Pull Request: PR #25
-- PR #25 merge commit: `36d484e`
-- Current `main` commit at branch handoff: `36d484e`
+- Latest confirmed product Pull Request: PR #26
+- PR #26 merge commit: `5910bd5`
+- Current `main` commit at branch handoff: `5910bd5`
 - Production deployment status at verification: `Ready`
 - Latest Production verification date: 2026-08-05
 
@@ -168,6 +168,11 @@ deployment were verified on 2026-08-03.
   review submission, admin approval, public article/image rendering, and
   blocked-content exclusion. The feature awaits Pull Request and Production
   verification.
+- News publication dates, year/month archive filters, and server-side archive
+  pagination are implemented on `codex/news-date-filters`. Vercel Preview
+  verification on 2026-08-07 confirmed live dates, the four-article August
+  2026 filter, URL persistence, and an empty-period state. The enhancement
+  awaits Pull Request and Production verification.
 
 ## Supabase migrations
 
