@@ -175,7 +175,10 @@ commit `5910bd5`.
 **Previous ticket:** Organization News & Insights was merged through PR #26 and
 verified end to end in Production on 2026-08-05.
 
-**Preview verification status:** Pending.
+**Preview verification status:** Completed on 2026-08-07. Publication dates
+appeared on cards and article pages; the live August 2026 archive returned four
+approved articles, the URL-persisted filter worked, and an empty month showed
+the expected no-results state.
 
 **Implementation order:**
 

@@ -169,7 +169,10 @@ deployment were verified on 2026-08-03.
   blocked-content exclusion. The feature awaits Pull Request and Production
   verification.
 - News publication dates, year/month archive filters, and server-side archive
-  pagination are ready for Preview verification on `codex/news-date-filters`.
+  pagination are implemented on `codex/news-date-filters`. Vercel Preview
+  verification on 2026-08-07 confirmed live dates, the four-article August
+  2026 filter, URL persistence, and an empty-period state. The enhancement
+  awaits Pull Request and Production verification.
 
 ## Supabase migrations
 
