@@ -123,7 +123,8 @@ user-state moderation are verified.
 - [x] Organization moderation (verification workflow; Production verified)
 - [x] Employer verification queue (Production verified)
 - [x] Job moderation (Production verified)
-- [ ] Application and abuse reporting oversight (in progress)
+- [x] Application and abuse reporting oversight (Production verified through
+  PR #30)
 - [x] Basic platform metrics
 - [x] Audit log viewer (Production verified through PR #29)
 
@@ -184,7 +185,7 @@ and core hiring loop are stable.
 | Month 2 | Candidate profile, CV, search | Profile and candidate search are live; CV deferred |
 | Month 3 | Companies, jobs, employer dashboards | Substantially completed; public company pages and complete job filters are live |
 | Month 4 | Stripe, subscriptions, payments | Intentionally deferred until 6-12 months after Early Access |
-| Month 5 | Admin, management, analytics, security | Scoped Basic Admin Panel and audit viewer are in Production; abuse reporting and advanced analytics remain |
+| Month 5 | Admin, management, analytics, security | Scoped Basic Admin Panel, audit viewer, and abuse reporting are in Production; advanced analytics remain |
 | Month 6 | Testing, SEO, first users | Not started as a formal launch phase |
 
 ## Sequence decisions

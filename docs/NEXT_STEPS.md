@@ -138,8 +138,9 @@ Payments are not a launch dependency.
 2. Email notifications (foundation merged in PR #23; delivery deferred)
 3. Candidate search and saved candidates
 4. Employer team invitations
-5. Organization News & Insights
-6. Abuse oversight and audit viewer
+5. Organization News & Insights (merged through PR #26; Production
+   verification record pending)
+6. Abuse oversight and audit viewer (completed through PR #30)
 7. Automated boundary tests, SEO, analytics, and soft-launch readiness
 
 Stripe, subscriptions, one-time payments, invoices, and billing are deferred
@@ -167,24 +168,27 @@ roadmap:
 
 ## Immediate next ticket
 
-**Ticket:** Add authenticated public-content reporting and admin abuse oversight.
+**Ticket:** Establish automated tests for critical authorization boundaries.
 
-**Delivery branch:** `codex/abuse-reporting-oversight`, created from Production
-commit `5d13323`.
+**Delivery branch:** `agent/critical-access-tests`, created from Production
+commit `543bcfe`.
 
-**Previous ticket:** Admin Audit Log Viewer was merged through PR #29 and
-verified end to end in Production on 2026-08-07.
+**Previous ticket:** Abuse reporting and admin oversight were merged through
+PR #30 and verified in Production on 2026-08-07.
 
-**Current verification status:** Local Production build passed. Preview and
-role-boundary verification remain pending.
+**Current verification status:** Manual role-boundary verification is complete.
+The first source-level contract checks are in place; live database integration
+coverage remains to be established.
 
 **Implementation order:**
 
-1. Permit signed-in users to report only public jobs, organizations, and News.
-2. Keep reporter identity and report details private through RLS.
-3. Add the platform-admin Reports queue and atomic review decisions.
-4. Record every resolved or dismissed report in the privileged Audit log.
-5. Verify reporter, unrelated-user, admin, and anonymous boundaries in Preview.
+1. Add a lightweight test runner compatible with the Next.js codebase.
+2. Cover anonymous denial for admin routes and privileged data.
+3. Cover employer organization isolation and candidate-document privacy.
+4. Cover application access for the candidate, authorized employer, and an
+   unrelated employer.
+5. Run the suite locally and in Vercel Preview before using it as a release
+   gate.
 
 ## Definition of done for every future stage
 

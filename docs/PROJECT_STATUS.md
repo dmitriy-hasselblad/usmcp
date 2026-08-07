@@ -25,11 +25,11 @@ English.
 ## Production baseline
 
 - Production branch: `main`
-- Latest confirmed product Pull Request: PR #29
-- PR #29 merge commit: `5d13323`
-- Current `main` commit at branch handoff: `5d13323`
+- Latest confirmed product Pull Request: PR #30
+- PR #30 merge commit: `543bcfe`
+- Current `main` commit at branch handoff: `543bcfe`
 - Production deployment status at verification: `Ready`
-- Latest Production verification date: 2026-08-05
+- Latest Production verification date: 2026-08-07
 
 The structured professional profile was verified in Production with a 100%
 completion state and records in all four categories.
@@ -162,21 +162,24 @@ deployment were verified on 2026-08-03.
   `codex/employer-team-invitations`, merged through PR #25, and verified in
   Production on 2026-08-05. Correct Production links and successful acceptance
   by a second employer account were confirmed.
-- Organization News & Insights is in development on
-  `codex/organization-news-insights`. Vercel Preview verification on
+- Organization News & Insights was merged through PR #26. Vercel Preview
+  verification on
   2026-08-05 confirmed employer draft creation and editing, a 7 MB cover image,
   review submission, admin approval, public article/image rendering, and
-  blocked-content exclusion. The feature awaits Pull Request and Production
-  verification.
+  blocked-content exclusion. A dedicated Production verification remains to be
+  recorded.
 - News publication dates, year/month archive filters, and server-side archive
-  pagination are implemented on `codex/news-date-filters`. Vercel Preview
+  pagination were merged through PR #27. Vercel Preview
   verification on 2026-08-07 confirmed live dates, the four-article August
-  2026 filter, URL persistence, and an empty-period state. The enhancement
-  awaits Pull Request and Production verification.
+  2026 filter, URL persistence, and an empty-period state. A dedicated
+  Production verification remains to be recorded.
 - Admin Audit Log Viewer was merged through PR #29 and verified in Production
   on 2026-08-07. It provides admin-only search, action/target/date filters, and
   pagination over append-only privileged events.
-- Abuse reporting is in development on `codex/abuse-reporting-oversight`.
+- Abuse reporting and admin oversight were merged through PR #30 and verified
+  in Production on 2026-08-07. Signed-in users can report public jobs,
+  organizations, and News content; platform administrators can resolve or
+  dismiss reports with corresponding audit events.
 
 ## Supabase migrations
 
@@ -202,6 +205,8 @@ The repository currently contains these applied migration groups:
 17. Employer team invitations, membership administration, and last-owner
     protection
 18. Organization-authored news, private cover images, and moderation boundary
+19. Public-content reporting, private reporter details, admin review decisions,
+    and privileged audit events
 
 Migration files are stored in `supabase/migrations/`.
 
