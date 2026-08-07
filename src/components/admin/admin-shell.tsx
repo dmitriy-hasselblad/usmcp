@@ -1,13 +1,13 @@
 import Link from "next/link"
 import type { ReactNode } from "react"
-import { BriefcaseBusiness, Building2, History, LayoutDashboard, Newspaper, ShieldCheck, UsersRound } from "lucide-react"
+import { BriefcaseBusiness, Building2, Flag, History, LayoutDashboard, Newspaper, ShieldCheck, UsersRound } from "lucide-react"
 
 import { UshceLogo } from "@/components/brand/ushce-logo"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
-type AdminRoute = "overview" | "users" | "organizations" | "jobs" | "news" | "audit"
+type AdminRoute = "overview" | "users" | "organizations" | "jobs" | "news" | "reports" | "audit"
 
 const routes = [
   { key: "overview", href: "/admin", label: "Overview", icon: LayoutDashboard },
@@ -20,6 +20,7 @@ const routes = [
   },
   { key: "jobs", href: "/admin/jobs", label: "Jobs", icon: BriefcaseBusiness },
   { key: "news", href: "/admin/news", label: "News", icon: Newspaper },
+  { key: "reports", href: "/admin/reports", label: "Reports", icon: Flag },
   { key: "audit", href: "/admin/audit", label: "Audit log", icon: History },
 ] as const
 
