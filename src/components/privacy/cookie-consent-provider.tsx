@@ -299,7 +299,7 @@ function CookiePreferencesSheet({
           />
           <PreferenceRow
             checked={draft.analytics}
-            description="Helps us understand site performance and improve the experience. No analytics service is currently active."
+            description="Helps us understand site usage and performance through privacy-conscious Vercel Web Analytics."
             label="Analytics"
             onChange={(checked) =>
               setDraft((current) => ({ ...current, analytics: checked }))

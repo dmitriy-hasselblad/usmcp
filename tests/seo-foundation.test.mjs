@@ -44,3 +44,15 @@ test("root metadata establishes a canonical site base and social defaults", asyn
   assert.match(source, /openGraph:/)
   assert.match(source, /twitter:/)
 })
+
+test("optional analytics remains behind an explicit visitor consent choice", async () => {
+  const [analyticsSource, consentSource] = await Promise.all([
+    readProjectFile("src/components/privacy/consent-aware-analytics.tsx"),
+    readProjectFile("src/lib/privacy/cookie-consent.ts"),
+  ])
+
+  assert.match(analyticsSource, /useCookieConsent\(\)/)
+  assert.match(analyticsSource, /if \(!preferences\?\.analytics\)/)
+  assert.match(analyticsSource, /return <Analytics \/>/)
+  assert.match(consentSource, /COOKIE_CONSENT_VERSION = 2/)
+})

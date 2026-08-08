@@ -32,7 +32,7 @@ the recommended implementation order on page 3 as the governing sequence.
 | 1. Foundation | Auth, roles, Supabase schema/RLS, reference data, design system | Completed with minor reference-data gaps |
 | 2. Marketplace MVP | Jobs, companies, search, profiles, applications, employer/admin | In progress |
 | 3. Trust & Revenue | Verification, payments, subscriptions, audit, notifications | Not started; privacy foundation exists |
-| 4. Engagement | Messaging, interviews, content, SEO, analytics | Not started |
+| 4. Engagement | Messaging, interviews, content, SEO, analytics | In progress: content and SEO foundation are live |
 | 5. Intelligence | CV tools, matching, recommendations, broader marketplace, mobile | Deferred |
 
 ## Phase 1: Foundation
@@ -70,6 +70,7 @@ the recommended implementation order on page 3 as the governing sequence.
 - [x] Public job listing
 - [x] Public job detail
 - [x] Basic job filters
+- [x] Public SEO foundation (`robots.txt`, sitemap, canonical metadata, and live JobPosting markup)
 - [x] Public supporting pages
 - [x] Live public organization directory
 - [x] Live public organization profile route
@@ -159,7 +160,8 @@ existing accounts.
 - [ ] Interview scheduling
 - [ ] Calendar integration
 - [ ] Career content platform
-- [ ] Production SEO program
+- [x] Public SEO foundation
+- [ ] Ongoing SEO program and search-console operations
 - [ ] Product analytics
 - [ ] Employer funnel analytics
 - [ ] Candidate application analytics

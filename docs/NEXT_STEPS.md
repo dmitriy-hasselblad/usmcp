@@ -138,10 +138,13 @@ Payments are not a launch dependency.
 2. Email notifications (foundation merged in PR #23; delivery deferred)
 3. Candidate search and saved candidates
 4. Employer team invitations
-5. Organization News & Insights (merged through PR #26; Production
-   verification record pending)
+5. Organization News & Insights (merged through PR #26; Production verified
+   with six public articles on 2026-08-08)
 6. Abuse oversight and audit viewer (completed through PR #30)
 7. Automated boundary tests, SEO, analytics, and soft-launch readiness
+
+The source-level authorization suite, live RLS verification, and public SEO
+foundation are complete through PRs #31, #33, and #34.
 
 Stripe, subscriptions, one-time payments, invoices, and billing are deferred
 until 6-12 months after Early Access. Preserve a clean future entitlement
@@ -168,35 +171,28 @@ roadmap:
 
 ## Immediate next ticket
 
-**Ticket:** Establish automated tests for critical authorization boundaries.
+**Ticket:** Consent-aware Web Analytics for soft launch.
 
-**Delivery branch:** `agent/critical-access-tests`, created from Production
-commit `543bcfe`.
+### Goal
 
-**Previous ticket:** Abuse reporting and admin oversight were merged through
-PR #30 and verified in Production on 2026-08-07.
+Enable Vercel Web Analytics only after a visitor permits the Analytics category.
+This establishes privacy-conscious, first-party page-view and traffic-source
+visibility without collecting user profile, application, document, or medical
+information as custom events.
 
-**Current verification status:** The source-level contract suite and a live,
-read-only RLS verification are complete. On 2026-08-08, candidate, authorized
-hiring-team, active-admin, and unrelated-user claims were tested against the
-live database inside rolled-back transactions; no application data changed.
+### Required scope
 
-**Automation constraint:** A dedicated Supabase Branch cannot be created on the
-current plan, and the local workstation does not currently have Docker or the
-Supabase CLI. Keep the source-level suite as the release guard and repeat the
-live read-only RLS check for future access-control changes. Add a fully
-automated database suite when an isolated environment becomes available.
+1. Add the analytics client behind the existing Analytics consent preference.
+2. Increase the consent version because an optional provider is being added.
+3. Update the Cookie Notice to describe the active provider.
+4. Enable Web Analytics in the Vercel project after Preview verification.
+5. Verify page views in Production with a consented browser session.
 
-**Implementation order:**
+### Explicit limitation
 
-1. Add a lightweight test runner compatible with the Next.js codebase.
-2. Cover anonymous denial for admin routes and privileged data.
-3. Cover employer organization isolation and candidate-document privacy.
-4. Cover application access for the candidate, authorized employer, and an
-   unrelated employer.
-5. Run the source-level suite locally and in Vercel Preview as a release gate.
-6. Repeat the live read-only RLS verification whenever policies or protected
-   data models change.
+On the current Vercel Hobby plan, this ticket covers page views, routes,
+referrers, and performance trends. Business conversion events and funnel
+analysis require a future analytics plan or a separately approved provider.
 
 ## Definition of done for every future stage
 
