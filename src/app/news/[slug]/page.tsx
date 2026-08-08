@@ -13,7 +13,28 @@ import {
 } from "@/lib/news/public-news"
 
 type Props = { params: Promise<{ slug: string }> }
-export async function generateMetadata({ params }: Props): Promise<Metadata> { const post = await getPublishedOrganizationPost((await params).slug); return post ? { title: post.title, description: post.excerpt } : { title: "Article not found" } }
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const post = await getPublishedOrganizationPost((await params).slug)
+
+  if (!post) {
+    return { title: "Article not found" }
+  }
+
+  return {
+    title: post.title,
+    description: post.excerpt,
+    alternates: { canonical: `/news/${post.slug}` },
+    openGraph: {
+      type: "article",
+      url: `/news/${post.slug}`,
+      title: post.title,
+      description: post.excerpt,
+      publishedTime: post.published_at ?? undefined,
+    },
+  }
+}
+
 export default async function PublicNewsDetailPage({ params }: Props) {
   const post = await getPublishedOrganizationPost((await params).slug); if (!post) notFound()
   const organization = post.organizations?.[0]

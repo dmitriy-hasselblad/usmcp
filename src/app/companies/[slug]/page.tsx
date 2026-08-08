@@ -37,6 +37,15 @@ export async function generateMetadata({
     description:
       organization.description ||
       `Explore healthcare opportunities from ${organization.name}.`,
+    alternates: { canonical: `/companies/${organization.slug}` },
+    openGraph: {
+      type: "website",
+      url: `/companies/${organization.slug}`,
+      title: organization.name,
+      description:
+        organization.description ||
+        `Explore healthcare opportunities from ${organization.name}.`,
+    },
   }
 }
 

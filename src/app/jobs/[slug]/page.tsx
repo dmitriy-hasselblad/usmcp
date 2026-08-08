@@ -23,7 +23,8 @@ import {
   getPublishedJobBySlug,
   getPublishedJobs,
 } from "@/lib/jobs/public-jobs"
-import { featuredJobs, getJobBySlug } from "@/lib/marketing-data"
+import { featuredJobs, getJobBySlug, type Job } from "@/lib/marketing-data"
+import { getAbsoluteUrl, serializeJsonLd } from "@/lib/seo"
 
 type JobPageProps = {
   params: Promise<{ slug: string }>
@@ -46,6 +47,13 @@ export async function generateMetadata({
   return {
     title: `${job.title} at ${job.employer}`,
     description: `${job.title} healthcare opportunity in ${job.location}.`,
+    alternates: { canonical: `/jobs/${job.slug}` },
+    openGraph: {
+      type: "article",
+      url: `/jobs/${job.slug}`,
+      title: `${job.title} at ${job.employer}`,
+      description: `${job.title} healthcare opportunity in ${job.location}.`,
+    },
   }
 }
 
@@ -58,6 +66,7 @@ export default async function JobPage({ params }: JobPageProps) {
   }
 
   const isLive = job.source === "live"
+  const jobPosting = isLive && job.publishedAt ? getJobPosting(job) : null
   const liveJobs = await getPublishedJobs()
   const relatedJobs = [...liveJobs, ...featuredJobs]
     .filter(
@@ -70,6 +79,12 @@ export default async function JobPage({ params }: JobPageProps) {
 
   return (
     <div className="min-h-dvh bg-muted/30">
+      {jobPosting && (
+        <script
+          dangerouslySetInnerHTML={{ __html: serializeJsonLd(jobPosting) }}
+          type="application/ld+json"
+        />
+      )}
       <SiteHeader />
       <main>
         <section className="border-b border-border bg-white">
@@ -245,6 +260,55 @@ export default async function JobPage({ params }: JobPageProps) {
       <SiteFooter />
     </div>
   )
+}
+
+function getJobPosting(job: Job) {
+  const employmentType =
+    {
+      "Full-time": "FULL_TIME",
+      "Part-time": "PART_TIME",
+      Contract: "CONTRACTOR",
+      Temporary: "TEMPORARY",
+      "Per diem": "OTHER",
+    }[job.type] ?? "OTHER"
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "JobPosting",
+    title: job.title,
+    description: job.summary,
+    datePosted: job.publishedAt,
+    employmentType,
+    hiringOrganization: {
+      "@type": "Organization",
+      name: job.employer,
+      ...(job.organizationWebsite ? { sameAs: job.organizationWebsite } : {}),
+    },
+    jobLocation: {
+      "@type": "Place",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: job.city,
+        addressRegion: job.stateCode,
+        addressCountry: "US",
+      },
+    },
+    ...(job.salaryMin
+      ? {
+          baseSalary: {
+            "@type": "MonetaryAmount",
+            currency: "USD",
+            value: {
+              "@type": "QuantitativeValue",
+              minValue: job.salaryMin,
+              ...(job.salaryMax ? { maxValue: job.salaryMax } : {}),
+              unitText: job.salaryPeriod === "hour" ? "HOUR" : "YEAR",
+            },
+          },
+        }
+      : {}),
+    url: getAbsoluteUrl(`/jobs/${job.slug}`),
+  }
 }
 
 function JobSection({ items, title }: { items: string[]; title: string }) {

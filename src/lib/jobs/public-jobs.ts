@@ -114,6 +114,7 @@ export function toMarketplaceJob(row: PublishedJobRow): Job {
     salaryMin: row.salary_min ?? undefined,
     salaryMax: row.salary_max ?? undefined,
     salaryPeriod: row.salary_period,
+    publishedAt: row.published_at,
   }
 }
 
