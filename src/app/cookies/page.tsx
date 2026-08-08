@@ -13,7 +13,7 @@ export default function CookieNoticePage() {
   return (
     <LegalPageShell
       description="This notice explains how USHCE uses cookies and similar technologies, which services are currently active, and how you can control optional uses."
-      lastUpdated="July 29, 2026"
+      lastUpdated="August 8, 2026"
       title="Cookie Notice"
     >
       <section>
@@ -51,8 +51,10 @@ export default function CookieNoticePage() {
           <div className="grid gap-2 border-b border-border bg-muted/45 p-4 sm:grid-cols-[11rem_1fr]">
             <strong>Analytics</strong>
             <span>
-              Optional. Would help measure site performance and usage. No
-              optional analytics service is currently active.
+              Optional. When you allow this category, USHCE uses Vercel Web
+              Analytics to understand site usage, traffic sources, and page
+              performance. It is not used for advertising or cross-context
+              behavioral tracking.
             </span>
           </div>
           <div className="grid gap-2 p-4 sm:grid-cols-[11rem_1fr]">
@@ -83,10 +85,10 @@ export default function CookieNoticePage() {
         </ul>
         <p>
           Hosting and security providers may process limited technical
-          information needed to deliver and protect the site. If USHCE adds a
-          new optional provider, this notice and the consent version will be
-          updated before that provider is activated for users who have not
-          granted the relevant permission.
+          information needed to deliver and protect the site. Vercel Web
+          Analytics starts only after you choose the Analytics category. If
+          USHCE adds another optional provider, this notice and the consent
+          version will be updated before activation.
         </p>
       </section>
 

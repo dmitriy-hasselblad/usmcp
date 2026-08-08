@@ -14,6 +14,9 @@ importers:
       '@supabase/supabase-js':
         specifier: 2.110.7
         version: 2.110.7
+      '@vercel/analytics':
+        specifier: 2.0.1
+        version: 2.0.1
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -71,6 +74,9 @@ importers:
         version: 5.9.3
 
 packages:
+
+  '@vercel/analytics@2.0.1':
+    resolution: {}
 
   '@alloc/quick-lru@5.2.0':
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
@@ -3683,6 +3689,8 @@ packages:
     resolution: {integrity: sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ==}
 
 snapshots:
+
+  '@vercel/analytics@2.0.1': {}
 
   '@alloc/quick-lru@5.2.0': {}
 

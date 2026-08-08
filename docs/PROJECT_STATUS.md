@@ -25,9 +25,9 @@ English.
 ## Production baseline
 
 - Production branch: `main`
-- Latest confirmed product Pull Request: PR #32
-- PR #32 merge commit: `67c5473`
-- Current `main` commit at branch handoff: `67c5473`
+- Latest confirmed product Pull Request: PR #34
+- PR #34 merge commit: `a02a887`
+- Current `main` commit at branch handoff: `a02a887`
 - Production deployment status at verification: `Ready`
 - Latest Production verification date: 2026-08-08
 
@@ -44,7 +44,10 @@ deployment were verified on 2026-08-03.
 
 PR #32 added publication dates to live job cards and was verified in Production
 on 2026-08-08. Product-preview cards intentionally remain without a publication
-date.
+date. PR #33 records the live, read-only RLS boundary verification. PR #34
+added the public SEO foundation: canonical metadata, social metadata,
+`robots.txt`, dynamic sitemap coverage, and `JobPosting` structured data for
+live vacancies. PR #34 was verified and deployed to Production on 2026-08-08.
 
 ## Technology stack
 
@@ -174,13 +177,14 @@ date.
   verification on
   2026-08-05 confirmed employer draft creation and editing, a 7 MB cover image,
   review submission, admin approval, public article/image rendering, and
-  blocked-content exclusion. A dedicated Production verification remains to be
-  recorded.
+  blocked-content exclusion. Production verification was confirmed on
+  2026-08-08 with six published articles visible on the public website.
 - News publication dates, year/month archive filters, and server-side archive
   pagination were merged through PR #27. Vercel Preview
   verification on 2026-08-07 confirmed live dates, the four-article August
-  2026 filter, URL persistence, and an empty-period state. A dedicated
-  Production verification remains to be recorded.
+  2026 filter, URL persistence, and an empty-period state. Production
+  verification was confirmed on 2026-08-08 with live dates and archive filters
+  working across six public articles.
 - Admin Audit Log Viewer was merged through PR #29 and verified in Production
   on 2026-08-07. It provides admin-only search, action/target/date filters, and
   pagination over append-only privileged events.
@@ -242,7 +246,8 @@ The following areas are not complete:
 - Messaging, in-product notifications, and interview scheduling are not
   implemented.
 - AI features are intentionally deferred.
-- Full SEO, analytics, and soft-launch operations are not implemented.
+- Public SEO foundation is implemented through PR #34. Analytics and wider
+  soft-launch operations remain in progress.
 - The source-level access contract suite is in place. Fully automated database
   integration coverage requires an isolated Supabase Branch (available on Pro)
   or a local Docker/Supabase CLI environment; neither is currently available.
