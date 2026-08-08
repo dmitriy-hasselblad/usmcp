@@ -1,6 +1,6 @@
 # USHCE Project Status
 
-Last updated: 2026-08-07
+Last updated: 2026-08-08
 
 ## Purpose
 
@@ -25,11 +25,11 @@ English.
 ## Production baseline
 
 - Production branch: `main`
-- Latest confirmed product Pull Request: PR #30
-- PR #30 merge commit: `543bcfe`
-- Current `main` commit at branch handoff: `543bcfe`
+- Latest confirmed product Pull Request: PR #32
+- PR #32 merge commit: `67c5473`
+- Current `main` commit at branch handoff: `67c5473`
 - Production deployment status at verification: `Ready`
-- Latest Production verification date: 2026-08-07
+- Latest Production verification date: 2026-08-08
 
 The structured professional profile was verified in Production with a 100%
 completion state and records in all four categories.
@@ -41,6 +41,10 @@ Candidate skills and extended profiles were stabilized in PR #12. Vercel
 Preview, candidate flows, authorized hiring-team access, unrelated-employer and
 anonymous denial, migrations, RLS, the merge, and the resulting Production
 deployment were verified on 2026-08-03.
+
+PR #32 added publication dates to live job cards and was verified in Production
+on 2026-08-08. Product-preview cards intentionally remain without a publication
+date.
 
 ## Technology stack
 
@@ -126,6 +130,10 @@ deployment were verified on 2026-08-03.
 - Platform-admin assignments separated from organization membership
 - Secure server-side `/admin` authorization boundary
 - RLS-protected privileged audit-event foundation
+- Live RLS boundary verification completed on 2026-08-08 using read-only,
+  rolled-back transactions with simulated authenticated claims. Candidate,
+  authorized hiring-team, active-admin, and unrelated-user access behaved as
+  intended for applications, professional documents, and admin records.
 
 ### Current Admin delivery status
 
@@ -235,6 +243,9 @@ The following areas are not complete:
   implemented.
 - AI features are intentionally deferred.
 - Full SEO, analytics, and soft-launch operations are not implemented.
+- The source-level access contract suite is in place. Fully automated database
+  integration coverage requires an isolated Supabase Branch (available on Pro)
+  or a local Docker/Supabase CLI environment; neither is currently available.
 
 ## Local workstation setup
 
