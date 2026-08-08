@@ -1,6 +1,6 @@
 # USHCE Next Steps
 
-Last updated: 2026-08-07
+Last updated: 2026-08-08
 
 ## Current product phase
 
@@ -176,9 +176,16 @@ commit `543bcfe`.
 **Previous ticket:** Abuse reporting and admin oversight were merged through
 PR #30 and verified in Production on 2026-08-07.
 
-**Current verification status:** Manual role-boundary verification is complete.
-The first source-level contract checks are in place; live database integration
-coverage remains to be established.
+**Current verification status:** The source-level contract suite and a live,
+read-only RLS verification are complete. On 2026-08-08, candidate, authorized
+hiring-team, active-admin, and unrelated-user claims were tested against the
+live database inside rolled-back transactions; no application data changed.
+
+**Automation constraint:** A dedicated Supabase Branch cannot be created on the
+current plan, and the local workstation does not currently have Docker or the
+Supabase CLI. Keep the source-level suite as the release guard and repeat the
+live read-only RLS check for future access-control changes. Add a fully
+automated database suite when an isolated environment becomes available.
 
 **Implementation order:**
 
@@ -187,8 +194,9 @@ coverage remains to be established.
 3. Cover employer organization isolation and candidate-document privacy.
 4. Cover application access for the candidate, authorized employer, and an
    unrelated employer.
-5. Run the suite locally and in Vercel Preview before using it as a release
-   gate.
+5. Run the source-level suite locally and in Vercel Preview as a release gate.
+6. Repeat the live read-only RLS verification whenever policies or protected
+   data models change.
 
 ## Definition of done for every future stage
 
