@@ -79,6 +79,21 @@ export const getPublishedOrganizationPost = cache(async (slug: string) => {
   return data
 })
 
+export const getPublishedOrganizationPostSitemapEntries = cache(async () => {
+  const { data } = await (await createClient())
+    .from("organization_posts")
+    .select("slug, published_at")
+    .eq("status", "published")
+    .eq("moderation_status", "approved")
+    .order("published_at", { ascending: false })
+    .limit(2000)
+
+  return (data ?? []).filter(
+    (post): post is { slug: string; published_at: string } =>
+      Boolean(post.slug && post.published_at),
+  )
+})
+
 export function formatNewsDate(value: string | null) {
   if (!value) return "Publication date unavailable"
   return new Intl.DateTimeFormat("en-US", {

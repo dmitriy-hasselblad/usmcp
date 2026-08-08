@@ -39,6 +39,7 @@ export type Job = {
   salaryMin?: number
   salaryMax?: number
   salaryPeriod?: "hour" | "year"
+  publishedAt?: string
 }
 
 export type Employer = {
