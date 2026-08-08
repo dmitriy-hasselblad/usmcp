@@ -47,3 +47,17 @@ test("abuse reports remain private, RLS-protected, and auditable", async () => {
   assert.match(migration, /if \(select auth\.uid\(\)\) is null or not private\.is_platform_admin\(\) then/)
   assert.match(migration, /private\.record_admin_audit_event\(/)
 })
+
+test("CV Builder is limited to the signed-in professional and uses browser PDF export", async () => {
+  const [page, builder] = await Promise.all([
+    readProjectFile("src/app/dashboard/profile/cv/page.tsx"),
+    readProjectFile("src/components/professional/cv-builder.tsx"),
+  ])
+
+  assert.match(page, /requireIdentity\("\/dashboard\/profile\/cv"\)/)
+  assert.match(page, /account\.data\.account_type !== "professional"/)
+  assert.match(page, /from\("professional_experience"\)/)
+  assert.match(page, /from\("professional_skills"\)/)
+  assert.match(builder, /window\.print\(\)/)
+  assert.match(builder, /@page \{ size: letter/)
+})

@@ -90,7 +90,7 @@ the recommended implementation order on page 3 as the governing sequence.
 - [x] Skills model
 - [x] Extended healthcare profile sections
 - [ ] Recommended jobs
-- [ ] Resume/CV Builder
+- [ ] Resume/CV Builder (initial private profile-to-PDF builder in progress)
 - [ ] Google sign-in
 - [ ] LinkedIn sign-in
 

@@ -171,7 +171,20 @@ roadmap:
 
 ## Immediate next ticket
 
-**Ticket:** Consent-aware Web Analytics for soft launch.
+**Ticket:** Private Resume/CV Builder.
+
+### Current decision
+
+The product owner reprioritized the CV Builder on 2026-08-09. The first
+release derives a private professional CV from existing profile, skills, and
+Career History records, then lets the professional export it through the
+browser's Save as PDF flow. It must not create a public CV page or transmit CV
+data to an external generation service.
+
+**Previous ticket:** Consent-aware Web Analytics was merged through PR #35 and
+verified in Production on 2026-08-08.
+
+## Deferred soft-launch analytics details
 
 ### Goal
 
