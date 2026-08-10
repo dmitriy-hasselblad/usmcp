@@ -1,6 +1,6 @@
 # USHCE Next Steps
 
-Last updated: 2026-08-08
+Last updated: 2026-08-10
 
 ## Current product phase
 
@@ -143,8 +143,10 @@ Payments are not a launch dependency.
 6. Abuse oversight and audit viewer (completed through PR #30)
 7. Automated boundary tests, SEO, analytics, and soft-launch readiness
 
-The source-level authorization suite, live RLS verification, and public SEO
-foundation are complete through PRs #31, #33, and #34.
+The source-level authorization suite, live RLS verification, public SEO
+foundation, and consent-aware Vercel Web Analytics are complete through PRs
+#31, #33, #34, and #35. The standalone résumé builder is complete through
+PR #36 and verified in Production.
 
 Stripe, subscriptions, one-time payments, invoices, and billing are deferred
 until 6-12 months after Early Access. Preserve a clean future entitlement
@@ -171,28 +173,28 @@ roadmap:
 
 ## Immediate next ticket
 
-**Ticket:** Consent-aware Web Analytics for soft launch.
+**Ticket:** Soft-launch content readiness audit.
 
 ### Goal
 
-Enable Vercel Web Analytics only after a visitor permits the Analytics category.
-This establishes privacy-conscious, first-party page-view and traffic-source
-visibility without collecting user profile, application, document, or medical
-information as custom events.
+Ensure that public marketplace pages do not present fictional sample employers,
+jobs, or content as live U.S. healthcare opportunities during Early Access.
 
 ### Required scope
 
-1. Add the analytics client behind the existing Analytics consent preference.
-2. Increase the consent version because an optional provider is being added.
-3. Update the Cookie Notice to describe the active provider.
-4. Enable Web Analytics in the Vercel project after Preview verification.
-5. Verify page views in Production with a consented browser session.
+1. Inventory all public cards, directory entries, and detail pages that can
+   expose sample content.
+2. Distinguish live data from demonstration content in the UI and SEO output.
+3. Remove, hide, or clearly label any fictional listing that could be mistaken
+   for a real opportunity.
+4. Preserve real published jobs and approved organizations.
+5. Verify public guest access, empty states, metadata, and Vercel Preview.
 
 ### Explicit limitation
 
-On the current Vercel Hobby plan, this ticket covers page views, routes,
-referrers, and performance trends. Business conversion events and funnel
-analysis require a future analytics plan or a separately approved provider.
+Do not delete Production data or alter publication status without an explicit
+product-owner approval. This ticket begins with a read-only inventory and a
+safe presentation-layer proposal.
 
 ## Definition of done for every future stage
 
