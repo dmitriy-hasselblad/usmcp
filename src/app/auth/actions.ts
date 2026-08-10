@@ -15,7 +15,7 @@ import {
   organizationTypes,
 } from "@/lib/auth/validation"
 import { isHealthcareProfession } from "@/lib/healthcare-taxonomy"
-import { getSiteUrl, isAuthEnabled, isSocialAuthEnabled } from "@/lib/supabase/env"
+import { getSiteUrl, isAuthEnabled, isSocialProviderEnabled } from "@/lib/supabase/env"
 import { createClient } from "@/lib/supabase/server"
 
 const configurationError =
@@ -33,7 +33,7 @@ export async function startSocialSignIn(formData: FormData) {
   const requestedNext = formString(formData, "next")
   const destination = accountType ? "/sign-up" : "/sign-in"
 
-  if (!isSocialAuthEnabled() || !isSocialProvider(provider)) {
+  if (!isSocialProvider(provider) || !isSocialProviderEnabled(provider)) {
     redirect(messagePath(destination, "error", "Social sign-in is not available yet."))
   }
   if (accountType && !isAccountType(accountType)) {

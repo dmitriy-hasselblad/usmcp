@@ -14,8 +14,12 @@ export function isAuthEnabled() {
   )
 }
 
-export function isSocialAuthEnabled() {
-  return isAuthEnabled() && process.env.NEXT_PUBLIC_SOCIAL_AUTH_ENABLED === "true"
+export function isSocialProviderEnabled(provider: "google" | "linkedin_oidc") {
+  const variable = provider === "google"
+    ? "NEXT_PUBLIC_GOOGLE_AUTH_ENABLED"
+    : "NEXT_PUBLIC_LINKEDIN_AUTH_ENABLED"
+
+  return isAuthEnabled() && process.env[variable] === "true"
 }
 
 export function getSupabaseCredentials() {

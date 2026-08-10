@@ -7,7 +7,7 @@ import { AuthPageShell } from "@/components/auth/auth-page-shell"
 import { AuthNotice } from "@/components/auth/auth-notice"
 import { AuthSubmitButton } from "@/components/auth/auth-submit-button"
 import { Input } from "@/components/ui/input"
-import { isAuthEnabled, isSocialAuthEnabled } from "@/lib/supabase/env"
+import { isAuthEnabled, isSocialProviderEnabled } from "@/lib/supabase/env"
 import { createClient } from "@/lib/supabase/server"
 
 export const metadata: Metadata = {
@@ -35,7 +35,9 @@ export default async function SignInPage({
   const success = firstValue(params.success)
   const next = firstValue(params.next)
   const configured = isAuthEnabled()
-  const socialConfigured = isSocialAuthEnabled()
+  const googleEnabled = isSocialProviderEnabled("google")
+  const linkedInEnabled = isSocialProviderEnabled("linkedin_oidc")
+  const socialConfigured = googleEnabled || linkedInEnabled
 
   if (configured) {
     const supabase = await createClient()
@@ -108,8 +110,8 @@ export default async function SignInPage({
         {socialConfigured ? <>
           <div className="flex items-center gap-3 text-xs text-muted-foreground"><span className="h-px flex-1 bg-border" />or continue with<span className="h-px flex-1 bg-border" /></div>
           <div className="grid gap-3 sm:grid-cols-2">
-            <button className="h-11 rounded-xl border border-border bg-white px-4 text-sm font-semibold hover:bg-muted" formAction={startSocialSignIn} name="provider" type="submit" value="google">Google</button>
-            <button className="h-11 rounded-xl border border-border bg-white px-4 text-sm font-semibold hover:bg-muted" formAction={startSocialSignIn} name="provider" type="submit" value="linkedin_oidc">LinkedIn</button>
+            {googleEnabled ? <button className="h-11 rounded-xl border border-border bg-white px-4 text-sm font-semibold hover:bg-muted" formAction={startSocialSignIn} name="provider" type="submit" value="google">Google</button> : null}
+            {linkedInEnabled ? <button className="h-11 rounded-xl border border-border bg-white px-4 text-sm font-semibold hover:bg-muted" formAction={startSocialSignIn} name="provider" type="submit" value="linkedin_oidc">LinkedIn</button> : null}
           </div>
         </> : null}
       </form>
