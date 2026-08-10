@@ -26,9 +26,14 @@ export default async function CvBuilderPage() {
   if (account.data.account_type !== "professional") redirect("/dashboard/organization")
   const profile = extended.data as ProfessionalProfileRecord
   const dateRange = (start?: string | null, end?: string | null, current?: boolean) => `${formatDate(start)} - ${current ? "Present" : formatDate(end)}`
+  const contact = [
+    identity.email,
+    [profile.city, profile.state_code].filter(Boolean).join(", "),
+  ].filter((value): value is string => Boolean(value))
+
   const cv: CvData = {
     name: [account.data.first_name, account.data.last_name].filter(Boolean).join(" "),
-    contact: [identity.email, [profile.city, profile.state_code].filter(Boolean).join(", ")].filter(Boolean),
+    contact,
     headline: profile.headline || [profile.profession, profile.specialty].filter(Boolean).join(" | "), summary: profile.biography,
     skills: ((skills.data ?? []) as ProfessionalSkillRecord[]).map((skill) => skill.name), languages: profile.languages ?? [],
     experience: ((experience.data ?? []) as ExperienceRecord[]).map((item) => ({ title: item.role_title, subtitle: [item.organization_name, item.employment_type, [item.city, item.state_code].filter(Boolean).join(", ")].filter(Boolean).join(" | "), dates: dateRange(item.start_date, item.end_date, item.is_current), description: item.description })),
