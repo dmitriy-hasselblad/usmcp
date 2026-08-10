@@ -1,7 +1,7 @@
 import type { EmailOtpType } from "@supabase/supabase-js"
 import { type NextRequest, NextResponse } from "next/server"
 
-import { isSafeInternalPath } from "@/lib/auth/validation"
+import { isAccountType, isSafeInternalPath } from "@/lib/auth/validation"
 import { isAuthEnabled } from "@/lib/supabase/env"
 import { createClient } from "@/lib/supabase/server"
 
@@ -19,6 +19,7 @@ export async function GET(request: NextRequest) {
   const type = request.nextUrl.searchParams.get("type") as EmailOtpType | null
   const code = request.nextUrl.searchParams.get("code")
   const requestedNext = request.nextUrl.searchParams.get("next") ?? ""
+  const requestedAccountType = request.nextUrl.searchParams.get("accountType") ?? ""
   const next = isSafeInternalPath(requestedNext)
     ? requestedNext
     : "/onboarding"
@@ -37,6 +38,21 @@ export async function GET(request: NextRequest) {
     const { error } = await supabase.auth.exchangeCodeForSession(code)
 
     if (!error) {
+      if (requestedAccountType && isAccountType(requestedAccountType)) {
+        const { error: accountTypeError } = await supabase.rpc(
+          "set_initial_social_account_type",
+          { target_account_type: requestedAccountType },
+        )
+
+        if (accountTypeError) {
+          const errorUrl = new URL("/sign-up", request.url)
+          errorUrl.searchParams.set(
+            "error",
+            "We could not finish setting up your social account. Please try again.",
+          )
+          return NextResponse.redirect(errorUrl)
+        }
+      }
       return NextResponse.redirect(new URL(next, request.url))
     }
   }

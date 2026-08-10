@@ -14,6 +14,10 @@ export function isAuthEnabled() {
   )
 }
 
+export function isSocialAuthEnabled() {
+  return isAuthEnabled() && process.env.NEXT_PUBLIC_SOCIAL_AUTH_ENABLED === "true"
+}
+
 export function getSupabaseCredentials() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL
   const publishableKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY

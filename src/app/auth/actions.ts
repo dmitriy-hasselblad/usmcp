@@ -1,6 +1,7 @@
 "use server"
 
 import { revalidatePath } from "next/cache"
+import { headers } from "next/headers"
 import { redirect } from "next/navigation"
 
 import {
@@ -14,11 +15,50 @@ import {
   organizationTypes,
 } from "@/lib/auth/validation"
 import { isHealthcareProfession } from "@/lib/healthcare-taxonomy"
-import { getSiteUrl, isAuthEnabled } from "@/lib/supabase/env"
+import { getSiteUrl, isAuthEnabled, isSocialAuthEnabled } from "@/lib/supabase/env"
 import { createClient } from "@/lib/supabase/server"
 
 const configurationError =
   "Authentication is not configured for this deployment yet."
+
+const socialProviders = ["google", "linkedin_oidc"] as const
+
+function isSocialProvider(value: string): value is (typeof socialProviders)[number] {
+  return socialProviders.some((provider) => provider === value)
+}
+
+export async function startSocialSignIn(formData: FormData) {
+  const provider = formString(formData, "provider")
+  const accountType = formString(formData, "accountType")
+  const requestedNext = formString(formData, "next")
+  const destination = accountType ? "/sign-up" : "/sign-in"
+
+  if (!isSocialAuthEnabled() || !isSocialProvider(provider)) {
+    redirect(messagePath(destination, "error", "Social sign-in is not available yet."))
+  }
+  if (accountType && !isAccountType(accountType)) {
+    redirect(messagePath("/sign-up", "error", "Choose an account type to continue."))
+  }
+
+  const requestHeaders = await headers()
+  const host = requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host")
+  const protocol = requestHeaders.get("x-forwarded-proto") ?? "https"
+  const origin = host ? `${protocol}://${host}` : getSiteUrl()
+  const next = requestedNext && isSafeInternalPath(requestedNext) ? requestedNext : "/onboarding"
+  const callbackUrl = new URL("/auth/confirm", origin)
+  callbackUrl.searchParams.set("next", next)
+  if (accountType) callbackUrl.searchParams.set("accountType", accountType)
+
+  const supabase = await createClient()
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider,
+    options: { redirectTo: callbackUrl.toString() },
+  })
+  if (error || !data.url) {
+    redirect(messagePath(destination, "error", "We could not start social sign-in. Please try again."))
+  }
+  redirect(data.url)
+}
 
 function organizationSlug(name: string, userId: string) {
   const base =

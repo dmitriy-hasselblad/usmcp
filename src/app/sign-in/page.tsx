@@ -2,12 +2,12 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { redirect } from "next/navigation"
 
-import { signIn } from "@/app/auth/actions"
+import { signIn, startSocialSignIn } from "@/app/auth/actions"
 import { AuthPageShell } from "@/components/auth/auth-page-shell"
 import { AuthNotice } from "@/components/auth/auth-notice"
 import { AuthSubmitButton } from "@/components/auth/auth-submit-button"
 import { Input } from "@/components/ui/input"
-import { isAuthEnabled } from "@/lib/supabase/env"
+import { isAuthEnabled, isSocialAuthEnabled } from "@/lib/supabase/env"
 import { createClient } from "@/lib/supabase/server"
 
 export const metadata: Metadata = {
@@ -35,6 +35,7 @@ export default async function SignInPage({
   const success = firstValue(params.success)
   const next = firstValue(params.next)
   const configured = isAuthEnabled()
+  const socialConfigured = isSocialAuthEnabled()
 
   if (configured) {
     const supabase = await createClient()
@@ -104,6 +105,13 @@ export default async function SignInPage({
         >
           Sign in
         </AuthSubmitButton>
+        {socialConfigured ? <>
+          <div className="flex items-center gap-3 text-xs text-muted-foreground"><span className="h-px flex-1 bg-border" />or continue with<span className="h-px flex-1 bg-border" /></div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <button className="h-11 rounded-xl border border-border bg-white px-4 text-sm font-semibold hover:bg-muted" formAction={startSocialSignIn} name="provider" type="submit" value="google">Google</button>
+            <button className="h-11 rounded-xl border border-border bg-white px-4 text-sm font-semibold hover:bg-muted" formAction={startSocialSignIn} name="provider" type="submit" value="linkedin_oidc">LinkedIn</button>
+          </div>
+        </> : null}
       </form>
     </AuthPageShell>
   )

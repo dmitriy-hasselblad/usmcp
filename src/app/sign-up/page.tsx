@@ -2,12 +2,12 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { BriefcaseBusiness, Stethoscope } from "lucide-react"
 
-import { signUp } from "@/app/auth/actions"
+import { signUp, startSocialSignIn } from "@/app/auth/actions"
 import { AuthNotice } from "@/components/auth/auth-notice"
 import { AuthPageShell } from "@/components/auth/auth-page-shell"
 import { AuthSubmitButton } from "@/components/auth/auth-submit-button"
 import { Input } from "@/components/ui/input"
-import { isAuthEnabled } from "@/lib/supabase/env"
+import { isAuthEnabled, isSocialAuthEnabled } from "@/lib/supabase/env"
 
 export const metadata: Metadata = {
   title: "Create an Account",
@@ -30,6 +30,7 @@ export default async function SignUpPage({
   const params = await searchParams
   const error = firstValue(params.error)
   const configured = isAuthEnabled()
+  const socialConfigured = isSocialAuthEnabled()
 
   return (
     <AuthPageShell
@@ -147,6 +148,13 @@ export default async function SignUpPage({
         >
           Create account
         </AuthSubmitButton>
+        {socialConfigured ? <>
+          <div className="flex items-center gap-3 text-xs text-muted-foreground"><span className="h-px flex-1 bg-border" />or continue with<span className="h-px flex-1 bg-border" /></div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <button className="h-11 rounded-xl border border-border bg-white px-4 text-sm font-semibold hover:bg-muted" formAction={startSocialSignIn} name="provider" type="submit" value="google">Continue with Google</button>
+            <button className="h-11 rounded-xl border border-border bg-white px-4 text-sm font-semibold hover:bg-muted" formAction={startSocialSignIn} name="provider" type="submit" value="linkedin_oidc">Continue with LinkedIn</button>
+          </div>
+        </> : null}
       </form>
     </AuthPageShell>
   )
