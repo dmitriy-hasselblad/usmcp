@@ -8,10 +8,10 @@ import { AuthPageShell } from "@/components/auth/auth-page-shell"
 import { AuthSubmitButton } from "@/components/auth/auth-submit-button"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { ProfessionSpecialtyFields } from "@/components/forms/profession-specialty-fields"
 import {
   careerStages,
   organizationTypes,
-  professions,
   usStates,
 } from "@/lib/auth/validation"
 import { requireIdentity } from "@/lib/auth/session"
@@ -139,26 +139,7 @@ export default async function OnboardingPage({
 
         {isProfessional ? (
           <>
-            <label className="grid gap-2 text-sm font-medium">
-              Profession
-              <select className={selectClassName} name="profession" required>
-                <option value="">Select your profession</option>
-                {professions.map((profession) => (
-                  <option key={profession} value={profession}>
-                    {profession}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="grid gap-2 text-sm font-medium">
-              Specialty or focus area
-              <Input
-                className="h-11"
-                maxLength={120}
-                name="specialty"
-                placeholder="For example, Emergency Medicine"
-              />
-            </label>
+            <ProfessionSpecialtyFields specialtyLabel="Specialty or focus area" />
             <label className="grid gap-2 text-sm font-medium">
               Career stage
               <select className={selectClassName} name="careerStage" required>

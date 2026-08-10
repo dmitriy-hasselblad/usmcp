@@ -23,6 +23,7 @@ import {
   updateProfessionalProfile,
 } from "@/app/dashboard/profile/actions"
 import { AuthNotice } from "@/components/auth/auth-notice"
+import { ProfessionSpecialtyFields } from "@/components/forms/profession-specialty-fields"
 import { AuthSubmitButton } from "@/components/auth/auth-submit-button"
 import { DocumentUploadForm } from "@/components/professional/document-upload-form"
 import { ProfessionalPhotoForm } from "@/components/professional/professional-photo-form"
@@ -211,23 +212,7 @@ export default async function ProfessionalProfilePage({
                 />
               </Field>
 
-              <div className="grid gap-5 sm:grid-cols-2">
-                <SelectField
-                  defaultValue={professionalProfile.profession}
-                  label="Profession"
-                  name="profession"
-                  options={professions.map((value) => [value, value] as const)}
-                />
-                <Field label="Specialty">
-                  <Input
-                    className="h-11"
-                    defaultValue={professionalProfile.specialty ?? ""}
-                    maxLength={120}
-                    name="specialty"
-                    placeholder="Cardiology"
-                  />
-                </Field>
-              </div>
+              <div className="grid gap-5 sm:grid-cols-2"><ProfessionSpecialtyFields defaultProfession={professionalProfile.profession} defaultSpecialty={professionalProfile.specialty ?? ""} /></div>
 
               <div className="grid gap-5 sm:grid-cols-2">
                 <SelectField
