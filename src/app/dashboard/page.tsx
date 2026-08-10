@@ -24,6 +24,8 @@ import type { ApplicationRecord } from "@/lib/applications/constants"
 import { requireIdentity } from "@/lib/auth/session"
 import type { JobStatus } from "@/lib/employer/constants"
 import { requireEmployerWorkspace } from "@/lib/employer/session"
+import { getPublishedJobs } from "@/lib/jobs/public-jobs"
+import { recommendJobs } from "@/lib/jobs/recommendations"
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -282,6 +284,7 @@ async function ProfessionalDashboard({
     { count: applicationCount },
     { count: documentCount },
     { data: recentApplicationData },
+    liveJobs,
   ] = await Promise.all([
     supabase
       .from("professional_profiles")
@@ -302,9 +305,11 @@ async function ProfessionalDashboard({
       .eq("candidate_id", userId)
       .order("submitted_at", { ascending: false })
       .limit(3),
+    getPublishedJobs(),
   ])
   const recentApplications =
     (recentApplicationData as ApplicationRecord[] | null) ?? []
+  const recommendations = recommendJobs(roleProfile, liveJobs)
 
   return (
     <ProfessionalDashboardShell active="overview" email={email}>
@@ -425,6 +430,13 @@ async function ProfessionalDashboard({
               </p>
             </div>
           )}
+        </CardContent>
+      </Card>
+
+      <Card className="mt-6 bg-white">
+        <CardContent className="p-6">
+          <div className="flex items-start justify-between gap-4"><div><h2 className="text-xl font-semibold">Recommended jobs</h2><p className="mt-1 text-sm text-muted-foreground">Based on your profession, specialty, and state. Your profile is not shared.</p></div><Button asChild size="sm" variant="outline"><Link href="/jobs">Browse all</Link></Button></div>
+          {recommendations.length ? <div className="mt-5 grid gap-3">{recommendations.map((job) => <Link className="rounded-xl border p-4 transition-colors hover:bg-muted/40" href={`/jobs/${job.slug}`} key={job.slug}><p className="font-semibold">{job.title}</p><p className="mt-1 text-sm text-muted-foreground">{job.employer} · {job.location}</p><p className="mt-2 text-xs font-medium text-primary">{job.matchReasons.join(" · ")}</p></Link>)}</div> : <p className="mt-5 text-sm text-muted-foreground">Add your profession, specialty, and state to receive job recommendations.</p>}
         </CardContent>
       </Card>
 
