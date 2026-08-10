@@ -8,17 +8,6 @@ export const employmentTypes = [
 
 export const workplaceTypes = ["On-site", "Hybrid", "Remote"] as const
 
-export const healthcareProfessions = [
-  "Physician",
-  "Registered Nurse",
-  "Advanced Practice Provider",
-  "Pharmacist",
-  "Therapist",
-  "Technologist or Technician",
-  "Healthcare Administration",
-  "Other Healthcare Professional",
-] as const
-
 export const experienceLevels = [
   "Entry level",
   "Mid level",
@@ -52,10 +41,6 @@ export function isEmploymentType(value: string) {
 
 export function isWorkplaceType(value: string) {
   return workplaceTypes.some((option) => option === value)
-}
-
-export function isHealthcareProfession(value: string) {
-  return healthcareProfessions.some((option) => option === value) || value === "Dentist" || value === "Healthcare Support"
 }
 
 export function isExperienceLevel(value: string) {

@@ -9,8 +9,8 @@ import {
   formString,
   isUsState,
   messagePath,
-  professions,
 } from "@/lib/auth/validation"
+import { isHealthcareProfession } from "@/lib/healthcare-taxonomy"
 import {
   isAllowedProfessionalDocument,
   isProfessionalDocumentType,
@@ -66,7 +66,7 @@ export async function updateProfessionalProfile(formData: FormData) {
     firstName.length > 80 ||
     lastName.length < 2 ||
     lastName.length > 80 ||
-    !professions.some((option) => option === profession) ||
+    !isHealthcareProfession(profession) ||
     !careerStages.some((option) => option === careerStage) ||
     !isUsState(stateCode) ||
     (specialty.length > 0 && specialty.length < 2) ||

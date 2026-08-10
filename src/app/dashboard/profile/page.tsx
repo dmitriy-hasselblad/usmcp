@@ -42,7 +42,6 @@ import { Textarea } from "@/components/ui/textarea"
 import { requireIdentity } from "@/lib/auth/session"
 import {
   careerStages,
-  professions,
   usStates,
 } from "@/lib/auth/validation"
 import {

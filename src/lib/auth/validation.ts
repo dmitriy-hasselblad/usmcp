@@ -56,13 +56,6 @@ export const usStates = [
   ["DC", "District of Columbia"],
 ] as const
 
-export const professions = [
-  "Physician", "Registered Nurse", "Advanced Practice Provider", "Dentist",
-  "Pharmacist", "Therapist", "Technologist or Technician",
-  "Healthcare Administration", "Healthcare Support", "Other Healthcare Professional",
-  "Nurse Practitioner", "Physician Assistant", "Allied Health Professional", "Healthcare Administrator", "Student or Trainee",
-] as const
-
 export const careerStages = [
   "Student or trainee",
   "Early career",

@@ -14,9 +14,9 @@ import { usStates } from "@/lib/auth/validation"
 import {
   employmentTypes,
   experienceLevels,
-  healthcareProfessions,
   workplaceTypes,
 } from "@/lib/employer/constants"
+import { healthcareProfessions } from "@/lib/healthcare-taxonomy"
 import { filterJobs, type JobFilters } from "@/lib/jobs/job-filters"
 import { getPublishedJobs } from "@/lib/jobs/public-jobs"
 import { featuredJobs } from "@/lib/marketing-data"

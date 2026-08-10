@@ -12,8 +12,8 @@ import {
   isValidEmail,
   messagePath,
   organizationTypes,
-  professions,
 } from "@/lib/auth/validation"
+import { isHealthcareProfession } from "@/lib/healthcare-taxonomy"
 import { getSiteUrl, isAuthEnabled } from "@/lib/supabase/env"
 import { createClient } from "@/lib/supabase/server"
 
@@ -298,7 +298,7 @@ export async function completeOnboarding(formData: FormData) {
     const careerStage = formString(formData, "careerStage")
 
     if (
-      !professions.some((option) => option === profession) ||
+      !isHealthcareProfession(profession) ||
       !careerStages.some((option) => option === careerStage) ||
       specialty.length > 120
     ) {
