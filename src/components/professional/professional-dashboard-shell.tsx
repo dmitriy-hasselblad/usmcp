@@ -13,7 +13,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
-type ProfessionalRoute = "overview" | "profile" | "career" | "applications"
+type ProfessionalRoute = "overview" | "profile" | "career" | "resumes" | "applications"
 
 const routes = [
   {
@@ -33,6 +33,12 @@ const routes = [
     href: "/dashboard/profile/career",
     label: "Career history",
     icon: GraduationCap,
+  },
+  {
+    key: "resumes",
+    href: "/dashboard/resumes",
+    label: "Résumé Builder",
+    icon: FileText,
   },
   {
     key: "applications",
