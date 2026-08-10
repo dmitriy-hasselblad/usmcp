@@ -47,3 +47,17 @@ test("abuse reports remain private, RLS-protected, and auditable", async () => {
   assert.match(migration, /if \(select auth\.uid\(\)\) is null or not private\.is_platform_admin\(\) then/)
   assert.match(migration, /private\.record_admin_audit_event\(/)
 })
+
+test("résumé drafts are private, owner-scoped, and separate from profiles", async () => {
+  const migration = await readProjectFile(
+    "supabase/migrations/20260810073202_standalone_resume_builder.sql",
+  )
+  const builder = await readProjectFile("src/app/dashboard/resumes/page.tsx")
+
+  assert.match(migration, /alter table public\.professional_resumes enable row level security/)
+  assert.match(migration, /revoke all on table public\.professional_resumes from public, anon, authenticated/)
+  assert.match(migration, /for select[\s\S]*auth\.uid\(\)[\s\S]*user_id/)
+  assert.match(migration, /for insert[\s\S]*account_type = 'professional'/)
+  assert.doesNotMatch(migration, /hiring|employer|organization_member/i)
+  assert.match(builder, /Nothing is copied from your profile/)
+})
