@@ -1,6 +1,6 @@
 # USHCE Project Status
 
-Last updated: 2026-08-08
+Last updated: 2026-08-10
 
 ## Purpose
 
@@ -25,11 +25,11 @@ English.
 ## Production baseline
 
 - Production branch: `main`
-- Latest confirmed product Pull Request: PR #34
-- PR #34 merge commit: `a02a887`
-- Current `main` commit at branch handoff: `a02a887`
+- Latest confirmed product Pull Request: PR #36
+- PR #36 merge commit: `1aa1b65`
+- Current `main` commit at branch handoff: `1aa1b65`
 - Production deployment status at verification: `Ready`
-- Latest Production verification date: 2026-08-08
+- Latest Production verification date: 2026-08-10
 
 The structured professional profile was verified in Production with a 100%
 completion state and records in all four categories.
@@ -48,6 +48,12 @@ date. PR #33 records the live, read-only RLS boundary verification. PR #34
 added the public SEO foundation: canonical metadata, social metadata,
 `robots.txt`, dynamic sitemap coverage, and `JobPosting` structured data for
 live vacancies. PR #34 was verified and deployed to Production on 2026-08-08.
+
+PR #35 enabled consent-aware Vercel Web Analytics and was verified in
+Production. PR #36 added the standalone U.S. healthcare résumé builder and
+was verified in Production on 2026-08-10: professionals can create up to ten
+private blank drafts, save them, and export a U.S. Letter-size PDF. Résumé
+content is not copied from a profile and is private to its owner.
 
 ## Technology stack
 
@@ -120,6 +126,8 @@ live vacancies. PR #34 was verified and deployed to Production on 2026-08-08.
   - certifications;
   - create, edit, and remove actions;
   - profile completion calculation.
+- Standalone U.S. healthcare résumé builder with private blank drafts,
+  ATS-friendly preview, save/delete actions, and Early Access PDF export.
 
 ### Privacy and security foundation
 
@@ -219,6 +227,7 @@ The repository currently contains these applied migration groups:
 18. Organization-authored news, private cover images, and moderation boundary
 19. Public-content reporting, private reporter details, admin review decisions,
     and privileged audit events
+20. Private standalone professional résumé drafts and owner-only export access
 
 Migration files are stored in `supabase/migrations/`.
 
@@ -229,7 +238,8 @@ schema migrations. Migrations must be reusable in a clean environment.
 
 The following areas are not complete:
 
-- Resume/CV Builder is not implemented.
+- The standalone résumé builder is implemented and verified in Production.
+  AI-assisted résumé writing remains deferred.
 - Google and LinkedIn authentication are not implemented.
 - Employer verification and manual moderation are implemented and verified in
   Production.
@@ -246,8 +256,8 @@ The following areas are not complete:
 - Messaging, in-product notifications, and interview scheduling are not
   implemented.
 - AI features are intentionally deferred.
-- Public SEO foundation is implemented through PR #34. Analytics and wider
-  soft-launch operations remain in progress.
+- Public SEO foundation and consent-aware Vercel Web Analytics are implemented.
+  Wider soft-launch operations remain in progress.
 - The source-level access contract suite is in place. Fully automated database
   integration coverage requires an isolated Supabase Branch (available on Pro)
   or a local Docker/Supabase CLI environment; neither is currently available.

@@ -1,6 +1,6 @@
 # USHCE Blueprint Roadmap
 
-Last updated: 2026-08-05
+Last updated: 2026-08-10
 
 ## Source of truth
 
@@ -90,7 +90,7 @@ the recommended implementation order on page 3 as the governing sequence.
 - [x] Skills model
 - [x] Extended healthcare profile sections
 - [ ] Recommended jobs
-- [ ] Resume/CV Builder
+- [x] Standalone résumé builder and PDF export (verified in Production through PR #36)
 - [ ] Google sign-in
 - [ ] LinkedIn sign-in
 
@@ -107,9 +107,9 @@ the recommended implementation order on page 3 as the governing sequence.
 - [x] Structured candidate career history
 - [x] Employer verification (verified in Production)
 - [x] Public live organization profile
-- [ ] Candidate search
-- [ ] Saved candidates
-- [ ] Team member invitation and access administration
+- [x] Candidate search
+- [x] Saved candidates
+- [x] Team member invitation and access administration
 - [ ] Billing area
 
 ### Admin platform
@@ -168,7 +168,7 @@ existing accounts.
 
 ## Phase 5: Intelligence
 
-- [ ] Resume/CV generation and export
+- [x] Standalone Resume/CV generation and export (non-AI, verified in Production)
 - [ ] AI Resume Assistant
 - [ ] Basic job recommendations
 - [ ] AI Job Description Assistant
@@ -206,16 +206,18 @@ Career History is not a separate invention. It implements the structured
 Education, Experience, Licenses, and Certifications data required by Candidate
 MVP. It is also the data foundation for a future Resume/CV Builder.
 
-### CV Builder deferral
+### Standalone CV Builder
 
 The Blueprint contains two competing signals: Chapter 43 includes a simple
 form-to-PDF Resume Builder in MVP, while the recommended phase table places CV
 tools in the later Intelligence phase. Current decision:
 
-- finish the remaining Marketplace MVP boundaries first;
-- retain Career History as the source data;
-- implement CV export after public organization profiles, search completion,
-  skills, and the basic Admin Panel.
+- provide a standalone blank document, rather than prefill from the profile;
+- retain Career History as a separate profile feature;
+- keep stored résumé content and future payment access separate so billing can
+  be added later without changing drafts;
+- defer AI-assisted writing and advanced generation until the core hiring loop
+  has mature data and auditability.
 
 ## Roadmap maintenance rule
 
