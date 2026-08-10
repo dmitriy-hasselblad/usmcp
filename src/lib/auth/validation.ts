@@ -57,17 +57,10 @@ export const usStates = [
 ] as const
 
 export const professions = [
-  "Physician",
-  "Registered Nurse",
-  "Nurse Practitioner",
-  "Physician Assistant",
-  "Pharmacist",
-  "Dentist",
-  "Therapist",
-  "Allied Health Professional",
-  "Healthcare Administrator",
-  "Student or Trainee",
-  "Other Healthcare Professional",
+  "Physician", "Registered Nurse", "Advanced Practice Provider", "Dentist",
+  "Pharmacist", "Therapist", "Technologist or Technician",
+  "Healthcare Administration", "Healthcare Support", "Other Healthcare Professional",
+  "Nurse Practitioner", "Physician Assistant", "Allied Health Professional", "Healthcare Administrator", "Student or Trainee",
 ] as const
 
 export const careerStages = [

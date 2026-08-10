@@ -55,7 +55,7 @@ export function isWorkplaceType(value: string) {
 }
 
 export function isHealthcareProfession(value: string) {
-  return healthcareProfessions.some((option) => option === value)
+  return healthcareProfessions.some((option) => option === value) || value === "Dentist" || value === "Healthcare Support"
 }
 
 export function isExperienceLevel(value: string) {

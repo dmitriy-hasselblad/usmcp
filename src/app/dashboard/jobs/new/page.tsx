@@ -5,6 +5,7 @@ import { ArrowLeft, BriefcaseBusiness, ShieldCheck } from "lucide-react"
 import { createJobDraft } from "@/app/dashboard/actions"
 import { AuthNotice } from "@/components/auth/auth-notice"
 import { AuthSubmitButton } from "@/components/auth/auth-submit-button"
+import { ProfessionSpecialtyFields } from "@/components/forms/profession-specialty-fields"
 import { EmployerDashboardShell } from "@/components/employer/employer-dashboard-shell"
 import { EmployerPageHeader } from "@/components/employer/employer-page-header"
 import { Button } from "@/components/ui/button"
@@ -16,7 +17,6 @@ import {
   canManageJobs,
   employmentTypes,
   experienceLevels,
-  healthcareProfessions,
   salaryPeriods,
   workplaceTypes,
 } from "@/lib/employer/constants"
@@ -87,24 +87,7 @@ export default async function NewJobPage({
                 </label>
 
                 <div className="grid gap-5 sm:grid-cols-2">
-                  <label className="grid gap-2 text-sm font-medium">
-                    Profession
-                    <select
-                      className={selectClassName}
-                      defaultValue=""
-                      name="profession"
-                      required
-                    >
-                      <option disabled value="">
-                        Select a profession
-                      </option>
-                      {healthcareProfessions.map((profession) => (
-                        <option key={profession} value={profession}>
-                          {profession}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
+                  <ProfessionSpecialtyFields specialtyLabel="Specialty or department" />
                   <label className="grid gap-2 text-sm font-medium">
                     Experience level
                     <select
@@ -122,15 +105,6 @@ export default async function NewJobPage({
                   </label>
                 </div>
 
-                <label className="grid gap-2 text-sm font-medium">
-                  Specialty or department
-                  <Input
-                    className="h-11"
-                    maxLength={120}
-                    name="specialty"
-                    placeholder="For example, Emergency Medicine"
-                  />
-                </label>
 
                 <div className="grid gap-5 sm:grid-cols-2">
                   <label className="grid gap-2 text-sm font-medium">
