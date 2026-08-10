@@ -9,7 +9,8 @@
     "lint": "eslint",
     "test:access": "node --test tests/access-boundaries.test.mjs",
     "test:seo": "node --test tests/seo-foundation.test.mjs",
-    "test:soft-launch": "node --test tests/soft-launch-content.test.mjs"
+    "test:soft-launch": "node --test tests/soft-launch-content.test.mjs",
+    "test:taxonomy": "node tests/healthcare-taxonomy.test.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "0.12.3",

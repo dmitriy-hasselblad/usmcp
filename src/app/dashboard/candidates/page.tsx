@@ -22,8 +22,9 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { professions, usStates } from "@/lib/auth/validation"
+import { usStates } from "@/lib/auth/validation"
 import { requireEmployerWorkspace } from "@/lib/employer/session"
+import { healthcareProfessions, isHealthcareProfession } from "@/lib/healthcare-taxonomy"
 
 export const metadata: Metadata = {
   title: "Candidate search",
@@ -87,7 +88,7 @@ export default async function CandidateSearchPage({
     {
       target_organization_id: workspace.organization.id,
       search_text: query || null,
-      profession_filter: professions.some((value) => value === profession)
+      profession_filter: isHealthcareProfession(profession)
         ? profession
         : null,
       state_filter: usStates.some(([code]) => code === state) ? state : null,
@@ -139,7 +140,7 @@ export default async function CandidateSearchPage({
               defaultValue={profession}
               label="Profession"
               name="profession"
-              options={professions.map((value) => [value, value] as const)}
+              options={healthcareProfessions.map((value) => [value, value] as const)}
             />
             <FilterSelect
               defaultValue={state}

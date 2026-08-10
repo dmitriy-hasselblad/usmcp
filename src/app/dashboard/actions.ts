@@ -14,12 +14,12 @@ import {
   canManageOrganization,
   isExperienceLevel,
   isEmploymentType,
-  isHealthcareProfession,
   isJobStatus,
   isSalaryPeriod,
   isWorkplaceType,
   type JobStatus,
 } from "@/lib/employer/constants"
+import { isHealthcareProfession } from "@/lib/healthcare-taxonomy"
 import { requireEmployerWorkspace } from "@/lib/employer/session"
 
 function optionalSalary(formData: FormData, name: string) {
