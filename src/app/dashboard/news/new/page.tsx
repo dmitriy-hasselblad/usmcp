@@ -15,7 +15,7 @@ export default async function NewOrganizationPostPage() {
   if (!canManageJobs(workspace.membership.role)) return <EmployerDashboardShell active="news" email={workspace.email} organizationName={workspace.organization.name}><p>You do not have permission to create organization posts.</p></EmployerDashboardShell>
   return <EmployerDashboardShell active="news" email={workspace.email} organizationName={workspace.organization.name}>
     <Button asChild variant="ghost"><Link href="/dashboard/news">← Back to News & insights</Link></Button>
-    <div className="mt-5"><EmployerPageHeader eyebrow="Organization publishing" title="Create an article" description="Write in English for a U.S. healthcare audience. Submitted articles require platform review before publication." /></div>
+    <div className="mt-5"><EmployerPageHeader eyebrow="Organization publishing" title="Create an article" description="Write in English for a U.S. healthcare audience. Publish immediately or save a draft for your team." /></div>
     <Card className="mt-8 bg-white"><CardContent className="p-6"><OrganizationPostForm organizationId={workspace.organization.id} /></CardContent></Card>
   </EmployerDashboardShell>
 }

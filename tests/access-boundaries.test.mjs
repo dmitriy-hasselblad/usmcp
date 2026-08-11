@@ -61,3 +61,21 @@ test("résumé drafts are private, owner-scoped, and separate from profiles", as
   assert.doesNotMatch(migration, /hiring|employer|organization_member/i)
   assert.match(builder, /Nothing is copied from your profile/)
 })
+
+test("organization news is self-service, reversible, and has private revision history", async () => {
+  const migration = await readProjectFile(
+    "supabase/migrations/20260811113447_news_self_service_publishing.sql",
+  )
+  const dashboard = await readProjectFile("src/app/dashboard/news/page.tsx")
+
+  assert.match(migration, /create table public\.organization_post_revisions/)
+  assert.match(migration, /alter table public\.organization_post_revisions enable row level security/)
+  assert.match(migration, /revoke all on table public\.organization_post_revisions from public, anon, authenticated/)
+  assert.match(migration, /create or replace function public\.save_organization_post/)
+  assert.match(migration, /create or replace function public\.archive_organization_post/)
+  assert.match(migration, /existing_post\.author_id <> current_user_id and not can_manage_all/)
+  assert.match(migration, /revoke insert, update, delete on table public\.organization_posts from authenticated/)
+  assert.match(migration, /where status = 'submitted' and moderation_status = 'pending'/)
+  assert.match(dashboard, /Edit article/)
+  assert.match(dashboard, /Remove from public news/)
+})
