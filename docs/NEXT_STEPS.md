@@ -1,6 +1,6 @@
 # USHCE Next Steps
 
-Last updated: 2026-08-10
+Last updated: 2026-08-11
 
 ## Current product phase
 
@@ -144,9 +144,9 @@ Payments are not a launch dependency.
 7. Automated boundary tests, SEO, analytics, and soft-launch readiness
 
 The source-level authorization suite, live RLS verification, public SEO
-foundation, and consent-aware Vercel Web Analytics are complete through PRs
-#31, #33, #34, and #35. The standalone résumé builder is complete through
-PR #36 and verified in Production.
+foundation, consent-aware Vercel Web Analytics, standalone résumé builder,
+soft-launch readiness work, job recommendations, and healthcare taxonomy are
+complete through PRs #31, #33–#40 and verified in Production.
 
 Stripe, subscriptions, one-time payments, invoices, and billing are deferred
 until 6-12 months after Early Access. Preserve a clean future entitlement
@@ -156,6 +156,12 @@ Resend onboarding, sending-domain verification, Preview delivery testing, and
 Production email activation are also deferred by the product owner. PR #23
 preserves a disabled-by-default server-only foundation; do not enable it until
 the provider setup is intentionally resumed.
+
+Google and LinkedIn social sign-in are deferred until final pre-launch
+readiness. A Google/LinkedIn foundation exists on
+`codex/social-sign-in-foundation`, and its protective database migration has
+been applied, but the feature is not merged and must not be enabled in
+Production before end-to-end Google Preview verification.
 
 ## Deferred work
 
@@ -173,22 +179,24 @@ roadmap:
 
 ## Immediate next ticket
 
-**Ticket:** Soft-launch content readiness audit.
+**Ticket:** Final public marketplace content inventory.
 
 ### Goal
 
-Ensure that public marketplace pages do not present fictional sample employers,
-jobs, or content as live U.S. healthcare opportunities during Early Access.
+Prepare the public marketplace for the free Early Access pilot by identifying
+every remaining sample listing and deciding whether it should be clearly
+labeled, hidden, or replaced with real verified content.
 
 ### Required scope
 
-1. Inventory all public cards, directory entries, and detail pages that can
-   expose sample content.
-2. Distinguish live data from demonstration content in the UI and SEO output.
-3. Remove, hide, or clearly label any fictional listing that could be mistaken
-   for a real opportunity.
-4. Preserve real published jobs and approved organizations.
-5. Verify public guest access, empty states, metadata, and Vercel Preview.
+1. Re-inventory all public cards, directory entries, job details, and News
+   pages that can expose sample content.
+2. Confirm that every sample item is clearly labeled and cannot be applied to
+   as a real vacancy.
+3. Identify content that should be replaced before external launch, without
+   deleting Production data.
+4. Preserve real published jobs, approved organizations, and real News.
+5. Verify guest access, empty states, metadata, and Vercel Preview.
 
 ### Explicit limitation
 
