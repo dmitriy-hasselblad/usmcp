@@ -23,7 +23,6 @@ import healthcareTeamImage from "../../public/images/ushce-healthcare-team.png"
 import {
   benefits,
   careerPaths,
-  featuredJobs,
   platformPrinciples,
   popularSpecialties,
   resources,
@@ -34,10 +33,7 @@ export default async function Home() {
     getPublishedJobs(),
     getPublicOrganizations(),
   ])
-  const featuredMarketplaceJobs = [
-    ...liveJobs,
-    ...featuredJobs.filter((job) => job.featured),
-  ].slice(0, 3)
+  const featuredMarketplaceJobs = liveJobs.slice(0, 3)
 
   return (
     <div className="min-h-dvh overflow-hidden bg-background">
@@ -113,7 +109,7 @@ export default async function Home() {
                 </div>
                 <div className="mt-4 flex items-center gap-3 px-2 pb-1 text-xs text-blue-100/80">
                   <ShieldCheck className="size-4 text-teal-200" />
-                  Published jobs are live; sample content remains clearly labeled.
+                  Published jobs are live and ready to explore.
                 </div>
               </div>
             </div>
@@ -180,17 +176,9 @@ export default async function Home() {
           <div className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28">
             <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
               <SectionHeading
-                eyebrow={liveJobs.length ? "Live opportunities" : "Product preview"}
-                title={
-                  liveJobs.length
-                    ? "Explore newly published healthcare opportunities."
-                    : "See how focused healthcare opportunities will work."
-                }
-                description={
-                  liveJobs.length
-                    ? "Employer-published roles appear alongside clearly labeled sample listings while the marketplace grows."
-                    : "These sample listings demonstrate the search and job-detail experience. They are not active vacancies."
-                }
+                eyebrow="Live opportunities"
+                title="Explore newly published healthcare opportunities."
+                description="Browse employer-published roles from organizations building their teams on USHCE."
               />
               <Button asChild className="h-10 w-fit rounded-xl" variant="outline">
                 <Link href="/jobs">
@@ -198,11 +186,9 @@ export default async function Home() {
                 </Link>
               </Button>
             </div>
-            <div className="mt-10 grid gap-4 lg:grid-cols-3">
-              {featuredMarketplaceJobs.map((job) => (
-                <JobCard job={job} key={job.slug} />
-              ))}
-            </div>
+            {featuredMarketplaceJobs.length ? <div className="mt-10 grid gap-4 lg:grid-cols-3">
+              {featuredMarketplaceJobs.map((job) => <JobCard job={job} key={job.slug} />)}
+            </div> : <Card className="mt-10 border-dashed bg-white"><CardContent className="p-8 text-center"><h2 className="text-xl font-semibold">New opportunities are coming soon.</h2><p className="mt-2 text-sm leading-6 text-muted-foreground">Check back as verified employers publish roles, or explore the product-preview experience from the jobs page.</p><Button asChild className="mt-5" variant="outline"><Link href="/jobs?preview=true">View product previews</Link></Button></CardContent></Card>}
           </div>
         </section>
 
@@ -363,8 +349,8 @@ export default async function Home() {
                   Explore the first working USHCE career experience.
                 </h2>
                 <p className="mt-4 max-w-2xl text-base leading-7 text-blue-100/85">
-                  Search live and preview roles, or create a professional
-                  account to build a private profile and apply securely.
+                  Search live roles, or create a professional account to build
+                  a private profile and apply securely.
                 </p>
               </div>
               <div className="flex flex-col gap-3 sm:flex-row">

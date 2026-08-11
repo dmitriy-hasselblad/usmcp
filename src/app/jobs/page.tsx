@@ -42,13 +42,14 @@ export default async function JobsPage({
   const params = await searchParams
   const filters = getFilters(params)
   const liveJobs = await getPublishedJobs()
-  const allJobs = [...liveJobs, ...featuredJobs]
+  const showPreviews = getString(params.preview) === "true"
+  const allJobs = showPreviews ? [...liveJobs, ...featuredJobs] : liveJobs
   const jobs = filterJobs(allJobs, filters)
   const specialties = [...new Set(allJobs.map((job) => job.specialty))].sort(
     (a, b) => a.localeCompare(b, "en-US"),
   )
   const activeFilterCount = getActiveFilterCount(filters)
-  const preservedSearchFilters = getPreservedSearchFilters(filters)
+  const preservedSearchFilters = getPreservedSearchFilters(filters, showPreviews)
 
   return (
     <div className="min-h-dvh bg-background">
@@ -82,6 +83,14 @@ export default async function JobsPage({
                   Search U.S. healthcare opportunities by profession,
                   specialty, location, work setting, experience, and pay.
                 </p>
+                <div className="mt-5 flex flex-wrap gap-3">
+                  <Button asChild size="sm" variant={showPreviews ? "outline" : "default"}>
+                    <Link href={showPreviews ? "/jobs" : "/jobs?preview=true"}>
+                      {showPreviews ? "View live jobs only" : "View product previews"}
+                    </Link>
+                  </Button>
+                  {showPreviews ? <p className="self-center text-sm text-muted-foreground">Product previews are demonstrations and are not active vacancies.</p> : null}
+                </div>
               </div>
               <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
                 <BriefcaseBusiness className="size-4 text-primary" />
@@ -113,6 +122,7 @@ export default async function JobsPage({
                   )}
                 </div>
                 <form action="/jobs" className="mt-5 grid gap-4" method="get">
+                  {showPreviews && <input name="preview" type="hidden" value="true" />}
                   {filters.query && (
                     <input name="query" type="hidden" value={filters.query} />
                   )}
@@ -355,7 +365,7 @@ function getActiveFilterCount(filters: JobFilters) {
   ].filter(Boolean).length
 }
 
-function getPreservedSearchFilters(filters: JobFilters) {
+function getPreservedSearchFilters(filters: JobFilters, showPreviews: boolean) {
   return Object.fromEntries(
     [
       ["profession", filters.profession],
@@ -367,6 +377,7 @@ function getPreservedSearchFilters(filters: JobFilters) {
       ["salaryMin", filters.salaryMin?.toString() ?? ""],
       ["salaryMax", filters.salaryMax?.toString() ?? ""],
       ["visa", filters.visaOnly ? "true" : ""],
+      ["preview", showPreviews ? "true" : ""],
     ].filter((entry) => entry[1]),
   )
 }
