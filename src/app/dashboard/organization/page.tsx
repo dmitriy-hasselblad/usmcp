@@ -126,6 +126,19 @@ export default async function OrganizationPage({
                 />
               </label>
 
+              <div className="rounded-xl border border-border p-4">
+                <h2 className="font-semibold">Public contact details</h2>
+                <p className="mt-1 text-sm text-muted-foreground">Optional. These details appear on your public News articles.</p>
+                <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                  <label className="grid gap-2 text-sm font-medium">Public email<Input className="h-11" defaultValue={workspace.organization.public_email ?? ""} disabled={!canEdit} maxLength={254} name="publicEmail" type="email" /></label>
+                  <label className="grid gap-2 text-sm font-medium">Public phone<Input className="h-11" defaultValue={workspace.organization.public_phone ?? ""} disabled={!canEdit} maxLength={30} name="publicPhone" type="tel" /></label>
+                  <label className="grid gap-2 text-sm font-medium sm:col-span-2">Street address<Input className="h-11" defaultValue={workspace.organization.address_line1 ?? ""} disabled={!canEdit} maxLength={160} name="addressLine1" /></label>
+                  <label className="grid gap-2 text-sm font-medium sm:col-span-2">Address line 2 <span className="font-normal text-muted-foreground">Optional</span><Input className="h-11" defaultValue={workspace.organization.address_line2 ?? ""} disabled={!canEdit} maxLength={160} name="addressLine2" /></label>
+                  <label className="grid gap-2 text-sm font-medium">City<Input className="h-11" defaultValue={workspace.organization.city ?? ""} disabled={!canEdit} maxLength={120} name="city" /></label>
+                  <label className="grid gap-2 text-sm font-medium">ZIP code<Input className="h-11" defaultValue={workspace.organization.postal_code ?? ""} disabled={!canEdit} maxLength={20} name="postalCode" /></label>
+                </div>
+              </div>
+
               <label className="grid gap-2 text-sm font-medium">
                 About the organization
                 <Textarea

@@ -5,6 +5,7 @@ import { redirect } from "next/navigation"
 
 import {
   formString,
+  isValidEmail,
   isUsState,
   messagePath,
   organizationTypes,
@@ -82,6 +83,12 @@ export async function updateOrganization(formData: FormData) {
   const stateCode = formString(formData, "stateCode")
   const website = formString(formData, "website")
   const description = formString(formData, "description")
+  const publicEmail = formString(formData, "publicEmail")
+  const publicPhone = formString(formData, "publicPhone")
+  const addressLine1 = formString(formData, "addressLine1")
+  const addressLine2 = formString(formData, "addressLine2")
+  const city = formString(formData, "city")
+  const postalCode = formString(formData, "postalCode")
 
   if (
     name.length < 2 ||
@@ -89,7 +96,9 @@ export async function updateOrganization(formData: FormData) {
     !organizationTypes.some((option) => option === organizationType) ||
     !isUsState(stateCode) ||
     !isValidWebsite(website) ||
-    description.length > 2000
+    description.length > 2000 ||
+    (publicEmail && !isValidEmail(publicEmail)) || publicPhone.length > 30 ||
+    addressLine1.length > 160 || addressLine2.length > 160 || city.length > 120 || postalCode.length > 20
   ) {
     redirect(
       messagePath(
@@ -108,6 +117,9 @@ export async function updateOrganization(formData: FormData) {
       state_code: stateCode,
       website: website || null,
       description: description || null,
+      public_email: publicEmail || null, public_phone: publicPhone || null,
+      address_line1: addressLine1 || null, address_line2: addressLine2 || null,
+      city: city || null, postal_code: postalCode || null,
     })
     .eq("id", workspace.organization.id)
 
