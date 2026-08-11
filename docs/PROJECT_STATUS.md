@@ -1,6 +1,6 @@
 # USHCE Project Status
 
-Last updated: 2026-08-10
+Last updated: 2026-08-11
 
 ## Purpose
 
@@ -25,11 +25,30 @@ English.
 ## Production baseline
 
 - Production branch: `main`
-- Latest confirmed product Pull Request: PR #36
-- PR #36 merge commit: `1aa1b65`
-- Current `main` commit at branch handoff: `1aa1b65`
+- Latest confirmed product Pull Request: PR #45
+- PR #45 merge commit: `0b76b86`
+- Current `main` commit at branch handoff: `0b76b86`
 - Production deployment status at verification: `Ready`
-- Latest Production verification date: 2026-08-10
+- Latest Production verification date: 2026-08-11
+
+PR #37 completed the soft-launch content audit; product-preview vacancies are
+isolated behind an explicit preview view and cannot be mistaken for live jobs.
+PR #38 added private profile-based recommended jobs. PRs #39 and #40 added the
+controlled U.S. healthcare profession and specialty taxonomy, including a
+fallback for an unlisted specialty. PR #42 separated product-preview content
+from the live marketplace.
+
+PR #43 made News & Insights self-service for verified organizations: authors
+can publish, edit, archive, and restore their own articles while revision
+history remains private. PR #44 added optional public organization contact
+details to public News articles. The article shows the organization name above
+the story and shows its website, email, telephone, and address only when the
+organization has chosen to provide them.
+
+PR #45 added private in-product notifications and was verified in Vercel
+Preview. A new application notifies the authorized hiring team; an employer
+status change notifies the candidate; an application withdrawal notifies the
+hiring team. Users can read and mark only their own notifications as read.
 
 The structured professional profile was verified in Production with a 100%
 completion state and records in all four categories.
@@ -128,6 +147,7 @@ content is not copied from a profile and is private to its owner.
   - profile completion calculation.
 - Standalone U.S. healthcare résumé builder with private blank drafts,
   ATS-friendly preview, save/delete actions, and Early Access PDF export.
+- In-product application notifications for professionals and employer teams.
 
 ### Privacy and security foundation
 
@@ -228,6 +248,10 @@ The repository currently contains these applied migration groups:
 19. Public-content reporting, private reporter details, admin review decisions,
     and privileged audit events
 20. Private standalone professional résumé drafts and owner-only export access
+21. Social account-type selection foundation
+22. Self-service organization News publishing and revision history
+23. Optional public organization contact details and public News footer
+24. Private in-product application notifications
 
 Migration files are stored in `supabase/migrations/`.
 
@@ -240,7 +264,8 @@ The following areas are not complete:
 
 - The standalone résumé builder is implemented and verified in Production.
   AI-assisted résumé writing remains deferred.
-- Google and LinkedIn authentication are not implemented.
+- Google and LinkedIn authentication are deferred. The account-type foundation
+  is present, but provider configuration and end-to-end testing are incomplete.
 - Employer verification and manual moderation are implemented and verified in
   Production.
 - The scoped Basic Admin Panel is in Production: authorization, metrics,
@@ -253,8 +278,8 @@ The following areas are not complete:
   verification, non-production delivery testing, and live email delivery are
   intentionally deferred. Until resumed, `EMAIL_DELIVERY_MODE` must remain
   unset or `disabled` in Production.
-- Messaging, in-product notifications, and interview scheduling are not
-  implemented.
+- Messaging and interview scheduling are not implemented. In-product
+  application notifications are live; email delivery remains disabled.
 - AI features are intentionally deferred.
 - Public SEO foundation and consent-aware Vercel Web Analytics are implemented.
   Wider soft-launch operations remain in progress.

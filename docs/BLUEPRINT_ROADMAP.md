@@ -55,7 +55,7 @@ the recommended implementation order on page 3 as the governing sequence.
 
 ### Remaining foundation refinements
 
-- [ ] Centralized profession and specialty reference data
+- [x] Centralized profession and specialty reference data
 - [ ] Centralized geographic reference data beyond the current U.S. state list
 - [x] Formal audit-event model for privileged actions (organization
   verification integration verified in Production)
@@ -89,10 +89,10 @@ the recommended implementation order on page 3 as the governing sequence.
 - [x] Application withdrawal
 - [x] Skills model
 - [x] Extended healthcare profile sections
-- [ ] Recommended jobs
+- [x] Recommended jobs
 - [x] Standalone résumé builder and PDF export (verified in Production through PR #36)
-- [ ] Google sign-in
-- [ ] LinkedIn sign-in
+- [ ] Google sign-in (deferred pending provider configuration and final pre-launch testing)
+- [ ] LinkedIn sign-in (deferred pending provider configuration and final pre-launch testing)
 
 ### Employer platform
 
@@ -150,8 +150,8 @@ existing accounts.
 - [ ] Email notifications (server-only application-status foundation merged in
   PR #23; Resend onboarding, domain verification, delivery testing, and live
   activation deferred)
-- [ ] In-product notifications
-- [ ] Formal audit trail
+- [x] In-product application notifications (verified in Vercel Preview through PR #45)
+- [x] Formal audit trail
 
 ## Phase 4: Engagement
 

@@ -1,6 +1,6 @@
 # USHCE Next Steps
 
-Last updated: 2026-08-10
+Last updated: 2026-08-11
 
 ## Current product phase
 
@@ -144,9 +144,10 @@ Payments are not a launch dependency.
 7. Automated boundary tests, SEO, analytics, and soft-launch readiness
 
 The source-level authorization suite, live RLS verification, public SEO
-foundation, and consent-aware Vercel Web Analytics are complete through PRs
-#31, #33, #34, and #35. The standalone résumé builder is complete through
-PR #36 and verified in Production.
+foundation, consent-aware Vercel Web Analytics, recommendations, controlled
+healthcare taxonomy, self-service News, organization contact footers, and
+in-product application notifications are complete through PR #45. The
+standalone résumé builder is verified in Production through PR #36.
 
 Stripe, subscriptions, one-time payments, invoices, and billing are deferred
 until 6-12 months after Early Access. Preserve a clean future entitlement
@@ -173,28 +174,26 @@ roadmap:
 
 ## Immediate next ticket
 
-**Ticket:** Soft-launch content readiness audit.
+**Ticket:** Soft-launch operations and real-content readiness.
 
 ### Goal
 
-Ensure that public marketplace pages do not present fictional sample employers,
-jobs, or content as live U.S. healthcare opportunities during Early Access.
+Operate the Early Access pilot with real organizations, live jobs, and
+organization-authored News. Keep product-preview content visibly separate and
+use the existing moderation, reporting, and audit boundaries when issues arise.
 
 ### Required scope
 
-1. Inventory all public cards, directory entries, and detail pages that can
-   expose sample content.
-2. Distinguish live data from demonstration content in the UI and SEO output.
-3. Remove, hide, or clearly label any fictional listing that could be mistaken
-   for a real opportunity.
-4. Preserve real published jobs and approved organizations.
-5. Verify public guest access, empty states, metadata, and Vercel Preview.
+1. Add and verify real employer organizations and their public contact details.
+2. Publish real jobs and validate the candidate-to-employer hiring loop.
+3. Use self-service News with accurate organizational attribution.
+4. Review abuse reports and audit events regularly.
+5. Review Vercel Analytics during the pilot and record actionable issues.
 
 ### Explicit limitation
 
 Do not delete Production data or alter publication status without an explicit
-product-owner approval. This ticket begins with a read-only inventory and a
-safe presentation-layer proposal.
+product-owner approval. Product-preview content must remain visibly labeled.
 
 ## Definition of done for every future stage
 
