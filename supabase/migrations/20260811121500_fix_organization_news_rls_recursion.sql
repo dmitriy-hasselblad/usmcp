@@ -17,6 +17,8 @@ as $$
 $$;
 
 revoke all on function private.has_public_organization_news(uuid) from public, anon, authenticated;
+grant usage on schema private to anon;
+grant execute on function private.has_public_organization_news(uuid) to anon, authenticated;
 
 drop policy "Anonymous can read public organizations" on public.organizations;
 create policy "Anonymous can read public organizations"
