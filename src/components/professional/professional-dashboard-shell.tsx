@@ -5,6 +5,7 @@ import {
   FileText,
   GraduationCap,
   LayoutDashboard,
+  Bell,
   UserRound,
 } from "lucide-react"
 
@@ -13,7 +14,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
-type ProfessionalRoute = "overview" | "profile" | "career" | "resumes" | "applications"
+type ProfessionalRoute = "overview" | "profile" | "career" | "resumes" | "applications" | "notifications"
 
 const routes = [
   {
@@ -45,6 +46,12 @@ const routes = [
     href: "/dashboard/applications",
     label: "My applications",
     icon: FileText,
+  },
+  {
+    key: "notifications",
+    href: "/dashboard/notifications",
+    label: "Notifications",
+    icon: Bell,
   },
   {
     key: "jobs",

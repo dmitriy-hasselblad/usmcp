@@ -8,6 +8,7 @@ import {
   ShieldCheck,
   Newspaper,
   UsersRound,
+  Bell,
 } from "lucide-react"
 
 import { UshceLogo } from "@/components/brand/ushce-logo"
@@ -23,6 +24,7 @@ type EmployerRoute =
   | "organization"
   | "team"
   | "news"
+  | "notifications"
 
 const routes = [
   {
@@ -36,6 +38,12 @@ const routes = [
     href: "/dashboard/team",
     label: "Team & access",
     icon: ShieldCheck,
+  },
+  {
+    key: "notifications",
+    href: "/dashboard/notifications",
+    label: "Notifications",
+    icon: Bell,
   },
   {
     key: "overview",
