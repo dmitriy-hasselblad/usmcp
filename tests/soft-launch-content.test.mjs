@@ -15,7 +15,8 @@ test("sample jobs remain visibly distinct from live marketplace opportunities", 
   const jobCard = await readProjectFile("src/components/jobs/job-card.tsx")
   const jobDetail = await readProjectFile("src/app/jobs/[slug]/page.tsx")
 
-  assert.match(jobsPage, /const allJobs = \[\.\.\.liveJobs, \.\.\.featuredJobs\]/)
+  assert.match(jobsPage, /const allJobs = showPreviews \? \[\.\.\.liveJobs, \.\.\.featuredJobs\] : liveJobs/)
+  assert.match(jobsPage, /View product previews/)
   assert.match(jobCard, /job\.source === "live" \? "Live opportunity" : "Product preview"/)
   assert.match(jobDetail, /This sample listing demonstrates the planned application experience\. It is not an active vacancy\./)
   assert.match(jobDetail, /isLive \? `\/jobs\/\$\{job\.slug\}\/apply` : "\/sign-up"/)
