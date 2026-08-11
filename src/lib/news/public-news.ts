@@ -3,7 +3,7 @@ import { cache } from "react"
 import { createClient } from "@/lib/supabase/server"
 
 const selection =
-  "id, slug, title, excerpt, body, cover_image_path, published_at, organizations(name, slug, organization_type, state_code)"
+  "id, slug, title, excerpt, body, cover_image_path, published_at, organizations(name, slug, organization_type, state_code, website, public_email, public_phone, address_line1, address_line2, city, postal_code)"
 
 export const newsMonthNames = [
   "January",

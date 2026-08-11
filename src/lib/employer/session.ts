@@ -24,6 +24,12 @@ export type EmployerWorkspace = {
     state_code: string
     description: string | null
     website: string | null
+    public_email: string | null
+    public_phone: string | null
+    address_line1: string | null
+    address_line2: string | null
+    city: string | null
+    postal_code: string | null
     verification_status: string
   }
 }
@@ -76,7 +82,7 @@ export async function requireEmployerWorkspace(
   const { data: organization } = await supabase
     .from("organizations")
     .select(
-      "id, name, slug, organization_type, state_code, description, website, verification_status",
+      "id, name, slug, organization_type, state_code, description, website, public_email, public_phone, address_line1, address_line2, city, postal_code, verification_status",
     )
     .eq("id", membership.organization_id)
     .single()
