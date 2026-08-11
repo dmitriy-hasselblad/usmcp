@@ -45,6 +45,8 @@ export function OrganizationPostForm({ organizationId, post }: { organizationId:
     <label className="grid gap-2 text-sm font-medium">Article<Textarea defaultValue={post?.body} name="body" minLength={100} maxLength={30000} rows={14} required /></label>
     <label className="grid gap-2 text-sm font-medium">Cover image <span className="text-xs font-normal text-muted-foreground">Optional JPG, PNG, or WebP up to 8 MB.</span><Input accept={newsImageMimeTypes.join(",")} name="coverImage" type="file" /></label>
     {post?.cover_image_path && <p className="text-xs text-muted-foreground">The current cover image will remain unless you upload a replacement.</p>}
-    <div className="flex flex-wrap gap-3"><Button disabled={pending} name="intent" value="draft" variant="outline">{pending ? "Saving..." : post ? "Update draft" : "Save draft"}</Button><Button disabled={pending} name="intent" value="submit">{pending ? "Submitting..." : "Submit for review"}</Button></div>
+    {post?.cover_image_path && <label className="flex items-center gap-2 text-sm text-muted-foreground"><input name="removeCoverImage" type="checkbox" /> Remove the current cover image</label>}
+    <p className="text-sm text-muted-foreground">Published articles appear publicly right away. Platform review is only used when a report is made.</p>
+    <div className="flex flex-wrap gap-3"><Button disabled={pending} name="intent" value="draft" variant="outline">{pending ? "Saving..." : "Save draft"}</Button><Button disabled={pending} name="intent" value="publish">{pending ? "Publishing..." : post ? "Save changes and publish" : "Publish article"}</Button></div>
   </form>
 }
