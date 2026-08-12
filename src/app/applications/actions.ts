@@ -303,8 +303,47 @@ export async function registerApplicationMessageAttachment(formData: FormData) {
   const mimeType = formString(formData, "mimeType")
   const fileSize = Number(formString(formData, "fileSize"))
   const returnPath = isUuid(applicationId) ? `/dashboard/applications/${applicationId}` : "/dashboard/applications"
-  if (!isUuid(applicationId) || !isUuid(attachmentId) || !isApplicationMessageAttachmentMimeType(mimeType) || !Number.isSafeInteger(fileSize) || fileSize < 1 || fileSize > applicationMessageAttachmentMaxBytes || fileName.length < 1 || fileName.length > 180 || storagePath !== `${applicationId}/${identity.userId}/${attachmentId}/${fileName}`) redirect(messagePath(returnPath, "error", "The attachment details are invalid."))
-  const { error } = await identity.supabase.from("application_message_attachments").insert({ application_id: applicationId, organization_id: crypto.randomUUID(), candidate_id: identity.userId, uploaded_by: identity.userId, storage_path: storagePath, file_name: fileName, mime_type: mimeType, file_size: fileSize })
-  if (error) { await identity.supabase.storage.from(applicationMessageAttachmentsBucket).remove([storagePath]); redirect(messagePath(returnPath, "error", "The attachment could not be saved.")) }
-  revalidatePath("/dashboard"); revalidatePath(returnPath); redirect(messagePath(returnPath, "success", "Attachment added."))
+
+  if (
+    !isUuid(applicationId) ||
+    !isUuid(attachmentId) ||
+    !isApplicationMessageAttachmentMimeType(mimeType) ||
+    !Number.isSafeInteger(fileSize) ||
+    fileSize < 1 ||
+    fileSize > applicationMessageAttachmentMaxBytes ||
+    fileName.length < 1 ||
+    fileName.length > 180 ||
+    storagePath !== `${applicationId}/${identity.userId}/${attachmentId}/${fileName}`
+  ) {
+    return { ok: false, message: "The attachment details are invalid." }
+  }
+
+  const { data: application } = await identity.supabase
+    .from("applications")
+    .select("organization_id, candidate_id, status")
+    .eq("id", applicationId)
+    .maybeSingle()
+
+  if (!application || application.status === "withdrawn") {
+    return { ok: false, message: "This application is not available for attachments." }
+  }
+
+  const { error } = await identity.supabase.from("application_message_attachments").insert({
+    application_id: applicationId,
+    organization_id: application.organization_id,
+    candidate_id: application.candidate_id,
+    uploaded_by: identity.userId,
+    storage_path: storagePath,
+    file_name: fileName,
+    mime_type: mimeType,
+    file_size: fileSize,
+  })
+
+  if (error) {
+    return { ok: false, message: "The attachment could not be saved." }
+  }
+
+  revalidatePath("/dashboard")
+  revalidatePath(returnPath)
+  return { ok: true, message: "Attachment added." }
 }
