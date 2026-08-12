@@ -19,6 +19,9 @@ import {
 import { notFound, redirect } from "next/navigation"
 
 import {
+  cancelApplicationInterview,
+  respondToApplicationInterview,
+  scheduleApplicationInterview,
   sendApplicationMessage,
   updateApplicationStatus,
   withdrawApplication,
@@ -122,7 +125,7 @@ export default async function ApplicationPage({
 
   const application = data as ApplicationRecord
   await markApplicationNotificationsRead(identity.supabase, identity.userId, application.id)
-  const [messages, attachments] = await Promise.all([getApplicationMessages(identity.supabase, application.id), getApplicationAttachments(identity.supabase, application.id)])
+  const [messages, attachments, interviews] = await Promise.all([getApplicationMessages(identity.supabase, application.id), getApplicationAttachments(identity.supabase, application.id), getApplicationInterviews(identity.supabase, application.id)])
 
   return (
     <ProfessionalDashboardShell active="applications" email={identity.email}>
@@ -136,7 +139,7 @@ export default async function ApplicationPage({
       </div>
 
       <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_21rem]">
-        <ApplicationBody application={application} messages={messages} attachments={attachments} perspective="candidate" userId={identity.userId} />
+        <ApplicationBody application={application} interviews={interviews} messages={messages} attachments={attachments} perspective="candidate" userId={identity.userId} />
         <Card className="h-fit bg-white">
           <CardContent className="p-5">
             <p className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
@@ -195,7 +198,7 @@ async function EmployerApplication({
 
   const application = data as ApplicationRecord
   await markApplicationNotificationsRead(workspace.supabase, workspace.userId, application.id)
-  const [messages, attachments] = await Promise.all([getApplicationMessages(workspace.supabase, application.id), getApplicationAttachments(workspace.supabase, application.id)])
+  const [messages, attachments, interviews] = await Promise.all([getApplicationMessages(workspace.supabase, application.id), getApplicationAttachments(workspace.supabase, application.id), getApplicationInterviews(workspace.supabase, application.id)])
   const canEdit = canManageJobs(workspace.membership.role)
   const [educationResult, experienceResult, licenseResult, certificationResult, extendedResult, skillsResult] =
     await Promise.all([
@@ -265,6 +268,7 @@ async function EmployerApplication({
           showCandidateContact
           messages={messages}
           attachments={attachments}
+          interviews={interviews}
           perspective="employer"
           userId={workspace.userId}
         />
@@ -351,6 +355,7 @@ function ApplicationBody({
   showCandidateContact = false,
   messages,
   attachments,
+  interviews,
   perspective,
   userId,
 }: {
@@ -361,6 +366,7 @@ function ApplicationBody({
   showCandidateContact?: boolean
   messages: ApplicationMessage[]
   attachments: ApplicationAttachment[]
+  interviews: ApplicationInterview[]
   perspective: "candidate" | "employer"
   userId: string
 }) {
@@ -438,6 +444,8 @@ function ApplicationBody({
 
       <ApplicationMessages application={application} messages={messages} attachments={attachments} perspective={perspective} userId={userId} />
 
+      <ApplicationInterviews application={application} interviews={interviews} perspective={perspective} />
+
       {(application.resume_document_id || application.resume_url) && (
         <Card className="bg-white">
           <CardContent className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
@@ -482,6 +490,7 @@ type ApplicationMessage = {
   created_at: string
 }
 type ApplicationAttachment = { id: string; file_name: string; file_size: number; uploaded_by: string; created_at: string }
+type ApplicationInterview = { id: string; starts_at: string; time_zone: string; duration_minutes: number; interview_format: "video" | "phone" | "on_site"; location_or_link: string | null; notes: string | null; status: "proposed" | "confirmed" | "declined" | "cancelled"; created_at: string }
 
 async function getApplicationMessages(
   supabase: Awaited<ReturnType<typeof requireIdentity>>["supabase"],
@@ -500,6 +509,11 @@ async function getApplicationMessages(
 async function getApplicationAttachments(supabase: Awaited<ReturnType<typeof requireIdentity>>["supabase"], applicationId: string) {
   const { data } = await supabase.from("application_message_attachments").select("id, file_name, file_size, uploaded_by, created_at").eq("application_id", applicationId).order("created_at", { ascending: true })
   return (data ?? []) as ApplicationAttachment[]
+}
+
+async function getApplicationInterviews(supabase: Awaited<ReturnType<typeof requireIdentity>>["supabase"], applicationId: string) {
+  const { data } = await supabase.from("application_interviews").select("id, starts_at, time_zone, duration_minutes, interview_format, location_or_link, notes, status, created_at").eq("application_id", applicationId).order("starts_at", { ascending: true })
+  return (data ?? []) as ApplicationInterview[]
 }
 
 async function markApplicationNotificationsRead(
@@ -563,6 +577,44 @@ function ApplicationMessages({
       </CardContent>
     </Card>
   )
+}
+
+function ApplicationInterviews({ application, interviews, perspective }: { application: ApplicationRecord; interviews: ApplicationInterview[]; perspective: "candidate" | "employer" }) {
+  const activeInterviews = interviews.filter((interview) => interview.status !== "cancelled")
+  const canSchedule = perspective === "employer" && application.status !== "withdrawn"
+
+  return <Card className="bg-white">
+    <CardHeader><CardTitle className="flex items-center gap-2"><CalendarDays className="size-5 text-primary" />Interviews</CardTitle></CardHeader>
+    <CardContent>
+      <p className="text-sm leading-6 text-muted-foreground">Interview invitations are private to this application. Calendar integration can be added later.</p>
+      {activeInterviews.length ? <div className="mt-5 grid gap-4">{activeInterviews.map((interview) => <InterviewCard application={application} interview={interview} key={interview.id} perspective={perspective} />)}</div> : <p className="mt-5 rounded-xl bg-muted px-4 py-3 text-sm text-muted-foreground">No interview invitations yet.</p>}
+      {canSchedule && <form action={scheduleApplicationInterview} className="mt-5 grid gap-4 border-t pt-5">
+        <input name="applicationId" type="hidden" value={application.id} />
+        <div className="grid gap-4 sm:grid-cols-2">
+          <label className="grid gap-2 text-sm font-medium">Date and time<input className="h-11 rounded-lg border border-input bg-background px-3 text-sm" name="startsAt" required type="datetime-local" /></label>
+          <label className="grid gap-2 text-sm font-medium">Time zone<select className="h-11 rounded-lg border border-input bg-background px-3 text-sm" defaultValue="America/New_York" name="timeZone"><option value="America/New_York">Eastern Time</option><option value="America/Chicago">Central Time</option><option value="America/Denver">Mountain Time</option><option value="America/Los_Angeles">Pacific Time</option><option value="Pacific/Honolulu">Hawaii Time</option><option value="America/Anchorage">Alaska Time</option></select></label>
+          <label className="grid gap-2 text-sm font-medium">Format<select className="h-11 rounded-lg border border-input bg-background px-3 text-sm" name="interviewFormat"><option value="video">Video interview</option><option value="phone">Phone interview</option><option value="on_site">On-site interview</option></select></label>
+          <label className="grid gap-2 text-sm font-medium">Duration<select className="h-11 rounded-lg border border-input bg-background px-3 text-sm" defaultValue="30" name="durationMinutes"><option value="15">15 minutes</option><option value="30">30 minutes</option><option value="45">45 minutes</option><option value="60">60 minutes</option><option value="90">90 minutes</option></select></label>
+        </div>
+        <label className="grid gap-2 text-sm font-medium">Meeting link or location <span className="font-normal text-muted-foreground">(optional)</span><input className="h-11 rounded-lg border border-input bg-background px-3 text-sm" maxLength={500} name="locationOrLink" placeholder="Video link or on-site address" /></label>
+        <label className="grid gap-2 text-sm font-medium">Note for the candidate <span className="font-normal text-muted-foreground">(optional)</span><Textarea maxLength={2000} name="notes" placeholder="Share preparation details or who the candidate will meet." rows={3} /></label>
+        <div><Button type="submit">Send interview invitation</Button></div>
+      </form>}
+    </CardContent>
+  </Card>
+}
+
+function InterviewCard({ application, interview, perspective }: { application: ApplicationRecord; interview: ApplicationInterview; perspective: "candidate" | "employer" }) {
+  const formatLabels = { video: "Video interview", phone: "Phone interview", on_site: "On-site interview" }
+  const statusLabels = { proposed: "Awaiting your response", confirmed: "Confirmed", declined: "Declined", cancelled: "Cancelled" }
+  return <div className="rounded-xl border border-border p-4">
+    <div className="flex flex-wrap items-center justify-between gap-3"><div><p className="font-semibold">{formatLabels[interview.interview_format]}</p><p className="mt-1 text-sm text-muted-foreground">{formatInterviewDate(interview.starts_at, interview.time_zone)} · {interview.duration_minutes} minutes</p></div><span className="rounded-full bg-muted px-3 py-1 text-xs font-semibold">{statusLabels[interview.status]}</span></div>
+    {interview.location_or_link && <p className="mt-3 text-sm"><span className="font-medium">Location or link: </span>{interview.location_or_link}</p>}
+    {interview.notes && <p className="mt-3 whitespace-pre-wrap text-sm leading-6 text-muted-foreground">{interview.notes}</p>}
+    {perspective === "candidate" && interview.status === "proposed" && <div className="mt-4 flex flex-wrap gap-2"><form action={respondToApplicationInterview}><input name="interviewId" type="hidden" value={interview.id} /><input name="applicationId" type="hidden" value={application.id} /><input name="status" type="hidden" value="confirmed" /><Button size="sm" type="submit">Confirm interview</Button></form><form action={respondToApplicationInterview}><input name="interviewId" type="hidden" value={interview.id} /><input name="applicationId" type="hidden" value={application.id} /><input name="status" type="hidden" value="declined" /><Button size="sm" type="submit" variant="outline">Decline</Button></form></div>}
+    {interview.status === "confirmed" && <Button asChild className="mt-4" size="sm"><Link href={`/dashboard/interviews/${interview.id}/video`}>Join video interview</Link></Button>}
+    {perspective === "employer" && (interview.status === "proposed" || interview.status === "confirmed") && <form action={cancelApplicationInterview} className="mt-4"><input name="interviewId" type="hidden" value={interview.id} /><input name="applicationId" type="hidden" value={application.id} /><Button size="sm" type="submit" variant="outline">Cancel interview</Button></form>}
+  </div>
 }
 
 function ExtendedProfileSummary({
@@ -759,6 +811,19 @@ function formatDate(value: string) {
     month: "long",
     day: "numeric",
     year: "numeric",
+  }).format(new Date(value))
+}
+
+function formatInterviewDate(value: string, timeZone: string) {
+  return new Intl.DateTimeFormat("en-US", {
+    weekday: "short",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    timeZone,
+    timeZoneName: "short",
   }).format(new Date(value))
 }
 
