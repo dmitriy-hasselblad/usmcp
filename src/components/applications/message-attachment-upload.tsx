@@ -19,7 +19,7 @@ export function MessageAttachmentUpload({ applicationId, userId }: { application
     setFileName(file?.name ?? "")
   }
   async function upload(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault(); const input = event.currentTarget.elements.namedItem("file"); const file = input instanceof HTMLInputElement ? input.files?.[0] : undefined
+    event.preventDefault(); const form = event.currentTarget; const input = form.elements.namedItem("file"); const file = input instanceof HTMLInputElement ? input.files?.[0] : undefined
     if (!file) return setError("Choose a file."); if (!isApplicationMessageAttachmentMimeType(file.type) || file.size > applicationMessageAttachmentMaxBytes) return setError("Use a PDF, DOCX, JPG, or PNG under 10 MB.")
     setPending(true); setError(""); const attachmentId = crypto.randomUUID(); const fileName = file.name.replace(/[^a-zA-Z0-9._-]/g, "-").slice(-180) || "attachment"; const storagePath = `${applicationId}/${userId}/${attachmentId}/${fileName}`; const supabase = createClient(); const { error: uploadError } = await supabase.storage.from(applicationMessageAttachmentsBucket).upload(storagePath, file, { contentType: file.type, upsert: false })
     if (uploadError) { setError(uploadError.message || "Upload failed."); setPending(false); return }
@@ -32,7 +32,7 @@ export function MessageAttachmentUpload({ applicationId, userId }: { application
         setPending(false)
         return
       }
-      event.currentTarget.reset()
+      form.reset()
       setFileName("")
       setPending(false)
       router.refresh()
