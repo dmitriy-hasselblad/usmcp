@@ -12,7 +12,7 @@ import {
 } from "@/lib/applications/constants"
 import { requireIdentity } from "@/lib/auth/session"
 import { requireEmployerWorkspace } from "@/lib/employer/session"
-import { sendApplicationStatusEmail } from "@/lib/email/application-status"
+import { sendApplicationStatusEmail, sendNewEmployerMessageEmail } from "@/lib/email/application-status"
 
 function isUuid(value: string) {
   return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
@@ -254,7 +254,7 @@ export async function sendApplicationMessage(formData: FormData) {
 
   const { data: application } = await identity.supabase
     .from("applications")
-    .select("id, organization_id, candidate_id, status")
+    .select("id, organization_id, candidate_id, status, candidate_email, candidate_first_name, organization_name")
     .eq("id", applicationId)
     .maybeSingle()
 
@@ -272,6 +272,20 @@ export async function sendApplicationMessage(formData: FormData) {
 
   if (error) {
     redirect(messagePath(returnPath, "error", "Your message could not be sent."))
+  }
+
+  if (identity.userId !== application.candidate_id) {
+    after(async () => {
+      const delivery = await sendNewEmployerMessageEmail({
+        applicationId: application.id,
+        candidateEmail: application.candidate_email,
+        candidateFirstName: application.candidate_first_name,
+        organizationName: application.organization_name,
+      })
+      if (delivery.outcome === "failed") {
+        console.error("New employer message email delivery failed", { applicationId: application.id, code: delivery.code })
+      }
+    })
   }
 
   revalidatePath("/dashboard")

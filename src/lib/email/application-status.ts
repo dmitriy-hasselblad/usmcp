@@ -19,6 +19,13 @@ export type EmailDeliveryResult =
   | { outcome: "skipped"; code: string }
   | { outcome: "failed"; code: string }
 
+type MessageNotificationEmail = {
+  applicationId: string
+  candidateEmail: string
+  candidateFirstName: string
+  organizationName: string
+}
+
 const statusCopy: Record<ApplicationStatus, { label: string; message: string }> = {
   submitted: { label: "Submitted", message: "Your application is now marked as submitted." },
   reviewing: { label: "Under review", message: "The hiring team is reviewing your application." },
@@ -60,6 +67,33 @@ export async function sendApplicationStatusEmail(input: ApplicationStatusEmail):
     })
     if (!response.ok) return { outcome: "failed", code: `provider_${response.status}` }
     return { outcome: "sent" }
+  } catch {
+    return { outcome: "failed", code: "provider_unreachable" }
+  }
+}
+
+export async function sendNewEmployerMessageEmail(input: MessageNotificationEmail): Promise<EmailDeliveryResult> {
+  const mode = getDeliveryMode()
+  if (mode === "disabled") return { outcome: "skipped", code: "delivery_disabled" }
+  const apiKey = process.env.RESEND_API_KEY
+  const from = process.env.EMAIL_FROM
+  const testRecipient = process.env.EMAIL_TEST_RECIPIENT
+  if (!apiKey || !from) return { outcome: "skipped", code: "missing_email_configuration" }
+  if (mode === "test" && !testRecipient) return { outcome: "skipped", code: "missing_test_recipient" }
+
+  const recipient = mode === "test" ? testRecipient! : input.candidateEmail
+  if (!isEmail(recipient)) return { outcome: "failed", code: "invalid_recipient" }
+
+  const applicationUrl = `${getApplicationOrigin()}/dashboard/applications/${input.applicationId}`
+  const subject = "You have a new message from The U.S. Healthcare Career Ecosystem"
+  const text = `Hello ${input.candidateFirstName},\n\nYou have a new message from ${input.organizationName} in The U.S. Healthcare Career Ecosystem. Please sign in to your profile to read and reply.\n\nView your application: ${applicationUrl}`
+  try {
+    const response = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json", "Idempotency-Key": `application-message-${input.applicationId}-${Date.now()}` },
+      body: JSON.stringify({ from, to: [recipient], subject, text, html: `<p>Hello ${escapeHtml(input.candidateFirstName)},</p><p>You have a new message from <strong>${escapeHtml(input.organizationName)}</strong> in The U.S. Healthcare Career Ecosystem.</p><p>Please sign in to your profile to read and reply.</p><p><a href="${escapeHtml(applicationUrl)}">View your application</a></p>` }),
+    })
+    return response.ok ? { outcome: "sent" } : { outcome: "failed", code: `provider_${response.status}` }
   } catch {
     return { outcome: "failed", code: "provider_unreachable" }
   }

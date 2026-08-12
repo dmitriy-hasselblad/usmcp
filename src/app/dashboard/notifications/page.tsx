@@ -102,10 +102,10 @@ function NotificationsContent({
         <div>
           <Badge variant="outline">Private updates</Badge>
           <h1 className="mt-4 text-3xl font-semibold tracking-[-0.05em] sm:text-4xl">
-            Notifications
+            Notifications {unreadCount > 0 && <span className="ml-2 inline-grid min-w-7 place-items-center rounded-full bg-red-600 px-2 py-0.5 align-middle text-sm tracking-normal text-white">{unreadCount > 99 ? "99+" : unreadCount}</span>}
           </h1>
           <p className="mt-3 max-w-2xl leading-7 text-muted-foreground">
-            Application updates appear here. Email delivery is not required.
+            Application updates appear here. Unread updates are marked in red.
           </p>
         </div>
         {unreadCount > 0 && (

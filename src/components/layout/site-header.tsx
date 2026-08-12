@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { LayoutDashboard, LogOut, Menu, UserRound } from "lucide-react"
+import { Bell, LayoutDashboard, LogOut, Menu, UserRound } from "lucide-react"
 
 import { UshceLogo } from "@/components/brand/ushce-logo"
 import { Button } from "@/components/ui/button"
@@ -35,8 +35,17 @@ async function getHeaderIdentity() {
     return null
   }
 
+  const { data: notifications } = await supabase
+    .from("user_notifications")
+    .select("id, title, body, href")
+    .eq("user_id", claims.sub)
+    .is("read_at", null)
+    .order("created_at", { ascending: false })
+    .limit(4)
+
   return {
     email: typeof claims.email === "string" ? claims.email : undefined,
+    notifications: notifications ?? [],
   }
 }
 
@@ -76,6 +85,7 @@ export async function SiteHeader() {
                   My workspace
                 </Link>
               </Button>
+              <NotificationMenu notifications={identity.notifications} />
               <form action="/auth/sign-out" method="post">
                 <Button className="h-10 px-4" type="submit" variant="ghost">
                   <LogOut />
@@ -148,6 +158,7 @@ export async function SiteHeader() {
                       My workspace
                     </Link>
                   </Button>
+                  <NotificationMenu notifications={identity.notifications} mobile />
                   <form action="/auth/sign-out" method="post">
                     <Button
                       className="h-11 w-full"
@@ -174,5 +185,52 @@ export async function SiteHeader() {
         </Sheet>
       </div>
     </header>
+  )
+}
+
+type HeaderNotification = {
+  id: string
+  title: string
+  body: string
+  href: string
+}
+
+function NotificationMenu({
+  notifications,
+  mobile = false,
+}: {
+  notifications: HeaderNotification[]
+  mobile?: boolean
+}) {
+  const count = notifications.length
+
+  return (
+    <details className={mobile ? "relative" : "relative hidden lg:block"}>
+      <summary className="relative flex h-10 cursor-pointer list-none items-center justify-center rounded-xl border border-border bg-white px-3 text-foreground transition-colors hover:bg-muted [&::-webkit-details-marker]:hidden">
+        <Bell className={count ? "size-4 text-red-600" : "size-4"} />
+        {count > 0 && (
+          <span className="absolute -right-2 -top-2 grid min-w-5 place-items-center rounded-full bg-red-600 px-1 text-[11px] font-bold leading-5 text-white">
+            {count > 99 ? "99+" : count}
+          </span>
+        )}
+        <span className="sr-only">Notifications</span>
+      </summary>
+      <div className={mobile ? "mt-2 w-full rounded-xl border border-border bg-white p-3 shadow-xl" : "absolute right-0 top-12 w-80 rounded-xl border border-border bg-white p-3 shadow-xl"}>
+        <p className="px-2 text-sm font-semibold">
+          {count ? `You have ${count} notification${count === 1 ? "" : "s"}.` : "You are all caught up."}
+        </p>
+        {count > 0 && (
+          <div className="mt-2 grid divide-y">
+            {notifications.slice(0, 3).map((notification) => (
+              <Link className="rounded-lg px-2 py-3 text-sm transition-colors hover:bg-muted" href={notification.href} key={notification.id}>
+                <span className="block font-medium">{notification.title}</span>
+                <span className="mt-1 block line-clamp-2 text-xs leading-5 text-muted-foreground">{notification.body}</span>
+              </Link>
+            ))}
+          </div>
+        )}
+        <Link className="mt-2 block rounded-lg px-2 py-2 text-sm font-semibold text-primary hover:bg-muted" href="/dashboard/notifications">View all notifications</Link>
+      </div>
+    </details>
   )
 }
