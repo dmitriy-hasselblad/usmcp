@@ -120,6 +120,7 @@ export default async function ApplicationPage({
   }
 
   const application = data as ApplicationRecord
+  await markApplicationNotificationsRead(identity.supabase, identity.userId, application.id)
   const messages = await getApplicationMessages(identity.supabase, application.id)
 
   return (
@@ -192,6 +193,7 @@ async function EmployerApplication({
   }
 
   const application = data as ApplicationRecord
+  await markApplicationNotificationsRead(workspace.supabase, workspace.userId, application.id)
   const messages = await getApplicationMessages(workspace.supabase, application.id)
   const canEdit = canManageJobs(workspace.membership.role)
   const [educationResult, experienceResult, licenseResult, certificationResult, extendedResult, skillsResult] =
@@ -485,6 +487,19 @@ async function getApplicationMessages(
     .limit(200)
 
   return (data ?? []) as ApplicationMessage[]
+}
+
+async function markApplicationNotificationsRead(
+  supabase: Awaited<ReturnType<typeof requireIdentity>>["supabase"],
+  userId: string,
+  applicationId: string,
+) {
+  await supabase
+    .from("user_notifications")
+    .update({ read_at: new Date().toISOString() })
+    .eq("user_id", userId)
+    .eq("href", `/dashboard/applications/${applicationId}`)
+    .is("read_at", null)
 }
 
 function ApplicationMessages({
