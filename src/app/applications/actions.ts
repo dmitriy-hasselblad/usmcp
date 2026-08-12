@@ -294,6 +294,85 @@ export async function sendApplicationMessage(formData: FormData) {
   redirect(messagePath(returnPath, "success", "Message sent."))
 }
 
+export async function scheduleApplicationInterview(formData: FormData) {
+  const workspace = await requireEmployerWorkspace("/dashboard/applications")
+  const applicationId = formString(formData, "applicationId")
+  const startsAt = formString(formData, "startsAt")
+  const timeZone = formString(formData, "timeZone")
+  const durationMinutes = Number(formString(formData, "durationMinutes"))
+  const interviewFormat = formString(formData, "interviewFormat")
+  const locationOrLink = formString(formData, "locationOrLink")
+  const notes = formString(formData, "notes")
+  const returnPath = isUuid(applicationId) ? `/dashboard/applications/${applicationId}` : "/dashboard/applications"
+
+  if (!isUuid(applicationId) || Number.isNaN(new Date(startsAt).valueOf()) || !Number.isSafeInteger(durationMinutes)) {
+    redirect(messagePath(returnPath, "error", "The interview details are invalid."))
+  }
+
+  const { error } = await workspace.supabase.rpc("schedule_application_interview", {
+    target_application_id: applicationId,
+    target_starts_at: new Date(startsAt).toISOString(),
+    target_time_zone: timeZone,
+    target_duration_minutes: durationMinutes,
+    target_interview_format: interviewFormat,
+    target_location_or_link: locationOrLink || null,
+    target_notes: notes || null,
+  })
+
+  if (error) {
+    redirect(messagePath(returnPath, "error", "The interview invitation could not be sent."))
+  }
+
+  revalidatePath("/dashboard")
+  revalidatePath(returnPath)
+  redirect(messagePath(returnPath, "success", "Interview invitation sent."))
+}
+
+export async function respondToApplicationInterview(formData: FormData) {
+  const identity = await requireIdentity("/dashboard/applications")
+  const interviewId = formString(formData, "interviewId")
+  const applicationId = formString(formData, "applicationId")
+  const status = formString(formData, "status")
+  const returnPath = isUuid(applicationId) ? `/dashboard/applications/${applicationId}` : "/dashboard/applications"
+
+  if (!isUuid(interviewId) || !isUuid(applicationId) || !["confirmed", "declined"].includes(status)) {
+    redirect(messagePath(returnPath, "error", "The interview response is invalid."))
+  }
+
+  const { error } = await identity.supabase.rpc("respond_to_application_interview", {
+    target_interview_id: interviewId,
+    target_status: status,
+  })
+
+  if (error) {
+    redirect(messagePath(returnPath, "error", "The interview response could not be saved."))
+  }
+
+  revalidatePath("/dashboard")
+  revalidatePath(returnPath)
+  redirect(messagePath(returnPath, "success", status === "confirmed" ? "Interview confirmed." : "Interview declined."))
+}
+
+export async function cancelApplicationInterview(formData: FormData) {
+  const workspace = await requireEmployerWorkspace("/dashboard/applications")
+  const interviewId = formString(formData, "interviewId")
+  const applicationId = formString(formData, "applicationId")
+  const returnPath = isUuid(applicationId) ? `/dashboard/applications/${applicationId}` : "/dashboard/applications"
+
+  if (!isUuid(interviewId) || !isUuid(applicationId)) {
+    redirect(messagePath(returnPath, "error", "The interview cancellation is invalid."))
+  }
+
+  const { error } = await workspace.supabase.rpc("cancel_application_interview", { target_interview_id: interviewId })
+  if (error) {
+    redirect(messagePath(returnPath, "error", "The interview could not be cancelled."))
+  }
+
+  revalidatePath("/dashboard")
+  revalidatePath(returnPath)
+  redirect(messagePath(returnPath, "success", "Interview cancelled."))
+}
+
 export async function registerApplicationMessageAttachment(formData: FormData) {
   const identity = await requireIdentity("/dashboard/applications")
   const applicationId = formString(formData, "applicationId")

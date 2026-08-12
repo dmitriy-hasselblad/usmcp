@@ -116,3 +116,18 @@ test("application message attachments stay private to application participants",
   assert.match(migration, /create policy "Application participants can read attachment objects"/)
   assert.match(migration, /after insert on public\.application_message_attachments/)
 })
+
+test("application interview scheduling is private and notifies both participants", async () => {
+  const migration = await readProjectFile(
+    "supabase/migrations/20260812121605_interview_scheduling.sql",
+  )
+
+  assert.match(migration, /alter table public\.application_interviews enable row level security/)
+  assert.match(migration, /create policy "Application participants can read interviews"/)
+  assert.match(migration, /candidate_id = \(select auth\.uid\(\)\)/)
+  assert.match(migration, /private\.is_organization_member\(/)
+  assert.match(migration, /create or replace function public\.schedule_application_interview/)
+  assert.match(migration, /create or replace function public\.respond_to_application_interview/)
+  assert.match(migration, /'interview_scheduled'/)
+  assert.match(migration, /'interview_response'/)
+})
