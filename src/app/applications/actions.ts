@@ -12,7 +12,7 @@ import {
 } from "@/lib/applications/constants"
 import { requireIdentity } from "@/lib/auth/session"
 import { requireEmployerWorkspace } from "@/lib/employer/session"
-import { sendApplicationStatusEmail } from "@/lib/email/application-status"
+import { sendApplicationStatusEmail, sendNewEmployerMessageEmail } from "@/lib/email/application-status"
 
 function isUuid(value: string) {
   return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
@@ -238,4 +238,57 @@ export async function updateApplicationStatus(formData: FormData) {
       "Application status updated.",
     ),
   )
+}
+
+export async function sendApplicationMessage(formData: FormData) {
+  const identity = await requireIdentity("/dashboard/applications")
+  const applicationId = formString(formData, "applicationId")
+  const body = formString(formData, "body")
+  const returnPath = isUuid(applicationId)
+    ? `/dashboard/applications/${applicationId}`
+    : "/dashboard/applications"
+
+  if (!isUuid(applicationId) || body.length < 1 || body.length > 4000) {
+    redirect(messagePath(returnPath, "error", "Write a message between 1 and 4,000 characters."))
+  }
+
+  const { data: application } = await identity.supabase
+    .from("applications")
+    .select("id, organization_id, candidate_id, status, candidate_email, candidate_first_name, organization_name")
+    .eq("id", applicationId)
+    .maybeSingle()
+
+  if (!application || application.status === "withdrawn") {
+    redirect(messagePath(returnPath, "error", "This application is not available for messaging."))
+  }
+
+  const { error } = await identity.supabase.from("application_messages").insert({
+    application_id: application.id,
+    organization_id: application.organization_id,
+    candidate_id: application.candidate_id,
+    sender_user_id: identity.userId,
+    body,
+  })
+
+  if (error) {
+    redirect(messagePath(returnPath, "error", "Your message could not be sent."))
+  }
+
+  if (identity.userId !== application.candidate_id) {
+    after(async () => {
+      const delivery = await sendNewEmployerMessageEmail({
+        applicationId: application.id,
+        candidateEmail: application.candidate_email,
+        candidateFirstName: application.candidate_first_name,
+        organizationName: application.organization_name,
+      })
+      if (delivery.outcome === "failed") {
+        console.error("New employer message email delivery failed", { applicationId: application.id, code: delivery.code })
+      }
+    })
+  }
+
+  revalidatePath("/dashboard")
+  revalidatePath(`/dashboard/applications/${applicationId}`)
+  redirect(messagePath(returnPath, "success", "Message sent."))
 }

@@ -15,6 +15,7 @@ import { UshceLogo } from "@/components/brand/ushce-logo"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { getUnreadNotificationCount } from "@/lib/notifications/unread-count"
 
 type EmployerRoute =
   | "overview"
@@ -77,7 +78,7 @@ const routes = [
   },
 ] as const
 
-export function EmployerDashboardShell({
+export async function EmployerDashboardShell({
   active,
   children,
   email,
@@ -88,6 +89,7 @@ export function EmployerDashboardShell({
   email?: string
   organizationName: string
 }) {
+  const unreadNotificationCount = await getUnreadNotificationCount()
   return (
     <div className="min-h-dvh bg-muted/35">
       <header className="border-b border-border bg-white">
@@ -137,7 +139,12 @@ export function EmployerDashboardShell({
                   key={route.key}
                 >
                   <Icon className="size-4" />
-                  {route.label}
+                  <span>{route.label}</span>
+                  {route.key === "notifications" && unreadNotificationCount > 0 && (
+                    <span className="ml-auto grid min-w-5 place-items-center rounded-full bg-red-600 px-1 text-[11px] font-bold leading-5 text-white">
+                      {unreadNotificationCount > 99 ? "99+" : unreadNotificationCount}
+                    </span>
+                  )}
                 </Link>
               )
             })}

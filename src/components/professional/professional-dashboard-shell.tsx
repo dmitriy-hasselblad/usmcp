@@ -13,6 +13,7 @@ import { UshceLogo } from "@/components/brand/ushce-logo"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { getUnreadNotificationCount } from "@/lib/notifications/unread-count"
 
 type ProfessionalRoute = "overview" | "profile" | "career" | "resumes" | "applications" | "notifications"
 
@@ -61,7 +62,7 @@ const routes = [
   },
 ] as const
 
-export function ProfessionalDashboardShell({
+export async function ProfessionalDashboardShell({
   active,
   children,
   email,
@@ -70,6 +71,7 @@ export function ProfessionalDashboardShell({
   children: ReactNode
   email?: string
 }) {
+  const unreadNotificationCount = await getUnreadNotificationCount()
   return (
     <div className="min-h-dvh bg-muted/35">
       <header className="border-b border-border bg-white">
@@ -120,7 +122,12 @@ export function ProfessionalDashboardShell({
                   key={route.key}
                 >
                   <Icon className="size-4" />
-                  {route.label}
+                  <span>{route.label}</span>
+                  {route.key === "notifications" && unreadNotificationCount > 0 && (
+                    <span className="ml-auto grid min-w-5 place-items-center rounded-full bg-red-600 px-1 text-[11px] font-bold leading-5 text-white">
+                      {unreadNotificationCount > 99 ? "99+" : unreadNotificationCount}
+                    </span>
+                  )}
                 </Link>
               )
             })}
