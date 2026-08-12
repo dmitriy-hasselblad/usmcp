@@ -24,6 +24,7 @@ import {
   withdrawApplication,
 } from "@/app/applications/actions"
 import { ApplicationStatusBadge } from "@/components/applications/application-status-badge"
+import { MessageAttachmentUpload } from "@/components/applications/message-attachment-upload"
 import { AuthNotice } from "@/components/auth/auth-notice"
 import { EmployerDashboardShell } from "@/components/employer/employer-dashboard-shell"
 import { ProfessionalDashboardShell } from "@/components/professional/professional-dashboard-shell"
@@ -121,7 +122,7 @@ export default async function ApplicationPage({
 
   const application = data as ApplicationRecord
   await markApplicationNotificationsRead(identity.supabase, identity.userId, application.id)
-  const messages = await getApplicationMessages(identity.supabase, application.id)
+  const [messages, attachments] = await Promise.all([getApplicationMessages(identity.supabase, application.id), getApplicationAttachments(identity.supabase, application.id)])
 
   return (
     <ProfessionalDashboardShell active="applications" email={identity.email}>
@@ -135,7 +136,7 @@ export default async function ApplicationPage({
       </div>
 
       <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_21rem]">
-        <ApplicationBody application={application} messages={messages} perspective="candidate" />
+        <ApplicationBody application={application} messages={messages} attachments={attachments} perspective="candidate" userId={identity.userId} />
         <Card className="h-fit bg-white">
           <CardContent className="p-5">
             <p className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
@@ -194,7 +195,7 @@ async function EmployerApplication({
 
   const application = data as ApplicationRecord
   await markApplicationNotificationsRead(workspace.supabase, workspace.userId, application.id)
-  const messages = await getApplicationMessages(workspace.supabase, application.id)
+  const [messages, attachments] = await Promise.all([getApplicationMessages(workspace.supabase, application.id), getApplicationAttachments(workspace.supabase, application.id)])
   const canEdit = canManageJobs(workspace.membership.role)
   const [educationResult, experienceResult, licenseResult, certificationResult, extendedResult, skillsResult] =
     await Promise.all([
@@ -263,7 +264,9 @@ async function EmployerApplication({
           skills={skills}
           showCandidateContact
           messages={messages}
+          attachments={attachments}
           perspective="employer"
+          userId={workspace.userId}
         />
         <Card className="h-fit bg-white">
           <CardContent className="p-5">
@@ -347,7 +350,9 @@ function ApplicationBody({
   skills = [],
   showCandidateContact = false,
   messages,
+  attachments,
   perspective,
+  userId,
 }: {
   application: ApplicationRecord
   careerProfile?: StructuredCareerProfile
@@ -355,7 +360,9 @@ function ApplicationBody({
   skills?: ProfessionalSkillRecord[]
   showCandidateContact?: boolean
   messages: ApplicationMessage[]
+  attachments: ApplicationAttachment[]
   perspective: "candidate" | "employer"
+  userId: string
 }) {
   return (
     <div className="grid gap-6">
@@ -429,7 +436,7 @@ function ApplicationBody({
         </CardContent>
       </Card>
 
-      <ApplicationMessages application={application} messages={messages} perspective={perspective} />
+      <ApplicationMessages application={application} messages={messages} attachments={attachments} perspective={perspective} userId={userId} />
 
       {(application.resume_document_id || application.resume_url) && (
         <Card className="bg-white">
@@ -474,6 +481,7 @@ type ApplicationMessage = {
   body: string
   created_at: string
 }
+type ApplicationAttachment = { id: string; file_name: string; file_size: number; uploaded_by: string; created_at: string }
 
 async function getApplicationMessages(
   supabase: Awaited<ReturnType<typeof requireIdentity>>["supabase"],
@@ -487,6 +495,11 @@ async function getApplicationMessages(
     .limit(200)
 
   return (data ?? []) as ApplicationMessage[]
+}
+
+async function getApplicationAttachments(supabase: Awaited<ReturnType<typeof requireIdentity>>["supabase"], applicationId: string) {
+  const { data } = await supabase.from("application_message_attachments").select("id, file_name, file_size, uploaded_by, created_at").eq("application_id", applicationId).order("created_at", { ascending: true })
+  return (data ?? []) as ApplicationAttachment[]
 }
 
 async function markApplicationNotificationsRead(
@@ -505,11 +518,15 @@ async function markApplicationNotificationsRead(
 function ApplicationMessages({
   application,
   messages,
+  attachments,
   perspective,
+  userId,
 }: {
   application: ApplicationRecord
   messages: ApplicationMessage[]
+  attachments: ApplicationAttachment[]
   perspective: "candidate" | "employer"
+  userId: string
 }) {
   const canMessage = application.status !== "withdrawn"
 
@@ -541,6 +558,8 @@ function ApplicationMessages({
             <div><Button type="submit">Send message</Button></div>
           </form>
         ) : <p className="mt-5 rounded-xl bg-muted px-4 py-3 text-sm text-muted-foreground">Messaging is closed because this application was withdrawn.</p>}
+        {canMessage && <div className="mt-4 border-t pt-4"><p className="mb-2 text-sm font-medium">Attachment</p><MessageAttachmentUpload applicationId={application.id} userId={userId} /><p className="mt-2 text-xs text-muted-foreground">Private to this application. PDF, DOCX, JPG, or PNG up to 10 MB.</p></div>}
+        {attachments.length > 0 && <div className="mt-4 grid gap-2 border-t pt-4">{attachments.map((attachment) => <a className="text-sm font-medium text-primary hover:underline" href={`/dashboard/application-attachments/${attachment.id}/download`} key={attachment.id}>Download {attachment.file_name} · {Math.ceil(attachment.file_size / 1024)} KB</a>)}</div>}
       </CardContent>
     </Card>
   )

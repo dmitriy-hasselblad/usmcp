@@ -13,6 +13,7 @@ import {
 import { requireIdentity } from "@/lib/auth/session"
 import { requireEmployerWorkspace } from "@/lib/employer/session"
 import { sendApplicationStatusEmail, sendNewEmployerMessageEmail } from "@/lib/email/application-status"
+import { applicationMessageAttachmentsBucket, applicationMessageAttachmentMaxBytes, isApplicationMessageAttachmentMimeType } from "@/lib/applications/message-attachments"
 
 function isUuid(value: string) {
   return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
@@ -291,4 +292,19 @@ export async function sendApplicationMessage(formData: FormData) {
   revalidatePath("/dashboard")
   revalidatePath(`/dashboard/applications/${applicationId}`)
   redirect(messagePath(returnPath, "success", "Message sent."))
+}
+
+export async function registerApplicationMessageAttachment(formData: FormData) {
+  const identity = await requireIdentity("/dashboard/applications")
+  const applicationId = formString(formData, "applicationId")
+  const attachmentId = formString(formData, "attachmentId")
+  const storagePath = formString(formData, "storagePath")
+  const fileName = formString(formData, "fileName")
+  const mimeType = formString(formData, "mimeType")
+  const fileSize = Number(formString(formData, "fileSize"))
+  const returnPath = isUuid(applicationId) ? `/dashboard/applications/${applicationId}` : "/dashboard/applications"
+  if (!isUuid(applicationId) || !isUuid(attachmentId) || !isApplicationMessageAttachmentMimeType(mimeType) || !Number.isSafeInteger(fileSize) || fileSize < 1 || fileSize > applicationMessageAttachmentMaxBytes || fileName.length < 1 || fileName.length > 180 || storagePath !== `${applicationId}/${identity.userId}/${attachmentId}/${fileName}`) redirect(messagePath(returnPath, "error", "The attachment details are invalid."))
+  const { error } = await identity.supabase.from("application_message_attachments").insert({ application_id: applicationId, organization_id: crypto.randomUUID(), candidate_id: identity.userId, uploaded_by: identity.userId, storage_path: storagePath, file_name: fileName, mime_type: mimeType, file_size: fileSize })
+  if (error) { await identity.supabase.storage.from(applicationMessageAttachmentsBucket).remove([storagePath]); redirect(messagePath(returnPath, "error", "The attachment could not be saved.")) }
+  revalidatePath("/dashboard"); revalidatePath(returnPath); redirect(messagePath(returnPath, "success", "Attachment added."))
 }
