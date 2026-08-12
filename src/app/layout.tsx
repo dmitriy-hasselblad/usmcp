@@ -6,6 +6,7 @@ import { ConsentAwareAnalytics } from "@/components/privacy/consent-aware-analyt
 import { getSiteUrl } from "@/lib/seo"
 
 import "./globals.css"
+import "@livekit/components-styles"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

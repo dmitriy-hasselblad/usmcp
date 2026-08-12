@@ -131,3 +131,14 @@ test("application interview scheduling is private and notifies both participants
   assert.match(migration, /'interview_scheduled'/)
   assert.match(migration, /'interview_response'/)
 })
+
+test("video interviews require a confirmed, participant-authorized interview", async () => {
+  const page = await readProjectFile("src/app/dashboard/interviews/[id]/video/page.tsx")
+  const tokenFactory = await readProjectFile("src/lib/interviews/video.ts")
+
+  assert.match(page, /from\("application_interviews"\)/)
+  assert.match(page, /interview\.status !== "confirmed"/)
+  assert.match(page, /createInterviewVideoToken/)
+  assert.match(tokenFactory, /ttl: "2h"/)
+  assert.match(tokenFactory, /room: `ushce-interview-\$\{interviewId\}`/)
+})
