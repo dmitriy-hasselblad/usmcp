@@ -10,6 +10,7 @@ import {
   GraduationCap,
   Mail,
   MapPin,
+  MessageSquare,
   Phone,
   ShieldCheck,
   Stethoscope,
@@ -18,6 +19,7 @@ import {
 import { notFound, redirect } from "next/navigation"
 
 import {
+  sendApplicationMessage,
   updateApplicationStatus,
   withdrawApplication,
 } from "@/app/applications/actions"
@@ -26,6 +28,7 @@ import { AuthNotice } from "@/components/auth/auth-notice"
 import { EmployerDashboardShell } from "@/components/employer/employer-dashboard-shell"
 import { ProfessionalDashboardShell } from "@/components/professional/professional-dashboard-shell"
 import { Button } from "@/components/ui/button"
+import { Textarea } from "@/components/ui/textarea"
 import {
   Card,
   CardContent,
@@ -117,6 +120,7 @@ export default async function ApplicationPage({
   }
 
   const application = data as ApplicationRecord
+  const messages = await getApplicationMessages(identity.supabase, application.id)
 
   return (
     <ProfessionalDashboardShell active="applications" email={identity.email}>
@@ -130,7 +134,7 @@ export default async function ApplicationPage({
       </div>
 
       <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_21rem]">
-        <ApplicationBody application={application} />
+        <ApplicationBody application={application} messages={messages} perspective="candidate" />
         <Card className="h-fit bg-white">
           <CardContent className="p-5">
             <p className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
@@ -188,6 +192,7 @@ async function EmployerApplication({
   }
 
   const application = data as ApplicationRecord
+  const messages = await getApplicationMessages(workspace.supabase, application.id)
   const canEdit = canManageJobs(workspace.membership.role)
   const [educationResult, experienceResult, licenseResult, certificationResult, extendedResult, skillsResult] =
     await Promise.all([
@@ -255,6 +260,8 @@ async function EmployerApplication({
           extendedProfile={extendedProfile}
           skills={skills}
           showCandidateContact
+          messages={messages}
+          perspective="employer"
         />
         <Card className="h-fit bg-white">
           <CardContent className="p-5">
@@ -337,12 +344,16 @@ function ApplicationBody({
   extendedProfile,
   skills = [],
   showCandidateContact = false,
+  messages,
+  perspective,
 }: {
   application: ApplicationRecord
   careerProfile?: StructuredCareerProfile
   extendedProfile?: ProfessionalProfileRecord | null
   skills?: ProfessionalSkillRecord[]
   showCandidateContact?: boolean
+  messages: ApplicationMessage[]
+  perspective: "candidate" | "employer"
 }) {
   return (
     <div className="grid gap-6">
@@ -416,6 +427,8 @@ function ApplicationBody({
         </CardContent>
       </Card>
 
+      <ApplicationMessages application={application} messages={messages} perspective={perspective} />
+
       {(application.resume_document_id || application.resume_url) && (
         <Card className="bg-white">
           <CardContent className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
@@ -450,6 +463,71 @@ function ApplicationBody({
         </Card>
       )}
     </div>
+  )
+}
+
+type ApplicationMessage = {
+  id: string
+  sender_user_id: string
+  body: string
+  created_at: string
+}
+
+async function getApplicationMessages(
+  supabase: Awaited<ReturnType<typeof requireIdentity>>["supabase"],
+  applicationId: string,
+) {
+  const { data } = await supabase
+    .from("application_messages")
+    .select("id, sender_user_id, body, created_at")
+    .eq("application_id", applicationId)
+    .order("created_at", { ascending: true })
+    .limit(200)
+
+  return (data ?? []) as ApplicationMessage[]
+}
+
+function ApplicationMessages({
+  application,
+  messages,
+  perspective,
+}: {
+  application: ApplicationRecord
+  messages: ApplicationMessage[]
+  perspective: "candidate" | "employer"
+}) {
+  const canMessage = application.status !== "withdrawn"
+
+  return (
+    <Card className="bg-white">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2"><MessageSquare className="size-5 text-primary" />Conversation</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <p className="text-sm leading-6 text-muted-foreground">Private messages are visible only to the candidate and authorized hiring team members.</p>
+        {messages.length ? (
+          <div className="mt-5 grid gap-3">
+            {messages.map((message) => {
+              const sentByCandidate = message.sender_user_id === application.candidate_id
+              const mine = sentByCandidate === (perspective === "candidate")
+              return (
+                <div className={mine ? "justify-self-end rounded-2xl bg-primary px-4 py-3 text-sm text-primary-foreground" : "justify-self-start rounded-2xl bg-muted px-4 py-3 text-sm"} key={message.id}>
+                  <p className="whitespace-pre-wrap leading-6">{message.body}</p>
+                  <p className={mine ? "mt-2 text-xs text-primary-foreground/75" : "mt-2 text-xs text-muted-foreground"}>{sentByCandidate ? "Candidate" : application.organization_name} · {formatDate(message.created_at)}</p>
+                </div>
+              )
+            })}
+          </div>
+        ) : <p className="mt-5 rounded-xl bg-muted px-4 py-3 text-sm text-muted-foreground">No messages yet.</p>}
+        {canMessage ? (
+          <form action={sendApplicationMessage} className="mt-5 grid gap-3 border-t pt-5">
+            <input name="applicationId" type="hidden" value={application.id} />
+            <label className="grid gap-2 text-sm font-medium">New message<Textarea maxLength={4000} minLength={1} name="body" placeholder="Write a message about this application." required rows={4} /></label>
+            <div><Button type="submit">Send message</Button></div>
+          </form>
+        ) : <p className="mt-5 rounded-xl bg-muted px-4 py-3 text-sm text-muted-foreground">Messaging is closed because this application was withdrawn.</p>}
+      </CardContent>
+    </Card>
   )
 }
 

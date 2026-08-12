@@ -239,3 +239,42 @@ export async function updateApplicationStatus(formData: FormData) {
     ),
   )
 }
+
+export async function sendApplicationMessage(formData: FormData) {
+  const identity = await requireIdentity("/dashboard/applications")
+  const applicationId = formString(formData, "applicationId")
+  const body = formString(formData, "body")
+  const returnPath = isUuid(applicationId)
+    ? `/dashboard/applications/${applicationId}`
+    : "/dashboard/applications"
+
+  if (!isUuid(applicationId) || body.length < 1 || body.length > 4000) {
+    redirect(messagePath(returnPath, "error", "Write a message between 1 and 4,000 characters."))
+  }
+
+  const { data: application } = await identity.supabase
+    .from("applications")
+    .select("id, organization_id, candidate_id, status")
+    .eq("id", applicationId)
+    .maybeSingle()
+
+  if (!application || application.status === "withdrawn") {
+    redirect(messagePath(returnPath, "error", "This application is not available for messaging."))
+  }
+
+  const { error } = await identity.supabase.from("application_messages").insert({
+    application_id: application.id,
+    organization_id: application.organization_id,
+    candidate_id: application.candidate_id,
+    sender_user_id: identity.userId,
+    body,
+  })
+
+  if (error) {
+    redirect(messagePath(returnPath, "error", "Your message could not be sent."))
+  }
+
+  revalidatePath("/dashboard")
+  revalidatePath(`/dashboard/applications/${applicationId}`)
+  redirect(messagePath(returnPath, "success", "Message sent."))
+}
