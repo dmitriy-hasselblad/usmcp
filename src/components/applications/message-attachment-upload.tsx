@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, type FormEvent } from "react"
+import { useRef, useState, type ChangeEvent, type FormEvent } from "react"
 import { useRouter } from "next/navigation"
 import { Paperclip } from "lucide-react"
 import { registerApplicationMessageAttachment } from "@/app/applications/actions"
@@ -9,8 +9,15 @@ import { applicationMessageAttachmentsBucket, applicationMessageAttachmentMaxByt
 import { createClient } from "@/lib/supabase/client"
 
 export function MessageAttachmentUpload({ applicationId, userId }: { applicationId: string; userId: string }) {
-  const [pending, setPending] = useState(false); const [error, setError] = useState("")
+  const [pending, setPending] = useState(false); const [error, setError] = useState(""); const [fileName, setFileName] = useState("")
+  const inputRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
+
+  function selectFile(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0]
+    setError("")
+    setFileName(file?.name ?? "")
+  }
   async function upload(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); const input = event.currentTarget.elements.namedItem("file"); const file = input instanceof HTMLInputElement ? input.files?.[0] : undefined
     if (!file) return setError("Choose a file."); if (!isApplicationMessageAttachmentMimeType(file.type) || file.size > applicationMessageAttachmentMaxBytes) return setError("Use a PDF, DOCX, JPG, or PNG under 10 MB.")
@@ -26,6 +33,7 @@ export function MessageAttachmentUpload({ applicationId, userId }: { application
         return
       }
       event.currentTarget.reset()
+      setFileName("")
       setPending(false)
       router.refresh()
     } catch {
@@ -34,5 +42,10 @@ export function MessageAttachmentUpload({ applicationId, userId }: { application
       setPending(false)
     }
   }
-  return <form className="flex flex-wrap items-center gap-3" onSubmit={upload}><input accept=".pdf,.docx,image/jpeg,image/png" className="max-w-56 text-sm" name="file" type="file"/><Button disabled={pending} size="sm" type="submit" variant="outline"><Paperclip />{pending ? "Uploading..." : "Add attachment"}</Button>{error && <p className="text-sm text-destructive">{error}</p>}</form>
+  return <form className="flex flex-wrap items-center gap-3" onSubmit={upload}>
+    <input accept=".pdf,.docx,image/jpeg,image/png" className="sr-only" name="file" onChange={selectFile} ref={inputRef} type="file" />
+    <Button disabled={pending} onClick={() => inputRef.current?.click()} size="sm" type="button" variant="outline"><Paperclip />{fileName ? "Change attachment" : "Choose attachment"}</Button>
+    {fileName && <><span className="max-w-56 truncate text-sm text-muted-foreground">{fileName}</span><Button disabled={pending} size="sm" type="submit">{pending ? "Uploading..." : "Upload attachment"}</Button></>}
+    {error && <p className="text-sm text-destructive">{error}</p>}
+  </form>
 }
