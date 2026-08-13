@@ -25,9 +25,9 @@ English.
 ## Production baseline
 
 - Production branch: `main`
-- Latest confirmed product Pull Request: PR #49
-- PR #49 merge commit: `66fb447`
-- Current `main` commit at branch handoff: `66fb447`
+- Latest confirmed product Pull Request: PR #51
+- PR #51 merge commit: merged 2026-08-13
+- Current `main` commit at branch handoff: includes PRs #50 and #51
 - Production deployment status at verification: `Ready`
 - Latest Production verification date: 2026-08-13
 
@@ -38,6 +38,12 @@ healthcare profession taxonomy; in-product notifications; private messaging,
 attachments, interviews, calendar downloads, and LiveKit video rooms;
 consent-aware funnel analytics; safe platform-demonstration labels; and a
 five-minute reconnect window for completed video interviews.
+
+PR #50 refreshed the durable roadmap after the soft-launch release. PR #51
+added a reusable U.S. state and suggested-city selector to employer job
+creation, professional profiles, and career-history forms. It keeps an
+explicit manual-entry path for every other U.S. city and makes no schema or
+RLS change. Preview and Production were verified on 2026-08-13.
 
 The structured professional profile was verified in Production with a 100%
 completion state and records in all four categories.
@@ -269,6 +275,8 @@ The following areas are not complete:
 - Messaging, in-product notifications, private message attachments, interview
   scheduling, calendar downloads, and LiveKit video rooms are implemented and
   verified in Production through PR #49.
+- Centralized U.S. geographic reference data is implemented and verified in
+  Production through PR #51.
 - AI features are intentionally deferred.
 - Public SEO foundation and consent-aware Vercel Web Analytics are implemented.
   Wider soft-launch operations remain in progress.

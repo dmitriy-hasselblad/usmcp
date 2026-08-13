@@ -172,25 +172,29 @@ roadmap:
 
 ## Immediate next ticket
 
-**Ticket:** Centralized U.S. geographic reference data.
+**Ticket:** Public employer verification badges and rules.
 
 ### Goal
 
-Replace free-text location entry where practical with reusable U.S. state and
-city reference data, while preserving a clear manual-entry path for smaller
-communities and legitimate remote roles.
+Make the existing organization verification decision understandable to public
+visitors without exposing internal moderation details.
 
 ### Required scope
 
-1. Reuse one U.S.-only reference source across candidate and employer forms.
-2. Offer a city choice after state selection, with a manual fallback.
-3. Preserve existing stored locations and URL search behavior.
-4. Do not make a schema change until the current migrations and RLS are
-   reviewed.
-5. Verify candidate profile, employer job creation, public job search, mobile
-   layout, and Vercel Preview.
+1. Show a consistent verified badge on public organization pages and published
+   job cards/details when the organization is verified.
+2. Explain the meaning of the badge in clear public English.
+3. Keep unverified organizations neutral; do not imply a safety guarantee.
+4. Preserve the existing admin verification workflow and public-read boundary.
+5. Review the current migrations and RLS before any schema change, then verify
+   anonymous public pages, authorized admin moderation, mobile layout, and
+   Vercel Preview.
 
 ### Explicit limitation
+
+Centralized U.S. geographic reference data is complete through PR #51. Shared
+state and city fields now cover employer job creation, professional profiles,
+and career history; smaller communities retain a manual-entry fallback.
 
 Soft-launch content readiness is complete through PR #49: platform
 demonstrations are visibly labeled, excluded from applications and JobPosting

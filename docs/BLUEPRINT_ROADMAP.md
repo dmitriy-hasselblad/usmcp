@@ -56,7 +56,8 @@ the recommended implementation order on page 3 as the governing sequence.
 ### Remaining foundation refinements
 
 - [ ] Centralized profession and specialty reference data
-- [ ] Centralized geographic reference data beyond the current U.S. state list
+- [x] Centralized U.S. geographic reference data with suggested cities and a
+  manual-entry fallback (Production verified through PR #51)
 - [x] Formal audit-event model for privileged actions (organization
   verification integration verified in Production)
 - [ ] Automated test coverage for critical role boundaries
