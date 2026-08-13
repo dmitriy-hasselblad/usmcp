@@ -1,6 +1,6 @@
 # USHCE Project Status
 
-Last updated: 2026-08-10
+Last updated: 2026-08-11
 
 ## Purpose
 
@@ -25,9 +25,9 @@ English.
 ## Production baseline
 
 - Production branch: `main`
-- Latest confirmed product Pull Request: PR #36
-- PR #36 merge commit: `1aa1b65`
-- Current `main` commit at branch handoff: `1aa1b65`
+- Latest confirmed product Pull Request: PR #40
+- PR #40 merge commit: `25db9cc`
+- Current `main` commit at branch handoff: `25db9cc`
 - Production deployment status at verification: `Ready`
 - Latest Production verification date: 2026-08-10
 
@@ -54,6 +54,13 @@ Production. PR #36 added the standalone U.S. healthcare résumé builder and
 was verified in Production on 2026-08-10: professionals can create up to ten
 private blank drafts, save them, and export a U.S. Letter-size PDF. Résumé
 content is not copied from a profile and is private to its owner.
+
+PR #37 recorded soft-launch content readiness, PR #38 added profile-based job
+recommendations, and PR #39–#40 introduced and then expanded the U.S.
+healthcare profession taxonomy. All were verified in Production. The shared
+taxonomy now provides category, profession, specialty, and an Other specialty
+path across professional onboarding, profile editing, job creation, and
+candidate/job search.
 
 ## Technology stack
 
@@ -228,6 +235,9 @@ The repository currently contains these applied migration groups:
 19. Public-content reporting, private reporter details, admin review decisions,
     and privileged audit events
 20. Private standalone professional résumé drafts and owner-only export access
+21. Protected social-OAuth account-type selection before onboarding (database
+    preparation applied to Production; user-interface branch intentionally not
+    merged yet)
 
 Migration files are stored in `supabase/migrations/`.
 
@@ -240,7 +250,11 @@ The following areas are not complete:
 
 - The standalone résumé builder is implemented and verified in Production.
   AI-assisted résumé writing remains deferred.
-- Google and LinkedIn authentication are not implemented.
+- Google and LinkedIn authentication are intentionally deferred until final
+  pre-launch readiness. The prepared branch is
+  `codex/social-sign-in-foundation`; the protective database migration
+  `social_oauth_account_type` was applied on 2026-08-10, but its user interface
+  is not in Production and Preview configuration remains incomplete.
 - Employer verification and manual moderation are implemented and verified in
   Production.
 - The scoped Basic Admin Panel is in Production: authorization, metrics,
@@ -321,6 +335,10 @@ When reporting remaining work, always include these explicit decisions:
 2. **Payments and billing:** Stripe, subscriptions, job-posting payments,
    invoices, billing portal, and webhooks are deferred until 6-12 months after
    Early Access launch. The initial pilot remains free.
+3. **Social sign-in:** Google and LinkedIn OAuth are deferred until final
+   pre-launch readiness. Do not merge the prepared foundation until the Google
+   Preview flow has been verified and LinkedIn is either configured or left
+   intentionally disabled.
 
 ## Verification standard
 

@@ -55,7 +55,8 @@ the recommended implementation order on page 3 as the governing sequence.
 
 ### Remaining foundation refinements
 
-- [ ] Centralized profession and specialty reference data
+- [x] Centralized profession and specialty reference data (Production verified
+  through PR #40)
 - [ ] Centralized geographic reference data beyond the current U.S. state list
 - [x] Formal audit-event model for privileged actions (organization
   verification integration verified in Production)
@@ -89,10 +90,10 @@ the recommended implementation order on page 3 as the governing sequence.
 - [x] Application withdrawal
 - [x] Skills model
 - [x] Extended healthcare profile sections
-- [ ] Recommended jobs
+- [x] Recommended jobs (Production verified through PR #38)
 - [x] Standalone résumé builder and PDF export (verified in Production through PR #36)
-- [ ] Google sign-in
-- [ ] LinkedIn sign-in
+- [ ] Google sign-in (deferred until final pre-launch readiness)
+- [ ] LinkedIn sign-in (deferred until final pre-launch readiness)
 
 ### Employer platform
 
