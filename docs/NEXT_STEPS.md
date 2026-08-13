@@ -1,14 +1,14 @@
 # USHCE Next Steps
 
-Last updated: 2026-08-10
+Last updated: 2026-08-13
 
 ## Current product phase
 
 **Phase 2: Marketplace MVP**
 
-The core hiring loop works:
+The complete Early Access hiring loop works:
 
-`Employer creates job -> job appears publicly -> professional applies -> employer reviews application`
+`Employer creates job -> job appears publicly -> professional applies -> employer reviews -> private messaging -> interview scheduling -> calendar/video interview`
 
 The next work must complete Marketplace MVP before payments, messaging, or AI.
 
@@ -165,7 +165,6 @@ roadmap:
 - AI recruiter
 - advanced candidate matching
 - mobile application
-- native video calls
 - learning-management system
 - international marketplace
 - advanced analytics
@@ -173,28 +172,30 @@ roadmap:
 
 ## Immediate next ticket
 
-**Ticket:** Soft-launch content readiness audit.
+**Ticket:** Centralized U.S. geographic reference data.
 
 ### Goal
 
-Ensure that public marketplace pages do not present fictional sample employers,
-jobs, or content as live U.S. healthcare opportunities during Early Access.
+Replace free-text location entry where practical with reusable U.S. state and
+city reference data, while preserving a clear manual-entry path for smaller
+communities and legitimate remote roles.
 
 ### Required scope
 
-1. Inventory all public cards, directory entries, and detail pages that can
-   expose sample content.
-2. Distinguish live data from demonstration content in the UI and SEO output.
-3. Remove, hide, or clearly label any fictional listing that could be mistaken
-   for a real opportunity.
-4. Preserve real published jobs and approved organizations.
-5. Verify public guest access, empty states, metadata, and Vercel Preview.
+1. Reuse one U.S.-only reference source across candidate and employer forms.
+2. Offer a city choice after state selection, with a manual fallback.
+3. Preserve existing stored locations and URL search behavior.
+4. Do not make a schema change until the current migrations and RLS are
+   reviewed.
+5. Verify candidate profile, employer job creation, public job search, mobile
+   layout, and Vercel Preview.
 
 ### Explicit limitation
 
-Do not delete Production data or alter publication status without an explicit
-product-owner approval. This ticket begins with a read-only inventory and a
-safe presentation-layer proposal.
+Soft-launch content readiness is complete through PR #49: platform
+demonstrations are visibly labeled, excluded from applications and JobPosting
+metadata, and verified in Production. Calendar downloads, consent-aware funnel
+analytics, and video-interview expiry were also verified through PR #49.
 
 ## Definition of done for every future stage
 
