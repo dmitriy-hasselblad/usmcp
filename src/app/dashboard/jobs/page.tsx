@@ -9,6 +9,7 @@ import {
 
 import { changeJobStatus } from "@/app/dashboard/actions"
 import { AuthNotice } from "@/components/auth/auth-notice"
+import { AnalyticsLink } from "@/components/analytics/analytics-link"
 import { EmployerDashboardShell } from "@/components/employer/employer-dashboard-shell"
 import { EmployerPageHeader } from "@/components/employer/employer-page-header"
 import { JobStatusBadge } from "@/components/employer/job-status-badge"
@@ -62,9 +63,9 @@ export default async function EmployerJobsPage({
         action={
           canEdit ? (
             <Button asChild className="h-10 rounded-xl px-4">
-              <Link href="/dashboard/jobs/new">
+              <AnalyticsLink eventName="employer_job_creation_started" href="/dashboard/jobs/new">
                 Create job <ArrowRight />
-              </Link>
+              </AnalyticsLink>
             </Button>
           ) : undefined
         }

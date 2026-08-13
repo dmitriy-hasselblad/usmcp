@@ -153,3 +153,13 @@ test("calendar downloads are private and available only for confirmed interviews
   assert.match(calendar, /BEGIN:VCALENDAR/)
   assert.match(calendar, /escapeCalendarText/)
 })
+
+test("product analytics remains opt-in and excludes personal application data", async () => {
+  const tracker = await readProjectFile("src/components/analytics/analytics-link.tsx")
+  const heroSearch = await readProjectFile("src/components/marketing/hero-search.tsx")
+
+  assert.match(tracker, /preferences\?\.analytics/)
+  assert.match(tracker, /track\(eventName, eventData\)/)
+  assert.match(heroSearch, /job_search_submitted/)
+  assert.doesNotMatch(tracker, /email|candidate|resume|phone/i)
+})

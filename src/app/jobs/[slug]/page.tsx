@@ -13,6 +13,7 @@ import {
 } from "lucide-react"
 
 import { JobCard } from "@/components/jobs/job-card"
+import { AnalyticsLink } from "@/components/analytics/analytics-link"
 import { ReportContentLink } from "@/components/moderation/report-content-link"
 import { SiteFooter } from "@/components/layout/site-footer"
 import { SiteHeader } from "@/components/layout/site-header"
@@ -202,10 +203,14 @@ export default async function JobPage({ params }: JobPageProps) {
                       : "This sample listing demonstrates the planned application experience. It is not an active vacancy."}
                 </p>
                 <Button asChild className="mt-6 h-11 w-full rounded-xl">
-                  <Link href={isLive ? `/jobs/${job.slug}/apply` : "/jobs"}>
+                  <AnalyticsLink
+                    eventData={{ source: isLive ? "live_job" : "demonstration" }}
+                    eventName={isLive ? "job_application_started" : "demonstration_job_browsed"}
+                    href={isLive ? `/jobs/${job.slug}/apply` : "/jobs"}
+                  >
                     {isLive ? "Apply now" : job.isPlatformDemo ? "Browse active jobs" : "Prepare your profile"}{" "}
                     <ArrowRight />
-                  </Link>
+                  </AnalyticsLink>
                 </Button>
                 <Button
                   asChild
