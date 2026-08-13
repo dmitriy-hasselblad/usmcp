@@ -24,7 +24,7 @@ export async function createInterviewVideoToken({
   const token = new AccessToken(apiKey, apiSecret, {
     identity: `ushce-${userId}`,
     name,
-    ttl: "2h",
+    ttl: "10m",
   })
   token.addGrant({ room: `ushce-interview-${interviewId}`, roomJoin: true, canPublish: true, canSubscribe: true })
 

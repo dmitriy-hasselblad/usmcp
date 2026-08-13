@@ -135,12 +135,17 @@ test("application interview scheduling is private and notifies both participants
 test("video interviews require a confirmed, participant-authorized interview", async () => {
   const page = await readProjectFile("src/app/dashboard/interviews/[id]/video/page.tsx")
   const tokenFactory = await readProjectFile("src/lib/interviews/video.ts")
+  const migration = await readProjectFile("supabase/migrations/20260813060548_interview_video_session_expiry.sql")
 
   assert.match(page, /from\("application_interviews"\)/)
   assert.match(page, /interview\.status !== "confirmed"/)
   assert.match(page, /createInterviewVideoToken/)
-  assert.match(tokenFactory, /ttl: "2h"/)
+  assert.match(page, /start_application_interview_video/)
+  assert.match(tokenFactory, /ttl: "10m"/)
   assert.match(tokenFactory, /room: `ushce-interview-\$\{interviewId\}`/)
+  assert.match(migration, /video_ended_at/)
+  assert.match(migration, /interval '5 minutes'/)
+  assert.match(migration, /revoke execute on function public\.start_application_interview_video\(uuid\) from public, anon/)
 })
 
 test("calendar downloads are private and available only for confirmed interviews", async () => {
