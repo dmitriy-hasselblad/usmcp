@@ -20,6 +20,7 @@ import {
 } from "@/app/dashboard/profile/career/actions"
 import { AuthNotice } from "@/components/auth/auth-notice"
 import { AuthSubmitButton } from "@/components/auth/auth-submit-button"
+import { UsLocationFields } from "@/components/forms/us-location-fields"
 import { ProfessionalDashboardShell } from "@/components/professional/professional-dashboard-shell"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -643,15 +644,7 @@ function LocationFields({
   stateCode?: string | null
 }) {
   return (
-    <div className="grid gap-3 sm:grid-cols-2">
-      <Input
-        defaultValue={city ?? ""}
-        maxLength={120}
-        name="city"
-        placeholder="City (optional)"
-      />
-      <StateSelect defaultValue={stateCode ?? ""} name="stateCode" />
-    </div>
+    <UsLocationFields defaultCity={city} defaultStateCode={stateCode} />
   )
 }
 

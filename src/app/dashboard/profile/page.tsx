@@ -24,6 +24,7 @@ import {
 } from "@/app/dashboard/profile/actions"
 import { AuthNotice } from "@/components/auth/auth-notice"
 import { ProfessionSpecialtyFields } from "@/components/forms/profession-specialty-fields"
+import { UsLocationFields } from "@/components/forms/us-location-fields"
 import { AuthSubmitButton } from "@/components/auth/auth-submit-button"
 import { DocumentUploadForm } from "@/components/professional/document-upload-form"
 import { ProfessionalPhotoForm } from "@/components/professional/professional-photo-form"
@@ -42,7 +43,6 @@ import { Textarea } from "@/components/ui/textarea"
 import { requireIdentity } from "@/lib/auth/session"
 import {
   careerStages,
-  usStates,
 } from "@/lib/auth/validation"
 import {
   professionalDocumentTypeLabels,
@@ -236,25 +236,10 @@ export default async function ProfessionalProfilePage({
                 </Field>
               </div>
 
-              <div className="grid gap-5 sm:grid-cols-2">
-                <Field label="City">
-                  <Input
-                    className="h-11"
-                    defaultValue={professionalProfile.city ?? ""}
-                    maxLength={120}
-                    name="city"
-                    placeholder="Chicago"
-                  />
-                </Field>
-                <SelectField
-                  defaultValue={professionalProfile.state_code}
-                  label="State"
-                  name="stateCode"
-                  options={usStates.map(
-                    ([code, label]) => [code, label] as const,
-                  )}
-                />
-              </div>
+              <UsLocationFields
+                defaultCity={professionalProfile.city}
+                defaultStateCode={professionalProfile.state_code}
+              />
 
               <Field label="Phone number">
                 <Input
