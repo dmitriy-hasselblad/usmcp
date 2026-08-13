@@ -136,6 +136,7 @@ test("video interviews require a confirmed, participant-authorized interview", a
   const page = await readProjectFile("src/app/dashboard/interviews/[id]/video/page.tsx")
   const tokenFactory = await readProjectFile("src/lib/interviews/video.ts")
   const migration = await readProjectFile("supabase/migrations/20260813060548_interview_video_session_expiry.sql")
+  const room = await readProjectFile("src/components/interviews/interview-video-room.tsx")
 
   assert.match(page, /from\("application_interviews"\)/)
   assert.match(page, /interview\.status !== "confirmed"/)
@@ -146,6 +147,8 @@ test("video interviews require a confirmed, participant-authorized interview", a
   assert.match(migration, /video_ended_at/)
   assert.match(migration, /interval '5 minutes'/)
   assert.match(migration, /revoke execute on function public\.start_application_interview_video\(uuid\) from public, anon/)
+  assert.match(room, /onDisconnected=\{recordDisconnect\}/)
+  assert.match(room, /window\.addEventListener\("pagehide", handlePageExit\)/)
 })
 
 test("calendar downloads are private and available only for confirmed interviews", async () => {

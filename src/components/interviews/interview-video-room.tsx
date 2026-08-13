@@ -2,7 +2,7 @@
 
 import { LiveKitRoom, VideoConference } from "@livekit/components-react"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 import { Button } from "@/components/ui/button"
 
@@ -19,17 +19,30 @@ export function InterviewVideoRoom({
 }) {
   const router = useRouter()
   const [isEnding, setIsEnding] = useState(false)
+  const hasRecordedDisconnect = useRef(false)
 
   const recordDisconnect = () => {
-    void fetch(`/dashboard/interviews/${interviewId}/video-session`, {
+    if (hasRecordedDisconnect.current) return Promise.resolve()
+    hasRecordedDisconnect.current = true
+
+    return fetch(`/dashboard/interviews/${interviewId}/video-session`, {
       method: "POST",
       keepalive: true,
-    })
+    }).then(() => undefined)
   }
+
+  useEffect(() => {
+    const handlePageExit = () => recordDisconnect()
+
+    window.addEventListener("pagehide", handlePageExit)
+    return () => {
+      window.removeEventListener("pagehide", handlePageExit)
+    }
+  }, [])
 
   async function endInterview() {
     setIsEnding(true)
-    await fetch(`/dashboard/interviews/${interviewId}/video-session`, { method: "POST" })
+    await recordDisconnect()
     router.push(backUrl)
     router.refresh()
   }
