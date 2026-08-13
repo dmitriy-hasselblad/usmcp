@@ -6,13 +6,13 @@ import { createJobDraft } from "@/app/dashboard/actions"
 import { AuthNotice } from "@/components/auth/auth-notice"
 import { AuthSubmitButton } from "@/components/auth/auth-submit-button"
 import { ProfessionSpecialtyFields } from "@/components/forms/profession-specialty-fields"
+import { UsLocationFields } from "@/components/forms/us-location-fields"
 import { EmployerDashboardShell } from "@/components/employer/employer-dashboard-shell"
 import { EmployerPageHeader } from "@/components/employer/employer-page-header"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { usStates } from "@/lib/auth/validation"
 import {
   canManageJobs,
   employmentTypes,
@@ -106,33 +106,10 @@ export default async function NewJobPage({
                 </div>
 
 
-                <div className="grid gap-5 sm:grid-cols-2">
-                  <label className="grid gap-2 text-sm font-medium">
-                    City
-                    <Input
-                      className="h-11"
-                      maxLength={120}
-                      minLength={2}
-                      name="city"
-                      required
-                    />
-                  </label>
-                  <label className="grid gap-2 text-sm font-medium">
-                    State
-                    <select
-                      className={selectClassName}
-                      defaultValue={workspace.organization.state_code}
-                      name="stateCode"
-                      required
-                    >
-                      {usStates.map(([code, name]) => (
-                        <option key={code} value={code}>
-                          {name}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                </div>
+                <UsLocationFields
+                  cityRequired
+                  defaultStateCode={workspace.organization.state_code}
+                />
 
                 <div className="grid gap-5 sm:grid-cols-2">
                   <label className="grid gap-2 text-sm font-medium">
