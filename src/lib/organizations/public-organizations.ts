@@ -8,6 +8,7 @@ import {
 import type { Job } from "@/lib/marketing-data"
 import { isSupabaseConfigured } from "@/lib/supabase/env"
 import { createClient } from "@/lib/supabase/server"
+import { isUshcePlatformOrganization } from "@/lib/platform-content"
 
 export type PublicOrganization = {
   id: string
@@ -18,6 +19,7 @@ export type PublicOrganization = {
   website: string | null
   location: string
   verificationStatus: string
+  isPlatformProfile: boolean
   jobs: Job[]
 }
 
@@ -47,6 +49,7 @@ export const getPublicOrganizations = cache(
         website: getSafeWebsite(row.organization_website),
         location: formatOrganizationLocation(row.organization_state_code),
         verificationStatus: row.verification_status,
+        isPlatformProfile: isUshcePlatformOrganization(row.organization_name),
         jobs: [job],
       })
     }

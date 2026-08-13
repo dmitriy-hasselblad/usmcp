@@ -15,7 +15,7 @@ export function OrganizationCard({
   organization,
   compact = false,
 }: OrganizationCardProps) {
-  const jobCount = organization.jobs.length
+  const jobCount = organization.jobs.filter((job) => !job.isPlatformDemo).length
 
   return (
     <Card className="h-full border-border/80 bg-white transition-all hover:-translate-y-0.5 hover:shadow-lg">
@@ -64,7 +64,9 @@ export function OrganizationCard({
         )}
         <Button asChild className="mt-6 rounded-xl" variant="outline">
           <Link href={`/companies/${organization.slug}`}>
-            View {jobCount} open {jobCount === 1 ? "role" : "roles"}
+            {organization.isPlatformProfile
+              ? "View platform demonstrations"
+              : `View ${jobCount} open ${jobCount === 1 ? "role" : "roles"}`}
             <ArrowRight />
           </Link>
         </Button>

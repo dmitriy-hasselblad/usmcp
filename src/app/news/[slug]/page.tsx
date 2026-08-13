@@ -12,6 +12,7 @@ import {
   getPublishedOrganizationPost,
   getPublicNewsOrganization,
 } from "@/lib/news/public-news"
+import { isUshcePlatformOrganization } from "@/lib/platform-content"
 
 type Props = { params: Promise<{ slug: string }> }
 
@@ -56,6 +57,7 @@ export default async function PublicNewsDetailPage({ params }: Props) {
       organization.public_email ||
       organization.public_phone ||
       address.length)
+  const isUshceEditorial = isUshcePlatformOrganization(organization?.name)
 
   return (
     <div className="min-h-dvh bg-white">
@@ -79,7 +81,7 @@ export default async function PublicNewsDetailPage({ params }: Props) {
             </p>
           )}
           <Badge className="mt-4" variant="outline">
-            Organization insight
+            {isUshceEditorial ? "USHCE editorial content" : "Organization insight"}
           </Badge>
           <h1 className="mt-5 text-4xl font-semibold tracking-[-0.055em] sm:text-5xl">
             {post.title}
@@ -105,6 +107,12 @@ export default async function PublicNewsDetailPage({ params }: Props) {
           <div className="mt-10 whitespace-pre-wrap text-base leading-8 text-foreground">
             {post.body}
           </div>
+          {isUshceEditorial && (
+            <section className="mt-10 rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-950">
+              <h2 className="font-semibold">Editorial note</h2>
+              <p className="mt-2">This article is published by USHCE for product demonstration and editorial discussion. It is not an announcement from a clinic, hospital, government agency, or other healthcare employer.</p>
+            </section>
+          )}
           {hasContact && (
             <section className="mt-12 border-t pt-8">
               <h2 className="text-xl font-semibold">About {organization.name}</h2>

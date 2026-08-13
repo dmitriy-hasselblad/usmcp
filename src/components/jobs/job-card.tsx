@@ -22,13 +22,19 @@ export function JobCard({ job, compact = false }: JobCardProps) {
           <div className="flex flex-wrap justify-end gap-2">
             <Badge
               className={
-                job.source === "live"
+                job.isPlatformDemo
+                  ? "border-amber-200 bg-amber-50 text-amber-900"
+                  : job.source === "live"
                   ? "border-emerald-200 bg-emerald-50 text-emerald-800"
                   : undefined
               }
               variant="outline"
             >
-              {job.source === "live" ? "Live opportunity" : "Product preview"}
+              {job.isPlatformDemo
+                ? "Platform demonstration"
+                : job.source === "live"
+                  ? "Live opportunity"
+                  : "Product preview"}
             </Badge>
             {job.visaSupport && (
               <Badge className="bg-emerald-50 text-emerald-700 hover:bg-emerald-50">
@@ -71,7 +77,7 @@ export function JobCard({ job, compact = false }: JobCardProps) {
             <Clock3 className="size-4 text-primary" />
             {job.type} · {job.setting}
           </p>
-          {job.source === "live" && (
+          {job.source === "live" && !job.isPlatformDemo && (
             <p className="flex items-center gap-2">
               <CalendarDays className="size-4 text-primary" />
               {job.posted}

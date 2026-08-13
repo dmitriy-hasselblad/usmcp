@@ -4,6 +4,7 @@ import { usStates } from "@/lib/auth/validation"
 import type { Job } from "@/lib/marketing-data"
 import { isSupabaseConfigured } from "@/lib/supabase/env"
 import { createClient } from "@/lib/supabase/server"
+import { isUshcePlatformOrganization } from "@/lib/platform-content"
 
 export type PublishedJobRow = {
   id: string
@@ -115,6 +116,7 @@ export function toMarketplaceJob(row: PublishedJobRow): Job {
     salaryMax: row.salary_max ?? undefined,
     salaryPeriod: row.salary_period,
     publishedAt: row.published_at,
+    isPlatformDemo: isUshcePlatformOrganization(row.organization_name),
   }
 }
 

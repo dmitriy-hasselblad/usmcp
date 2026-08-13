@@ -45,6 +45,7 @@ export default async function JobsPage({
   const showPreviews = getString(params.preview) === "true"
   const allJobs = showPreviews ? [...liveJobs, ...featuredJobs] : liveJobs
   const jobs = filterJobs(allJobs, filters)
+  const platformDemoCount = jobs.filter((job) => job.isPlatformDemo).length
   const specialties = [...new Set(allJobs.map((job) => job.specialty))].sort(
     (a, b) => a.localeCompare(b, "en-US"),
   )
@@ -243,11 +244,18 @@ export default async function JobsPage({
 
           <div>
             {jobs.length > 0 ? (
-              <div className="grid gap-5 xl:grid-cols-2">
-                {jobs.map((job) => (
-                  <JobCard job={job} key={job.slug} />
-                ))}
-              </div>
+              <>
+                {platformDemoCount > 0 && !showPreviews && (
+                  <div className="mb-5 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-6 text-amber-950">
+                    Some roles below are clearly marked platform demonstrations. They show the product experience and are not active vacancies.
+                  </div>
+                )}
+                <div className="grid gap-5 xl:grid-cols-2">
+                  {jobs.map((job) => (
+                    <JobCard job={job} key={job.slug} />
+                  ))}
+                </div>
+              </>
             ) : (
               <Card className="border-dashed border-border bg-card">
                 <CardContent className="grid min-h-80 place-items-center p-8 text-center">
