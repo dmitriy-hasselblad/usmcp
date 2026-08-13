@@ -1,6 +1,6 @@
 # USHCE Project Status
 
-Last updated: 2026-08-10
+Last updated: 2026-08-13
 
 ## Purpose
 
@@ -25,11 +25,19 @@ English.
 ## Production baseline
 
 - Production branch: `main`
-- Latest confirmed product Pull Request: PR #36
-- PR #36 merge commit: `1aa1b65`
-- Current `main` commit at branch handoff: `1aa1b65`
+- Latest confirmed product Pull Request: PR #49
+- PR #49 merge commit: `66fb447`
+- Current `main` commit at branch handoff: `66fb447`
 - Production deployment status at verification: `Ready`
-- Latest Production verification date: 2026-08-10
+- Latest Production verification date: 2026-08-13
+
+PRs #37 through #49 completed Early Access hiring-loop refinements: recommended
+jobs; candidate discovery and saved candidates; employer invitations; News &
+Insights self-service publishing and public contact details; the expanded U.S.
+healthcare profession taxonomy; in-product notifications; private messaging,
+attachments, interviews, calendar downloads, and LiveKit video rooms;
+consent-aware funnel analytics; safe platform-demonstration labels; and a
+five-minute reconnect window for completed video interviews.
 
 The structured professional profile was verified in Production with a 100%
 completion state and records in all four categories.
@@ -228,6 +236,11 @@ The repository currently contains these applied migration groups:
 19. Public-content reporting, private reporter details, admin review decisions,
     and privileged audit events
 20. Private standalone professional résumé drafts and owner-only export access
+21. Social OAuth account-type support (Google provider configuration deferred)
+22. Self-service organization News publishing and public contact details
+23. In-product notifications
+24. Private application messaging and attachments
+25. Private application interview scheduling and video-room session expiry
 
 Migration files are stored in `supabase/migrations/`.
 
@@ -253,8 +266,9 @@ The following areas are not complete:
   verification, non-production delivery testing, and live email delivery are
   intentionally deferred. Until resumed, `EMAIL_DELIVERY_MODE` must remain
   unset or `disabled` in Production.
-- Messaging, in-product notifications, and interview scheduling are not
-  implemented.
+- Messaging, in-product notifications, private message attachments, interview
+  scheduling, calendar downloads, and LiveKit video rooms are implemented and
+  verified in Production through PR #49.
 - AI features are intentionally deferred.
 - Public SEO foundation and consent-aware Vercel Web Analytics are implemented.
   Wider soft-launch operations remain in progress.

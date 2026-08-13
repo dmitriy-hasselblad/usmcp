@@ -1,6 +1,6 @@
 # USHCE Blueprint Roadmap
 
-Last updated: 2026-08-10
+Last updated: 2026-08-13
 
 ## Source of truth
 
@@ -32,7 +32,7 @@ the recommended implementation order on page 3 as the governing sequence.
 | 1. Foundation | Auth, roles, Supabase schema/RLS, reference data, design system | Completed with minor reference-data gaps |
 | 2. Marketplace MVP | Jobs, companies, search, profiles, applications, employer/admin | In progress |
 | 3. Trust & Revenue | Verification, payments, subscriptions, audit, notifications | Not started; privacy foundation exists |
-| 4. Engagement | Messaging, interviews, content, SEO, analytics | In progress: content and SEO foundation are live |
+| 4. Engagement | Messaging, interviews, content, SEO, analytics | In progress: core messaging, attachments, interviews, calendar export, video, content, SEO, and consent-aware analytics are live |
 | 5. Intelligence | CV tools, matching, recommendations, broader marketplace, mobile | Deferred |
 
 ## Phase 1: Foundation
@@ -89,7 +89,7 @@ the recommended implementation order on page 3 as the governing sequence.
 - [x] Application withdrawal
 - [x] Skills model
 - [x] Extended healthcare profile sections
-- [ ] Recommended jobs
+- [x] Recommended jobs (Production verified)
 - [x] Standalone résumé builder and PDF export (verified in Production through PR #36)
 - [ ] Google sign-in
 - [ ] LinkedIn sign-in
@@ -150,19 +150,20 @@ existing accounts.
 - [ ] Email notifications (server-only application-status foundation merged in
   PR #23; Resend onboarding, domain verification, delivery testing, and live
   activation deferred)
-- [ ] In-product notifications
+- [x] In-product notifications (Production verified through PR #49)
 - [ ] Formal audit trail
 
 ## Phase 4: Engagement
 
-- [ ] Candidate-employer messaging
-- [ ] Message attachments
-- [ ] Interview scheduling
-- [ ] Calendar integration
+- [x] Candidate-employer messaging (Production verified through PR #49)
+- [x] Message attachments (Production verified through PR #49)
+- [x] Interview scheduling (Production verified through PR #49)
+- [x] Calendar integration via private `.ics` downloads (Production verified through PR #49)
+- [x] Private LiveKit video interviews with a five-minute reconnect window (Production verified through PR #49)
 - [ ] Career content platform
 - [x] Public SEO foundation
 - [ ] Ongoing SEO program and search-console operations
-- [ ] Product analytics
+- [x] Consent-aware product analytics (Production verified through PR #49)
 - [ ] Employer funnel analytics
 - [ ] Candidate application analytics
 
