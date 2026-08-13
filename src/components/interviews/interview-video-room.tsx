@@ -52,8 +52,10 @@ export function InterviewVideoRoom({
       <p>After you leave or lose connection, this room can be reopened for 5 minutes. It then closes automatically.</p>
       <Button disabled={isEnding} onClick={endInterview} size="sm" type="button" variant="outline">{isEnding ? "Ending…" : "End interview"}</Button>
     </div>
-    <LiveKitRoom audio className="h-[min(68vh,44rem)] overflow-hidden rounded-xl border" data-lk-theme="default" onDisconnected={recordDisconnect} serverUrl={url} token={token} video>
-      <VideoConference />
-    </LiveKitRoom>
+    <div className="h-[min(68vh,44rem)] overflow-hidden rounded-xl border">
+      <LiveKitRoom audio className="h-full" data-lk-theme="default" onDisconnected={recordDisconnect} serverUrl={url} token={token} video>
+        <VideoConference />
+      </LiveKitRoom>
+    </div>
   </div>
 }
