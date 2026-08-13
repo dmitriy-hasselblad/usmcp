@@ -142,3 +142,14 @@ test("video interviews require a confirmed, participant-authorized interview", a
   assert.match(tokenFactory, /ttl: "2h"/)
   assert.match(tokenFactory, /room: `ushce-interview-\$\{interviewId\}`/)
 })
+
+test("calendar downloads are private and available only for confirmed interviews", async () => {
+  const route = await readProjectFile("src/app/dashboard/interviews/[id]/calendar/route.ts")
+  const calendar = await readProjectFile("src/lib/interviews/calendar.ts")
+
+  assert.match(route, /from\("application_interviews"\)/)
+  assert.match(route, /interview\.status !== "confirmed"/)
+  assert.match(route, /Cache-Control": "private, no-store"/)
+  assert.match(calendar, /BEGIN:VCALENDAR/)
+  assert.match(calendar, /escapeCalendarText/)
+})
