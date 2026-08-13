@@ -13,6 +13,7 @@ import {
 } from "lucide-react"
 
 import { JobCard } from "@/components/jobs/job-card"
+import { AnalyticsLink } from "@/components/analytics/analytics-link"
 import { ReportContentLink } from "@/components/moderation/report-content-link"
 import { SiteFooter } from "@/components/layout/site-footer"
 import { SiteHeader } from "@/components/layout/site-header"
@@ -65,7 +66,7 @@ export default async function JobPage({ params }: JobPageProps) {
     notFound()
   }
 
-  const isLive = job.source === "live"
+  const isLive = job.source === "live" && !job.isPlatformDemo
   const jobPosting = isLive && job.publishedAt ? getJobPosting(job) : null
   const liveJobs = await getPublishedJobs()
   const relatedJobs = [...liveJobs, ...featuredJobs]
@@ -108,7 +109,11 @@ export default async function JobPage({ params }: JobPageProps) {
                     }
                     variant={isLive ? "outline" : "default"}
                   >
-                    {isLive ? "Live opportunity" : "Product preview"}
+                    {job.isPlatformDemo
+                      ? "Platform demonstration"
+                      : isLive
+                        ? "Live opportunity"
+                        : "Product preview"}
                   </Badge>
                   <Badge variant="outline">{job.specialty}</Badge>
                   {job.visaSupport && (
@@ -193,13 +198,19 @@ export default async function JobPage({ params }: JobPageProps) {
                 <p className="mt-2 text-sm leading-6 text-muted-foreground">
                   {isLive
                     ? "This opportunity was published directly by the employer. Submit your profile and application securely through USHCE."
-                    : "This sample listing demonstrates the planned application experience. It is not an active vacancy."}
+                    : job.isPlatformDemo
+                      ? "This platform demonstration is not an active vacancy. Applications are disabled."
+                      : "This sample listing demonstrates the planned application experience. It is not an active vacancy."}
                 </p>
                 <Button asChild className="mt-6 h-11 w-full rounded-xl">
-                  <Link href={isLive ? `/jobs/${job.slug}/apply` : "/sign-up"}>
-                    {isLive ? "Apply now" : "Prepare your profile"}{" "}
+                  <AnalyticsLink
+                    eventData={{ source: isLive ? "live_job" : "demonstration" }}
+                    eventName={isLive ? "job_application_started" : "demonstration_job_browsed"}
+                    href={isLive ? `/jobs/${job.slug}/apply` : "/jobs"}
+                  >
+                    {isLive ? "Apply now" : job.isPlatformDemo ? "Browse active jobs" : "Prepare your profile"}{" "}
                     <ArrowRight />
-                  </Link>
+                  </AnalyticsLink>
                 </Button>
                 <Button
                   asChild
@@ -220,7 +231,7 @@ export default async function JobPage({ params }: JobPageProps) {
                   <ShieldCheck className="mt-0.5 size-4 shrink-0 text-primary" />
                   {isLive
                     ? "Your application is shared only with this employer's authorized hiring team."
-                    : "Employer verification and live applications will be enabled before marketplace launch."}
+                    : "Demonstration listings are excluded from applications and JobPosting search metadata."}
                 </div>
               </CardContent>
             </Card>

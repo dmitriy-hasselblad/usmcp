@@ -40,6 +40,7 @@ export type Job = {
   salaryMax?: number
   salaryPeriod?: "hour" | "year"
   publishedAt?: string
+  isPlatformDemo?: boolean
 }
 
 export type Employer = {

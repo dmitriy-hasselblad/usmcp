@@ -17,9 +17,11 @@ test("sample jobs remain visibly distinct from live marketplace opportunities", 
 
   assert.match(jobsPage, /const allJobs = showPreviews \? \[\.\.\.liveJobs, \.\.\.featuredJobs\] : liveJobs/)
   assert.match(jobsPage, /View product previews/)
-  assert.match(jobCard, /job\.source === "live" \? "Live opportunity" : "Product preview"/)
+  assert.match(jobCard, /Platform demonstration/)
+  assert.match(jobCard, /Live opportunity/)
+  assert.match(jobCard, /Product preview/)
   assert.match(jobDetail, /This sample listing demonstrates the planned application experience\. It is not an active vacancy\./)
-  assert.match(jobDetail, /isLive \? `\/jobs\/\$\{job\.slug\}\/apply` : "\/sign-up"/)
+  assert.match(jobDetail, /<Link href=\{isLive \? `\/jobs\/\$\{job\.slug\}\/apply` : "\/jobs"\}>/)
 })
 
 test("public organization directory remains separate from product-preview employers", async () => {
@@ -27,4 +29,18 @@ test("public organization directory remains separate from product-preview employ
 
   assert.match(companiesPage, /getPublicOrganizations\(\)/)
   assert.doesNotMatch(companiesPage, /from "@\/lib\/marketing-data"/)
+})
+
+test("platform demonstrations and editorial content cannot be mistaken for employer publishing", async () => {
+  const jobsPage = await readProjectFile("src/app/jobs/page.tsx")
+  const jobDetail = await readProjectFile("src/app/jobs/[slug]/page.tsx")
+  const organizationCard = await readProjectFile("src/components/organizations/organization-card.tsx")
+  const newsDetail = await readProjectFile("src/app/news/[slug]/page.tsx")
+
+  assert.match(jobsPage, /platform demonstrations/i)
+  assert.match(jobDetail, /Applications are disabled/)
+  assert.match(jobDetail, /JobPosting search metadata/)
+  assert.match(organizationCard, /View platform demonstrations/)
+  assert.match(newsDetail, /USHCE editorial content/)
+  assert.match(newsDetail, /not an announcement from a clinic, hospital, government agency, or other healthcare employer/i)
 })

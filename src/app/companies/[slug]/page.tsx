@@ -60,6 +60,7 @@ export default async function OrganizationPage({
   }
 
   const isVerified = organization.verificationStatus === "verified"
+  const activeJobs = organization.jobs.filter((job) => !job.isPlatformDemo)
 
   return (
     <div className="min-h-dvh bg-muted/30">
@@ -132,15 +133,16 @@ export default async function OrganizationPage({
             <div className="mt-12 flex items-end justify-between gap-5">
               <div>
                 <p className="text-xs font-bold tracking-[0.14em] text-primary uppercase">
-                  Active opportunities
+                  {organization.isPlatformProfile ? "Platform demonstrations" : "Active opportunities"}
                 </p>
                 <h2 className="mt-2 text-3xl font-semibold tracking-[-0.05em]">
-                  Published roles
+                  {organization.isPlatformProfile ? "Demonstration listings" : "Published roles"}
                 </h2>
               </div>
               <span className="text-sm text-muted-foreground">
-                {organization.jobs.length}{" "}
-                {organization.jobs.length === 1 ? "role" : "roles"}
+                {organization.isPlatformProfile
+                  ? `${organization.jobs.length} demonstrations`
+                  : `${activeJobs.length} ${activeJobs.length === 1 ? "role" : "roles"}`}
               </span>
             </div>
             <div className="mt-6 grid gap-5 md:grid-cols-2">

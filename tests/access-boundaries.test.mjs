@@ -135,10 +135,41 @@ test("application interview scheduling is private and notifies both participants
 test("video interviews require a confirmed, participant-authorized interview", async () => {
   const page = await readProjectFile("src/app/dashboard/interviews/[id]/video/page.tsx")
   const tokenFactory = await readProjectFile("src/lib/interviews/video.ts")
+  const migration = await readProjectFile("supabase/migrations/20260813060548_interview_video_session_expiry.sql")
+  const room = await readProjectFile("src/components/interviews/interview-video-room.tsx")
 
   assert.match(page, /from\("application_interviews"\)/)
   assert.match(page, /interview\.status !== "confirmed"/)
   assert.match(page, /createInterviewVideoToken/)
-  assert.match(tokenFactory, /ttl: "2h"/)
+  assert.match(page, /start_application_interview_video/)
+  assert.match(tokenFactory, /ttl: "10m"/)
   assert.match(tokenFactory, /room: `ushce-interview-\$\{interviewId\}`/)
+  assert.match(migration, /video_ended_at/)
+  assert.match(migration, /interval '5 minutes'/)
+  assert.match(migration, /revoke execute on function public\.start_application_interview_video\(uuid\) from public, anon/)
+  assert.match(room, /onDisconnected=\{recordDisconnect\}/)
+  assert.match(room, /window\.addEventListener\("pagehide", handlePageExit\)/)
+  assert.match(room, /<div className="h-\[min\(68vh,44rem\)\] overflow-hidden rounded-xl border">/)
+  assert.match(room, /<LiveKitRoom audio className="h-full"/)
+})
+
+test("calendar downloads are private and available only for confirmed interviews", async () => {
+  const route = await readProjectFile("src/app/dashboard/interviews/[id]/calendar/route.ts")
+  const calendar = await readProjectFile("src/lib/interviews/calendar.ts")
+
+  assert.match(route, /from\("application_interviews"\)/)
+  assert.match(route, /interview\.status !== "confirmed"/)
+  assert.match(route, /Cache-Control": "private, no-store"/)
+  assert.match(calendar, /BEGIN:VCALENDAR/)
+  assert.match(calendar, /escapeCalendarText/)
+})
+
+test("product analytics remains opt-in and excludes personal application data", async () => {
+  const tracker = await readProjectFile("src/components/analytics/analytics-link.tsx")
+  const heroSearch = await readProjectFile("src/components/marketing/hero-search.tsx")
+
+  assert.match(tracker, /preferences\?\.analytics/)
+  assert.match(tracker, /track\(eventName, eventData\)/)
+  assert.match(heroSearch, /job_search_submitted/)
+  assert.doesNotMatch(tracker, /email|candidate|resume|phone/i)
 })

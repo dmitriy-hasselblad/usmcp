@@ -1,5 +1,9 @@
-import { MapPin, Search } from "lucide-react"
+"use client"
 
+import { MapPin, Search } from "lucide-react"
+import { track } from "@vercel/analytics"
+
+import { useCookieConsent } from "@/components/privacy/cookie-consent-provider"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
@@ -16,6 +20,8 @@ export function HeroSearch({
   compact = false,
   preservedFilters = {},
 }: HeroSearchProps) {
+  const { preferences } = useCookieConsent()
+
   return (
     <form
       action="/jobs"
@@ -25,6 +31,11 @@ export function HeroSearch({
           : "rounded-2xl border border-white/70 bg-white/90 p-2 shadow-[0_18px_50px_rgba(15,76,129,0.16)] backdrop-blur"
       }
       method="get"
+      onSubmit={() => {
+        if (preferences?.analytics) {
+          track("job_search_submitted", { surface: compact ? "compact_search" : "homepage_hero" })
+        }
+      }}
       role="search"
     >
       {Object.entries(preservedFilters).map(([name, value]) => (

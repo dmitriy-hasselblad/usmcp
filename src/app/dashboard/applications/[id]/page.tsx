@@ -586,7 +586,7 @@ function ApplicationInterviews({ application, interviews, perspective }: { appli
   return <Card className="bg-white">
     <CardHeader><CardTitle className="flex items-center gap-2"><CalendarDays className="size-5 text-primary" />Interviews</CardTitle></CardHeader>
     <CardContent>
-      <p className="text-sm leading-6 text-muted-foreground">Interview invitations are private to this application. Calendar integration can be added later.</p>
+      <p className="text-sm leading-6 text-muted-foreground">Interview invitations are private to this application. Confirmed interviews can be added to any calendar that supports .ics files.</p>
       {activeInterviews.length ? <div className="mt-5 grid gap-4">{activeInterviews.map((interview) => <InterviewCard application={application} interview={interview} key={interview.id} perspective={perspective} />)}</div> : <p className="mt-5 rounded-xl bg-muted px-4 py-3 text-sm text-muted-foreground">No interview invitations yet.</p>}
       {canSchedule && <form action={scheduleApplicationInterview} className="mt-5 grid gap-4 border-t pt-5">
         <input name="applicationId" type="hidden" value={application.id} />
@@ -612,7 +612,7 @@ function InterviewCard({ application, interview, perspective }: { application: A
     {interview.location_or_link && <p className="mt-3 text-sm"><span className="font-medium">Location or link: </span>{interview.location_or_link}</p>}
     {interview.notes && <p className="mt-3 whitespace-pre-wrap text-sm leading-6 text-muted-foreground">{interview.notes}</p>}
     {perspective === "candidate" && interview.status === "proposed" && <div className="mt-4 flex flex-wrap gap-2"><form action={respondToApplicationInterview}><input name="interviewId" type="hidden" value={interview.id} /><input name="applicationId" type="hidden" value={application.id} /><input name="status" type="hidden" value="confirmed" /><Button size="sm" type="submit">Confirm interview</Button></form><form action={respondToApplicationInterview}><input name="interviewId" type="hidden" value={interview.id} /><input name="applicationId" type="hidden" value={application.id} /><input name="status" type="hidden" value="declined" /><Button size="sm" type="submit" variant="outline">Decline</Button></form></div>}
-    {interview.status === "confirmed" && <Button asChild className="mt-4" size="sm"><Link href={`/dashboard/interviews/${interview.id}/video`}>Join video interview</Link></Button>}
+    {interview.status === "confirmed" && <div className="mt-4 flex flex-wrap gap-2"><Button asChild size="sm" variant="outline"><a href={`/dashboard/interviews/${interview.id}/calendar`}>Add to calendar</a></Button>{interview.interview_format === "video" && <Button asChild size="sm"><Link href={`/dashboard/interviews/${interview.id}/video`}>Join video interview</Link></Button>}</div>}
     {perspective === "employer" && (interview.status === "proposed" || interview.status === "confirmed") && <form action={cancelApplicationInterview} className="mt-4"><input name="interviewId" type="hidden" value={interview.id} /><input name="applicationId" type="hidden" value={application.id} /><Button size="sm" type="submit" variant="outline">Cancel interview</Button></form>}
   </div>
 }
