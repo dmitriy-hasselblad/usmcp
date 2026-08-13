@@ -18,7 +18,7 @@ import {
   parseNewsPage,
   parseNewsYear,
 } from "@/lib/news/public-news"
-import { isUshcePlatformOrganization } from "@/lib/platform-content"
+import { isPlatformDemonstrationOrganization } from "@/lib/platform-content"
 
 export const metadata: Metadata = {
   title: "Healthcare News & Insights",
@@ -150,7 +150,7 @@ export default async function PublicNewsPage({
                       {post.organizations?.[0]?.name ??
                         "Healthcare organization"}
                     </p>
-                    {isUshcePlatformOrganization(post.organizations?.[0]?.name) && (
+                {isPlatformDemonstrationOrganization(post.organizations?.[0]?.name) && (
                       <p className="mt-2 text-xs font-semibold text-amber-800">USHCE editorial content</p>
                     )}
                     <p className="mt-2 text-xs text-muted-foreground">

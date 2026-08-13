@@ -12,7 +12,7 @@ import {
   getPublishedOrganizationPost,
   getPublicNewsOrganization,
 } from "@/lib/news/public-news"
-import { isUshcePlatformOrganization } from "@/lib/platform-content"
+import { isPlatformDemonstrationOrganization } from "@/lib/platform-content"
 
 type Props = { params: Promise<{ slug: string }> }
 
@@ -57,7 +57,7 @@ export default async function PublicNewsDetailPage({ params }: Props) {
       organization.public_email ||
       organization.public_phone ||
       address.length)
-  const isUshceEditorial = isUshcePlatformOrganization(organization?.name)
+  const isUshceEditorial = isPlatformDemonstrationOrganization(organization?.name)
 
   return (
     <div className="min-h-dvh bg-white">
