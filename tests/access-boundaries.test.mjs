@@ -149,6 +149,7 @@ test("video interviews require a confirmed, participant-authorized interview", a
   assert.match(migration, /revoke execute on function public\.start_application_interview_video\(uuid\) from public, anon/)
   assert.match(room, /onDisconnected=\{recordDisconnect\}/)
   assert.match(room, /window\.addEventListener\("pagehide", handlePageExit\)/)
+  assert.match(room, /h-\[min\(68vh,44rem\)\]/)
 })
 
 test("calendar downloads are private and available only for confirmed interviews", async () => {
