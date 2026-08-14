@@ -21,7 +21,7 @@ test("sample jobs remain visibly distinct from live marketplace opportunities", 
   assert.match(jobCard, /Live opportunity/)
   assert.match(jobCard, /Product preview/)
   assert.match(jobDetail, /This sample listing demonstrates the planned application experience\. It is not an active vacancy\./)
-  assert.match(jobDetail, /<Link href=\{isLive \? `\/jobs\/\$\{job\.slug\}\/apply` : "\/jobs"\}>/)
+  assert.match(jobDetail, /href=\{isLive \? `\/jobs\/\$\{job\.slug\}\/apply` : "\/jobs"\}/)
 })
 
 test("public organization directory remains separate from product-preview employers", async () => {
@@ -35,12 +35,16 @@ test("platform demonstrations and editorial content cannot be mistaken for emplo
   const jobsPage = await readProjectFile("src/app/jobs/page.tsx")
   const jobDetail = await readProjectFile("src/app/jobs/[slug]/page.tsx")
   const organizationCard = await readProjectFile("src/components/organizations/organization-card.tsx")
+  const organizationDetail = await readProjectFile("src/app/companies/[slug]/page.tsx")
   const newsDetail = await readProjectFile("src/app/news/[slug]/page.tsx")
 
   assert.match(jobsPage, /platform demonstrations/i)
   assert.match(jobDetail, /Applications are disabled/)
   assert.match(jobDetail, /JobPosting search metadata/)
   assert.match(organizationCard, /View platform demonstrations/)
-  assert.match(newsDetail, /USHCE editorial content/)
+  assert.match(organizationCard, /!organization\.isPlatformProfile/)
+  assert.match(organizationCard, /Platform demonstration/)
+  assert.match(organizationDetail, /does not represent an independently verified healthcare\s+employer/)
+  assert.match(newsDetail, /Platform demonstration/)
   assert.match(newsDetail, /not an announcement from a clinic, hospital, government agency, or other healthcare employer/i)
 })

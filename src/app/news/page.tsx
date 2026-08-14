@@ -151,7 +151,7 @@ export default async function PublicNewsPage({
                         "Healthcare organization"}
                     </p>
                 {isPlatformDemonstrationOrganization(post.organizations?.[0]?.name) && (
-                      <p className="mt-2 text-xs font-semibold text-amber-800">USHCE editorial content</p>
+                      <p className="mt-2 text-xs font-semibold text-amber-800">Platform demonstration</p>
                     )}
                     <p className="mt-2 text-xs text-muted-foreground">
                       Published {formatNewsDate(post.published_at)}

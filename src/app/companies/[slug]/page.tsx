@@ -59,7 +59,9 @@ export default async function OrganizationPage({
     notFound()
   }
 
-  const isVerified = organization.verificationStatus === "verified"
+  const isVerified =
+    !organization.isPlatformProfile &&
+    organization.verificationStatus === "verified"
   const activeJobs = organization.jobs.filter((job) => !job.isPlatformDemo)
 
   return (
@@ -83,13 +85,19 @@ export default async function OrganizationPage({
               <div className="min-w-0 flex-1">
                 <Badge
                   className={
-                    isVerified
+                    organization.isPlatformProfile
+                      ? "border-amber-200 bg-amber-50 text-amber-900"
+                      : isVerified
                       ? "border-emerald-200 bg-emerald-50 text-emerald-800"
                       : undefined
                   }
                   variant="outline"
                 >
-                  {isVerified ? "Verified organization" : "Employer-published"}
+                  {organization.isPlatformProfile
+                    ? "Platform demonstration"
+                    : isVerified
+                      ? "Verified organization"
+                      : "Organization profile"}
                 </Badge>
                 <h1 className="mt-4 text-4xl font-semibold tracking-[-0.055em] sm:text-5xl">
                   {organization.name}
@@ -129,6 +137,13 @@ export default async function OrganizationPage({
               {organization.description ||
                 "This organization has not added a public description yet."}
             </p>
+            {organization.isPlatformProfile && (
+              <p className="mt-5 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-950">
+                This organization is platform-owned demonstration content. It
+                does not represent an independently verified healthcare
+                employer.
+              </p>
+            )}
 
             <div className="mt-12 flex items-end justify-between gap-5">
               <div>
