@@ -7,6 +7,7 @@ const footerLinks = [
   { href: "/#why-ushce", label: "About USHCE" },
   { href: "/jobs", label: "Find jobs" },
   { href: "/companies", label: "Organizations" },
+  { href: "/verification", label: "Verification" },
   { href: "/news", label: "News & insights" },
   { href: "/for-employers", label: "For employers" },
   { href: "/resources", label: "Career resources" },

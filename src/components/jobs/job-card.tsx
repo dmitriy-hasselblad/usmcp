@@ -4,6 +4,7 @@ import { ArrowRight, Building2, CalendarDays, Clock3, MapPin } from "lucide-reac
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import { OrganizationTrustBadge } from "@/components/organizations/organization-trust-badge"
 import type { Job } from "@/lib/marketing-data"
 
 type JobCardProps = {
@@ -36,6 +37,12 @@ export function JobCard({ job, compact = false }: JobCardProps) {
                   ? "Live opportunity"
                   : "Product preview"}
             </Badge>
+            {job.source === "live" && !job.isPlatformDemo && (
+              <OrganizationTrustBadge
+                showNeutral={false}
+                verificationStatus={job.organizationVerificationStatus}
+              />
+            )}
             {job.visaSupport && (
               <Badge className="bg-emerald-50 text-emerald-700 hover:bg-emerald-50">
                 Visa support

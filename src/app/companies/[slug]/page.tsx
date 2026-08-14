@@ -13,7 +13,7 @@ import { JobCard } from "@/components/jobs/job-card"
 import { ReportContentLink } from "@/components/moderation/report-content-link"
 import { SiteFooter } from "@/components/layout/site-footer"
 import { SiteHeader } from "@/components/layout/site-header"
-import { Badge } from "@/components/ui/badge"
+import { OrganizationTrustBadge } from "@/components/organizations/organization-trust-badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { getPublicOrganizationBySlug } from "@/lib/organizations/public-organizations"
@@ -59,9 +59,6 @@ export default async function OrganizationPage({
     notFound()
   }
 
-  const isVerified =
-    !organization.isPlatformProfile &&
-    organization.verificationStatus === "verified"
   const activeJobs = organization.jobs.filter((job) => !job.isPlatformDemo)
 
   return (
@@ -83,22 +80,10 @@ export default async function OrganizationPage({
                 <Building2 className="size-7" />
               </span>
               <div className="min-w-0 flex-1">
-                <Badge
-                  className={
-                    organization.isPlatformProfile
-                      ? "border-amber-200 bg-amber-50 text-amber-900"
-                      : isVerified
-                      ? "border-emerald-200 bg-emerald-50 text-emerald-800"
-                      : undefined
-                  }
-                  variant="outline"
-                >
-                  {organization.isPlatformProfile
-                    ? "Platform demonstration"
-                    : isVerified
-                      ? "Verified organization"
-                      : "Organization profile"}
-                </Badge>
+                <OrganizationTrustBadge
+                  isPlatformDemo={organization.isPlatformProfile}
+                  verificationStatus={organization.verificationStatus}
+                />
                 <h1 className="mt-4 text-4xl font-semibold tracking-[-0.055em] sm:text-5xl">
                   {organization.name}
                 </h1>
