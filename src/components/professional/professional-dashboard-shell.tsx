@@ -6,6 +6,7 @@ import {
   GraduationCap,
   LayoutDashboard,
   Bell,
+  ChartNoAxesCombined,
   UserRound,
 } from "lucide-react"
 
@@ -15,7 +16,7 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { getUnreadNotificationCount } from "@/lib/notifications/unread-count"
 
-type ProfessionalRoute = "overview" | "profile" | "career" | "resumes" | "applications" | "notifications"
+type ProfessionalRoute = "overview" | "profile" | "career" | "resumes" | "applications" | "insights" | "notifications"
 
 const routes = [
   {
@@ -47,6 +48,12 @@ const routes = [
     href: "/dashboard/applications",
     label: "My applications",
     icon: FileText,
+  },
+  {
+    key: "insights",
+    href: "/dashboard/application-insights",
+    label: "Application insights",
+    icon: ChartNoAxesCombined,
   },
   {
     key: "notifications",

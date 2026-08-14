@@ -220,6 +220,32 @@ test("employer hiring insights are scoped to the current organization and aggreg
   assert.match(insights, /statusCounts/)
 })
 
+test("professional application insights are scoped to the signed-in candidate", async () => {
+  const insightsPage = await readProjectFile(
+    "src/app/dashboard/application-insights/page.tsx",
+  )
+  const insights = await readProjectFile(
+    "src/lib/professional/application-insights.ts",
+  )
+
+  assert.match(
+    insightsPage,
+    /requireIdentity\("\/dashboard\/application-insights"\)/,
+  )
+  assert.match(insightsPage, /from\("applications"\)/)
+  assert.match(insightsPage, /\.eq\("candidate_id", identity\.userId\)/)
+  assert.match(
+    insightsPage,
+    /select\("id, job_title, organization_name, status, submitted_at, updated_at"\)/,
+  )
+  assert.doesNotMatch(
+    insightsPage,
+    /candidate_email|cover_letter|phone|resume_document_id/,
+  )
+  assert.match(insights, /recentActivity/)
+  assert.match(insights, /statusCounts/)
+})
+
 test("product analytics remains opt-in and excludes personal application data", async () => {
   const tracker = await readProjectFile("src/components/analytics/analytics-link.tsx")
   const heroSearch = await readProjectFile("src/components/marketing/hero-search.tsx")
