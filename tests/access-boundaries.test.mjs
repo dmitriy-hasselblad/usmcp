@@ -164,6 +164,21 @@ test("calendar downloads are private and available only for confirmed interviews
   assert.match(calendar, /escapeCalendarText/)
 })
 
+test("employer hiring insights are scoped to the current organization and aggregate only", async () => {
+  const insightsPage = await readProjectFile(
+    "src/app/dashboard/insights/page.tsx",
+  )
+  const insights = await readProjectFile("src/lib/employer/hiring-insights.ts")
+
+  assert.match(insightsPage, /requireEmployerWorkspace\("\/dashboard\/insights"\)/)
+  assert.match(insightsPage, /from\("applications"\)/)
+  assert.match(insightsPage, /\.eq\("organization_id", workspace\.organization\.id\)/)
+  assert.match(insightsPage, /select\("id, candidate_id, job_id, job_title, status, submitted_at"\)/)
+  assert.doesNotMatch(insightsPage, /candidate_email|cover_letter|phone|resume_document_id/)
+  assert.match(insights, /new Set\([\s\S]*candidate_id/)
+  assert.match(insights, /statusCounts/)
+})
+
 test("product analytics remains opt-in and excludes personal application data", async () => {
   const tracker = await readProjectFile("src/components/analytics/analytics-link.tsx")
   const heroSearch = await readProjectFile("src/components/marketing/hero-search.tsx")
