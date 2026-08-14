@@ -3,7 +3,6 @@ import Image from "next/image"
 import {
   ArrowRight,
   BookOpenText,
-  Check,
   ChevronRight,
   HeartPulse,
   ShieldCheck,
@@ -128,47 +127,6 @@ export default async function Home() {
               <span>Residency candidates</span>
               <span>International professionals</span>
             </div>
-          </div>
-        </section>
-
-        <section
-          className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28"
-          id="career-paths"
-        >
-          <SectionHeading
-            eyebrow="Choose your direction"
-            title="Start with the path that fits today."
-            description="USHCE is structured around distinct career and hiring journeys instead of a generic list of links."
-          />
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {careerPaths.map((path) => {
-              const Icon = path.icon
-              return (
-                <Link
-                  className="group rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                  href={path.href}
-                  key={path.title}
-                >
-                  <Card className="h-full border-border/80 bg-white transition-all duration-300 group-hover:-translate-y-1 group-hover:border-primary/25 group-hover:shadow-[0_18px_35px_rgba(15,76,129,0.11)]">
-                    <CardContent className="p-6">
-                      <div className="grid size-11 place-items-center rounded-xl bg-primary/8 text-primary">
-                        <Icon className="size-5" />
-                      </div>
-                      <h2 className="mt-5 text-lg font-semibold tracking-[-0.03em]">
-                        {path.title}
-                      </h2>
-                      <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                        {path.description}
-                      </p>
-                      <span className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-primary">
-                        Explore
-                        <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-                      </span>
-                    </CardContent>
-                  </Card>
-                </Link>
-              )
-            })}
           </div>
         </section>
 
@@ -337,47 +295,6 @@ export default async function Home() {
           </div>
         </section>
 
-        <section className="mx-auto max-w-7xl px-5 pb-20 lg:px-8 lg:pb-28">
-          <div className="relative overflow-hidden rounded-[2rem] bg-[linear-gradient(115deg,#0f4c81_0%,#126174_100%)] px-6 py-12 text-white sm:px-12 sm:py-16">
-            <div className="pointer-events-none absolute right-0 bottom-0 size-80 translate-x-1/3 translate-y-1/3 rounded-full border-[34px] border-teal-200/10" />
-            <div className="relative grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
-              <div>
-                <p className="text-xs font-bold tracking-[0.16em] text-teal-100 uppercase">
-                  Build your path
-                </p>
-                <h2 className="mt-3 max-w-2xl text-3xl font-semibold tracking-[-0.05em] sm:text-4xl">
-                  Explore the first working USHCE career experience.
-                </h2>
-                <p className="mt-4 max-w-2xl text-base leading-7 text-blue-100/85">
-                  Search live roles, or create a professional account to build
-                  a private profile and apply securely.
-                </p>
-              </div>
-              <div className="flex flex-col gap-3 sm:flex-row">
-                <Button
-                  asChild
-                  className="h-12 rounded-xl bg-teal-300 px-5 font-semibold text-primary hover:bg-teal-200"
-                >
-                  <Link href="/jobs">
-                    Search jobs <ArrowRight />
-                  </Link>
-                </Button>
-                <Button
-                  asChild
-                  className="h-12 rounded-xl border-white/20 bg-white/10 px-5 text-white hover:bg-white/15"
-                  variant="outline"
-                >
-                  <Link href="/sign-up">Create an account</Link>
-                </Button>
-              </div>
-            </div>
-            <p className="relative mt-5 flex items-center gap-2 text-xs text-blue-100/70">
-              <Check className="size-3.5" />
-              Employer publishing, candidate applications, and private profile
-              documents are live.
-            </p>
-          </div>
-        </section>
       </main>
       <SiteFooter />
     </div>
