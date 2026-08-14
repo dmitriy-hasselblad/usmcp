@@ -16,6 +16,9 @@ export function OrganizationCard({
   compact = false,
 }: OrganizationCardProps) {
   const jobCount = organization.jobs.filter((job) => !job.isPlatformDemo).length
+  const isVerified =
+    !organization.isPlatformProfile &&
+    organization.verificationStatus === "verified"
 
   return (
     <Card className="h-full border-border/80 bg-white transition-all hover:-translate-y-0.5 hover:shadow-lg">
@@ -26,15 +29,19 @@ export function OrganizationCard({
           </span>
           <Badge
             className={
-              organization.verificationStatus === "verified"
+              organization.isPlatformProfile
+                ? "border-amber-200 bg-amber-50 text-amber-900"
+                : isVerified
                 ? "border-emerald-200 bg-emerald-50 text-emerald-800"
                 : undefined
             }
             variant="outline"
           >
-            {organization.verificationStatus === "verified"
+            {organization.isPlatformProfile
+              ? "Platform demonstration"
+              : isVerified
               ? "Verified organization"
-              : "Employer-published"}
+              : "Organization profile"}
           </Badge>
         </div>
 

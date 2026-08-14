@@ -81,7 +81,7 @@ export default async function PublicNewsDetailPage({ params }: Props) {
             </p>
           )}
           <Badge className="mt-4" variant="outline">
-            {isUshceEditorial ? "USHCE editorial content" : "Organization insight"}
+            {isUshceEditorial ? "Platform demonstration" : "Organization insight"}
           </Badge>
           <h1 className="mt-5 text-4xl font-semibold tracking-[-0.055em] sm:text-5xl">
             {post.title}
@@ -109,8 +109,8 @@ export default async function PublicNewsDetailPage({ params }: Props) {
           </div>
           {isUshceEditorial && (
             <section className="mt-10 rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-950">
-              <h2 className="font-semibold">Editorial note</h2>
-              <p className="mt-2">This article is published by USHCE for product demonstration and editorial discussion. It is not an announcement from a clinic, hospital, government agency, or other healthcare employer.</p>
+              <h2 className="font-semibold">Demonstration note</h2>
+              <p className="mt-2">This article is sample content published by USHCE to demonstrate News &amp; Insights. It is not an announcement from a clinic, hospital, government agency, or other healthcare employer.</p>
             </section>
           )}
           {hasContact && (

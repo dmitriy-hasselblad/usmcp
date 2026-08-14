@@ -12,7 +12,7 @@ import { resources } from "@/lib/marketing-data"
 export const metadata: Metadata = {
   title: "Healthcare Career Resources",
   description:
-    "Explore USHCE previews for residency planning, employer research, and international healthcare careers.",
+            "Explore the growing USHCE library for residency planning, employer research, and international healthcare careers.",
 }
 
 export default function ResourcesPage() {
@@ -22,13 +22,14 @@ export default function ResourcesPage() {
       <main>
         <section className="border-b border-border bg-[linear-gradient(135deg,#f7fbff_0%,#eff9f7_52%,#f8fcff_100%)]">
           <div className="mx-auto max-w-7xl px-5 py-16 lg:px-8 lg:py-20">
-            <Badge variant="outline">Resource library preview</Badge>
+            <Badge variant="outline">Growing resource library</Badge>
             <h1 className="mt-5 max-w-4xl text-4xl font-semibold tracking-[-0.055em] sm:text-5xl">
               Practical guidance for healthcare career decisions.
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground">
-              USHCE will organize clear, U.S.-focused information for
-              professionals, residency candidates, and international applicants.
+              USHCE is building clear, U.S.-focused guidance for professionals,
+              residency candidates, and international applicants. New practical
+              resources will be added throughout Early Access.
             </p>
           </div>
         </section>

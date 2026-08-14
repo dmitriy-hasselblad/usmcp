@@ -17,7 +17,7 @@ import { Card, CardContent } from "@/components/ui/card"
 export const metadata: Metadata = {
   title: "For Healthcare Employers",
   description:
-    "See how USHCE is being designed to support healthcare employers and recruiters.",
+    "Use USHCE Early Access tools to publish healthcare opportunities, review applicants, and coordinate hiring.",
 }
 
 const employerFeatures = [
@@ -56,14 +56,15 @@ export default function ForEmployersPage() {
           <div className="mx-auto grid max-w-7xl gap-12 px-5 py-16 lg:grid-cols-[1fr_0.8fr] lg:items-center lg:px-8 lg:py-24">
             <div>
               <Badge className="border-white/20 bg-white/10 text-white">
-                Employer experience preview
+                Employer Early Access
               </Badge>
               <h1 className="mt-6 max-w-3xl text-4xl font-semibold tracking-[-0.055em] sm:text-5xl lg:text-6xl">
                 Build a stronger healthcare hiring experience.
               </h1>
               <p className="mt-6 max-w-2xl text-lg leading-8 text-blue-100/85">
-                USHCE is being designed for hospitals, clinics, medical groups,
-                academic centers, staffing teams, and healthcare recruiters.
+                USHCE supports hospitals, clinics, medical groups, academic
+                centers, staffing teams, and healthcare recruiters with a
+                secure, healthcare-focused hiring workspace.
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Button
@@ -71,7 +72,7 @@ export default function ForEmployersPage() {
                   className="h-12 rounded-xl bg-teal-300 px-5 text-primary hover:bg-teal-200"
                 >
                   <Link href="/sign-up">
-                    Prepare an employer account <ArrowRight />
+                    Create an employer account <ArrowRight />
                   </Link>
                 </Button>
                 <Button
@@ -79,14 +80,14 @@ export default function ForEmployersPage() {
                   className="h-12 rounded-xl border-white/20 bg-white/10 px-5 text-white hover:bg-white/15"
                   variant="outline"
                 >
-                  <Link href="/companies">View organization previews</Link>
+                  <Link href="/companies">Explore organizations</Link>
                 </Button>
               </div>
             </div>
 
             <div className="rounded-[2rem] border border-white/15 bg-white/[0.07] p-5 backdrop-blur sm:p-7">
               <p className="text-sm font-semibold text-teal-100">
-                Planned employer workflow
+                Available hiring workflow
               </p>
               <ol className="mt-6 grid gap-4">
                 {[
