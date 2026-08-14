@@ -5,6 +5,7 @@ import {
   BriefcaseBusiness,
   LayoutDashboard,
   Search,
+  ChartNoAxesCombined,
   ShieldCheck,
   Newspaper,
   UsersRound,
@@ -21,6 +22,7 @@ type EmployerRoute =
   | "overview"
   | "jobs"
   | "applications"
+  | "insights"
   | "candidates"
   | "organization"
   | "team"
@@ -63,6 +65,12 @@ const routes = [
     href: "/dashboard/applications",
     label: "Applicants",
     icon: UsersRound,
+  },
+  {
+    key: "insights",
+    href: "/dashboard/insights",
+    label: "Hiring insights",
+    icon: ChartNoAxesCombined,
   },
   {
     key: "candidates",

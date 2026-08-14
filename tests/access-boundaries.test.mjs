@@ -36,6 +36,47 @@ test("employer bootstrap keeps the profile organization link synchronized", asyn
   assert.match(migration, /where employer_profiles\.user_id = current_user_id/s)
 })
 
+test("applications are visible only to their candidate or an authorized hiring team", async () => {
+  const migration = await readProjectFile(
+    "supabase/migrations/20260723223554_candidate_applications.sql",
+  )
+  const updatePolicy = await readProjectFile(
+    "supabase/migrations/20260723225443_consolidate_application_update_policy.sql",
+  )
+
+  assert.match(migration, /alter table public\.applications enable row level security/)
+  assert.match(migration, /candidate_id = \(select auth\.uid\(\)\)[\s\S]*or private\.is_organization_member\(organization_id\)/)
+  assert.match(migration, /Professionals can submit applications/)
+  assert.match(migration, /candidate_id = \(select auth\.uid\(\)\)[\s\S]*account_type = 'professional'/)
+  assert.match(updatePolicy, /Candidates and hiring teams can update application status/)
+  assert.match(updatePolicy, /candidate_id = \(select auth\.uid\(\)\)[\s\S]*status = 'withdrawn'/)
+})
+
+test("private document and attachment downloads rely on RLS and never cache signed links", async () => {
+  const documentsRoute = await readProjectFile(
+    "src/app/dashboard/documents/[id]/download/route.ts",
+  )
+  const attachmentsRoute = await readProjectFile(
+    "src/app/dashboard/application-attachments/[id]/download/route.ts",
+  )
+  const documentsMigration = await readProjectFile(
+    "supabase/migrations/20260729092005_professional_profiles_documents.sql",
+  )
+
+  assert.match(documentsRoute, /requireIdentity\(/)
+  assert.match(documentsRoute, /from\("professional_documents"\)/)
+  assert.match(documentsRoute, /createSignedUrl\([^,]+, 60/)
+  assert.match(documentsRoute, /Cache-Control": "private, no-store"/)
+  assert.doesNotMatch(documentsRoute, /service_role|SUPABASE_SERVICE/i)
+  assert.match(attachmentsRoute, /requireIdentity\(/)
+  assert.match(attachmentsRoute, /from\("application_message_attachments"\)/)
+  assert.match(attachmentsRoute, /createSignedUrl\([^,]+, 60/)
+  assert.match(attachmentsRoute, /Cache-Control": "private, no-store"/)
+  assert.doesNotMatch(attachmentsRoute, /service_role|SUPABASE_SERVICE/i)
+  assert.match(documentsMigration, /Professionals and authorized hiring teams can read documents/)
+  assert.match(documentsMigration, /user_id = \(select auth\.uid\(\)\)[\s\S]*applications\.resume_document_id = professional_documents\.id/)
+})
+
 test("abuse reports remain private, RLS-protected, and auditable", async () => {
   const migration = await readProjectFile(
     "supabase/migrations/20260807170000_abuse_reporting_oversight.sql",
@@ -162,6 +203,21 @@ test("calendar downloads are private and available only for confirmed interviews
   assert.match(route, /Cache-Control": "private, no-store"/)
   assert.match(calendar, /BEGIN:VCALENDAR/)
   assert.match(calendar, /escapeCalendarText/)
+})
+
+test("employer hiring insights are scoped to the current organization and aggregate only", async () => {
+  const insightsPage = await readProjectFile(
+    "src/app/dashboard/insights/page.tsx",
+  )
+  const insights = await readProjectFile("src/lib/employer/hiring-insights.ts")
+
+  assert.match(insightsPage, /requireEmployerWorkspace\("\/dashboard\/insights"\)/)
+  assert.match(insightsPage, /from\("applications"\)/)
+  assert.match(insightsPage, /\.eq\("organization_id", workspace\.organization\.id\)/)
+  assert.match(insightsPage, /select\("id, candidate_id, job_id, job_title, status, submitted_at"\)/)
+  assert.doesNotMatch(insightsPage, /candidate_email|cover_letter|phone|resume_document_id/)
+  assert.match(insights, /new Set\([\s\S]*candidate_id/)
+  assert.match(insights, /statusCounts/)
 })
 
 test("product analytics remains opt-in and excludes personal application data", async () => {
