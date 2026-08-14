@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { ArrowRight, Building2, MapPin } from "lucide-react"
 
-import { Badge } from "@/components/ui/badge"
+import { OrganizationTrustBadge } from "@/components/organizations/organization-trust-badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import type { PublicOrganization } from "@/lib/organizations/public-organizations"
@@ -16,9 +16,6 @@ export function OrganizationCard({
   compact = false,
 }: OrganizationCardProps) {
   const jobCount = organization.jobs.filter((job) => !job.isPlatformDemo).length
-  const isVerified =
-    !organization.isPlatformProfile &&
-    organization.verificationStatus === "verified"
 
   return (
     <Card className="h-full border-border/80 bg-white transition-all hover:-translate-y-0.5 hover:shadow-lg">
@@ -27,22 +24,10 @@ export function OrganizationCard({
           <span className="grid size-12 shrink-0 place-items-center rounded-xl bg-primary/8 text-sm font-bold text-primary">
             {getInitials(organization.name)}
           </span>
-          <Badge
-            className={
-              organization.isPlatformProfile
-                ? "border-amber-200 bg-amber-50 text-amber-900"
-                : isVerified
-                ? "border-emerald-200 bg-emerald-50 text-emerald-800"
-                : undefined
-            }
-            variant="outline"
-          >
-            {organization.isPlatformProfile
-              ? "Platform demonstration"
-              : isVerified
-              ? "Verified organization"
-              : "Organization profile"}
-          </Badge>
+          <OrganizationTrustBadge
+            isPlatformDemo={organization.isPlatformProfile}
+            verificationStatus={organization.verificationStatus}
+          />
         </div>
 
         <h2 className="mt-6 text-2xl font-semibold tracking-[-0.04em]">

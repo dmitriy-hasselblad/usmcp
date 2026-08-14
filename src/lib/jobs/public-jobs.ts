@@ -89,6 +89,7 @@ export function toMarketplaceJob(row: PublishedJobRow): Job {
     employerSlug: row.organization_slug,
     organizationType: row.organization_type,
     organizationWebsite: row.organization_website ?? undefined,
+    organizationVerificationStatus: row.verification_status,
     location: `${row.city}, ${stateName}`,
     salary: formatSalary(row),
     type: row.employment_type,

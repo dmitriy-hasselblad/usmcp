@@ -31,6 +31,7 @@ export type Job = {
   source?: "preview" | "live"
   organizationType?: string
   organizationWebsite?: string
+  organizationVerificationStatus?: string
   profession: string
   experienceLevel: string
   city: string

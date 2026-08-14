@@ -18,6 +18,7 @@ import { ReportContentLink } from "@/components/moderation/report-content-link"
 import { SiteFooter } from "@/components/layout/site-footer"
 import { SiteHeader } from "@/components/layout/site-header"
 import { Badge } from "@/components/ui/badge"
+import { OrganizationTrustBadge } from "@/components/organizations/organization-trust-badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
@@ -115,6 +116,12 @@ export default async function JobPage({ params }: JobPageProps) {
                         ? "Live opportunity"
                         : "Product preview"}
                   </Badge>
+                  {job.source === "live" && !job.isPlatformDemo && (
+                    <OrganizationTrustBadge
+                      showNeutral={false}
+                      verificationStatus={job.organizationVerificationStatus}
+                    />
+                  )}
                   <Badge variant="outline">{job.specialty}</Badge>
                   {job.visaSupport && (
                     <Badge variant="outline">Potential visa support</Badge>
