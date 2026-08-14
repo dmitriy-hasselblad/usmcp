@@ -7,12 +7,16 @@ import {
   MapPin,
 } from "lucide-react"
 
-import { changeJobStatus } from "@/app/dashboard/actions"
+import {
+  changeJobStatus,
+  permanentlyDeleteJob,
+} from "@/app/dashboard/actions"
 import { AuthNotice } from "@/components/auth/auth-notice"
 import { AnalyticsLink } from "@/components/analytics/analytics-link"
 import { EmployerDashboardShell } from "@/components/employer/employer-dashboard-shell"
 import { EmployerPageHeader } from "@/components/employer/employer-page-header"
 import { JobStatusBadge } from "@/components/employer/job-status-badge"
+import { PermanentJobDeleteButton } from "@/components/employer/permanent-job-delete-button"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import {
@@ -125,10 +129,17 @@ export default async function EmployerJobsPage({
                     </Button>
                   )}
                   {canEdit && (
-                    <StatusActions
-                      jobId={job.id}
-                      status={job.status as JobStatus}
-                    />
+                    <>
+                      <StatusActions
+                        jobId={job.id}
+                        status={job.status as JobStatus}
+                      />
+                      <PermanentJobDeleteButton
+                        action={permanentlyDeleteJob}
+                        jobId={job.id}
+                        jobTitle={job.title}
+                      />
+                    </>
                   )}
                 </div>
               </CardContent>

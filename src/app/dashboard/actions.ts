@@ -324,3 +324,88 @@ export async function changeJobStatus(formData: FormData) {
     ),
   )
 }
+
+export async function permanentlyDeleteJob(formData: FormData) {
+  const workspace = await requireEmployerWorkspace("/dashboard/jobs")
+
+  if (!canManageJobs(workspace.membership.role)) {
+    redirect(
+      messagePath(
+        "/dashboard/jobs",
+        "error",
+        "Your workspace role cannot delete jobs.",
+      ),
+    )
+  }
+
+  const jobId = formString(formData, "jobId")
+  if (
+    !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
+      jobId,
+    )
+  ) {
+    redirect(messagePath("/dashboard/jobs", "error", "The job deletion is invalid."))
+  }
+
+  const { data: job } = await workspace.supabase
+    .from("jobs")
+    .select("id, slug")
+    .eq("id", jobId)
+    .eq("organization_id", workspace.organization.id)
+    .maybeSingle()
+
+  if (!job) {
+    redirect(messagePath("/dashboard/jobs", "error", "This job is unavailable."))
+  }
+
+  const { count: applicationCount, error: applicationsError } =
+    await workspace.supabase
+      .from("applications")
+      .select("id", { count: "exact", head: true })
+      .eq("job_id", job.id)
+
+  if (applicationsError) {
+    redirect(
+      messagePath(
+        "/dashboard/jobs",
+        "error",
+        "We could not confirm whether this job has applications.",
+      ),
+    )
+  }
+
+  if ((applicationCount ?? 0) > 0) {
+    redirect(
+      messagePath(
+        "/dashboard/jobs",
+        "error",
+        "This job has applications and cannot be permanently deleted. Close it to protect candidate records.",
+      ),
+    )
+  }
+
+  const { data: deletedJob, error } = await workspace.supabase
+    .from("jobs")
+    .delete()
+    .eq("id", job.id)
+    .eq("organization_id", workspace.organization.id)
+    .select("id")
+    .maybeSingle()
+
+  if (error || !deletedJob) {
+    redirect(
+      messagePath(
+        "/dashboard/jobs",
+        "error",
+        "We could not permanently delete the job.",
+      ),
+    )
+  }
+
+  revalidatePath("/dashboard")
+  revalidatePath("/dashboard/jobs")
+  revalidatePath("/")
+  revalidatePath("/jobs")
+  revalidatePath(`/jobs/${job.slug}`)
+  redirect(messagePath("/dashboard/jobs", "success", "Job permanently deleted."))
+}

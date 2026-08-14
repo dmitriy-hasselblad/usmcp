@@ -36,6 +36,23 @@ test("employer bootstrap keeps the profile organization link synchronized", asyn
   assert.match(migration, /where employer_profiles\.user_id = current_user_id/s)
 })
 
+test("authorized hiring teams can permanently delete only jobs without applications", async () => {
+  const migration = await readProjectFile(
+    "supabase/migrations/20260814090000_permanent_job_deletion.sql",
+  )
+  const actions = await readProjectFile("src/app/dashboard/actions.ts")
+  const jobsPage = await readProjectFile("src/app/dashboard/jobs/page.tsx")
+
+  assert.match(migration, /create policy "Hiring team can delete jobs"/)
+  assert.match(migration, /for delete[\s\S]*private\.is_organization_member\(/)
+  assert.match(migration, /grant delete on table public\.jobs to authenticated/)
+  assert.match(actions, /export async function permanentlyDeleteJob/)
+  assert.match(actions, /from\("applications"\)[\s\S]*count: "exact"/)
+  assert.match(actions, /cannot be permanently deleted\. Close it to protect candidate records\./)
+  assert.match(actions, /from\("jobs"\)[\s\S]*\.delete\(\)/)
+  assert.match(jobsPage, /PermanentJobDeleteButton/)
+})
+
 test("applications are visible only to their candidate or an authorized hiring team", async () => {
   const migration = await readProjectFile(
     "supabase/migrations/20260723223554_candidate_applications.sql",

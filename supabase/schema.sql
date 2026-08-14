@@ -585,6 +585,17 @@ with check (
   )
 );
 
+create policy "Hiring team can delete jobs"
+on public.jobs
+for delete
+to authenticated
+using (
+  private.is_organization_member(
+    organization_id,
+    array['owner', 'admin', 'recruiter']::public.organization_member_role[]
+  )
+);
+
 revoke all on table public.organizations from anon, authenticated;
 revoke all on table public.organization_members from anon, authenticated;
 revoke all on table public.jobs from anon, authenticated;
@@ -636,6 +647,7 @@ grant insert (
   status,
   published_at
 ) on table public.jobs to authenticated;
+grant delete on table public.jobs to authenticated;
 grant update (
   title,
   specialty,
