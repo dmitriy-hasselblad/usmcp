@@ -28,7 +28,7 @@ export function HeroSearch({
       className={
         compact
           ? "rounded-2xl border border-border bg-card p-2 shadow-sm"
-          : "rounded-2xl border border-white/70 bg-white/90 p-2 shadow-[0_18px_50px_rgba(15,76,129,0.16)] backdrop-blur"
+          : "rounded-[2rem] border border-slate-200 bg-white p-2.5 shadow-[0_18px_45px_rgba(15,76,129,0.13)]"
       }
       method="get"
       onSubmit={() => {
@@ -42,30 +42,30 @@ export function HeroSearch({
         <input key={name} name={name} type="hidden" value={value} />
       ))}
       <div className="grid gap-2 md:grid-cols-[minmax(0,1.35fr)_minmax(0,0.85fr)_auto]">
-        <label className="group relative flex h-12 items-center gap-3 rounded-xl px-3 transition-colors focus-within:bg-muted/70">
+        <label className="group relative flex h-[4.4rem] items-center gap-3 rounded-2xl px-4 transition-colors focus-within:bg-muted/70">
           <span className="sr-only">Role, specialty, or employer</span>
           <Search className="size-5 text-primary" />
           <Input
-            className="h-full border-0 bg-transparent px-0 shadow-none focus-visible:border-0 focus-visible:ring-0"
+            className="h-full border-0 bg-transparent px-0 text-base shadow-none placeholder:text-slate-400 focus-visible:border-0 focus-visible:ring-0"
             defaultValue={query}
             name="query"
-            placeholder="Search role, specialty, or employer"
+            placeholder="Job title, specialty, or keyword"
             type="search"
           />
         </label>
-        <label className="group relative flex h-12 items-center gap-3 rounded-xl px-3 transition-colors focus-within:bg-muted/70 md:border-l md:border-border">
+        <label className="group relative flex h-[4.4rem] items-center gap-3 rounded-2xl px-4 transition-colors focus-within:bg-muted/70 md:border-l md:border-border">
           <span className="sr-only">City or state</span>
           <MapPin className="size-5 text-primary" />
           <Input
-            className="h-full border-0 bg-transparent px-0 shadow-none focus-visible:border-0 focus-visible:ring-0"
+            className="h-full border-0 bg-transparent px-0 text-base shadow-none placeholder:text-slate-400 focus-visible:border-0 focus-visible:ring-0"
             defaultValue={location}
             name="location"
-            placeholder="City or state"
+            placeholder="City, state, or ZIP"
             type="search"
           />
         </label>
-        <Button className="h-12 rounded-xl px-5 text-sm shadow-[0_10px_25px_rgba(15,76,129,0.22)]" type="submit">
-          Search opportunities
+        <Button className="h-[4.4rem] rounded-2xl bg-[#2376d8] px-6 text-base shadow-[0_10px_25px_rgba(15,76,129,0.22)] hover:bg-[#1c65ba]" type="submit">
+          Search jobs
         </Button>
       </div>
     </form>

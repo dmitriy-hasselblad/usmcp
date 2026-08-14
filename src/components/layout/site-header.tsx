@@ -15,11 +15,12 @@ import { isAuthEnabled } from "@/lib/supabase/env"
 import { createClient } from "@/lib/supabase/server"
 
 const navigation = [
-  { href: "/jobs", label: "Jobs" },
-  { href: "/companies", label: "Organizations" },
-  { href: "/news", label: "News & insights" },
-  { href: "/resources", label: "Career resources" },
-  { href: "/for-employers", label: "For employers" },
+  { href: "/jobs", label: "Find Jobs" },
+  { href: "/resources", label: "Careers" },
+  { href: "/companies", label: "Employers" },
+  { href: "/resources", label: "Students" },
+  { href: "/jobs?visa=true", label: "International Candidates" },
+  { href: "/news", label: "Magazine" },
 ]
 
 async function getHeaderIdentity() {
@@ -53,16 +54,16 @@ export async function SiteHeader() {
   const identity = await getHeaderIdentity()
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border/80 bg-background/85 backdrop-blur-xl">
-      <div className="mx-auto flex h-[4.5rem] max-w-7xl items-center justify-between px-5 lg:px-8">
+    <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur-xl">
+      <div className="mx-auto flex h-[5.5rem] max-w-[96rem] items-center justify-between px-5 lg:px-8">
         <Link href="/" aria-label="USHCE home">
           <UshceLogo />
         </Link>
 
-        <nav className="hidden items-center gap-6 lg:flex" aria-label="Primary navigation">
+        <nav className="hidden items-center gap-7 xl:flex" aria-label="Primary navigation">
           {navigation.map((item) => (
             <Link
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              className="text-base font-medium text-slate-600 transition-colors hover:text-slate-950"
               href={item.href}
               key={item.label}
             >
@@ -95,11 +96,11 @@ export async function SiteHeader() {
             </>
           ) : (
             <>
-              <Button asChild className="h-10 px-4" variant="ghost">
+              <Button asChild className="h-10 px-4 text-base" variant="ghost">
                 <Link href="/sign-in">Sign in</Link>
               </Button>
-              <Button asChild className="h-10 rounded-xl px-4 shadow-sm">
-                <Link href="/sign-up">Create an account</Link>
+              <Button asChild className="h-11 rounded-xl bg-[#2376d8] px-5 text-base shadow-sm hover:bg-[#1c65ba]">
+                <Link href="/sign-up">Post a job</Link>
               </Button>
             </>
           )}
