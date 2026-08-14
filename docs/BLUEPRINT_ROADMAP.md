@@ -1,6 +1,6 @@
 # USHCE Blueprint Roadmap
 
-Last updated: 2026-08-13
+Last updated: 2026-08-14
 
 ## Source of truth
 
@@ -29,9 +29,9 @@ the recommended implementation order on page 3 as the governing sequence.
 
 | Phase | Blueprint focus | Current status |
 | --- | --- | --- |
-| 1. Foundation | Auth, roles, Supabase schema/RLS, reference data, design system | Completed with minor reference-data gaps |
-| 2. Marketplace MVP | Jobs, companies, search, profiles, applications, employer/admin | In progress |
-| 3. Trust & Revenue | Verification, payments, subscriptions, audit, notifications | Not started; privacy foundation exists |
+| 1. Foundation | Auth, roles, Supabase schema/RLS, reference data, design system | Completed |
+| 2. Marketplace MVP | Jobs, companies, search, profiles, applications, employer/admin | Functionally complete; launch-content replacement remains |
+| 3. Trust & Revenue | Verification, payments, subscriptions, audit, notifications | Trust controls complete; revenue intentionally deferred |
 | 4. Engagement | Messaging, interviews, content, SEO, analytics | In progress: core messaging, attachments, interviews, calendar export, video, content, SEO, and consent-aware analytics are live |
 | 5. Intelligence | CV tools, matching, recommendations, broader marketplace, mobile | Deferred |
 
@@ -56,10 +56,11 @@ the recommended implementation order on page 3 as the governing sequence.
 ### Remaining foundation refinements
 
 - [ ] Centralized profession and specialty reference data
-- [ ] Centralized geographic reference data beyond the current U.S. state list
+- [x] Centralized U.S. geographic reference data with suggested cities and a
+  manual fallback (PR #51)
 - [x] Formal audit-event model for privileged actions (organization
   verification integration verified in Production)
-- [ ] Automated test coverage for critical role boundaries
+- [x] Automated source-level test coverage for critical role boundaries (PR #54)
 
 ## Phase 2: Marketplace MVP
 
@@ -91,8 +92,8 @@ the recommended implementation order on page 3 as the governing sequence.
 - [x] Extended healthcare profile sections
 - [x] Recommended jobs (Production verified)
 - [x] Standalone résumé builder and PDF export (verified in Production through PR #36)
-- [ ] Google sign-in
-- [ ] LinkedIn sign-in
+- [ ] Google sign-in (deferred to final pre-launch pass)
+- [ ] LinkedIn sign-in (deferred to final pre-launch pass)
 
 ### Employer platform
 
@@ -138,9 +139,10 @@ preserve stable organization and user identifiers and keep future billing
 separate from profile roles so monetization can be added without migration of
 existing accounts.
 
-- [ ] Organization email-domain verification
-- [ ] Manual employer verification
-- [ ] Verification badges and rules
+- [ ] Organization email-domain verification (requires an organization-domain
+  decision and is separate from the deferred Resend sending domain)
+- [x] Manual employer verification
+- [x] Verification badges and rules (PR #53)
 - [ ] Stripe integration (deferred until 6-12 months after Early Access)
 - [ ] Subscription plans (deferred)
 - [ ] One-time job-posting payments (deferred)
@@ -151,7 +153,7 @@ existing accounts.
   PR #23; Resend onboarding, domain verification, delivery testing, and live
   activation deferred)
 - [x] In-product notifications (Production verified through PR #49)
-- [ ] Formal audit trail
+- [x] Formal audit trail for privileged moderation actions
 
 ## Phase 4: Engagement
 
@@ -160,18 +162,18 @@ existing accounts.
 - [x] Interview scheduling (Production verified through PR #49)
 - [x] Calendar integration via private `.ics` downloads (Production verified through PR #49)
 - [x] Private LiveKit video interviews with a five-minute reconnect window (Production verified through PR #49)
-- [ ] Career content platform
+- [x] Career content platform (organization News & Insights)
 - [x] Public SEO foundation
 - [ ] Ongoing SEO program and search-console operations
 - [x] Consent-aware product analytics (Production verified through PR #49)
-- [ ] Employer funnel analytics
-- [ ] Candidate application analytics
+- [x] Employer funnel analytics (PR #54)
+- [x] Candidate application analytics (PR #55)
 
 ## Phase 5: Intelligence
 
 - [x] Standalone Resume/CV generation and export (non-AI, verified in Production)
 - [ ] AI Resume Assistant
-- [ ] Basic job recommendations
+- [x] Basic job recommendations
 - [ ] AI Job Description Assistant
 - [ ] Candidate-job matching
 - [ ] Advanced recommendations

@@ -1,6 +1,6 @@
 # USHCE Project Status
 
-Last updated: 2026-08-13
+Last updated: 2026-08-14
 
 ## Purpose
 
@@ -25,19 +25,24 @@ English.
 ## Production baseline
 
 - Production branch: `main`
-- Latest confirmed product Pull Request: PR #49
-- PR #49 merge commit: `66fb447`
-- Current `main` commit at branch handoff: `66fb447`
+- Latest confirmed product Pull Request: PR #55
+- PR #55 merge commit: `1dbc09a`
+- Current `main` commit at branch handoff: `1dbc09a`
 - Production deployment status at verification: `Ready`
-- Latest Production verification date: 2026-08-13
+- Latest Production verification date: 2026-08-14
 
-PRs #37 through #49 completed Early Access hiring-loop refinements: recommended
+PRs #37 through #55 completed Early Access hiring-loop refinements: recommended
 jobs; candidate discovery and saved candidates; employer invitations; News &
 Insights self-service publishing and public contact details; the expanded U.S.
 healthcare profession taxonomy; in-product notifications; private messaging,
 attachments, interviews, calendar downloads, and LiveKit video rooms;
 consent-aware funnel analytics; safe platform-demonstration labels; and a
-five-minute reconnect window for completed video interviews.
+five-minute reconnect window for completed video interviews. PR #50 refreshed
+the roadmap handoff; PR #51 added shared U.S. state and city guidance with a
+manual city path; PR #52 clarified platform demonstrations and Early Access
+positioning; PR #53 documented public verification rules; PR #54 added
+privacy-safe employer hiring insights; and PR #55 added private candidate
+application insights. PR #55 was verified in Production on 2026-08-14.
 
 The structured professional profile was verified in Production with a 100%
 completion state and records in all four categories.
@@ -270,6 +275,13 @@ The following areas are not complete:
   scheduling, calendar downloads, and LiveKit video rooms are implemented and
   verified in Production through PR #49.
 - AI features are intentionally deferred.
+- The shared U.S. geography helper is live in candidate and employer forms:
+  users select a state, may select a suggested city, and may always enter a
+  different legitimate U.S. city manually. Existing stored locations and
+  public search URLs remain compatible.
+- Hiring insights are live for employer workspaces and application insights
+  are live for professional workspaces. Both reports use only role-authorized
+  application records and do not introduce visitor tracking or new schema.
 - Public SEO foundation and consent-aware Vercel Web Analytics are implemented.
   Wider soft-launch operations remain in progress.
 - The source-level access contract suite is in place. Fully automated database
@@ -335,6 +347,11 @@ When reporting remaining work, always include these explicit decisions:
 2. **Payments and billing:** Stripe, subscriptions, job-posting payments,
    invoices, billing portal, and webhooks are deferred until 6-12 months after
    Early Access launch. The initial pilot remains free.
+3. **Google and LinkedIn sign-in:** provider configuration and final browser
+   verification are deferred until the final pre-launch pass.
+4. **Marketplace sample content:** copied real vacancies must be removed and
+   replaced with clearly labeled, fully synthetic demonstration records before
+   public launch. The product owner intentionally postponed this replacement.
 
 ## Verification standard
 
