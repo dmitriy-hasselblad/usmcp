@@ -1,10 +1,11 @@
 # USHCE Next Steps
 
-Last updated: 2026-08-13
+Last updated: 2026-08-14
 
 ## Current product phase
 
-**Phase 2: Marketplace MVP**
+**Phase 2: Marketplace MVP — functional delivery complete; preparing the
+public launch baseline.**
 
 The complete Early Access hiring loop works:
 
@@ -172,30 +173,33 @@ roadmap:
 
 ## Immediate next ticket
 
-**Ticket:** Centralized U.S. geographic reference data.
+**Ticket:** Replace copied marketplace content with synthetic demonstration
+records before public launch.
 
 ### Goal
 
-Replace free-text location entry where practical with reusable U.S. state and
-city reference data, while preserving a clear manual-entry path for smaller
-communities and legitimate remote roles.
+Remove copied real-world vacancies and replace them with a small, coherent set
+of fully synthetic demonstration employers and roles. Demonstration content
+must be visibly labeled, excluded from applications and JobPosting metadata,
+and safe to show during Early Access.
 
 ### Required scope
 
-1. Reuse one U.S.-only reference source across candidate and employer forms.
-2. Offer a city choice after state selection, with a manual fallback.
-3. Preserve existing stored locations and URL search behavior.
-4. Do not make a schema change until the current migrations and RLS are
-   reviewed.
-5. Verify candidate profile, employer job creation, public job search, mobile
-   layout, and Vercel Preview.
+1. Inventory copied records before changing them.
+2. Do not modify live employer-created jobs without explicit owner approval.
+3. Use reusable seed or administrative tooling rather than IDs embedded in a
+   migration.
+4. Keep existing public job, organization, SEO, and moderation boundaries
+   intact.
+5. Verify anonymous public browsing, signed-in application denial for demos,
+   mobile layout, and Vercel Preview.
 
 ### Explicit limitation
 
-Soft-launch content readiness is complete through PR #49: platform
-demonstrations are visibly labeled, excluded from applications and JobPosting
-metadata, and verified in Production. Calendar downloads, consent-aware funnel
-analytics, and video-interview expiry were also verified through PR #49.
+This ticket is intentionally deferred by the product owner for now. Do not
+start it without explicit approval. The geographic-reference ticket that
+previously appeared here was completed in PR #51. Employer funnel analytics
+and candidate application analytics were completed in PRs #54 and #55.
 
 ## Definition of done for every future stage
 
