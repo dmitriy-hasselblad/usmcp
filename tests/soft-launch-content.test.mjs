@@ -39,7 +39,7 @@ test("platform demonstrations and editorial content cannot be mistaken for emplo
   const trustBadge = await readProjectFile("src/components/organizations/organization-trust-badge.tsx")
   const newsDetail = await readProjectFile("src/app/news/[slug]/page.tsx")
 
-  assert.match(jobsPage, /platform demonstrations/i)
+  assert.match(jobsPage, /Product previews are demonstrations and are not active vacancies\./)
   assert.match(jobDetail, /Applications are disabled/)
   assert.match(jobDetail, /JobPosting search metadata/)
   assert.match(organizationCard, /View platform demonstrations/)
@@ -49,4 +49,17 @@ test("platform demonstrations and editorial content cannot be mistaken for emplo
   assert.match(organizationDetail, /does not represent an independently verified healthcare\s+employer/)
   assert.match(newsDetail, /Platform demonstration/)
   assert.match(newsDetail, /not an announcement from a clinic, hospital, government agency, or other healthcare employer/i)
+})
+
+test("copied platform records stay out of the public marketplace while fictional previews remain available", async () => {
+  const marketplace = await readProjectFile("src/lib/jobs/public-jobs.ts")
+  const previews = await readProjectFile("src/lib/marketing-data.ts")
+
+  assert.match(marketplace, /\.filter\(\(job\) => !job\.isPlatformDemo\)/)
+  assert.match(marketplace, /return job\.isPlatformDemo \? undefined : job/)
+  assert.match(previews, /Aster Demo Health Network/)
+  assert.match(previews, /Cedar Demo Care Collective/)
+  assert.match(previews, /Juniper Demo Academic Center/)
+  assert.match(previews, /Lumen Demo Medical Group/)
+  assert.doesNotMatch(previews, /Harborview Health Network|Northwell Care|Sage University Hospital|Pioneer Medical Group/)
 })

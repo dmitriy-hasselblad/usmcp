@@ -53,7 +53,9 @@ export const getPublishedJobs = cache(async (): Promise<Job[]> => {
     return []
   }
 
-  return (data as PublishedJobRow[]).map(toMarketplaceJob)
+  return (data as PublishedJobRow[])
+    .map(toMarketplaceJob)
+    .filter((job) => !job.isPlatformDemo)
 })
 
 export const getPublishedJobBySlug = cache(
@@ -75,7 +77,8 @@ export const getPublishedJobBySlug = cache(
       return undefined
     }
 
-    return toMarketplaceJob(data as PublishedJobRow)
+    const job = toMarketplaceJob(data as PublishedJobRow)
+    return job.isPlatformDemo ? undefined : job
   },
 )
 
