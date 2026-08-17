@@ -272,9 +272,8 @@ export default async function JobPage({ params }: JobPageProps) {
                 </CardContent>
               </Card>
             )}
-            </div>
             {latestOrganizationPost && (
-              <Card className="mt-4 overflow-hidden border-border bg-white">
+              <Card className="overflow-hidden border-border bg-white">
                 {latestOrganizationPost.cover_image_path && (
                   <div className="relative aspect-[16/9]">
                     <Image
@@ -310,6 +309,7 @@ export default async function JobPage({ params }: JobPageProps) {
                 </CardContent>
               </Card>
             )}
+            </div>
           </aside>
         </div>
 
