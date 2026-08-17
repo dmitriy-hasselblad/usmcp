@@ -242,7 +242,7 @@ export default async function JobPage({ params }: JobPageProps) {
                 </div>
               </CardContent>
             </Card>
-            {isLive && job.expiresAt && (
+            {job.source === "live" && job.expiresAt && (
               <Card className="mt-4 border-amber-200 bg-amber-50">
                 <CardContent className="flex gap-3 p-4">
                   <Clock3 className="mt-0.5 size-5 shrink-0 text-amber-800" />

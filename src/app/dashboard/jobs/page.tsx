@@ -51,7 +51,7 @@ export default async function EmployerJobsPage({
   const { data: jobs } = await workspace.supabase
     .from("jobs")
     .select(
-      "id, slug, title, specialty, city, state_code, employment_type, workplace_type, status, created_at, expires_at",
+      "id, slug, title, specialty, city, state_code, employment_type, workplace_type, status, created_at, expires_at, posting_duration_days",
     )
     .eq("organization_id", workspace.organization.id)
     .order("created_at", { ascending: false })
@@ -122,6 +122,12 @@ export default async function EmployerJobsPage({
                           day: "numeric",
                           year: "numeric",
                         }).format(new Date(job.expires_at))}
+                      </span>
+                    )}
+                    {job.status === "draft" && (
+                      <span className="flex items-center gap-1.5">
+                        <CalendarDays className="size-4" />
+                        {job.posting_duration_days}-day posting selected · starts when published
                       </span>
                     )}
                     <span className="flex items-center gap-1.5">
