@@ -168,6 +168,7 @@ export async function createJobDraft(formData: FormData) {
   const salaryMin = optionalSalary(formData, "salaryMin")
   const salaryMax = optionalSalary(formData, "salaryMax")
   const description = formString(formData, "description")
+  const requiredSkills = [...new Set(formString(formData, "requiredSkills").split(",").map((skill) => skill.trim()).filter((skill) => skill.length >= 2 && skill.length <= 80))].slice(0, 20)
   const visaSupport = formData.get("visaSupport") === "on"
 
   const salaryIsInvalid =
@@ -216,6 +217,7 @@ export async function createJobDraft(formData: FormData) {
     salary_period: salaryPeriod,
     visa_support: visaSupport,
     description: description || null,
+    required_skills: requiredSkills,
     status: "draft",
     published_at: null,
   })

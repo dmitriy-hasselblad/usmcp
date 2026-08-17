@@ -144,6 +144,12 @@ export default async function NewJobPage({
                   </label>
                 </div>
 
+                <label className="grid gap-2 text-sm font-medium">
+                  Required skills <span className="font-normal text-muted-foreground">Optional</span>
+                  <Input className="h-11" maxLength={800} name="requiredSkills" placeholder="For example, Epic, ACLS, patient assessment" />
+                  <span className="text-xs font-normal text-muted-foreground">Separate skills with commas. These power transparent candidate recommendations.</span>
+                </label>
+
                 <fieldset className="grid gap-3">
                   <legend className="text-sm font-medium">
                     Compensation range

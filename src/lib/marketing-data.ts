@@ -42,6 +42,7 @@ export type Job = {
   salaryPeriod?: "hour" | "year"
   publishedAt?: string
   isPlatformDemo?: boolean
+  requiredSkills?: string[]
 }
 
 export type Employer = {
