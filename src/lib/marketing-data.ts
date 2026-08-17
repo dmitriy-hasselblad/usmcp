@@ -103,8 +103,8 @@ export const featuredJobs: Job[] = [
   {
     slug: "emergency-medicine-physician-boston",
     title: "Emergency Medicine Physician",
-    employer: "Harborview Health Network",
-    employerSlug: "harborview-health-network",
+    employer: "Aster Demo Health Network",
+    employerSlug: "aster-demo-health-network",
     location: "Boston, Massachusetts",
     salary: "$320,000-$380,000",
     type: "Full-time",
@@ -142,8 +142,8 @@ export const featuredJobs: Job[] = [
   {
     slug: "registered-nurse-cardiac-icu-new-york",
     title: "Registered Nurse - Cardiac ICU",
-    employer: "Northwell Care",
-    employerSlug: "northwell-care",
+    employer: "Cedar Demo Care Collective",
+    employerSlug: "cedar-demo-care-collective",
     location: "New York, New York",
     salary: "$98,000-$127,000",
     type: "Full-time",
@@ -180,8 +180,8 @@ export const featuredJobs: Job[] = [
   {
     slug: "clinical-pharmacist-chicago",
     title: "Clinical Pharmacist",
-    employer: "Sage University Hospital",
-    employerSlug: "sage-university-hospital",
+    employer: "Juniper Demo Academic Center",
+    employerSlug: "juniper-demo-academic-center",
     location: "Chicago, Illinois",
     salary: "$135,000-$158,000",
     type: "Full-time",
@@ -219,8 +219,8 @@ export const featuredJobs: Job[] = [
   {
     slug: "family-medicine-physician-austin",
     title: "Family Medicine Physician",
-    employer: "Pioneer Medical Group",
-    employerSlug: "pioneer-medical-group",
+    employer: "Lumen Demo Medical Group",
+    employerSlug: "lumen-demo-medical-group",
     location: "Austin, Texas",
     salary: "$235,000-$285,000",
     type: "Full-time",
@@ -256,8 +256,8 @@ export const featuredJobs: Job[] = [
   {
     slug: "physical-therapist-seattle",
     title: "Physical Therapist",
-    employer: "Harborview Health Network",
-    employerSlug: "harborview-health-network",
+    employer: "Aster Demo Health Network",
+    employerSlug: "aster-demo-health-network",
     location: "Seattle, Washington",
     salary: "$92,000-$118,000",
     type: "Full-time",
@@ -293,8 +293,8 @@ export const featuredJobs: Job[] = [
   {
     slug: "nurse-practitioner-phoenix",
     title: "Nurse Practitioner - Urgent Care",
-    employer: "Northwell Care",
-    employerSlug: "northwell-care",
+    employer: "Cedar Demo Care Collective",
+    employerSlug: "cedar-demo-care-collective",
     location: "Phoenix, Arizona",
     salary: "$128,000-$151,000",
     type: "Full-time",
@@ -331,48 +331,48 @@ export const featuredJobs: Job[] = [
 
 export const employers: Employer[] = [
   {
-    slug: "harborview-health-network",
-    name: "Harborview Health Network",
+    slug: "aster-demo-health-network",
+    name: "Aster Demo Health Network",
     location: "Massachusetts and Washington",
     type: "Health System",
     openings: 2,
     verified: false,
     tone: "bg-sky-100 text-sky-700",
     description:
-      "A product-preview health system profile representing hospital, rehabilitation, and academic care settings.",
+      "A fictional product-preview health system profile representing hospital, rehabilitation, and academic care settings.",
   },
   {
-    slug: "sage-university-hospital",
-    name: "Sage University Hospital",
+    slug: "juniper-demo-academic-center",
+    name: "Juniper Demo Academic Center",
     location: "Chicago, Illinois",
     type: "Academic Medical Center",
     openings: 1,
     verified: false,
     tone: "bg-violet-100 text-violet-700",
     description:
-      "A product-preview academic employer profile focused on clinical practice, education, and research.",
+      "A fictional product-preview academic employer profile focused on clinical practice, education, and research.",
   },
   {
-    slug: "northwell-care",
-    name: "Northwell Care",
+    slug: "cedar-demo-care-collective",
+    name: "Cedar Demo Care Collective",
     location: "New York and Arizona",
     type: "Integrated Care Network",
     openings: 2,
     verified: false,
     tone: "bg-emerald-100 text-emerald-700",
     description:
-      "A product-preview care network profile spanning hospital and ambulatory environments.",
+      "A fictional product-preview care network profile spanning hospital and ambulatory environments.",
   },
   {
-    slug: "pioneer-medical-group",
-    name: "Pioneer Medical Group",
+    slug: "lumen-demo-medical-group",
+    name: "Lumen Demo Medical Group",
     location: "Austin, Texas",
     type: "Medical Group",
     openings: 1,
     verified: false,
     tone: "bg-amber-100 text-amber-700",
     description:
-      "A product-preview outpatient employer profile built around accessible primary care.",
+      "A fictional product-preview outpatient employer profile built around accessible primary care.",
   },
 ]
 
