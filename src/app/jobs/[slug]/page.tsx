@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import {
@@ -25,6 +26,10 @@ import {
   getPublishedJobBySlug,
   getPublishedJobs,
 } from "@/lib/jobs/public-jobs"
+import {
+  formatNewsDate,
+  getLatestPublishedOrganizationPost,
+} from "@/lib/news/public-news"
 import { featuredJobs, getJobBySlug, type Job } from "@/lib/marketing-data"
 import { getAbsoluteUrl, serializeJsonLd } from "@/lib/seo"
 
@@ -69,7 +74,12 @@ export default async function JobPage({ params }: JobPageProps) {
 
   const isLive = job.source === "live" && !job.isPlatformDemo
   const jobPosting = isLive && job.publishedAt ? getJobPosting(job) : null
-  const liveJobs = await getPublishedJobs()
+  const [liveJobs, latestOrganizationPost] = await Promise.all([
+    getPublishedJobs(),
+    job.source === "live" && job.organizationId
+      ? getLatestPublishedOrganizationPost(job.organizationId)
+      : Promise.resolve(null),
+  ])
   const relatedJobs = [...liveJobs, ...featuredJobs]
     .filter(
       (candidate) =>
@@ -263,6 +273,43 @@ export default async function JobPage({ params }: JobPageProps) {
               </Card>
             )}
             </div>
+            {latestOrganizationPost && (
+              <Card className="mt-4 overflow-hidden border-border bg-white">
+                {latestOrganizationPost.cover_image_path && (
+                  <div className="relative aspect-[16/9]">
+                    <Image
+                      alt=""
+                      className="object-cover"
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 21rem"
+                      src={`/news/image/${latestOrganizationPost.id}`}
+                    />
+                  </div>
+                )}
+                <CardContent className="p-5">
+                  <p className="text-xs font-bold tracking-[0.12em] text-primary uppercase">
+                    Latest from {job.employer}
+                  </p>
+                  <p className="mt-2 text-xs text-muted-foreground">
+                    Published {formatNewsDate(latestOrganizationPost.published_at)}
+                  </p>
+                  <h2 className="mt-3 text-lg font-semibold leading-6">
+                    <Link className="hover:text-primary" href={`/news/${latestOrganizationPost.slug}`}>
+                      {latestOrganizationPost.title}
+                    </Link>
+                  </h2>
+                  <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                    {latestOrganizationPost.excerpt}
+                  </p>
+                  <Link
+                    className="mt-4 inline-flex text-sm font-semibold text-primary hover:underline"
+                    href={`/news?organization=${job.organizationId}`}
+                  >
+                    View all updates from {job.employer} →
+                  </Link>
+                </CardContent>
+              </Card>
+            )}
           </aside>
         </div>
 

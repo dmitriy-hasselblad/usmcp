@@ -23,7 +23,7 @@ export const newsMonthNames = [
 export const newsPageSize = 12
 
 export const getPublishedOrganizationPosts = cache(
-  async (year?: number, month?: number, page = 1) => {
+  async (year?: number, month?: number, page = 1, organizationId?: string) => {
     const from = (page - 1) * newsPageSize
     let query = (await createClient())
       .from("organization_posts")
@@ -44,8 +44,28 @@ export const getPublishedOrganizationPosts = cache(
       query = query.gte("published_at", start).lt("published_at", end)
     }
 
+    if (organizationId) {
+      query = query.eq("organization_id", organizationId)
+    }
+
     const { data, count } = await query
     return { posts: data ?? [], count: count ?? 0 }
+  },
+)
+
+export const getLatestPublishedOrganizationPost = cache(
+  async (organizationId: string) => {
+    const { data } = await (await createClient())
+      .from("organization_posts")
+      .select(selection)
+      .eq("organization_id", organizationId)
+      .eq("status", "published")
+      .eq("moderation_status", "approved")
+      .order("published_at", { ascending: false })
+      .limit(1)
+      .maybeSingle()
+
+    return data
   },
 )
 

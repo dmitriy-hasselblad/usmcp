@@ -32,6 +32,7 @@ export type Job = {
   organizationType?: string
   organizationWebsite?: string
   organizationVerificationStatus?: string
+  organizationId?: string
   profession: string
   experienceLevel: string
   city: string
