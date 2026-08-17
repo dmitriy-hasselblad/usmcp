@@ -1,6 +1,6 @@
 # USHCE Next Steps
 
-Last updated: 2026-08-14
+Last updated: 2026-08-17
 
 ## Current product phase
 
@@ -176,6 +176,10 @@ roadmap:
 **Ticket:** Replace copied marketplace content with synthetic demonstration
 records before public launch.
 
+**Delivery status:** PR #59 merged on 2026-08-17 after Preview verification.
+Await Production deployment and product-owner verification before marking this
+ticket complete.
+
 ### Goal
 
 Remove copied real-world vacancies and replace them with a small, coherent set
@@ -194,12 +198,25 @@ and safe to show during Early Access.
 5. Verify anonymous public browsing, signed-in application denial for demos,
    mobile layout, and Vercel Preview.
 
-### Explicit limitation
+### Delivery notes
 
-This ticket is intentionally deferred by the product owner for now. Do not
-start it without explicit approval. The geographic-reference ticket that
-previously appeared here was completed in PR #51. Employer funnel analytics
-and candidate application analytics were completed in PRs #54 and #55.
+- The implementation retains copied platform records in the database and
+  preserves existing application history; it does not delete or rename a job
+  with an application.
+- Public job loading now excludes platform demonstration organizations. Six
+  static product-preview listings remain available only with `?preview=true`,
+  are clearly labeled, and cannot accept applications or emit JobPosting
+  metadata.
+- The geographic-reference ticket that previously appeared here was completed
+  in PR #51. Employer funnel analytics and candidate application analytics were
+  completed in PRs #54 and #55.
+
+## Next actionable work after Production verification
+
+No new database feature is scheduled until the remaining launch decisions are
+made. The nearest operational work is to connect a stable public domain and
+begin Search Console monitoring. Do not resume Resend, Google/LinkedIn OAuth,
+Stripe/billing, AI, or job-feed integrations without a product-owner decision.
 
 ## Definition of done for every future stage
 

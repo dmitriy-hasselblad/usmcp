@@ -1,6 +1,6 @@
 # USHCE Project Status
 
-Last updated: 2026-08-14
+Last updated: 2026-08-17
 
 ## Purpose
 
@@ -25,11 +25,35 @@ English.
 ## Production baseline
 
 - Production branch: `main`
-- Latest confirmed product Pull Request: PR #55
-- PR #55 merge commit: `1dbc09a`
-- Current `main` commit at branch handoff: `1dbc09a`
-- Production deployment status at verification: `Ready`
-- Latest Production verification date: 2026-08-14
+- Latest merged product Pull Request: PR #59
+- PR #59 merge commit: `788ba26`
+- Current `main` commit at branch handoff: `788ba26`
+- Production deployment status at handoff: awaiting Vercel completion and owner verification
+- Latest confirmed Production verification date: 2026-08-14
+
+## Latest handoff: 2026-08-17
+
+- PR #58 is merged in Production: required-skills matching, transparent matching
+  reasons, fixed-duration public job postings, visible application deadlines,
+  and the optional latest organization News card on a job detail page.
+- PR #59 is merged and its Preview was verified: copied platform demonstration
+  records are excluded from public job lists and direct public job routes while
+  their database rows and existing applications remain intact. The optional
+  product-preview catalog now uses clearly fictional organizations: Aster Demo
+  Health Network, Cedar Demo Care Collective, Juniper Demo Academic Center,
+  and Lumen Demo Medical Group. The Production deployment still needs the
+  product owner to confirm `/jobs`, `/jobs?preview=true`, and preserved
+  candidate application history.
+- The `organization_domain_verification` Supabase migration was applied with
+  RLS. Its user interface is intentionally not merged: the product owner
+  decided DNS proof would create too much friction for Early Access. Keep it
+  as an unmerged experiment unless the decision changes.
+- A separate, paid Supabase Branch was proposed for a Baku-time job-expiry
+  experiment, but the product owner declined it. No test data or expiry time
+  was changed.
+- Deferred decisions remain unchanged: Resend delivery and domain setup;
+  Stripe/billing for 6-12 months after Early Access; Google and LinkedIn OAuth
+  for the final pre-launch pass; AI features; job-feed/affiliate integrations.
 
 PRs #37 through #55 completed Early Access hiring-loop refinements: recommended
 jobs; candidate discovery and saved candidates; employer invitations; News &
@@ -246,6 +270,8 @@ The repository currently contains these applied migration groups:
 23. In-product notifications
 24. Private application messaging and attachments
 25. Private application interview scheduling and video-room session expiry
+26. Organization domain-verification record and manager-only RLS (UI not
+    merged; retained as an Early Access experiment)
 
 Migration files are stored in `supabase/migrations/`.
 

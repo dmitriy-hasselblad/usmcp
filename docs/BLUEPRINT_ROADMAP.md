@@ -1,6 +1,6 @@
 # USHCE Blueprint Roadmap
 
-Last updated: 2026-08-14
+Last updated: 2026-08-17
 
 ## Source of truth
 
@@ -30,7 +30,7 @@ the recommended implementation order on page 3 as the governing sequence.
 | Phase | Blueprint focus | Current status |
 | --- | --- | --- |
 | 1. Foundation | Auth, roles, Supabase schema/RLS, reference data, design system | Completed |
-| 2. Marketplace MVP | Jobs, companies, search, profiles, applications, employer/admin | Functionally complete; launch-content replacement remains |
+| 2. Marketplace MVP | Jobs, companies, search, profiles, applications, employer/admin | Functionally complete; PR #59 launch-content replacement awaits Production verification |
 | 3. Trust & Revenue | Verification, payments, subscriptions, audit, notifications | Trust controls complete; revenue intentionally deferred |
 | 4. Engagement | Messaging, interviews, content, SEO, analytics | In progress: core messaging, attachments, interviews, calendar export, video, content, SEO, and consent-aware analytics are live |
 | 5. Intelligence | CV tools, matching, recommendations, broader marketplace, mobile | Deferred |
@@ -76,7 +76,9 @@ the recommended implementation order on page 3 as the governing sequence.
 - [x] Live public organization directory
 - [x] Live public organization profile route
 - [x] Complete Blueprint job filters
-- [ ] Remove or replace remaining fictional marketplace listings before launch
+- [ ] Confirm the Production result of PR #59, which removes copied platform
+  marketplace records from public routes and retains synthetic product previews
+  only
 
 ### Candidate platform
 
