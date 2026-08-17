@@ -2,6 +2,10 @@ import type { Metadata } from "next"
 import { CheckCircle2, ShieldCheck } from "lucide-react"
 
 import { updateOrganization } from "@/app/dashboard/actions"
+import {
+  checkOrganizationDomainVerification,
+  startOrganizationDomainVerification,
+} from "@/app/dashboard/organization/domain-actions"
 import { AuthNotice } from "@/components/auth/auth-notice"
 import { AuthSubmitButton } from "@/components/auth/auth-submit-button"
 import { EmployerDashboardShell } from "@/components/employer/employer-dashboard-shell"
@@ -44,6 +48,13 @@ export default async function OrganizationPage({
     searchParams,
   ])
   const canEdit = canManageOrganization(workspace.membership.role)
+  const { data: domainVerification } = canEdit
+    ? await workspace.supabase
+        .from("organization_domain_verifications")
+        .select("domain, verification_token, verified_at, last_checked_at")
+        .eq("organization_id", workspace.organization.id)
+        .maybeSingle()
+    : { data: null }
 
   return (
     <EmployerDashboardShell
@@ -188,6 +199,55 @@ export default async function OrganizationPage({
           <Card className="bg-white">
             <CardContent className="p-5">
               <p className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
+                Domain verification
+              </p>
+              <h2 className="mt-3 font-semibold">
+                {domainVerification?.verified_at
+                  ? "Domain confirmed"
+                  : "Confirm your organization domain"}
+              </h2>
+              <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                {domainVerification?.verified_at
+                  ? `USHCE found the required DNS record for ${domainVerification.domain}. This complements, but does not replace, platform verification.`
+                  : "Add a DNS TXT record to prove that your organization controls its public domain. This complements, but does not replace, platform verification."}
+              </p>
+
+              {canEdit ? (
+                domainVerification ? (
+                  <div className="mt-4 grid gap-3">
+                    <div className="rounded-lg border border-border bg-muted/40 p-3 text-xs leading-5 break-all">
+                      <p className="font-semibold text-foreground">TXT host</p>
+                      <code>{verificationRecordName(domainVerification.domain)}</code>
+                      <p className="mt-3 font-semibold text-foreground">TXT value</p>
+                      <code>{domainVerification.verification_token}</code>
+                    </div>
+                    {domainVerification.verified_at ? (
+                      <Badge className="w-fit border-emerald-200 bg-emerald-50 text-emerald-800" variant="outline">
+                        <CheckCircle2 /> Domain confirmed
+                      </Badge>
+                    ) : (
+                      <form action={checkOrganizationDomainVerification}>
+                        <AuthSubmitButton pendingLabel="Checking DNS...">
+                          Check verification
+                        </AuthSubmitButton>
+                      </form>
+                    )}
+                    <details className="text-xs leading-5 text-muted-foreground">
+                      <summary className="cursor-pointer font-medium text-foreground">Use a different domain</summary>
+                      <DomainStartForm defaultDomain={domainVerification.domain} />
+                    </details>
+                  </div>
+                ) : (
+                  <DomainStartForm />
+                )
+              ) : (
+                <p className="mt-4 text-sm text-muted-foreground">Only organization owners and admins can manage domain verification.</p>
+              )}
+            </CardContent>
+          </Card>
+          <Card className="bg-white">
+            <CardContent className="p-5">
+              <p className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
                 Your access
               </p>
               <p className="mt-3 text-lg font-semibold capitalize">
@@ -201,6 +261,31 @@ export default async function OrganizationPage({
         </div>
       </div>
     </EmployerDashboardShell>
+  )
+}
+
+function verificationRecordName(domain: string) {
+  return `_ushce-verification.${domain}`
+}
+
+function DomainStartForm({ defaultDomain = "" }: { defaultDomain?: string }) {
+  return (
+    <form action={startOrganizationDomainVerification} className="mt-4 grid gap-3">
+      <label className="grid gap-2 text-sm font-medium">
+        Organization domain
+        <Input
+          className="h-10"
+          defaultValue={defaultDomain}
+          maxLength={253}
+          name="domain"
+          placeholder="example.org"
+          required
+        />
+      </label>
+      <AuthSubmitButton pendingLabel="Creating DNS record...">
+        {defaultDomain ? "Create a new DNS record" : "Start domain verification"}
+      </AuthSubmitButton>
+    </form>
   )
 }
 

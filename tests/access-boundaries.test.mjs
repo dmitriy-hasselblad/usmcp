@@ -272,3 +272,22 @@ test("product analytics remains opt-in and excludes personal application data", 
   assert.match(heroSearch, /job_search_submitted/)
   assert.doesNotMatch(tracker, /email|candidate|resume|phone/i)
 })
+
+test("organization domain verification stays manager-scoped and uses a DNS proof", async () => {
+  const migration = await readProjectFile(
+    "supabase/migrations/20260817121238_organization_domain_verification.sql",
+  )
+  const actions = await readProjectFile(
+    "src/app/dashboard/organization/domain-actions.ts",
+  )
+
+  assert.match(migration, /alter table public\.organization_domain_verifications enable row level security/)
+  assert.match(migration, /revoke all on table public\.organization_domain_verifications from anon, authenticated/)
+  assert.match(migration, /create policy "Organization managers can read domain verification"/)
+  assert.match(migration, /array\['owner'::public\.organization_member_role, 'admin'::public\.organization_member_role\]/)
+  assert.doesNotMatch(migration, /grant .* to anon/i)
+  assert.match(actions, /resolveTxt/)
+  assert.match(actions, /randomBytes\(32\)/)
+  assert.match(actions, /_ushce-verification\.\$\{domain\}/)
+  assert.match(actions, /requireEmployerWorkspace\(domainPath\)/)
+})
