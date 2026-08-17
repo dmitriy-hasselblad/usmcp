@@ -242,6 +242,25 @@ export default async function JobPage({ params }: JobPageProps) {
                 </div>
               </CardContent>
             </Card>
+            {isLive && job.expiresAt && (
+              <Card className="mt-4 border-amber-200 bg-amber-50">
+                <CardContent className="flex gap-3 p-4">
+                  <Clock3 className="mt-0.5 size-5 shrink-0 text-amber-800" />
+                  <div>
+                    <h2 className="font-semibold text-amber-950">
+                      Application deadline
+                    </h2>
+                    <p className="mt-1 text-sm leading-6 text-amber-900">
+                      This opportunity closes on {new Intl.DateTimeFormat("en-US", {
+                        month: "long",
+                        day: "numeric",
+                        year: "numeric",
+                      }).format(new Date(job.expiresAt))}. Applications are not accepted after this date.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </aside>
         </div>
 

@@ -15,6 +15,7 @@ import {
   canManageOrganization,
   isExperienceLevel,
   isEmploymentType,
+  isJobPostingDuration,
   isJobStatus,
   isSalaryPeriod,
   isWorkplaceType,
@@ -168,6 +169,9 @@ export async function createJobDraft(formData: FormData) {
   const salaryMin = optionalSalary(formData, "salaryMin")
   const salaryMax = optionalSalary(formData, "salaryMax")
   const description = formString(formData, "description")
+  const postingDurationDays = Number(
+    formString(formData, "postingDurationDays"),
+  )
   const requiredSkills = [...new Set(formString(formData, "requiredSkills").split(",").map((skill) => skill.trim()).filter((skill) => skill.length >= 2 && skill.length <= 80))].slice(0, 20)
   const visaSupport = formData.get("visaSupport") === "on"
 
@@ -188,6 +192,7 @@ export async function createJobDraft(formData: FormData) {
     !isEmploymentType(employmentType) ||
     !isWorkplaceType(workplaceType) ||
     !isSalaryPeriod(salaryPeriod) ||
+    !isJobPostingDuration(postingDurationDays) ||
     salaryIsInvalid ||
     description.length > 10000
   ) {
@@ -218,6 +223,7 @@ export async function createJobDraft(formData: FormData) {
     visa_support: visaSupport,
     description: description || null,
     required_skills: requiredSkills,
+    posting_duration_days: postingDurationDays,
     status: "draft",
     published_at: null,
   })
@@ -272,7 +278,7 @@ export async function changeJobStatus(formData: FormData) {
 
   const { data: existingJob } = await workspace.supabase
     .from("jobs")
-    .select("status, slug")
+    .select("status, slug, posting_duration_days, expires_at")
     .eq("id", jobId)
     .eq("organization_id", workspace.organization.id)
     .maybeSingle()

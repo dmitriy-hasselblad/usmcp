@@ -18,6 +18,8 @@ export const experienceLevels = [
 
 export const salaryPeriods = ["year", "hour"] as const
 
+export const jobPostingDurations = [30, 60, 90] as const
+
 export const jobStatuses = ["draft", "published", "paused", "closed"] as const
 
 export type JobStatus = (typeof jobStatuses)[number]
@@ -49,6 +51,12 @@ export function isExperienceLevel(value: string) {
 
 export function isSalaryPeriod(value: string) {
   return salaryPeriods.some((option) => option === value)
+}
+
+export function isJobPostingDuration(
+  value: number,
+): value is (typeof jobPostingDurations)[number] {
+  return jobPostingDurations.some((option) => option === value)
 }
 
 export function isJobStatus(value: string): value is JobStatus {
