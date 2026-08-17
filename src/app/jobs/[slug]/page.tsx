@@ -194,7 +194,8 @@ export default async function JobPage({ params }: JobPageProps) {
           </div>
 
           <aside>
-            <Card className="sticky top-24 border-primary/15 bg-white shadow-[0_16px_40px_rgba(15,76,129,0.1)]">
+            <div className="sticky top-24 grid gap-4">
+            <Card className="border-primary/15 bg-white shadow-[0_16px_40px_rgba(15,76,129,0.1)]">
               <CardContent className="p-6">
                 <span className="grid size-11 place-items-center rounded-xl bg-primary/8 text-primary">
                   <Building2 className="size-5" />
@@ -243,7 +244,7 @@ export default async function JobPage({ params }: JobPageProps) {
               </CardContent>
             </Card>
             {job.source === "live" && job.expiresAt && (
-              <Card className="mt-4 border-amber-200 bg-amber-50">
+              <Card className="border-amber-200 bg-amber-50">
                 <CardContent className="flex gap-3 p-4">
                   <Clock3 className="mt-0.5 size-5 shrink-0 text-amber-800" />
                   <div>
@@ -261,6 +262,7 @@ export default async function JobPage({ params }: JobPageProps) {
                 </CardContent>
               </Card>
             )}
+            </div>
           </aside>
         </div>
 
