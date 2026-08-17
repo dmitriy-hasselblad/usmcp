@@ -30,6 +30,7 @@ type SearchParams = Promise<{
   year?: string | string[]
   month?: string | string[]
   page?: string | string[]
+  organization?: string | string[]
 }>
 
 function firstValue(value: string | string[] | undefined) {
@@ -45,14 +46,15 @@ export default async function PublicNewsPage({
   const year = parseNewsYear(firstValue(params.year))
   const month = parseNewsMonth(firstValue(params.month), year)
   const page = parseNewsPage(firstValue(params.page))
+  const organizationId = parseOrganizationId(firstValue(params.organization))
   const [{ posts, count }, archiveYears] = await Promise.all([
-    getPublishedOrganizationPosts(year, month, page),
+    getPublishedOrganizationPosts(year, month, page, organizationId),
     getNewsArchiveYears(),
   ])
-  const filtered = Boolean(year)
+  const filtered = Boolean(year || organizationId)
   const totalPages = Math.max(1, Math.ceil(count / newsPageSize))
   if (count > 0 && page > totalPages) {
-    redirect(newsPageHref(totalPages, year, month))
+    redirect(newsPageHref(totalPages, year, month, organizationId))
   }
   const periodLabel = year
     ? month
@@ -85,6 +87,9 @@ export default async function PublicNewsPage({
                 className="grid gap-4 sm:grid-cols-[minmax(10rem,14rem)_minmax(10rem,14rem)_auto] sm:items-end"
                 method="get"
               >
+                {organizationId && (
+                  <input name="organization" type="hidden" value={organizationId} />
+                )}
                 <label className="grid gap-2 text-sm font-medium">
                   Publication year
                   <select
@@ -195,7 +200,7 @@ export default async function PublicNewsPage({
             >
               <Button asChild={page > 1} disabled={page <= 1} variant="outline">
                 {page > 1 ? (
-                  <Link href={newsPageHref(page - 1, year, month)}>
+                  <Link href={newsPageHref(page - 1, year, month, organizationId)}>
                     Previous
                   </Link>
                 ) : (
@@ -211,7 +216,7 @@ export default async function PublicNewsPage({
                 variant="outline"
               >
                 {page < totalPages ? (
-                  <Link href={newsPageHref(page + 1, year, month)}>Next</Link>
+                  <Link href={newsPageHref(page + 1, year, month, organizationId)}>Next</Link>
                 ) : (
                   <span>Next</span>
                 )}
@@ -225,10 +230,22 @@ export default async function PublicNewsPage({
   )
 }
 
-function newsPageHref(page: number, year?: number, month?: number) {
+function parseOrganizationId(value?: string) {
+  return value && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value)
+    ? value
+    : undefined
+}
+
+function newsPageHref(
+  page: number,
+  year?: number,
+  month?: number,
+  organizationId?: string,
+) {
   const params = new URLSearchParams()
   if (year) params.set("year", String(year))
   if (month) params.set("month", String(month))
+  if (organizationId) params.set("organization", organizationId)
   if (page > 1) params.set("page", String(page))
   const query = params.toString()
   return query ? `/news?${query}` : "/news"

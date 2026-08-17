@@ -17,6 +17,7 @@ import {
   canManageJobs,
   employmentTypes,
   experienceLevels,
+  jobPostingDurations,
   salaryPeriods,
   workplaceTypes,
 } from "@/lib/employer/constants"
@@ -143,6 +144,33 @@ export default async function NewJobPage({
                     </select>
                   </label>
                 </div>
+
+                <label className="grid gap-2 text-sm font-medium">
+                  Posting duration
+                  <select
+                    className={selectClassName}
+                    defaultValue="30"
+                    name="postingDurationDays"
+                    required
+                  >
+                    {jobPostingDurations.map((days) => (
+                      <option key={days} value={days}>
+                        {days} days{days === 30 ? " (recommended)" : ""}
+                      </option>
+                    ))}
+                  </select>
+                  <span className="text-xs font-normal text-muted-foreground">
+                    The countdown begins when you publish. The role will stop
+                    accepting applications and move to your expired jobs list
+                    at the end of the selected period.
+                  </span>
+                </label>
+
+                <label className="grid gap-2 text-sm font-medium">
+                  Required skills <span className="font-normal text-muted-foreground">Optional</span>
+                  <Input className="h-11" maxLength={800} name="requiredSkills" placeholder="For example, Epic, ACLS, patient assessment" />
+                  <span className="text-xs font-normal text-muted-foreground">Separate skills with commas. These power transparent candidate recommendations.</span>
+                </label>
 
                 <fieldset className="grid gap-3">
                   <legend className="text-sm font-medium">

@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import {
@@ -25,6 +26,10 @@ import {
   getPublishedJobBySlug,
   getPublishedJobs,
 } from "@/lib/jobs/public-jobs"
+import {
+  formatNewsDate,
+  getLatestPublishedOrganizationPost,
+} from "@/lib/news/public-news"
 import { featuredJobs, getJobBySlug, type Job } from "@/lib/marketing-data"
 import { getAbsoluteUrl, serializeJsonLd } from "@/lib/seo"
 
@@ -69,7 +74,12 @@ export default async function JobPage({ params }: JobPageProps) {
 
   const isLive = job.source === "live" && !job.isPlatformDemo
   const jobPosting = isLive && job.publishedAt ? getJobPosting(job) : null
-  const liveJobs = await getPublishedJobs()
+  const [liveJobs, latestOrganizationPost] = await Promise.all([
+    getPublishedJobs(),
+    job.source === "live" && job.organizationId
+      ? getLatestPublishedOrganizationPost(job.organizationId)
+      : Promise.resolve(null),
+  ])
   const relatedJobs = [...liveJobs, ...featuredJobs]
     .filter(
       (candidate) =>
@@ -194,7 +204,8 @@ export default async function JobPage({ params }: JobPageProps) {
           </div>
 
           <aside>
-            <Card className="sticky top-24 border-primary/15 bg-white shadow-[0_16px_40px_rgba(15,76,129,0.1)]">
+            <div className="sticky top-24 grid gap-4">
+            <Card className="border-primary/15 bg-white shadow-[0_16px_40px_rgba(15,76,129,0.1)]">
               <CardContent className="p-6">
                 <span className="grid size-11 place-items-center rounded-xl bg-primary/8 text-primary">
                   <Building2 className="size-5" />
@@ -242,6 +253,63 @@ export default async function JobPage({ params }: JobPageProps) {
                 </div>
               </CardContent>
             </Card>
+            {job.source === "live" && job.expiresAt && (
+              <Card className="border-amber-200 bg-amber-50">
+                <CardContent className="flex gap-3 p-4">
+                  <Clock3 className="mt-0.5 size-5 shrink-0 text-amber-800" />
+                  <div>
+                    <h2 className="font-semibold text-amber-950">
+                      Application deadline
+                    </h2>
+                    <p className="mt-1 text-sm leading-6 text-amber-900">
+                      This opportunity closes on {new Intl.DateTimeFormat("en-US", {
+                        month: "long",
+                        day: "numeric",
+                        year: "numeric",
+                      }).format(new Date(job.expiresAt))}. Applications are not accepted after this date.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+            {latestOrganizationPost && (
+              <Card className="overflow-hidden border-border bg-white">
+                {latestOrganizationPost.cover_image_path && (
+                  <div className="relative aspect-[16/9]">
+                    <Image
+                      alt=""
+                      className="object-cover"
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 21rem"
+                      src={`/news/image/${latestOrganizationPost.id}`}
+                    />
+                  </div>
+                )}
+                <CardContent className="p-5">
+                  <p className="text-xs font-bold tracking-[0.12em] text-primary uppercase">
+                    Latest from {job.employer}
+                  </p>
+                  <p className="mt-2 text-xs text-muted-foreground">
+                    Published {formatNewsDate(latestOrganizationPost.published_at)}
+                  </p>
+                  <h2 className="mt-3 text-lg font-semibold leading-6">
+                    <Link className="hover:text-primary" href={`/news/${latestOrganizationPost.slug}`}>
+                      {latestOrganizationPost.title}
+                    </Link>
+                  </h2>
+                  <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                    {latestOrganizationPost.excerpt}
+                  </p>
+                  <Link
+                    className="mt-4 inline-flex text-sm font-semibold text-primary hover:underline"
+                    href={`/news?organization=${job.organizationId}`}
+                  >
+                    View all updates from {job.employer} →
+                  </Link>
+                </CardContent>
+              </Card>
+            )}
+            </div>
           </aside>
         </div>
 

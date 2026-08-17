@@ -51,7 +51,7 @@ export default async function EmployerJobsPage({
   const { data: jobs } = await workspace.supabase
     .from("jobs")
     .select(
-      "id, slug, title, specialty, city, state_code, employment_type, workplace_type, status, created_at",
+      "id, slug, title, specialty, city, state_code, employment_type, workplace_type, status, created_at, expires_at, posting_duration_days",
     )
     .eq("organization_id", workspace.organization.id)
     .order("created_at", { ascending: false })
@@ -87,7 +87,13 @@ export default async function EmployerJobsPage({
 
       {jobs?.length ? (
         <div className="mt-6 grid gap-4">
-          {jobs.map((job) => (
+          {jobs.map((job) => {
+            const isExpired =
+              job.status === "published" &&
+              job.expires_at !== null &&
+              new Date(job.expires_at).getTime() <= Date.now()
+
+            return (
             <Card className="bg-white" key={job.id}>
               <CardContent className="grid gap-5 p-5 lg:grid-cols-[1fr_auto] lg:items-center">
                 <div className="min-w-0">
@@ -96,12 +102,34 @@ export default async function EmployerJobsPage({
                       {job.title}
                     </h2>
                     <JobStatusBadge status={job.status as JobStatus} />
+                    {isExpired && (
+                      <span className="rounded-full border border-slate-200 bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700">
+                        Expired
+                      </span>
+                    )}
                   </div>
                   <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-sm text-muted-foreground">
                     <span className="flex items-center gap-1.5">
                       <MapPin className="size-4" />
                       {job.city}, {job.state_code}
                     </span>
+                    {job.expires_at && (
+                      <span className="flex items-center gap-1.5">
+                        <CalendarDays className="size-4" />
+                        {isExpired ? "Expired" : "Expires"}{" "}
+                        {new Intl.DateTimeFormat("en-US", {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                        }).format(new Date(job.expires_at))}
+                      </span>
+                    )}
+                    {job.status === "draft" && (
+                      <span className="flex items-center gap-1.5">
+                        <CalendarDays className="size-4" />
+                        {job.posting_duration_days}-day posting selected · starts when published
+                      </span>
+                    )}
                     <span className="flex items-center gap-1.5">
                       <BriefcaseBusiness className="size-4" />
                       {job.employment_type} · {job.workplace_type}
@@ -123,7 +151,7 @@ export default async function EmployerJobsPage({
                   )}
                 </div>
                 <div className="flex flex-wrap gap-2 lg:justify-end">
-                  {job.status === "published" && (
+                  {job.status === "published" && !isExpired && (
                     <Button asChild variant="outline">
                       <Link href={`/jobs/${job.slug}`}>View live</Link>
                     </Button>
@@ -144,7 +172,8 @@ export default async function EmployerJobsPage({
                 </div>
               </CardContent>
             </Card>
-          ))}
+            )
+          })}
         </div>
       ) : (
         <Card className="mt-6 bg-white">

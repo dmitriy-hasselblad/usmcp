@@ -281,6 +281,7 @@ async function ProfessionalDashboard({
 }) {
   const [
     { data: roleProfile },
+    { data: skillData },
     { count: applicationCount },
     { count: documentCount },
     { data: recentApplicationData },
@@ -291,6 +292,7 @@ async function ProfessionalDashboard({
       .select("profession, specialty, state_code, career_stage")
       .eq("user_id", userId)
       .single(),
+    supabase.from("professional_skills").select("name").eq("user_id", userId),
     supabase
       .from("applications")
       .select("id", { count: "exact", head: true })
@@ -309,7 +311,7 @@ async function ProfessionalDashboard({
   ])
   const recentApplications =
     (recentApplicationData as ApplicationRecord[] | null) ?? []
-  const recommendations = recommendJobs(roleProfile, liveJobs)
+  const recommendations = recommendJobs(roleProfile ? { ...roleProfile, skills: (skillData ?? []).map((skill) => skill.name) } : null, liveJobs)
 
   return (
     <ProfessionalDashboardShell active="overview" email={email}>

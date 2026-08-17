@@ -32,6 +32,7 @@ export type Job = {
   organizationType?: string
   organizationWebsite?: string
   organizationVerificationStatus?: string
+  organizationId?: string
   profession: string
   experienceLevel: string
   city: string
@@ -41,7 +42,9 @@ export type Job = {
   salaryMax?: number
   salaryPeriod?: "hour" | "year"
   publishedAt?: string
+  expiresAt?: string
   isPlatformDemo?: boolean
+  requiredSkills?: string[]
 }
 
 export type Employer = {

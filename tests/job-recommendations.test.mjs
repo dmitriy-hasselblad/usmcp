@@ -17,3 +17,9 @@ test("filled profiles receive an honest no-match state", async () => {
   const source = await readFile(path.join(projectRoot, "src/app/dashboard/page.tsx"), "utf8")
   assert.match(source, /No close matches are available right now/)
 })
+
+test("recommendations can explain matching required skills", async () => {
+  const source = await readFile(path.join(projectRoot, "src/lib/jobs/recommendations.ts"), "utf8")
+  assert.match(source, /requiredSkills/)
+  assert.match(source, /matching skill/)
+})
