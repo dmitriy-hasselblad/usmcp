@@ -110,7 +110,7 @@ export default async function PublicNewsDetailPage({ params }: Props) {
           {isUshceEditorial && (
             <section className="mt-10 rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-950">
               <h2 className="font-semibold">Demonstration note</h2>
-              <p className="mt-2">This article is sample content published by USHCE to demonstrate News &amp; Insights. It is not an announcement from a clinic, hospital, government agency, or other healthcare employer.</p>
+              <p className="mt-2">This article is sample content published by SMVIA to demonstrate News &amp; Insights. It is not an announcement from a clinic, hospital, government agency, or other healthcare employer.</p>
             </section>
           )}
           {hasContact && (

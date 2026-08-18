@@ -136,7 +136,7 @@ export default async function Home() {
               <SectionHeading
                 eyebrow="Live opportunities"
                 title="Explore newly published healthcare opportunities."
-                description="Browse employer-published roles from organizations building their teams on USHCE."
+                description="Browse employer-published roles from organizations building their teams on SMVIA."
               />
               <Button asChild className="h-10 w-fit rounded-xl" variant="outline">
                 <Link href="/jobs">
@@ -159,7 +159,7 @@ export default async function Home() {
               <SectionHeading
                 eyebrow="Organization profiles"
                 title="Understand the workplace before you apply."
-                description="USHCE employer profiles are designed to bring together culture, care settings, locations, benefits, and open roles."
+                description="SMVIA employer profiles are designed to bring together culture, care settings, locations, benefits, and open roles."
               />
               <Button asChild className="mt-7 h-11 rounded-xl px-5">
                 <Link href="/companies">
@@ -186,7 +186,7 @@ export default async function Home() {
                   </h2>
                   <p className="mt-3 text-sm leading-6 text-muted-foreground">
                     Organizations will appear here after they publish an active
-                    healthcare opportunity on USHCE.
+                    healthcare opportunity on SMVIA.
                   </p>
                 </CardContent>
               </Card>
@@ -194,11 +194,11 @@ export default async function Home() {
           </div>
         </section>
 
-        <section className="bg-primary py-20 text-white lg:py-28" id="why-ushce">
+        <section className="bg-primary py-20 text-white lg:py-28" id="why-smvia">
           <div className="mx-auto max-w-7xl px-5 lg:px-8">
             <SectionHeading
               align="center"
-              eyebrow="Why USHCE"
+              eyebrow="Why SMVIA"
               title="Healthcare careers need more than a generic job board."
               description="The platform brings the real structure of healthcare careers and hiring into one secure workflow."
               tone="inverted"

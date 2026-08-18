@@ -12,7 +12,7 @@ import {
   Bell,
 } from "lucide-react"
 
-import { UshceLogo } from "@/components/brand/ushce-logo"
+import { SmviaLogo } from "@/components/brand/smvia-logo"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -102,8 +102,8 @@ export async function EmployerDashboardShell({
     <div className="min-h-dvh bg-muted/35">
       <header className="border-b border-border bg-white">
         <div className="mx-auto flex h-[4.5rem] max-w-[90rem] items-center justify-between px-5 lg:px-8">
-          <Link aria-label="USHCE home" href="/">
-            <UshceLogo />
+          <Link aria-label="SMVIA home" href="/">
+            <SmviaLogo />
           </Link>
           <div className="flex items-center gap-3">
             <div className="hidden text-right sm:block">

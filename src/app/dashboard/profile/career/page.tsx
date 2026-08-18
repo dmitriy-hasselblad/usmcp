@@ -47,7 +47,7 @@ import {
 
 export const metadata: Metadata = {
   title: "Career history",
-  description: "Manage structured healthcare career credentials in USHCE.",
+  description: "Manage structured healthcare career credentials in SMVIA.",
 }
 
 type SearchParams = Promise<{

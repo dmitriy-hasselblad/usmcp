@@ -33,7 +33,7 @@ function one(value: string | string[] | undefined) {
 
 export const metadata = {
   title: "Notifications",
-  description: "Private USHCE application updates.",
+  description: "Private SMVIA application updates.",
 }
 
 export default async function NotificationsPage({ searchParams }: Props) {

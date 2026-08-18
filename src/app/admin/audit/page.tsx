@@ -17,7 +17,7 @@ import { requirePlatformAdmin } from "@/lib/admin/session"
 
 export const metadata: Metadata = {
   title: "Audit Log | Platform administration",
-  description: "Privileged USHCE moderation and administration audit events.",
+  description: "Privileged SMVIA moderation and administration audit events.",
 }
 
 const actions = [

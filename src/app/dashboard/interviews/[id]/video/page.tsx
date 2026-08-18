@@ -29,7 +29,7 @@ export default async function InterviewVideoPage({ params }: { params: Promise<{
   const video = await createInterviewVideoToken({
     interviewId: interview.id,
     userId: identity.userId,
-    name: identity.email ?? "USHCE participant",
+    name: identity.email ?? "SMVIA participant",
   })
 
   return <main className="min-h-screen bg-muted/40 p-4 sm:p-8">

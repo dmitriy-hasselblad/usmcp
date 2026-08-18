@@ -37,7 +37,7 @@ export function createInterviewCalendarEvent(interview: CalendarInterview) {
   return [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//USHCE//Interview Calendar//EN",
+    "PRODID:-//SMVIA//Interview Calendar//EN",
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
     "BEGIN:VEVENT",
