@@ -2,6 +2,10 @@ import Link from "next/link"
 import { ArrowRight, Building2, MapPin } from "lucide-react"
 
 import { OrganizationTrustBadge } from "@/components/organizations/organization-trust-badge"
+import {
+  hasOrganizationLogo,
+  OrganizationLogo,
+} from "@/components/organizations/organization-logo"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import type { PublicOrganization } from "@/lib/organizations/public-organizations"
@@ -21,9 +25,15 @@ export function OrganizationCard({
     <Card className="h-full border-border/80 bg-white transition-all hover:-translate-y-0.5 hover:shadow-lg">
       <CardContent className={compact ? "p-5" : "p-6 sm:p-7"}>
         <div className="flex items-start justify-between gap-5">
-          <span className="grid size-12 shrink-0 place-items-center rounded-xl bg-primary/8 text-sm font-bold text-primary">
-            {getInitials(organization.name)}
-          </span>
+          <OrganizationLogo
+            className="relative grid size-12 shrink-0 place-items-center overflow-hidden rounded-xl border border-border bg-white p-1"
+            name={organization.name}
+          />
+          {!hasOrganizationLogo(organization.name) && (
+            <span className="grid size-12 shrink-0 place-items-center rounded-xl bg-primary/8 text-sm font-bold text-primary">
+              {getInitials(organization.name)}
+            </span>
+          )}
           <OrganizationTrustBadge
             isPlatformDemo={organization.isPlatformProfile}
             verificationStatus={organization.verificationStatus}

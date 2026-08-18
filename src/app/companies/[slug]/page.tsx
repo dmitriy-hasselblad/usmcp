@@ -14,6 +14,10 @@ import { ReportContentLink } from "@/components/moderation/report-content-link"
 import { SiteFooter } from "@/components/layout/site-footer"
 import { SiteHeader } from "@/components/layout/site-header"
 import { OrganizationTrustBadge } from "@/components/organizations/organization-trust-badge"
+import {
+  hasOrganizationLogo,
+  OrganizationLogo,
+} from "@/components/organizations/organization-logo"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { getPublicOrganizationBySlug } from "@/lib/organizations/public-organizations"
@@ -76,9 +80,13 @@ export default async function OrganizationPage({
             </Link>
 
             <div className="mt-8 flex flex-col gap-6 sm:flex-row sm:items-start">
-              <span className="grid size-16 shrink-0 place-items-center rounded-2xl bg-primary/8 text-primary">
-                <Building2 className="size-7" />
-              </span>
+              {hasOrganizationLogo(organization.name) ? (
+                <OrganizationLogo name={organization.name} />
+              ) : (
+                <span className="grid size-16 shrink-0 place-items-center rounded-2xl bg-primary/8 text-primary">
+                  <Building2 className="size-7" />
+                </span>
+              )}
               <div className="min-w-0 flex-1">
                 <OrganizationTrustBadge
                   isPlatformDemo={organization.isPlatformProfile}
