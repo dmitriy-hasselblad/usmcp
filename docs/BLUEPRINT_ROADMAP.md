@@ -178,6 +178,7 @@ existing accounts.
 - [ ] Candidate-job matching
 - [ ] Advanced recommendations
 - [ ] Mobile applications
+- [ ] U.S. Spanish localization after English Early Access stabilization
 
 AI is intentionally deferred until the data model, access controls, auditability,
 and core hiring loop are stable.

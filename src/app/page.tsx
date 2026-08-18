@@ -1,300 +1,67 @@
-import Link from "next/link"
 import Image from "next/image"
-import {
-  ArrowRight,
-  BookOpenText,
-  ChevronRight,
-  HeartPulse,
-  ShieldCheck,
-} from "lucide-react"
+import Link from "next/link"
+import { ArrowRight, BadgeCheck, Bookmark, BookOpenText, Building2, DollarSign, GraduationCap, HeartPulse, Landmark, MapPin, Stethoscope } from "lucide-react"
 
-import { JobCard } from "@/components/jobs/job-card"
 import { SiteFooter } from "@/components/layout/site-footer"
 import { SiteHeader } from "@/components/layout/site-header"
 import { HeroSearch } from "@/components/marketing/hero-search"
-import { SectionHeading } from "@/components/marketing/section-heading"
-import { OrganizationCard } from "@/components/organizations/organization-card"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
 import { getPublishedJobs } from "@/lib/jobs/public-jobs"
-import { getPublicOrganizations } from "@/lib/organizations/public-organizations"
-import healthcareTeamImage from "../../public/images/ushce-healthcare-team.png"
-import {
-  benefits,
-  careerPaths,
-  platformPrinciples,
-  popularSpecialties,
-  resources,
-} from "@/lib/marketing-data"
+import type { Job } from "@/lib/marketing-data"
+import { formatNewsDate, getPublishedOrganizationPosts } from "@/lib/news/public-news"
+import heroHealthcareTeam from "../../public/images/ushce-hero-healthcare-team.png"
+import styles from "./homepage.module.css"
+
+const popularSearches = ["Registered Nurse", "Physician", "Medical Assistant", "Radiologic Technologist", "Physical Therapist"]
+
+const audiencePaths = [
+  { title: "Healthcare Professionals", description: "Find your next role, track applications, and grow your career with a profile built for healthcare.", href: "/jobs", action: "Find jobs", icon: Stethoscope },
+  { title: "Employers", description: "Post jobs, discover qualified talent, and manage your hiring workflow in one place.", href: "/for-employers", action: "For employers", icon: Building2 },
+  { title: "Students", description: "Explore careers, residency planning, and practical guidance for your professional journey.", href: "/resources", action: "Explore resources", icon: GraduationCap },
+  { title: "International Candidates", description: "Navigate U.S. opportunities, credentialing, licensing, and visa-support pathways.", href: "/jobs?visa=true", action: "View pathways", icon: Landmark },
+]
+
+function displayPosted(job: Job) {
+  if (!job.publishedAt) return job.posted
+  const days = Math.max(0, Math.floor((Date.now() - new Date(job.publishedAt).getTime()) / 86_400_000))
+  if (days === 0) return "Posted today"
+  if (days === 1) return "Posted 1 day ago"
+  if (days < 31) return `Posted ${days} days ago`
+  return job.posted
+}
+
+function PremiumJobCard({ job }: { job: Job }) {
+  const benefits = job.benefits.slice(0, 3)
+  return (
+    <article className="flex min-h-[29rem] flex-col rounded-[1.7rem] border border-slate-200 bg-white p-6 shadow-[0_12px_34px_rgba(15,35,62,0.045)] transition duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-[0_20px_42px_rgba(15,76,129,0.12)]">
+      <div className="flex items-start justify-between gap-4"><div className="grid size-[4.75rem] place-items-center rounded-2xl bg-blue-50 text-primary"><Building2 className="size-8" /></div><Bookmark className="mt-1 size-5 text-slate-700" aria-hidden="true" /></div>
+      <h3 className="mt-6 text-[1.6rem] font-semibold leading-[1.12] tracking-[-0.045em] text-slate-950"><Link className="transition-colors hover:text-primary" href={`/jobs/${job.slug}`}>{job.title}</Link></h3>
+      <p className="mt-2 text-lg text-slate-500">{job.employer}</p>
+      <div className="mt-6 flex flex-wrap gap-x-5 gap-y-3 text-base text-slate-600"><span className="inline-flex items-center gap-2"><MapPin className="size-5 text-primary" />{job.location}</span><span className="inline-flex items-center gap-2"><DollarSign className="size-5 text-primary" />{job.salary}</span><span className="inline-flex items-center gap-2"><HeartPulse className="size-5 text-primary" />{job.type}</span></div>
+      <div className="mt-6 flex flex-wrap gap-2">{job.source === "live" && !job.isPlatformDemo && <span className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700"><BadgeCheck className="size-4" />Verified employer</span>}{job.featured && <span className="rounded-full bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700">Featured</span>}{job.visaSupport && <span className="rounded-full border border-slate-200 px-3 py-1 text-sm text-slate-600">Visa support</span>}{benefits.map((benefit) => <span className="rounded-full border border-slate-200 px-3 py-1 text-sm text-slate-600" key={benefit}>{benefit}</span>)}</div>
+      <div className="mt-auto flex items-center justify-between gap-4 pt-8 text-base text-slate-500"><span>{displayPosted(job)}</span><Button asChild className="h-11 rounded-xl bg-[#2376d8] px-5 text-base hover:bg-[#1c65ba]"><Link href={`/jobs/${job.slug}`}>View job</Link></Button></div>
+    </article>
+  )
+}
 
 export default async function Home() {
-  const [liveJobs, publicOrganizations] = await Promise.all([
-    getPublishedJobs(),
-    getPublicOrganizations(),
-  ])
-  const featuredMarketplaceJobs = liveJobs.slice(0, 3)
+  const [liveJobs, news] = await Promise.all([getPublishedJobs(), getPublishedOrganizationPosts(undefined, undefined, 1)])
+  const featuredJobs = liveJobs.slice(0, 3)
+  const featuredPosts = news.posts.slice(0, 3)
 
   return (
-    <div className="min-h-dvh overflow-hidden bg-background">
+    <div className="min-h-dvh overflow-hidden bg-white text-slate-950">
       <SiteHeader />
-      <main id="top">
-        <section className="relative isolate overflow-hidden border-b border-border bg-slate-100">
-          <Image
-            alt=""
-            aria-hidden="true"
-            className="-z-20 object-cover object-[58%_center]"
-            fill
-            placeholder="blur"
-            priority
-            sizes="100vw"
-            src={healthcareTeamImage}
-          />
-          <div className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(248,252,255,0.98)_0%,rgba(248,252,255,0.94)_36%,rgba(238,248,248,0.54)_62%,rgba(8,42,70,0.18)_100%)] max-lg:bg-[linear-gradient(180deg,rgba(248,252,255,0.97)_0%,rgba(248,252,255,0.92)_48%,rgba(15,76,129,0.3)_100%)]" />
-          <div className="mx-auto grid max-w-7xl gap-14 px-5 py-16 sm:py-24 lg:grid-cols-[minmax(0,1.08fr)_minmax(23rem,0.92fr)] lg:items-center lg:px-8 lg:py-28">
-            <div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-primary/10 bg-white/80 px-3 py-1.5 text-xs font-semibold text-primary shadow-sm">
-                <HeartPulse className="size-3.5" />
-                Built for U.S. healthcare careers
-              </div>
-              <h1 className="mt-6 max-w-3xl text-5xl font-semibold tracking-[-0.065em] text-foreground sm:text-6xl lg:text-7xl">
-                Build your healthcare career in the U.S.
-              </h1>
-              <p className="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground sm:text-xl">
-                Search focused healthcare opportunities, learn about employers,
-                and plan your next professional step in one clear ecosystem.
-              </p>
-              <div className="mt-8 max-w-2xl">
-                <HeroSearch />
-              </div>
-              <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-muted-foreground">
-                <span className="font-medium text-foreground">Popular:</span>
-                {popularSpecialties.map((specialty) => (
-                  <Link
-                    className="transition-colors hover:text-primary hover:underline"
-                    href={`/jobs?query=${encodeURIComponent(specialty)}`}
-                    key={specialty}
-                  >
-                    {specialty}
-                  </Link>
-                ))}
-              </div>
-            </div>
+      <main className={styles.compact} id="top">
+        <section className="border-b border-slate-200 bg-[linear-gradient(115deg,#f9fcff_0%,#eef8ff_45%,#f7fcff_100%)]"><div className="mx-auto grid max-w-[96rem] gap-12 px-6 py-16 lg:grid-cols-[minmax(0,1.04fr)_minmax(32rem,0.86fr)] lg:items-center lg:px-10 lg:py-24"><div className="max-w-4xl"><div className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-1.5 text-sm font-medium text-[#2376d8]"><Building2 className="size-4" />Explore live healthcare opportunities</div><h1 className="mt-9 max-w-3xl text-5xl font-semibold leading-[0.98] tracking-[-0.075em] text-[#10203a] sm:text-6xl lg:text-[5.35rem]">Build your healthcare career in the U.S.</h1><p className="mt-8 max-w-2xl text-xl leading-9 text-slate-600 sm:text-2xl">Discover healthcare opportunities, connect with organizations, explore career paths, and build your professional future.</p><div className="mt-10 max-w-4xl"><HeroSearch /></div><div className="mt-8 flex flex-wrap items-center gap-2.5 text-base"><span className="mr-1 text-slate-600">Popular:</span>{popularSearches.map((search) => <Link className="rounded-full border border-slate-200 bg-white px-4 py-2 text-slate-800 transition-colors hover:border-blue-300 hover:text-primary" href={`/jobs?query=${encodeURIComponent(search)}`} key={search}>{search}</Link>)}</div></div><div className="relative mx-auto w-full max-w-[40rem] lg:justify-self-end"><div className="absolute -inset-8 -z-10 rounded-[4rem] bg-blue-200/35 blur-3xl" /><div className="relative aspect-[0.98] overflow-hidden rounded-[2.3rem] shadow-[0_32px_70px_rgba(15,76,129,0.20)] lg:aspect-[0.88]"><Image alt="A diverse team of healthcare professionals in a modern clinical setting" className="object-cover object-[63%_center]" fill placeholder="blur" priority sizes="(max-width: 1024px) 100vw, 43vw" src={heroHealthcareTeam} /></div><div className="absolute -bottom-8 -left-4 rounded-[1.5rem] border border-slate-200 bg-white px-7 py-6 shadow-xl sm:left-0"><p className="text-sm text-slate-500">Live opportunities</p><p className="mt-1 text-4xl font-semibold tracking-[-0.05em] text-[#10203a]">{liveJobs.length || "New"}</p><p className="mt-1 text-sm font-medium text-[#2376d8]">Healthcare roles available</p></div></div></div></section>
 
-            <div className="relative mx-auto w-full max-w-lg lg:mx-0 lg:justify-self-end">
-              <div className="absolute -inset-4 -z-10 rounded-[2.5rem] bg-primary/10 blur-2xl" />
-              <div className="rounded-[2rem] border border-white/80 bg-[#0e416c]/95 p-5 shadow-[0_28px_70px_rgba(15,76,129,0.32)] backdrop-blur-sm sm:p-6">
-                <div className="rounded-[1.45rem] border border-white/10 bg-white/[0.07] p-5 text-white backdrop-blur sm:p-6">
-                  <p className="text-sm font-medium text-white/70">
-                    Start with your goal
-                  </p>
-                  <p className="mt-3 text-2xl font-semibold tracking-[-0.045em]">
-                    One ecosystem, built around the healthcare career journey.
-                  </p>
-                  <div className="mt-7 grid gap-3">
-                    {careerPaths.map((path, index) => (
-                      <Link
-                        className="group flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.06] p-3.5 transition-colors hover:bg-white/[0.11]"
-                        href={path.href}
-                        key={path.title}
-                      >
-                        <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-teal-300/15 text-xs font-bold text-teal-100">
-                          0{index + 1}
-                        </span>
-                        <span className="text-sm font-semibold">{path.title}</span>
-                        <ChevronRight className="ml-auto size-4 text-white/50 transition-transform group-hover:translate-x-0.5" />
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-                <div className="mt-4 flex items-center gap-3 px-2 pb-1 text-xs text-blue-100/80">
-                  <ShieldCheck className="size-4 text-teal-200" />
-                  Published jobs are live and ready to explore.
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        <section className="mx-auto max-w-[96rem] px-6 py-24 lg:px-10 lg:py-32"><div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between"><div><h2 className="text-4xl font-semibold tracking-[-0.06em] text-[#10203a] sm:text-5xl">Featured opportunities</h2><p className="mt-4 text-xl text-slate-600">Live roles from healthcare organizations on USHCE.</p></div><Link className="inline-flex items-center gap-3 text-lg font-medium text-slate-950 hover:text-primary" href="/jobs">View all jobs <ArrowRight className="size-5" /></Link></div>{featuredJobs.length ? <div className="mt-12 grid gap-6 xl:grid-cols-3">{featuredJobs.map((job) => <PremiumJobCard job={job} key={job.slug} />)}</div> : <div className="mt-12 rounded-[1.7rem] border border-dashed border-slate-300 bg-slate-50 p-10"><h3 className="text-2xl font-semibold">New opportunities are coming online.</h3><p className="mt-3 max-w-2xl text-lg leading-8 text-slate-600">Approved employer-published roles will appear here as the USHCE marketplace grows.</p><Button asChild className="mt-6 rounded-xl"><Link href="/jobs">Browse all opportunities</Link></Button></div>}</section>
 
-        <section className="border-b border-border bg-white">
-          <div className="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-7 sm:flex-row sm:items-center sm:justify-between lg:px-8">
-            <p className="text-sm font-semibold text-muted-foreground">
-              Designed for the people and organizations behind U.S. healthcare.
-            </p>
-            <div className="flex flex-wrap items-center gap-x-7 gap-y-2 text-sm font-semibold tracking-[-0.02em] text-slate-400">
-              <span>Healthcare professionals</span>
-              <span>Hospitals and clinics</span>
-              <span>Recruiters</span>
-              <span>Residency candidates</span>
-              <span>International professionals</span>
-            </div>
-          </div>
-        </section>
+        <section className="border-y border-slate-200 bg-[#f5f9fd]"><div className="mx-auto max-w-[96rem] px-6 py-24 lg:px-10 lg:py-28"><h2 className="text-4xl font-semibold tracking-[-0.06em] text-[#10203a] sm:text-5xl">One ecosystem, every path</h2><p className="mt-4 max-w-3xl text-xl leading-8 text-slate-600">Whether you care for patients, hire them, or are just starting out, USHCE has a tailored experience.</p><div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4">{audiencePaths.map((path) => { const Icon = path.icon; return <Link className="group rounded-[1.7rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" href={path.href} key={path.title}><article className="flex min-h-[22rem] h-full flex-col rounded-[1.7rem] border border-slate-200 bg-white p-7 transition duration-300 group-hover:-translate-y-1 group-hover:border-blue-200 group-hover:shadow-[0_18px_40px_rgba(15,76,129,0.10)]"><span className="grid size-14 place-items-center rounded-2xl bg-blue-50 text-[#2376d8]"><Icon className="size-7" /></span><h3 className="mt-8 text-2xl font-semibold tracking-[-0.045em] text-[#10203a]">{path.title}</h3><p className="mt-5 text-lg leading-8 text-slate-600">{path.description}</p><span className="mt-auto inline-flex items-center gap-2 pt-8 text-lg font-medium text-[#2376d8]">{path.action}<ArrowRight className="size-5 transition-transform group-hover:translate-x-1" /></span></article></Link> })}</div></div></section>
 
-        <section className="border-y border-border bg-muted/45" id="featured-jobs">
-          <div className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28">
-            <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-              <SectionHeading
-                eyebrow="Live opportunities"
-                title="Explore newly published healthcare opportunities."
-                description="Browse employer-published roles from organizations building their teams on USHCE."
-              />
-              <Button asChild className="h-10 w-fit rounded-xl" variant="outline">
-                <Link href="/jobs">
-                  Browse all roles <ArrowRight />
-                </Link>
-              </Button>
-            </div>
-            {featuredMarketplaceJobs.length ? <div className="mt-10 grid gap-4 lg:grid-cols-3">
-              {featuredMarketplaceJobs.map((job) => <JobCard job={job} key={job.slug} />)}
-            </div> : <Card className="mt-10 border-dashed bg-white"><CardContent className="p-8 text-center"><h2 className="text-xl font-semibold">New opportunities are coming soon.</h2><p className="mt-2 text-sm leading-6 text-muted-foreground">Check back as verified employers publish roles, or explore the product-preview experience from the jobs page.</p><Button asChild className="mt-5" variant="outline"><Link href="/jobs?preview=true">View product previews</Link></Button></CardContent></Card>}
-          </div>
-        </section>
+        <section className="bg-[#10223c] text-white"><div className="mx-auto max-w-[96rem] px-6 py-24 lg:px-10 lg:py-28"><div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between"><div><p className="text-sm font-semibold tracking-[0.14em] text-blue-200 uppercase">USHCE Magazine</p><h2 className="mt-4 text-4xl font-semibold tracking-[-0.06em] sm:text-5xl">Stories shaping healthcare</h2></div><Link className="inline-flex w-fit items-center gap-3 rounded-xl border border-white/30 px-5 py-3 text-lg font-medium transition hover:bg-white/10" href="/news">Read the magazine <ArrowRight className="size-5" /></Link></div>{featuredPosts.length ? <div className="mt-12 grid gap-6 lg:grid-cols-3">{featuredPosts.map((post) => <Link className="group overflow-hidden rounded-[1.7rem] border border-white/10 bg-white/[0.07] transition hover:-translate-y-1 hover:bg-white/[0.11]" href={`/news/${post.slug}`} key={post.id}><article className="h-full"><div className="relative aspect-[1.55] overflow-hidden bg-slate-700">{post.cover_image_path ? <Image alt="" className="object-cover transition duration-500 group-hover:scale-105" fill sizes="(max-width: 1024px) 100vw, 33vw" src={`/news/image/${post.id}`} /> : <BookOpenText className="absolute left-8 top-8 size-10 text-blue-200" />}</div><div className="p-7"><p className="text-sm font-semibold tracking-[0.12em] text-blue-200 uppercase">{post.organizations?.[0]?.name ?? "Healthcare insight"}</p><h3 className="mt-4 text-2xl font-semibold leading-tight tracking-[-0.04em]">{post.title}</h3><p className="mt-5 line-clamp-3 text-lg leading-8 text-slate-300">{post.excerpt}</p><p className="mt-7 text-lg text-slate-300">{formatNewsDate(post.published_at)}</p></div></article></Link>)}</div> : <div className="mt-12 rounded-[1.7rem] border border-white/15 bg-white/[0.06] p-9"><BookOpenText className="size-8 text-blue-200" /><h3 className="mt-5 text-2xl font-semibold">More practical healthcare insights are coming soon.</h3><p className="mt-3 max-w-xl text-lg leading-8 text-slate-300">Published news and insights from the USHCE community will appear here.</p></div>}</div></section>
 
-        <section
-          className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28"
-          id="employers"
-        >
-          <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
-            <div>
-              <SectionHeading
-                eyebrow="Organization profiles"
-                title="Understand the workplace before you apply."
-                description="USHCE employer profiles are designed to bring together culture, care settings, locations, benefits, and open roles."
-              />
-              <Button asChild className="mt-7 h-11 rounded-xl px-5">
-                <Link href="/companies">
-                  Explore healthcare organizations <ArrowRight />
-                </Link>
-              </Button>
-            </div>
-            {publicOrganizations.length > 0 ? (
-              <div className="grid gap-4 sm:grid-cols-2">
-                {publicOrganizations.slice(0, 4).map((organization) => (
-                  <OrganizationCard
-                    compact
-                    key={organization.id}
-                    organization={organization}
-                  />
-                ))}
-              </div>
-            ) : (
-              <Card className="border-border/80 bg-white">
-                <CardContent className="p-7 sm:p-8">
-                  <ShieldCheck className="size-7 text-primary" />
-                  <h2 className="mt-5 text-2xl font-semibold tracking-[-0.04em]">
-                    Live organization profiles are coming online.
-                  </h2>
-                  <p className="mt-3 text-sm leading-6 text-muted-foreground">
-                    Organizations will appear here after they publish an active
-                    healthcare opportunity on USHCE.
-                  </p>
-                </CardContent>
-              </Card>
-            )}
-          </div>
-        </section>
-
-        <section className="bg-primary py-20 text-white lg:py-28" id="why-ushce">
-          <div className="mx-auto max-w-7xl px-5 lg:px-8">
-            <SectionHeading
-              align="center"
-              eyebrow="Why USHCE"
-              title="Healthcare careers need more than a generic job board."
-              description="The platform brings the real structure of healthcare careers and hiring into one secure workflow."
-              tone="inverted"
-            />
-            <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {benefits.map((benefit) => {
-                const Icon = benefit.icon
-                return (
-                  <div
-                    className="rounded-2xl border border-white/15 bg-white/[0.07] p-6"
-                    key={benefit.title}
-                  >
-                    <div className="grid size-10 place-items-center rounded-xl bg-white/10 text-teal-200">
-                      <Icon className="size-5" />
-                    </div>
-                    <h2 className="mt-5 text-lg font-semibold tracking-[-0.03em]">
-                      {benefit.title}
-                    </h2>
-                    <p className="mt-2 text-sm leading-6 text-blue-100/80">
-                      {benefit.description}
-                    </p>
-                  </div>
-                )
-              })}
-            </div>
-          </div>
-        </section>
-
-        <section className="border-b border-border bg-white">
-          <div className="mx-auto grid max-w-7xl gap-px bg-border sm:grid-cols-2 lg:grid-cols-4">
-            {platformPrinciples.map((principle) => (
-              <div className="bg-white px-7 py-9" key={principle.value}>
-                <p className="text-lg font-semibold tracking-[-0.03em] text-primary">
-                  {principle.value}
-                </p>
-                <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                  {principle.label}
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section
-          className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28"
-          id="resources"
-        >
-          <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-            <SectionHeading
-              eyebrow="Career resources"
-              title="Practical guidance for the road ahead."
-              description="Explore focused introductions to residency planning, employer research, and international healthcare careers."
-            />
-            <Button asChild className="h-10 w-fit rounded-xl" variant="outline">
-              <Link href="/resources">
-                View all resources <ArrowRight />
-              </Link>
-            </Button>
-          </div>
-          <div className="mt-10 grid gap-5 lg:grid-cols-3">
-            {resources.map((resource) => (
-              <Link
-                className="group"
-                href={`/resources#${resource.slug}`}
-                key={resource.slug}
-              >
-                <Card className="h-full overflow-hidden border-border/80 bg-white transition-all group-hover:-translate-y-1 group-hover:shadow-xl">
-                  <div className={`h-40 bg-gradient-to-br ${resource.color} p-5`}>
-                    <span className="grid size-10 place-items-center rounded-xl border border-white/80 bg-white/80 text-primary shadow-sm">
-                      <BookOpenText className="size-5" />
-                    </span>
-                  </div>
-                  <CardContent className="p-6">
-                    <p className="text-xs font-bold tracking-[0.12em] text-primary uppercase">
-                      {resource.category}
-                    </p>
-                    <h2 className="mt-3 text-xl font-semibold tracking-[-0.04em]">
-                      {resource.title}
-                    </h2>
-                    <p className="mt-3 text-sm leading-6 text-muted-foreground">
-                      {resource.description}
-                    </p>
-                    <p className="mt-4 text-sm text-muted-foreground">
-                      {resource.readTime}
-                    </p>
-                    <span className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-primary">
-                      Read preview
-                      <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-                    </span>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
-          </div>
-        </section>
-
+        <section className="mx-auto max-w-[96rem] px-6 py-20 lg:px-10 lg:py-28"><div className="rounded-[2rem] bg-[linear-gradient(115deg,#1671dc,#4c96e8)] px-7 py-16 text-center text-white shadow-[0_28px_55px_rgba(25,112,214,0.24)] sm:px-14 sm:py-20"><h2 className="mx-auto max-w-3xl text-4xl font-semibold leading-tight tracking-[-0.055em] sm:text-6xl">Your next chapter in healthcare starts here</h2><p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-blue-50 sm:text-xl">Find a role that fits your path, or create your professional account to apply securely.</p><div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row"><Button asChild className="h-13 rounded-xl bg-white px-7 text-lg text-[#155da9] hover:bg-blue-50"><Link href="/jobs">Find Jobs</Link></Button><Button asChild className="h-13 rounded-xl border-white/35 bg-white/10 px-7 text-lg text-white hover:bg-white/15" variant="outline"><Link href="/sign-up">Create your profile</Link></Button></div></div></section>
       </main>
       <SiteFooter />
     </div>

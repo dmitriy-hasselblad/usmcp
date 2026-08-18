@@ -170,6 +170,11 @@ roadmap:
 - international marketplace
 - advanced analytics
 - full Resume/CV Builder
+- U.S. Spanish localization: begin only after the English Early Access
+  experience is stable. Deliver `/es` routes incrementally (public pages,
+  then account journeys), with professionally reviewed U.S. Spanish for
+  healthcare, legal, and application content rather than automatic-only
+  translation.
 
 ## Immediate next ticket
 
