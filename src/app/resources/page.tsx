@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Image from "next/image"
 import Link from "next/link"
 import { ArrowRight, BookOpenText, GraduationCap, Globe2 } from "lucide-react"
 
@@ -8,6 +9,21 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { resources } from "@/lib/marketing-data"
+
+const resourceImages: Record<string, { src: string; alt: string }> = {
+  "residency-application-timeline": {
+    src: "/images/resources/residency-application-timeline.png",
+    alt: "Healthcare professional planning a residency application timeline",
+  },
+  "choosing-a-healthcare-employer": {
+    src: "/images/resources/choosing-a-healthcare-employer.png",
+    alt: "Healthcare professionals discussing career opportunities",
+  },
+  "visa-supporting-healthcare-roles": {
+    src: "/images/resources/visa-supporting-healthcare-roles.png",
+    alt: "Healthcare professional reviewing international career credentials",
+  },
+}
 
 export const metadata: Metadata = {
   title: "Healthcare Career Resources",
@@ -39,8 +55,16 @@ export default function ResourcesPage() {
             {resources.map((resource) => (
               <article id={resource.slug} key={resource.slug}>
                 <Card className="h-full scroll-mt-28 overflow-hidden border-border/80 bg-white">
-                  <div className={`h-44 bg-gradient-to-br ${resource.color} p-6`}>
-                    <span className="grid size-11 place-items-center rounded-xl border border-white/80 bg-white/80 text-primary shadow-sm">
+                  <div className="relative h-44 overflow-hidden bg-muted">
+                    <Image
+                      alt={resourceImages[resource.slug].alt}
+                      className="object-cover"
+                      fill
+                      sizes="(min-width: 1024px) 33vw, 100vw"
+                      src={resourceImages[resource.slug].src}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/25 via-transparent to-white/5" />
+                    <span className="absolute left-6 top-6 grid size-11 place-items-center rounded-xl border border-white/80 bg-white/90 text-primary shadow-sm">
                       <BookOpenText className="size-5" />
                     </span>
                   </div>
