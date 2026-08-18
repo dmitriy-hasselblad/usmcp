@@ -10,7 +10,7 @@ import { isAuthEnabled } from "@/lib/supabase/env"
 
 export const metadata: Metadata = {
   title: "Reset Password",
-  description: "Request a password reset link for your SMVIA account.",
+  description: "Request a password reset link for your SM VIA account.",
 }
 
 type SearchParams = Promise<{

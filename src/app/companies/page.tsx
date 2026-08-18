@@ -12,7 +12,7 @@ import { getPublicOrganizations } from "@/lib/organizations/public-organizations
 export const metadata: Metadata = {
   title: "Healthcare Organizations",
   description:
-    "Explore U.S. healthcare organizations with active opportunities on SMVIA.",
+    "Explore U.S. healthcare organizations with active opportunities on SM VIA.",
 }
 
 export default async function CompaniesPage() {

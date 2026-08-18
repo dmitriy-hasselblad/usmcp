@@ -6,7 +6,7 @@ import { useCookieConsent } from "@/components/privacy/cookie-consent-provider"
 
 /**
  * Keeps optional analytics disabled until the visitor has explicitly allowed
- * the Analytics category in the SMVIA privacy choices.
+ * the Analytics category in the SM VIA privacy choices.
  */
 export function ConsentAwareAnalytics() {
   const { preferences } = useCookieConsent()

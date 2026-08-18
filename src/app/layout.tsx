@@ -21,22 +21,22 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: getSiteUrl(),
   title: {
-    default: "SMVIA | The U.S. Healthcare Career Ecosystem",
-    template: "%s | SMVIA",
+    default: "SM VIA | The U.S. Healthcare Career Ecosystem",
+    template: "%s | SM VIA",
   },
   description:
-    "SMVIA connects healthcare professionals with meaningful opportunities, trusted organizations, and practical career guidance.",
+    "SM VIA connects healthcare professionals with meaningful opportunities, trusted organizations, and practical career guidance.",
   openGraph: {
     type: "website",
     locale: "en_US",
-    siteName: "SMVIA",
-    title: "SMVIA | The U.S. Healthcare Career Ecosystem",
+    siteName: "SM VIA",
+    title: "SM VIA | The U.S. Healthcare Career Ecosystem",
     description:
       "Healthcare opportunities, trusted organizations, and practical career guidance for the United States.",
   },
   twitter: {
     card: "summary",
-    title: "SMVIA | The U.S. Healthcare Career Ecosystem",
+    title: "SM VIA | The U.S. Healthcare Career Ecosystem",
     description:
       "Healthcare opportunities, trusted organizations, and practical career guidance for the United States.",
   },

@@ -18,7 +18,7 @@ import { requirePlatformAdmin } from "@/lib/admin/session"
 
 export const metadata: Metadata = {
   title: "Organizations | Platform administration",
-  description: "Read-only SMVIA organization directory for platform administrators.",
+  description: "Read-only SM VIA organization directory for platform administrators.",
 }
 
 type OrganizationsPageProps = {

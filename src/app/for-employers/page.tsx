@@ -17,7 +17,7 @@ import { Card, CardContent } from "@/components/ui/card"
 export const metadata: Metadata = {
   title: "For Healthcare Employers",
   description:
-    "Use SMVIA Early Access tools to publish healthcare opportunities, review applicants, and coordinate hiring.",
+    "Use SM VIA Early Access tools to publish healthcare opportunities, review applicants, and coordinate hiring.",
 }
 
 const employerFeatures = [
@@ -62,7 +62,7 @@ export default function ForEmployersPage() {
                 Build a stronger healthcare hiring experience.
               </h1>
               <p className="mt-6 max-w-2xl text-lg leading-8 text-blue-100/85">
-                SMVIA supports hospitals, clinics, medical groups, academic
+                SM VIA supports hospitals, clinics, medical groups, academic
                 centers, staffing teams, and healthcare recruiters with a
                 secure, healthcare-focused hiring workspace.
               </p>

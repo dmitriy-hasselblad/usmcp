@@ -18,7 +18,7 @@ export default async function WorkspaceUnavailablePage() {
     <div className="min-h-dvh bg-muted/35">
       <header className="border-b border-border bg-white">
         <div className="mx-auto flex h-[4.5rem] max-w-5xl items-center px-5">
-          <Link aria-label="SMVIA home" href="/">
+          <Link aria-label="SM VIA home" href="/">
             <SmviaLogo />
           </Link>
         </div>

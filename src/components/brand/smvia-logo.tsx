@@ -12,7 +12,7 @@ export function SmviaLogo({ className, compact = false }: SmviaLogoProps) {
     <span className={cn("inline-flex items-center gap-2.5", className)}>
       <span className="relative grid h-10 w-16 shrink-0 place-items-center overflow-hidden rounded-lg border border-border bg-white shadow-sm">
         <Image
-          alt="SMVIA"
+          alt="SM VIA"
           className="scale-[1.55] object-contain"
           fill
           priority
@@ -23,7 +23,7 @@ export function SmviaLogo({ className, compact = false }: SmviaLogoProps) {
       {!compact && (
         <span className="leading-none">
           <span className="block text-base font-bold tracking-[-0.04em] text-foreground">
-            SMVIA
+            SM VIA
           </span>
           <span className="mt-1 block text-[9px] font-bold tracking-[0.12em] text-muted-foreground uppercase">
             Your path. Our purpose.

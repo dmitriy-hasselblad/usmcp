@@ -37,7 +37,7 @@ export function AdminShell({
     <div className="min-h-dvh bg-muted/35">
       <header className="border-b border-border bg-white">
         <div className="mx-auto flex h-[4.5rem] max-w-[90rem] items-center justify-between px-5 lg:px-8">
-          <Link aria-label="SMVIA home" href="/">
+          <Link aria-label="SM VIA home" href="/">
             <SmviaLogo />
           </Link>
           <div className="flex items-center gap-3">

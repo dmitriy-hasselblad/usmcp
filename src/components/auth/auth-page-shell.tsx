@@ -27,7 +27,7 @@ export function AuthPageShell({
     <main className="grid min-h-dvh place-items-center bg-[linear-gradient(135deg,#f8fcff_0%,#edf8f6_50%,#f6fbff_100%)] px-5 py-10">
       <div className={cn("w-full", wide ? "max-w-2xl" : "max-w-md")}>
         <div className="mb-7 flex items-center justify-between">
-          <Link aria-label="SMVIA home" href="/">
+          <Link aria-label="SM VIA home" href="/">
             <SmviaLogo />
           </Link>
           <Link

@@ -12,7 +12,7 @@ import { resources } from "@/lib/marketing-data"
 export const metadata: Metadata = {
   title: "Healthcare Career Resources",
   description:
-            "Explore the growing SMVIA library for residency planning, employer research, and international healthcare careers.",
+            "Explore the growing SM VIA library for residency planning, employer research, and international healthcare careers.",
 }
 
 export default function ResourcesPage() {
@@ -27,7 +27,7 @@ export default function ResourcesPage() {
               Practical guidance for healthcare career decisions.
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground">
-              SMVIA is building clear, U.S.-focused guidance for professionals,
+              SM VIA is building clear, U.S.-focused guidance for professionals,
               residency candidates, and international applicants. New practical
               resources will be added throughout Early Access.
             </p>
@@ -97,7 +97,7 @@ export default function ResourcesPage() {
             Ready to explore opportunities?
           </h2>
           <p className="mt-3 text-muted-foreground">
-            Try the first working version of the SMVIA healthcare job search.
+            Try the first working version of the SM VIA healthcare job search.
           </p>
           <Button asChild className="mt-6 h-11 rounded-xl px-5">
             <Link href="/jobs">

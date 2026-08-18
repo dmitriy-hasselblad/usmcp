@@ -26,7 +26,7 @@ import { requireEmployerWorkspace } from "@/lib/employer/session"
 
 export const metadata: Metadata = {
   title: "Applications",
-  description: "Manage healthcare job applications through SMVIA.",
+  description: "Manage healthcare job applications through SM VIA.",
 }
 
 type SearchParams = Promise<{

@@ -13,7 +13,7 @@ import { requirePlatformAdmin } from "@/lib/admin/session"
 
 export const metadata: Metadata = {
   title: "Platform administration",
-  description: "Secure SMVIA platform administration workspace.",
+  description: "Secure SM VIA platform administration workspace.",
 }
 
 export default async function AdminOverviewPage() {

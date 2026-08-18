@@ -108,7 +108,7 @@ export function toMarketplaceJob(row: PublishedJobRow): Job {
     }).format(new Date(row.published_at))}`,
     summary:
       row.description?.trim() ||
-      "This employer has published a new healthcare opportunity on SMVIA.",
+      "This employer has published a new healthcare opportunity on SM VIA.",
     responsibilities: [],
     qualifications: [],
     benefits: [],

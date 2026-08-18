@@ -26,7 +26,7 @@ export function LegalPageShell({
               href="/"
             >
               <ArrowLeft className="size-4" />
-              Back to SMVIA
+              Back to SM VIA
             </Link>
             <div className="mt-8 flex items-center gap-2 text-xs font-bold tracking-[0.14em] text-primary uppercase">
               <ShieldCheck className="size-4" />

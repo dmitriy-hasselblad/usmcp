@@ -4,7 +4,7 @@ import { SmviaLogo } from "@/components/brand/smvia-logo"
 import { PrivacyChoicesButton } from "@/components/privacy/privacy-choices-button"
 
 const footerLinks = [
-  { href: "/#why-smvia", label: "About SMVIA" },
+  { href: "/#why-smvia", label: "About SM VIA" },
   { href: "/jobs", label: "Find jobs" },
   { href: "/companies", label: "Organizations" },
   { href: "/verification", label: "Verification" },
@@ -42,7 +42,7 @@ export function SiteFooter() {
       </div>
       <div className="border-t border-border">
         <div className="mx-auto flex max-w-7xl flex-col gap-2 px-5 py-5 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between lg:px-8">
-          <span>© {new Date().getFullYear()} SMVIA. All rights reserved.</span>
+          <span>© {new Date().getFullYear()} SM VIA. All rights reserved.</span>
           <span>The U.S. Healthcare Career Ecosystem</span>
         </div>
       </div>

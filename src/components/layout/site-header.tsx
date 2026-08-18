@@ -55,7 +55,7 @@ export async function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-border/80 bg-background/85 backdrop-blur-xl">
       <div className="mx-auto flex h-[4.5rem] max-w-7xl items-center justify-between px-5 lg:px-8">
-        <Link href="/" aria-label="SMVIA home">
+        <Link href="/" aria-label="SM VIA home">
           <SmviaLogo />
         </Link>
 
@@ -122,7 +122,7 @@ export async function SiteHeader() {
                 <SmviaLogo />
               </SheetTitle>
               <SheetDescription className="sr-only">
-                Main navigation for the SMVIA website.
+                Main navigation for the SM VIA website.
               </SheetDescription>
             </SheetHeader>
             <nav className="flex flex-col gap-1 px-4 py-5" aria-label="Mobile navigation">
@@ -148,7 +148,7 @@ export async function SiteHeader() {
                         Signed in as
                       </p>
                       <p className="truncate text-sm font-semibold">
-                        {identity.email ?? "SMVIA member"}
+                        {identity.email ?? "SM VIA member"}
                       </p>
                     </div>
                   </div>

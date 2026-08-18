@@ -63,7 +63,7 @@ import type {
 
 export const metadata: Metadata = {
   title: "Application details",
-  description: "Review a healthcare job application in SMVIA.",
+  description: "Review a healthcare job application in SM VIA.",
 }
 
 type ApplicationPageProps = {

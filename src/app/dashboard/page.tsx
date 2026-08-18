@@ -29,7 +29,7 @@ import { recommendJobs } from "@/lib/jobs/recommendations"
 
 export const metadata: Metadata = {
   title: "Dashboard",
-  description: "Your secure SMVIA account workspace.",
+  description: "Your secure SM VIA account workspace.",
 }
 
 export default async function DashboardPage() {
