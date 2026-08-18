@@ -78,7 +78,7 @@ export default function CookieNoticePage() {
             process.
           </li>
           <li>
-            <strong>ushce_cookie_consent</strong> stores your category choices,
+            <strong>smvia_cookie_consent</strong> stores your category choices,
             the consent version, and the time of your decision for up to 180
             days.
           </li>
