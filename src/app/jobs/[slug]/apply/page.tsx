@@ -26,7 +26,7 @@ import { getPublishedJobBySlug } from "@/lib/jobs/public-jobs"
 
 export const metadata: Metadata = {
   title: "Apply for a healthcare job",
-  description: "Submit a secure job application through USHCE.",
+  description: "Submit a secure job application through SM VIA.",
 }
 
 type ApplyPageProps = {

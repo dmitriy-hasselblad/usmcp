@@ -19,7 +19,7 @@ export default async function NewsPage({ searchParams }: { searchParams: Promise
   const error = Array.isArray(params.error) ? params.error[0] : params.error
   const managesAllPosts = canManageOrganization(workspace.membership.role)
   return <EmployerDashboardShell active="news" email={workspace.email} organizationName={workspace.organization.name}>
-    <div className="flex flex-wrap items-start justify-between gap-4"><EmployerPageHeader eyebrow="Organization publishing" title="News & insights" description="Share organization updates, healthcare insights, and stories with the USHCE community." />{canManageJobs(workspace.membership.role) && <Button asChild><Link href="/dashboard/news/new">Create article</Link></Button>}</div>
+    <div className="flex flex-wrap items-start justify-between gap-4"><EmployerPageHeader eyebrow="Organization publishing" title="News & insights" description="Share organization updates, healthcare insights, and stories with the SM VIA community." />{canManageJobs(workspace.membership.role) && <Button asChild><Link href="/dashboard/news/new">Create article</Link></Button>}</div>
       <div className="mt-8"><AuthNotice error={error} success={success} />{posts?.length ? <div className="grid gap-4">{posts.map(post => {
         const canManagePost = post.author_id === workspace.userId || managesAllPosts
         const isBlocked = post.moderation_status === "blocked"

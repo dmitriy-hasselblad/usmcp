@@ -55,7 +55,7 @@ import {
 
 export const metadata: Metadata = {
   title: "Professional profile",
-  description: "Manage your USHCE professional profile and private documents.",
+  description: "Manage your SM VIA professional profile and private documents.",
 }
 
 type SearchParams = Promise<{

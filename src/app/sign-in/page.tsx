@@ -12,7 +12,7 @@ import { createClient } from "@/lib/supabase/server"
 
 export const metadata: Metadata = {
   title: "Sign In",
-  description: "Sign in to your USHCE account.",
+  description: "Sign in to your SM VIA account.",
 }
 
 type SignInSearchParams = Promise<{
@@ -51,13 +51,13 @@ export default async function SignInPage({
       eyebrow="Welcome back"
       footer={
         <p>
-          New to USHCE?{" "}
+          New to SM VIA?{" "}
           <Link className="font-semibold text-primary hover:underline" href="/sign-up">
             Create an account
           </Link>
         </p>
       }
-      title="Sign in to USHCE"
+      title="Sign in to SM VIA"
     >
       <AuthNotice error={error} success={success} />
       {!configured && !error && (

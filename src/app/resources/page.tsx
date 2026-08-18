@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Image from "next/image"
 import Link from "next/link"
 import { ArrowRight, BookOpenText, GraduationCap, Globe2 } from "lucide-react"
 
@@ -9,10 +10,25 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { resources } from "@/lib/marketing-data"
 
+const resourceImages: Record<string, { src: string; alt: string }> = {
+  "residency-application-timeline": {
+    src: "/images/resources/residency-application-timeline.png",
+    alt: "Healthcare professional planning a residency application timeline",
+  },
+  "choosing-a-healthcare-employer": {
+    src: "/images/resources/choosing-a-healthcare-employer.png",
+    alt: "Healthcare professionals discussing career opportunities",
+  },
+  "visa-supporting-healthcare-roles": {
+    src: "/images/resources/visa-supporting-healthcare-roles.png",
+    alt: "Healthcare professional reviewing international career credentials",
+  },
+}
+
 export const metadata: Metadata = {
   title: "Healthcare Career Resources",
   description:
-            "Explore the growing USHCE library for residency planning, employer research, and international healthcare careers.",
+            "Explore the growing SM VIA library for residency planning, employer research, and international healthcare careers.",
 }
 
 export default function ResourcesPage() {
@@ -27,7 +43,7 @@ export default function ResourcesPage() {
               Practical guidance for healthcare career decisions.
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground">
-              USHCE is building clear, U.S.-focused guidance for professionals,
+              SM VIA is building clear, U.S.-focused guidance for professionals,
               residency candidates, and international applicants. New practical
               resources will be added throughout Early Access.
             </p>
@@ -39,8 +55,16 @@ export default function ResourcesPage() {
             {resources.map((resource) => (
               <article id={resource.slug} key={resource.slug}>
                 <Card className="h-full scroll-mt-28 overflow-hidden border-border/80 bg-white">
-                  <div className={`h-44 bg-gradient-to-br ${resource.color} p-6`}>
-                    <span className="grid size-11 place-items-center rounded-xl border border-white/80 bg-white/80 text-primary shadow-sm">
+                  <div className="relative h-44 overflow-hidden bg-muted">
+                    <Image
+                      alt={resourceImages[resource.slug].alt}
+                      className="object-cover"
+                      fill
+                      sizes="(min-width: 1024px) 33vw, 100vw"
+                      src={resourceImages[resource.slug].src}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/25 via-transparent to-white/5" />
+                    <span className="absolute left-6 top-6 grid size-11 place-items-center rounded-xl border border-white/80 bg-white/90 text-primary shadow-sm">
                       <BookOpenText className="size-5" />
                     </span>
                   </div>
@@ -97,7 +121,7 @@ export default function ResourcesPage() {
             Ready to explore opportunities?
           </h2>
           <p className="mt-3 text-muted-foreground">
-            Try the first working version of the USHCE healthcare job search.
+            Try the first working version of the SM VIA healthcare job search.
           </p>
           <Button asChild className="mt-6 h-11 rounded-xl px-5">
             <Link href="/jobs">

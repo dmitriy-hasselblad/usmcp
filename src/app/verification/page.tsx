@@ -10,7 +10,7 @@ import { Card, CardContent } from "@/components/ui/card"
 
 export const metadata: Metadata = {
   title: "Organization verification",
-  description: "Learn what the USHCE Verified organization badge means during Early Access.",
+  description: "Learn what the SM VIA Verified organization badge means during Early Access.",
 }
 
 const reviewSteps = [
@@ -30,10 +30,10 @@ export default function VerificationPage() {
               Verified organization
             </Badge>
             <h1 className="mt-5 text-4xl font-semibold tracking-[-0.055em] sm:text-5xl">
-              What verification means on USHCE.
+              What verification means on SM VIA.
             </h1>
             <p className="mt-5 max-w-3xl text-lg leading-8 text-muted-foreground">
-              During Early Access, this badge means USHCE completed a manual review of an organization&apos;s identity and public information before displaying the verified signal.
+              During Early Access, this badge means SM VIA completed a manual review of an organization&apos;s identity and public information before displaying the verified signal.
             </p>
           </div>
         </section>
@@ -42,7 +42,7 @@ export default function VerificationPage() {
           <Card className="bg-white">
             <CardContent className="p-7 sm:p-8">
               <ShieldCheck className="size-7 text-primary" />
-              <h2 className="mt-5 text-2xl font-semibold">What USHCE reviews</h2>
+              <h2 className="mt-5 text-2xl font-semibold">What SM VIA reviews</h2>
               <ul className="mt-5 grid gap-4 text-sm leading-6 text-muted-foreground">
                 {reviewSteps.map((step) => (
                   <li className="flex gap-3" key={step}>
@@ -67,7 +67,7 @@ export default function VerificationPage() {
             <CardContent className="p-7 sm:p-8">
               <h2 className="text-2xl font-semibold">Unverified organizations</h2>
               <p className="mt-4 leading-7 text-muted-foreground">
-                An organization without this badge is shown neutrally. It may be new to USHCE, awaiting review, or not yet eligible for verification. The absence of a badge is not a negative rating.
+                An organization without this badge is shown neutrally. It may be new to SM VIA, awaiting review, or not yet eligible for verification. The absence of a badge is not a negative rating.
               </p>
             </CardContent>
           </Card>

@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { Bell, LayoutDashboard, LogOut, Menu, UserRound } from "lucide-react"
 
-import { UshceLogo } from "@/components/brand/ushce-logo"
+import { SmviaLogo } from "@/components/brand/smvia-logo"
 import { Button } from "@/components/ui/button"
 import {
   Sheet,
@@ -55,8 +55,8 @@ export async function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-border/80 bg-background/85 backdrop-blur-xl">
       <div className="mx-auto flex h-[4.5rem] max-w-7xl items-center justify-between px-5 lg:px-8">
-        <Link href="/" aria-label="USHCE home">
-          <UshceLogo />
+        <Link href="/" aria-label="SM VIA home">
+          <SmviaLogo />
         </Link>
 
         <nav className="hidden items-center gap-6 lg:flex" aria-label="Primary navigation">
@@ -119,10 +119,10 @@ export async function SiteHeader() {
           <SheetContent className="w-[min(22rem,90vw)] p-0" side="right">
             <SheetHeader className="border-b border-border px-6 py-5">
               <SheetTitle className="text-left">
-                <UshceLogo />
+                <SmviaLogo />
               </SheetTitle>
               <SheetDescription className="sr-only">
-                Main navigation for the USHCE website.
+                Main navigation for the SM VIA website.
               </SheetDescription>
             </SheetHeader>
             <nav className="flex flex-col gap-1 px-4 py-5" aria-label="Mobile navigation">
@@ -148,7 +148,7 @@ export async function SiteHeader() {
                         Signed in as
                       </p>
                       <p className="truncate text-sm font-semibold">
-                        {identity.email ?? "USHCE member"}
+                        {identity.email ?? "SM VIA member"}
                       </p>
                     </div>
                   </div>

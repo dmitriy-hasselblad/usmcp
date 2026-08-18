@@ -25,7 +25,7 @@ import { requireEmployerWorkspace } from "@/lib/employer/session"
 
 export const metadata: Metadata = {
   title: "Create Job",
-  description: "Create a job draft for your USHCE organization.",
+  description: "Create a job draft for your SM VIA organization.",
 }
 
 type SearchParams = Promise<{

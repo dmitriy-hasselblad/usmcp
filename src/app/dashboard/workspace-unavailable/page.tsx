@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { Building2 } from "lucide-react"
 
-import { UshceLogo } from "@/components/brand/ushce-logo"
+import { SmviaLogo } from "@/components/brand/smvia-logo"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { requireIdentity } from "@/lib/auth/session"
@@ -18,8 +18,8 @@ export default async function WorkspaceUnavailablePage() {
     <div className="min-h-dvh bg-muted/35">
       <header className="border-b border-border bg-white">
         <div className="mx-auto flex h-[4.5rem] max-w-5xl items-center px-5">
-          <Link aria-label="USHCE home" href="/">
-            <UshceLogo />
+          <Link aria-label="SM VIA home" href="/">
+            <SmviaLogo />
           </Link>
         </div>
       </header>

@@ -215,7 +215,7 @@ export default async function JobPage({ params }: JobPageProps) {
                 </h2>
                 <p className="mt-2 text-sm leading-6 text-muted-foreground">
                   {isLive
-                    ? "This opportunity was published directly by the employer. Submit your profile and application securely through USHCE."
+                    ? "This opportunity was published directly by the employer. Submit your profile and application securely through SM VIA."
                     : job.isPlatformDemo
                       ? "This platform demonstration is not an active vacancy. Applications are disabled."
                       : "This sample listing demonstrates the planned application experience. It is not an active vacancy."}

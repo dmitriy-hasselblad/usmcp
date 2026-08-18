@@ -194,7 +194,7 @@ function CookieConsentBanner({
               Your privacy choices
             </h2>
             <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
-              We use essential cookies to keep USHCE secure and enable account
+              We use essential cookies to keep SM VIA secure and enable account
               features. With your permission, we may also use optional cookies
               to understand site usage and improve your experience.{" "}
               <Link
@@ -275,7 +275,7 @@ function CookiePreferencesSheet({
             Cookie preferences
           </SheetTitle>
           <SheetDescription className="pt-2 text-left leading-6">
-            Choose which optional cookies USHCE may use. Essential cookies
+            Choose which optional cookies SM VIA may use. Essential cookies
             remain active because they provide security and account access.
           </SheetDescription>
         </SheetHeader>
@@ -310,7 +310,7 @@ function CookiePreferencesSheet({
             description={
               globalPrivacyControlEnabled
                 ? "Disabled because your browser sent a Global Privacy Control signal."
-                : "Would support targeted advertising or cross-context data sharing. USHCE does not currently use these cookies."
+                : "Would support targeted advertising or cross-context data sharing. SM VIA does not currently use these cookies."
             }
             disabled={globalPrivacyControlEnabled}
             label="Advertising and targeting"

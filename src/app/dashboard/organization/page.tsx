@@ -19,7 +19,7 @@ import { requireEmployerWorkspace } from "@/lib/employer/session"
 
 export const metadata: Metadata = {
   title: "Organization",
-  description: "Manage your USHCE employer organization profile.",
+  description: "Manage your SM VIA employer organization profile.",
 }
 
 type SearchParams = Promise<{

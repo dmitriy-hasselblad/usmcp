@@ -18,7 +18,7 @@ import { requirePlatformAdmin } from "@/lib/admin/session"
 
 export const metadata: Metadata = {
   title: "Users | Platform administration",
-  description: "Read-only USHCE user directory for platform administrators.",
+  description: "Read-only SM VIA user directory for platform administrators.",
 }
 
 type UsersPageProps = {

@@ -7,18 +7,18 @@ import { PrivacyChoicesButton } from "@/components/privacy/privacy-choices-butto
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description:
-    "Learn how USHCE collects, uses, protects, and provides choices for personal information.",
+    "Learn how SM VIA collects, uses, protects, and provides choices for personal information.",
 }
 
 export default function PrivacyPolicyPage() {
   return (
     <LegalPageShell
-      description="This policy describes the personal information USHCE handles while building a secure career and hiring ecosystem for U.S. healthcare."
+      description="This policy describes the personal information SM VIA handles while building a secure career and hiring ecosystem for U.S. healthcare."
       lastUpdated="July 29, 2026"
       title="Privacy Policy"
     >
       <aside className="rounded-2xl border border-primary/15 bg-primary/5 p-5 text-sm leading-6">
-        USHCE is currently a development-stage platform. This policy describes
+        SM VIA is currently a development-stage platform. This policy describes
         the present product and its intended privacy controls. A verified
         privacy contact, legal entity details, and formal request channel will
         be published before commercial launch.
@@ -26,7 +26,7 @@ export default function PrivacyPolicyPage() {
 
       <section>
         <h2>1. Information we collect</h2>
-        <p>Depending on how you use USHCE, we may collect:</p>
+        <p>Depending on how you use SM VIA, we may collect:</p>
         <ul>
           <li>
             account information, such as your name, email address, account type,
@@ -86,12 +86,12 @@ export default function PrivacyPolicyPage() {
           </li>
           <li>
             when required by law or reasonably necessary to protect users,
-            USHCE, or the public; and
+            SM VIA, or the public; and
           </li>
           <li>as part of a merger, financing, or business transfer.</li>
         </ul>
         <p>
-          USHCE does not currently sell personal information or share it for
+          SM VIA does not currently sell personal information or share it for
           cross-context behavioral advertising. If that practice changes, we
           will update this policy and provide the legally required notice and
           opt-out controls before the change takes effect.
@@ -108,7 +108,7 @@ export default function PrivacyPolicyPage() {
           uses of sensitive personal information.
         </p>
         <p>
-          USHCE will not discriminate against a user for exercising an
+          SM VIA will not discriminate against a user for exercising an
           applicable privacy right. Identity verification may be required
           before a request is completed. Authorized-agent requests will be
           handled where required by law.
@@ -125,7 +125,7 @@ export default function PrivacyPolicyPage() {
         </p>
         <PrivacyChoicesButton className="inline-flex rounded-xl border border-border bg-white px-4 py-2.5 text-sm font-semibold text-foreground shadow-sm hover:bg-muted" />
         <p>
-          USHCE recognizes supported Global Privacy Control signals for
+          SM VIA recognizes supported Global Privacy Control signals for
           advertising, sale, and sharing opt-outs.
         </p>
       </section>
@@ -144,7 +144,7 @@ export default function PrivacyPolicyPage() {
       <section>
         <h2>7. Security</h2>
         <p>
-          USHCE uses administrative, technical, and organizational safeguards
+          SM VIA uses administrative, technical, and organizational safeguards
           designed to protect personal information. No online system is
           completely secure, so users should use a strong password and protect
           access to their email and devices.
@@ -154,7 +154,7 @@ export default function PrivacyPolicyPage() {
       <section>
         <h2>8. Healthcare and patient information</h2>
         <p>
-          USHCE is a career and hiring platform, not a patient-care or medical
+          SM VIA is a career and hiring platform, not a patient-care or medical
           records service. Do not upload patient records, treatment information,
           or other protected patient information to profiles, job postings,
           applications, or messages.
@@ -164,7 +164,7 @@ export default function PrivacyPolicyPage() {
       <section>
         <h2>9. Children</h2>
         <p>
-          USHCE is intended for healthcare professionals, adult students,
+          SM VIA is intended for healthcare professionals, adult students,
           employers, and recruiters. It is not directed to children under 13,
           and we do not knowingly collect personal information from children
           under 13.
@@ -174,7 +174,7 @@ export default function PrivacyPolicyPage() {
       <section>
         <h2>10. Changes to this policy</h2>
         <p>
-          We may update this policy as USHCE develops. The “Last updated” date
+          We may update this policy as SM VIA develops. The “Last updated” date
           shows when the current version took effect. We will provide additional
           notice when a material change requires it.
         </p>

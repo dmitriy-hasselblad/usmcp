@@ -18,7 +18,7 @@ import { requireIdentity } from "@/lib/auth/session"
 
 export const metadata: Metadata = {
   title: "Complete Your Profile",
-  description: "Complete your role-aware USHCE account profile.",
+  description: "Complete your role-aware SM VIA account profile.",
 }
 
 type SearchParams = Promise<{
@@ -63,7 +63,7 @@ export default async function OnboardingPage({
         }
         title="Profile setup is unavailable"
       >
-        <AuthNotice error="Apply the USHCE Supabase database schema, then sign in again." />
+        <AuthNotice error="Apply the SM VIA Supabase database schema, then sign in again." />
       </AuthPageShell>
     )
   }

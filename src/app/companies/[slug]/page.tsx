@@ -161,7 +161,7 @@ export default async function OrganizationPage({
                 </h2>
                 <p className="mt-2 text-sm leading-6 text-muted-foreground">
                   This page shows only organization details approved for public
-                  display and roles currently published on USHCE. Membership and
+                  display and roles currently published on SM VIA. Membership and
                   private contact information are not shown.
                 </p>
               </CardContent>

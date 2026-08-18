@@ -27,6 +27,21 @@ import {
   resources,
 } from "@/lib/marketing-data"
 
+const resourceImages: Record<string, { src: string; alt: string }> = {
+  "residency-application-timeline": {
+    src: "/images/resources/residency-application-timeline.png",
+    alt: "Healthcare professional planning a residency application timeline",
+  },
+  "choosing-a-healthcare-employer": {
+    src: "/images/resources/choosing-a-healthcare-employer.png",
+    alt: "Healthcare professionals discussing career opportunities",
+  },
+  "visa-supporting-healthcare-roles": {
+    src: "/images/resources/visa-supporting-healthcare-roles.png",
+    alt: "Healthcare professional reviewing international career credentials",
+  },
+}
+
 export default async function Home() {
   const [liveJobs, publicOrganizations] = await Promise.all([
     getPublishedJobs(),
@@ -136,7 +151,7 @@ export default async function Home() {
               <SectionHeading
                 eyebrow="Live opportunities"
                 title="Explore newly published healthcare opportunities."
-                description="Browse employer-published roles from organizations building their teams on USHCE."
+                description="Browse employer-published roles from organizations building their teams on SM VIA."
               />
               <Button asChild className="h-10 w-fit rounded-xl" variant="outline">
                 <Link href="/jobs">
@@ -159,7 +174,7 @@ export default async function Home() {
               <SectionHeading
                 eyebrow="Organization profiles"
                 title="Understand the workplace before you apply."
-                description="USHCE employer profiles are designed to bring together culture, care settings, locations, benefits, and open roles."
+                description="SM VIA employer profiles are designed to bring together culture, care settings, locations, benefits, and open roles."
               />
               <Button asChild className="mt-7 h-11 rounded-xl px-5">
                 <Link href="/companies">
@@ -186,7 +201,7 @@ export default async function Home() {
                   </h2>
                   <p className="mt-3 text-sm leading-6 text-muted-foreground">
                     Organizations will appear here after they publish an active
-                    healthcare opportunity on USHCE.
+                    healthcare opportunity on SM VIA.
                   </p>
                 </CardContent>
               </Card>
@@ -194,11 +209,11 @@ export default async function Home() {
           </div>
         </section>
 
-        <section className="bg-primary py-20 text-white lg:py-28" id="why-ushce">
+        <section className="bg-primary py-20 text-white lg:py-28" id="why-smvia">
           <div className="mx-auto max-w-7xl px-5 lg:px-8">
             <SectionHeading
               align="center"
-              eyebrow="Why USHCE"
+              eyebrow="Why SM VIA"
               title="Healthcare careers need more than a generic job board."
               description="The platform brings the real structure of healthcare careers and hiring into one secure workflow."
               tone="inverted"
@@ -266,8 +281,16 @@ export default async function Home() {
                 key={resource.slug}
               >
                 <Card className="h-full overflow-hidden border-border/80 bg-white transition-all group-hover:-translate-y-1 group-hover:shadow-xl">
-                  <div className={`h-40 bg-gradient-to-br ${resource.color} p-5`}>
-                    <span className="grid size-10 place-items-center rounded-xl border border-white/80 bg-white/80 text-primary shadow-sm">
+                  <div className="relative h-40 overflow-hidden bg-muted">
+                    <Image
+                      alt={resourceImages[resource.slug].alt}
+                      className="object-cover"
+                      fill
+                      sizes="(min-width: 1024px) 33vw, 100vw"
+                      src={resourceImages[resource.slug].src}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/25 via-transparent to-white/5" />
+                    <span className="absolute left-5 top-5 grid size-10 place-items-center rounded-xl border border-white/80 bg-white/90 text-primary shadow-sm">
                       <BookOpenText className="size-5" />
                     </span>
                   </div>

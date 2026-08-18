@@ -26,8 +26,8 @@ test("public verification badges distinguish verified employers from demos", asy
 test("verification explanation states review scope and limits", async () => {
   const page = await readProjectFile("src/app/verification/page.tsx")
 
-  assert.match(page, /What verification means on USHCE/)
-  assert.match(page, /What USHCE reviews/)
+  assert.match(page, /What verification means on SM VIA/)
+  assert.match(page, /What SM VIA reviews/)
   assert.match(page, /What it does not guarantee/)
   assert.match(page, /absence of a badge is not a negative rating/)
 })

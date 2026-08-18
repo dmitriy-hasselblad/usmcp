@@ -11,7 +11,7 @@ import { isAuthEnabled } from "@/lib/supabase/env"
 
 export const metadata: Metadata = {
   title: "Create an Account",
-  description: "Create a healthcare professional or employer account on USHCE.",
+  description: "Create a healthcare professional or employer account on SM VIA.",
 }
 
 type SignUpSearchParams = Promise<{
@@ -43,7 +43,7 @@ export default async function SignUpPage({
           </Link>
         </p>
       }
-      title="Create your USHCE account"
+      title="Create your SM VIA account"
       wide
     >
       <AuthNotice error={error} />
