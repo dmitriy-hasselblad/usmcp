@@ -149,9 +149,8 @@ existing accounts.
 - [ ] Billing portal (deferred)
 - [ ] Invoice history (deferred)
 - [ ] Payment webhook handling (deferred)
-- [ ] Email notifications (server-only application-status foundation merged in
-  PR #23; Resend onboarding, domain verification, delivery testing, and live
-  activation deferred)
+- [ ] Email notifications (Resend domain verification and Preview delivery
+  testing completed; Production activation remains pending explicit approval)
 - [x] In-product notifications (Production verified through PR #49)
 - [x] Formal audit trail for privileged moderation actions
 
@@ -234,7 +233,8 @@ After every merged product PR:
 
 ## Explicit deferred dependencies
 
-- **Resend/email delivery:** resume when the product owner is ready to connect
-  and verify a sending domain. Production delivery remains disabled meanwhile.
+- **Resend/email delivery:** the sending domain is verified and Preview test
+  delivery is working. Keep Production delivery disabled until an explicit
+  product-owner authorization is given.
 - **Stripe/payments/billing:** resume 6-12 months after Early Access launch.
   These two deferrals must be included in every future remaining-work summary.

@@ -153,10 +153,10 @@ Stripe, subscriptions, one-time payments, invoices, and billing are deferred
 until 6-12 months after Early Access. Preserve a clean future entitlement
 boundary, but do not implement or prioritize payment functionality before then.
 
-Resend onboarding, sending-domain verification, Preview delivery testing, and
-Production email activation are also deferred by the product owner. PR #23
-preserves a disabled-by-default server-only foundation; do not enable it until
-the provider setup is intentionally resumed.
+Resend domain verification and Preview delivery testing are complete. Keep
+Production email activation disabled until an explicit product-owner approval;
+test-mode messages must continue to route only to the configured test
+recipient.
 
 ## Deferred work
 
