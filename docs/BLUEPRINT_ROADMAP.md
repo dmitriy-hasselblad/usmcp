@@ -31,7 +31,7 @@ the recommended implementation order on page 3 as the governing sequence.
 | --- | --- | --- |
 | 1. Foundation | Auth, roles, Supabase schema/RLS, reference data, design system | Completed |
 | 2. Marketplace MVP | Jobs, companies, search, profiles, applications, employer/admin | Functionally complete; launch-content replacement remains |
-| 3. Trust & Revenue | Verification, payments, subscriptions, audit, notifications | Trust controls complete; revenue intentionally deferred |
+| 3. Trust & Revenue | Verification, payments, subscriptions, audit, notifications | Trust controls and transactional email are live; revenue intentionally deferred |
 | 4. Engagement | Messaging, interviews, content, SEO, analytics | In progress: core messaging, attachments, interviews, calendar export, video, content, SEO, and consent-aware analytics are live |
 | 5. Intelligence | CV tools, matching, recommendations, broader marketplace, mobile | Deferred |
 
@@ -149,8 +149,8 @@ existing accounts.
 - [ ] Billing portal (deferred)
 - [ ] Invoice history (deferred)
 - [ ] Payment webhook handling (deferred)
-- [ ] Email notifications (Resend domain verification and Preview delivery
-  testing completed; Production activation remains pending explicit approval)
+- [x] Email notifications (Resend domain verification, Preview testing, and
+  Production delivery verified through PRs #62 and #63)
 - [x] In-product notifications (Production verified through PR #49)
 - [x] Formal audit trail for privileged moderation actions
 
@@ -233,8 +233,8 @@ After every merged product PR:
 
 ## Explicit deferred dependencies
 
-- **Resend/email delivery:** the sending domain is verified and Preview test
-  delivery is working. Keep Production delivery disabled until an explicit
-  product-owner authorization is given.
+- **Resend/email delivery:** the sending domain is verified and Production
+  transactional delivery is live through `notifications@smvia.org`. Continue
+  to monitor inbox placement, bounces, and spam complaints during Early Access.
 - **Stripe/payments/billing:** resume 6-12 months after Early Access launch.
   These two deferrals must be included in every future remaining-work summary.

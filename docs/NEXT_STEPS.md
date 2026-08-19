@@ -136,7 +136,8 @@ a free Early Access pilot focused on building the employer and candidate base.
 Payments are not a launch dependency.
 
 1. Employer verification workflow
-2. Email notifications (foundation merged in PR #23; delivery deferred)
+2. Email notifications (Resend delivery and branded templates verified in
+   Production through PRs #62 and #63)
 3. Candidate search and saved candidates
 4. Employer team invitations
 5. Organization News & Insights (merged through PR #26; Production verified
@@ -153,10 +154,9 @@ Stripe, subscriptions, one-time payments, invoices, and billing are deferred
 until 6-12 months after Early Access. Preserve a clean future entitlement
 boundary, but do not implement or prioritize payment functionality before then.
 
-Resend domain verification and Preview delivery testing are complete. Keep
-Production email activation disabled until an explicit product-owner approval;
-test-mode messages must continue to route only to the configured test
-recipient.
+Resend domain verification, Preview testing, Production delivery, and branded
+transactional templates are complete. Monitor inbox placement, bounces, and
+spam complaints during Early Access.
 
 ## Deferred work
 
@@ -173,28 +173,33 @@ roadmap:
 
 ## Immediate next ticket
 
-**Ticket:** Public-launch domain hardening.
+**Ticket:** Formal soft-launch operations and search visibility.
 
 ### Goal
 
-Ensure the custom Production domain is consistently used by SEO metadata,
-authentication redirects, calendar events, and future local configuration.
+Prepare SM VIA for its first controlled public audience by connecting search
+operations, monitoring transactional delivery, and documenting the operating
+baseline without expanding product scope.
 
 ### Required scope
 
-1. Use `https://smvia.org` as the code fallback for public absolute URLs.
-2. Ensure exported calendar event identifiers use the public SM VIA domain.
-3. Keep Preview environments and local development compatible.
+1. Connect `smvia.org` to Google Search Console and submit the live sitemap.
+2. Confirm the Production canonical URL, `robots.txt`, and sitemap remain
+   accessible to anonymous visitors.
+3. Establish a lightweight weekly review of Resend delivery, bounces, and spam
+   complaints while the Early Access audience grows.
 4. Do not change Supabase schema or RLS.
-5. Verify canonical metadata and the public sign-in page in Vercel Preview.
+5. Keep Google and LinkedIn sign-in, billing, and AI features deferred until
+   their recorded launch decisions change.
 
 ### Explicit limitation
 
-The copied-marketplace-content replacement was completed through PR #59:
-all public demonstration organizations and jobs are clearly labelled and are
-excluded from applications and JobPosting metadata. The geographic-reference
-ticket was completed in PR #51. Employer funnel analytics and candidate
-application analytics were completed in PRs #54 and #55.
+The custom-domain hardening ticket was completed through PR #61. The copied-
+marketplace-content replacement was completed through PR #59: all public
+demonstration organizations and jobs are clearly labelled and are excluded from
+applications and JobPosting metadata. The geographic-reference ticket was
+completed in PR #51. Employer funnel analytics and candidate application
+analytics were completed in PRs #54 and #55.
 
 ## Definition of done for every future stage
 
