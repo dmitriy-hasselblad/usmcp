@@ -41,7 +41,7 @@ export function createInterviewCalendarEvent(interview: CalendarInterview) {
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
     "BEGIN:VEVENT",
-    `UID:ushce-interview-${interview.id}@usmcp.vercel.app`,
+    `UID:smvia-interview-${interview.id}@smvia.org`,
     `DTSTAMP:${toUtcCalendarDate(new Date())}`,
     `DTSTART:${toUtcCalendarDate(start)}`,
     `DTEND:${toUtcCalendarDate(end)}`,

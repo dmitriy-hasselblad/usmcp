@@ -1,20 +1,20 @@
-# USHCE Project Status
+# SM VIA Project Status
 
-Last updated: 2026-08-14
+Last updated: 2026-08-19
 
 ## Purpose
 
-This file is the durable handoff document for the USHCE codebase. Read it before
+This file is the durable handoff document for the SM VIA codebase. Read it before
 starting work from a new computer, a new Codex task, or a new development branch.
 
-USHCE stands for **The U.S. Healthcare Career Ecosystem**. The product is built
+SM VIA is the public product brand. The product is built
 for the United States, and all user-facing website content must remain in
 English.
 
 ## Authoritative project locations
 
 - GitHub repository: https://github.com/dmitriy-hasselblad/usmcp
-- Production: https://usmcp.vercel.app
+- Production: https://smvia.org
 - Vercel project: `dmitriy-hasselblads-projects/usmcp`
 - Supabase project reference: `zrruypidnjhtsqhjhlxn`
 - Supabase region: `us-east-1`
@@ -83,7 +83,7 @@ content is not copied from a profile and is private to its owner.
 
 ### Public website
 
-- USHCE branding and English-only marketing content
+- SM VIA branding and English-only marketing content
 - Responsive site header and footer
 - Auth-aware public header
 - Homepage and hero job search
@@ -287,6 +287,9 @@ The following areas are not complete:
 - The source-level access contract suite is in place. Fully automated database
   integration coverage requires an isolated Supabase Branch (available on Pro)
   or a local Docker/Supabase CLI environment; neither is currently available.
+- The domain `smvia.org` and `www.smvia.org` are connected to Production. The
+  Production public site URL is configured as `https://smvia.org` in Vercel and
+  Supabase Auth URL Configuration was updated on 2026-08-18.
 
 ## Local workstation setup
 
