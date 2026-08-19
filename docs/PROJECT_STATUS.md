@@ -25,9 +25,9 @@ English.
 ## Production baseline
 
 - Production branch: `main`
-- Latest confirmed product Pull Request: PR #63
-- PR #63 merge commit: `4854a0c`
-- Current `main` commit at branch handoff: `4854a0c`
+- Latest confirmed product Pull Request: PR #65
+- PR #65: trusted public Contact page and a Resend-backed feedback form
+- Current local branch at handoff: `codex/contact-trust-center` (`df0052c`)
 - Production deployment status at verification: `Ready`
 - Latest Production verification date: 2026-08-19
 
@@ -36,6 +36,17 @@ changes and employer messages. PR #63 introduced the branded SM VIA email
 layout. Both message types were verified in Preview and Production on
 2026-08-19; delivery uses `notifications@smvia.org` and Production mode is
 live. Inbox placement was confirmed after DMARC was added to the domain.
+
+PR #65 added the public `/contact` page, the footer Contact link, and a
+honeypot-protected feedback form. Contact submissions are sent to the private
+Vercel `CONTACT_RECIPIENT` address through the existing verified Resend domain;
+they are not written to Supabase. Preview delivery was confirmed on 2026-08-19.
+
+Operational note: Cisco Umbrella may temporarily block `smvia.org` as a
+"Newly Seen Domain" on networks that use its DNS security filter. This is an
+external reputation/category hold, not an application or Vercel failure. It
+should be monitored until Cisco's automated classification catches up; a local
+network administrator can allowlist the domain if needed.
 
 PRs #37 through #55 completed Early Access hiring-loop refinements: recommended
 jobs; candidate discovery and saved candidates; employer invitations; News &
