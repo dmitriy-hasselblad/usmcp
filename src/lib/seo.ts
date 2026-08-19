@@ -1,4 +1,4 @@
-const fallbackSiteUrl = "https://usmcp.vercel.app"
+const fallbackSiteUrl = "https://smvia.org"
 
 export function getSiteUrl() {
   const configuredUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim()

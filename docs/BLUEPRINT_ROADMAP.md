@@ -1,6 +1,6 @@
-# USHCE Blueprint Roadmap
+# SM VIA Blueprint Roadmap
 
-Last updated: 2026-08-14
+Last updated: 2026-08-19
 
 ## Source of truth
 
@@ -39,7 +39,7 @@ the recommended implementation order on page 3 as the governing sequence.
 
 ### Completed
 
-- [x] USHCE terminology and product identity
+- [x] SM VIA terminology and product identity
 - [x] English-only public product language
 - [x] Next.js App Router foundation
 - [x] Shared UI system and reusable components
@@ -132,7 +132,7 @@ user-state moderation are verified.
 
 ## Phase 3: Trust & Revenue
 
-Product-owner decision recorded 2026-08-04: launch USHCE as a free Early
+Product-owner decision recorded 2026-08-04: launch SM VIA as a free Early
 Access pilot. Stripe, subscriptions, job-posting payments, invoices, and the
 billing portal are deferred until 6-12 months after launch. Current work must
 preserve stable organization and user identifiers and keep future billing

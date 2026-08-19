@@ -1,6 +1,6 @@
-# USHCE Next Steps
+# SM VIA Next Steps
 
-Last updated: 2026-08-14
+Last updated: 2026-08-19
 
 ## Current product phase
 
@@ -173,33 +173,28 @@ roadmap:
 
 ## Immediate next ticket
 
-**Ticket:** Replace copied marketplace content with synthetic demonstration
-records before public launch.
+**Ticket:** Public-launch domain hardening.
 
 ### Goal
 
-Remove copied real-world vacancies and replace them with a small, coherent set
-of fully synthetic demonstration employers and roles. Demonstration content
-must be visibly labeled, excluded from applications and JobPosting metadata,
-and safe to show during Early Access.
+Ensure the custom Production domain is consistently used by SEO metadata,
+authentication redirects, calendar events, and future local configuration.
 
 ### Required scope
 
-1. Inventory copied records before changing them.
-2. Do not modify live employer-created jobs without explicit owner approval.
-3. Use reusable seed or administrative tooling rather than IDs embedded in a
-   migration.
-4. Keep existing public job, organization, SEO, and moderation boundaries
-   intact.
-5. Verify anonymous public browsing, signed-in application denial for demos,
-   mobile layout, and Vercel Preview.
+1. Use `https://smvia.org` as the code fallback for public absolute URLs.
+2. Ensure exported calendar event identifiers use the public SM VIA domain.
+3. Keep Preview environments and local development compatible.
+4. Do not change Supabase schema or RLS.
+5. Verify canonical metadata and the public sign-in page in Vercel Preview.
 
 ### Explicit limitation
 
-This ticket is intentionally deferred by the product owner for now. Do not
-start it without explicit approval. The geographic-reference ticket that
-previously appeared here was completed in PR #51. Employer funnel analytics
-and candidate application analytics were completed in PRs #54 and #55.
+The copied-marketplace-content replacement was completed through PR #59:
+all public demonstration organizations and jobs are clearly labelled and are
+excluded from applications and JobPosting metadata. The geographic-reference
+ticket was completed in PR #51. Employer funnel analytics and candidate
+application analytics were completed in PRs #54 and #55.
 
 ## Definition of done for every future stage
 
