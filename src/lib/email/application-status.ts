@@ -91,7 +91,7 @@ export async function sendNewEmployerMessageEmail(input: MessageNotificationEmai
     const response = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json", "Idempotency-Key": `application-message-${input.applicationId}-${Date.now()}` },
-      body: JSON.stringify({ from, to: [recipient], subject, text, html: `<p>Hello ${escapeHtml(input.candidateFirstName)},</p><p>You have a new message from <strong>${escapeHtml(input.organizationName)}</strong> through SM VIA.</p><p>Please sign in to your profile to read and reply.</p><p><a href="${escapeHtml(applicationUrl)}">View your application</a></p>` }),
+      body: JSON.stringify({ from, to: [recipient], subject, text, html: renderNewMessageHtml(input, applicationUrl) }),
     })
     return response.ok ? { outcome: "sent" } : { outcome: "failed", code: `provider_${response.status}` }
   } catch {
@@ -113,7 +113,47 @@ function getApplicationOrigin(mode: DeliveryMode) {
 
 function renderHtml(input: ApplicationStatusEmail, applicationUrl: string) {
   const copy = statusCopy[input.status]
-  return `<!doctype html><html><body style="margin:0;background:#f4f8fb;font-family:Arial,sans-serif;color:#0f172a"><div style="display:none;max-height:0;overflow:hidden">Your SM VIA application status is now ${escapeHtml(copy.label)}.</div><table role="presentation" width="100%" cellspacing="0" cellpadding="0"><tr><td align="center" style="padding:32px 16px"><table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:600px;background:#fff;border:1px solid #dbe5ec;border-radius:18px"><tr><td style="padding:32px"><div style="font-size:20px;font-weight:700;color:#0f4c81">SM VIA</div><p style="margin:28px 0 8px;font-size:16px">Hello ${escapeHtml(input.candidateFirstName)},</p><h1 style="margin:0 0 16px;font-size:28px;line-height:1.2">Your application status changed</h1><p style="margin:0 0 20px;font-size:16px;line-height:1.6">${escapeHtml(copy.message)}</p><div style="padding:18px;background:#f0f6fa;border-radius:12px"><strong>${escapeHtml(input.jobTitle)}</strong><br><span style="color:#526273">${escapeHtml(input.organizationName)}</span><br><span style="color:#0f4c81;font-weight:700">${escapeHtml(copy.label)}</span></div><p style="margin:28px 0"><a href="${escapeHtml(applicationUrl)}" style="display:inline-block;padding:13px 20px;border-radius:10px;background:#0f4c81;color:#fff;text-decoration:none;font-weight:700">View application</a></p><p style="margin:24px 0 0;color:#64748b;font-size:13px;line-height:1.5">This transactional email was sent because you applied for this role through SM VIA.</p></td></tr></table></td></tr></table></body></html>`
+  return renderEmailShell({
+    preview: `Your SM VIA application status is now ${copy.label}.`,
+    greeting: `Hello ${escapeHtml(input.candidateFirstName)},`,
+    heading: "Your application status changed",
+    message: escapeHtml(copy.message),
+    detailTitle: escapeHtml(input.jobTitle),
+    detailSubtitle: escapeHtml(input.organizationName),
+    badge: escapeHtml(copy.label),
+    actionUrl: applicationUrl,
+    actionLabel: "View application",
+  })
+}
+
+function renderNewMessageHtml(input: MessageNotificationEmail, applicationUrl: string) {
+  return renderEmailShell({
+    preview: `You have a new message from ${input.organizationName} through SM VIA.`,
+    greeting: `Hello ${escapeHtml(input.candidateFirstName)},`,
+    heading: "You have a new message",
+    message: `A hiring team at <strong>${escapeHtml(input.organizationName)}</strong> sent you a message about your application. Sign in to read and reply securely.`,
+    detailTitle: "Application conversation",
+    detailSubtitle: escapeHtml(input.organizationName),
+    badge: "New message",
+    actionUrl: applicationUrl,
+    actionLabel: "View message",
+  })
+}
+
+type EmailShellInput = {
+  preview: string
+  greeting: string
+  heading: string
+  message: string
+  detailTitle: string
+  detailSubtitle: string
+  badge: string
+  actionUrl: string
+  actionLabel: string
+}
+
+function renderEmailShell(input: EmailShellInput) {
+  return `<!doctype html><html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body style="margin:0;padding:0;background:#f3f7fa;font-family:Arial,Helvetica,sans-serif;color:#10213c"><div style="display:none;max-height:0;overflow:hidden;opacity:0;color:transparent">${input.preview}</div><table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#f3f7fa"><tr><td align="center" style="padding:32px 16px"><table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:600px;background:#ffffff;border:1px solid #dbe4ec;border-radius:18px"><tr><td style="padding:32px"><table role="presentation" cellspacing="0" cellpadding="0"><tr><td style="width:38px;height:38px;border-radius:9px;background:#0b315d;color:#ffffff;text-align:center;font-size:21px;font-weight:700;line-height:38px">+</td><td style="padding-left:11px;font-size:22px;font-weight:700;letter-spacing:0.04em;color:#0b315d">SM VIA</td></tr></table><div style="height:1px;background:#dbe4ec;margin:25px 0 28px"></div><p style="margin:0 0 10px;font-size:16px;line-height:24px;color:#3e5068">${input.greeting}</p><h1 style="margin:0 0 14px;font-size:30px;line-height:38px;letter-spacing:-0.4px;color:#10213c">${input.heading}</h1><p style="margin:0 0 24px;font-size:16px;line-height:26px;color:#3e5068">${input.message}</p><table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#f0f7fc;border:1px solid #c9e0f3;border-radius:12px"><tr><td style="padding:20px"><p style="margin:0 0 7px;font-size:17px;line-height:24px;font-weight:700;color:#10213c">${input.detailTitle}</p><p style="margin:0 0 13px;font-size:15px;line-height:22px;color:#53677e">${input.detailSubtitle}</p><span style="display:inline-block;padding:6px 10px;border-radius:999px;background:#d6eafc;color:#0b4c8c;font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase">${input.badge}</span></td></tr></table><table role="presentation" cellspacing="0" cellpadding="0" style="margin:28px 0 0"><tr><td style="border-radius:10px;background:#0b5cab"><a href="${escapeHtml(input.actionUrl)}" style="display:inline-block;padding:14px 22px;border-radius:10px;color:#ffffff;font-size:16px;font-weight:700;text-decoration:none">${input.actionLabel}</a></td></tr></table><div style="height:1px;background:#dbe4ec;margin:30px 0 20px"></div><p style="margin:0;font-size:13px;line-height:20px;color:#687a90">This transactional email was sent because you have an active application through SM VIA.</p></td></tr></table></td></tr></table></body></html>`
 }
 
 function renderText(input: ApplicationStatusEmail, applicationUrl: string) {
