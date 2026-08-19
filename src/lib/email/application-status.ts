@@ -48,7 +48,7 @@ export async function sendApplicationStatusEmail(input: ApplicationStatusEmail):
   const recipient = mode === "test" ? testRecipient! : input.candidateEmail
   if (!isEmail(recipient)) return { outcome: "failed", code: "invalid_recipient" }
 
-  const applicationUrl = `${getApplicationOrigin()}/dashboard/applications/${input.applicationId}`
+  const applicationUrl = `${getApplicationOrigin(mode)}/dashboard/applications/${input.applicationId}`
   try {
     const response = await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -84,14 +84,14 @@ export async function sendNewEmployerMessageEmail(input: MessageNotificationEmai
   const recipient = mode === "test" ? testRecipient! : input.candidateEmail
   if (!isEmail(recipient)) return { outcome: "failed", code: "invalid_recipient" }
 
-  const applicationUrl = `${getApplicationOrigin()}/dashboard/applications/${input.applicationId}`
-  const subject = "You have a new message from The U.S. Healthcare Career Ecosystem"
-  const text = `Hello ${input.candidateFirstName},\n\nYou have a new message from ${input.organizationName} in The U.S. Healthcare Career Ecosystem. Please sign in to your profile to read and reply.\n\nView your application: ${applicationUrl}`
+  const applicationUrl = `${getApplicationOrigin(mode)}/dashboard/applications/${input.applicationId}`
+  const subject = "You have a new message from SM VIA"
+  const text = `Hello ${input.candidateFirstName},\n\nYou have a new message from ${input.organizationName} through SM VIA. Please sign in to your profile to read and reply.\n\nView your application: ${applicationUrl}`
   try {
     const response = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json", "Idempotency-Key": `application-message-${input.applicationId}-${Date.now()}` },
-      body: JSON.stringify({ from, to: [recipient], subject, text, html: `<p>Hello ${escapeHtml(input.candidateFirstName)},</p><p>You have a new message from <strong>${escapeHtml(input.organizationName)}</strong> in The U.S. Healthcare Career Ecosystem.</p><p>Please sign in to your profile to read and reply.</p><p><a href="${escapeHtml(applicationUrl)}">View your application</a></p>` }),
+      body: JSON.stringify({ from, to: [recipient], subject, text, html: `<p>Hello ${escapeHtml(input.candidateFirstName)},</p><p>You have a new message from <strong>${escapeHtml(input.organizationName)}</strong> through SM VIA.</p><p>Please sign in to your profile to read and reply.</p><p><a href="${escapeHtml(applicationUrl)}">View your application</a></p>` }),
     })
     return response.ok ? { outcome: "sent" } : { outcome: "failed", code: `provider_${response.status}` }
   } catch {
@@ -104,11 +104,11 @@ function getDeliveryMode(): DeliveryMode {
   return value === "test" || value === "live" ? value : "disabled"
 }
 
-function getApplicationOrigin() {
-  const vercelUrl = process.env.VERCEL_BRANCH_URL ?? process.env.VERCEL_URL
-  if (vercelUrl) return `https://${vercelUrl}`
+function getApplicationOrigin(mode: DeliveryMode) {
+  const previewUrl = process.env.VERCEL_BRANCH_URL ?? process.env.VERCEL_URL
+  if (mode === "test" && previewUrl) return `https://${previewUrl}`
   try { return new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").origin }
-  catch { return "http://localhost:3000" }
+  catch { return previewUrl ? `https://${previewUrl}` : "http://localhost:3000" }
 }
 
 function renderHtml(input: ApplicationStatusEmail, applicationUrl: string) {
