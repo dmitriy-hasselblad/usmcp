@@ -267,10 +267,11 @@ The following areas are not complete:
 - Stripe payments, subscriptions, invoices, and billing are intentionally
   deferred until 6-12 months after Early Access. The initial launch will use a
   free pilot model focused on building the employer and candidate base.
-- The application-status email foundation exists, but Resend setup, domain
-  verification, non-production delivery testing, and live email delivery are
-  intentionally deferred. Until resumed, `EMAIL_DELIVERY_MODE` must remain
-  unset or `disabled` in Production.
+- Resend domain verification and Preview-only transactional email testing were
+  completed on 2026-08-19. Application-status and new-employer-message emails
+  reached the configured test recipient from `notifications@smvia.org`.
+  Production email delivery remains disabled until the product owner explicitly
+  authorizes its activation.
 - Messaging, in-product notifications, private message attachments, interview
   scheduling, calendar downloads, and LiveKit video rooms are implemented and
   verified in Production through PR #49.
