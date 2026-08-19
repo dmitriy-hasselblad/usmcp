@@ -11,6 +11,7 @@ const footerLinks = [
   { href: "/news", label: "News & insights" },
   { href: "/for-employers", label: "For employers" },
   { href: "/resources", label: "Career resources" },
+  { href: "/contact", label: "Contact" },
   { href: "/sign-up", label: "Create an account" },
   { href: "/privacy", label: "Privacy Policy" },
   { href: "/cookies", label: "Cookie Notice" },
