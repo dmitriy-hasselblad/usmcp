@@ -25,11 +25,17 @@ English.
 ## Production baseline
 
 - Production branch: `main`
-- Latest confirmed product Pull Request: PR #55
-- PR #55 merge commit: `1dbc09a`
-- Current `main` commit at branch handoff: `1dbc09a`
+- Latest confirmed product Pull Request: PR #63
+- PR #63 merge commit: `4854a0c`
+- Current `main` commit at branch handoff: `4854a0c`
 - Production deployment status at verification: `Ready`
-- Latest Production verification date: 2026-08-14
+- Latest Production verification date: 2026-08-19
+
+PR #62 enabled Resend-backed transactional delivery for application status
+changes and employer messages. PR #63 introduced the branded SM VIA email
+layout. Both message types were verified in Preview and Production on
+2026-08-19; delivery uses `notifications@smvia.org` and Production mode is
+live. Inbox placement was confirmed after DMARC was added to the domain.
 
 PRs #37 through #55 completed Early Access hiring-loop refinements: recommended
 jobs; candidate discovery and saved candidates; employer invitations; News &
@@ -267,11 +273,10 @@ The following areas are not complete:
 - Stripe payments, subscriptions, invoices, and billing are intentionally
   deferred until 6-12 months after Early Access. The initial launch will use a
   free pilot model focused on building the employer and candidate base.
-- Resend domain verification and Preview-only transactional email testing were
-  completed on 2026-08-19. Application-status and new-employer-message emails
-  reached the configured test recipient from `notifications@smvia.org`.
-  Production email delivery remains disabled until the product owner explicitly
-  authorizes its activation.
+- Resend transactional email delivery is live for application-status changes
+  and employer messages. The domain is verified, DMARC is configured, and the
+  branded layouts were confirmed in Production on 2026-08-19. Monitor inbox
+  placement, bounces, and spam complaints during Early Access.
 - Messaging, in-product notifications, private message attachments, interview
   scheduling, calendar downloads, and LiveKit video rooms are implemented and
   verified in Production through PR #49.
@@ -345,17 +350,18 @@ Do not develop directly on `main`.
 
 When reporting remaining work, always include these explicit decisions:
 
-1. **Email delivery / Resend:** deferred after PR #23. The code foundation is
-   present, but provider onboarding, domain verification, Preview recipient
-   testing, and Production activation remain unfinished.
+1. **Email delivery / Resend:** live for application-status changes and
+   employer messages through `notifications@smvia.org`. Monitor delivery
+   health during Early Access; do not use this transactional channel for bulk
+   marketing.
 2. **Payments and billing:** Stripe, subscriptions, job-posting payments,
    invoices, billing portal, and webhooks are deferred until 6-12 months after
    Early Access launch. The initial pilot remains free.
 3. **Google and LinkedIn sign-in:** provider configuration and final browser
    verification are deferred until the final pre-launch pass.
-4. **Marketplace sample content:** copied real vacancies must be removed and
-   replaced with clearly labeled, fully synthetic demonstration records before
-   public launch. The product owner intentionally postponed this replacement.
+4. **Marketplace sample content:** this replacement was completed in PR #59.
+   Public demonstration organizations and jobs are fully synthetic, clearly
+   labelled, and excluded from applications and JobPosting metadata.
 
 ## Verification standard
 
