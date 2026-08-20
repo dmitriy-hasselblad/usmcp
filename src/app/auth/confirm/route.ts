@@ -18,6 +18,7 @@ export async function GET(request: NextRequest) {
   const tokenHash = request.nextUrl.searchParams.get("token_hash")
   const type = request.nextUrl.searchParams.get("type") as EmailOtpType | null
   const code = request.nextUrl.searchParams.get("code")
+  const requestedAccountType = request.nextUrl.searchParams.get("account_type")
   const requestedNext = request.nextUrl.searchParams.get("next") ?? ""
   const next = isSafeInternalPath(requestedNext)
     ? requestedNext
@@ -37,6 +38,25 @@ export async function GET(request: NextRequest) {
     const { error } = await supabase.auth.exchangeCodeForSession(code)
 
     if (!error) {
+      if (
+        requestedAccountType === "professional" ||
+        requestedAccountType === "employer"
+      ) {
+        const { error: accountTypeError } = await supabase.rpc(
+          "set_initial_social_account_type",
+          { target_account_type: requestedAccountType },
+        )
+
+        if (accountTypeError) {
+          const errorUrl = new URL("/sign-in", request.url)
+          errorUrl.searchParams.set(
+            "error",
+            "We could not finish setting up your account. Please try again.",
+          )
+          return NextResponse.redirect(errorUrl)
+        }
+      }
+
       return NextResponse.redirect(new URL(next, request.url))
     }
   }
