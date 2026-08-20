@@ -36,12 +36,6 @@ export function AdminShell({
   return (
     <div className="min-h-dvh bg-muted/35">
       <header className="border-b border-border bg-white">
-        <a
-          className="sr-only absolute left-5 top-3 z-50 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-lg focus:not-sr-only focus:outline-none focus:ring-3 focus:ring-ring/50"
-          href="#admin-main-content"
-        >
-          Skip to main content
-        </a>
         <div className="mx-auto flex h-[4.5rem] max-w-[90rem] items-center justify-between px-5 lg:px-8">
           <Link aria-label="SM VIA home" href="/">
             <SmviaLogo />
@@ -93,7 +87,7 @@ export function AdminShell({
             </div>
           </div>
         </aside>
-        <main className="min-w-0 px-5 py-8 lg:px-10 lg:py-10" id="admin-main-content" tabIndex={-1}>{children}</main>
+        <main className="min-w-0 px-5 py-8 lg:px-10 lg:py-10">{children}</main>
       </div>
     </div>
   )

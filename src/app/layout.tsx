@@ -51,9 +51,7 @@ export default function RootLayout({
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body className="font-sans antialiased">
         <CookieConsentProvider>
-          <div id="main-content" tabIndex={-1}>
-            {children}
-          </div>
+          {children}
           <ConsentAwareAnalytics />
         </CookieConsentProvider>
       </body>
