@@ -1,6 +1,6 @@
 # SM VIA Next Steps
 
-Last updated: 2026-08-19
+Last updated: 2026-08-20
 
 ## Current product phase
 
@@ -157,6 +157,21 @@ boundary, but do not implement or prioritize payment functionality before then.
 Resend domain verification, Preview testing, Production delivery, and branded
 transactional templates are complete. Monitor inbox placement, bounces, and
 spam complaints during Early Access.
+
+## Scheduled authentication work
+
+The product owner reactivated social sign-in on 2026-08-20. Deliver it as
+two separate, security-reviewed changes:
+
+1. **Google sign-in:** configure Supabase Google OAuth, preserve the existing
+   account-type onboarding choice, and verify sign-in, sign-out, account
+   linking, and failure states in Vercel Preview before Production.
+2. **LinkedIn sign-in:** follow only after Google is verified. Confirm the
+   current LinkedIn OAuth requirements and keep the same account-type and
+   authorization boundaries.
+
+Neither provider may grant roles or organization access from provider profile
+data. SM VIA retains its own role, onboarding, membership, and RLS decisions.
 
 ## Deferred work
 
