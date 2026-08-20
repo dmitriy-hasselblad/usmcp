@@ -54,6 +54,12 @@ export async function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/80 bg-background/85 backdrop-blur-xl">
+      <a
+        className="sr-only absolute left-5 top-3 z-50 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-lg focus:not-sr-only focus:outline-none focus:ring-3 focus:ring-ring/50"
+        href="#main-content"
+      >
+        Skip to main content
+      </a>
       <div className="mx-auto flex h-[4.5rem] max-w-7xl items-center justify-between px-5 lg:px-8">
         <Link href="/" aria-label="SM VIA home">
           <SmviaLogo />
@@ -62,7 +68,7 @@ export async function SiteHeader() {
         <nav className="hidden items-center gap-6 lg:flex" aria-label="Primary navigation">
           {navigation.map((item) => (
             <Link
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              className="rounded-md text-sm font-medium text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
               href={item.href}
               key={item.label}
             >
@@ -128,7 +134,7 @@ export async function SiteHeader() {
             <nav className="flex flex-col gap-1 px-4 py-5" aria-label="Mobile navigation">
               {navigation.map((item) => (
                 <Link
-                  className="rounded-xl px-4 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-muted"
+                  className="rounded-xl px-4 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
                   href={item.href}
                   key={item.label}
                 >
@@ -206,7 +212,7 @@ function NotificationMenu({
 
   return (
     <details className={mobile ? "relative" : "relative hidden lg:block"}>
-      <summary className="relative flex h-10 cursor-pointer list-none items-center justify-center rounded-xl border border-border bg-white px-3 text-foreground transition-colors hover:bg-muted [&::-webkit-details-marker]:hidden">
+      <summary className="relative flex h-10 cursor-pointer list-none items-center justify-center rounded-xl border border-border bg-white px-3 text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50 [&::-webkit-details-marker]:hidden">
         <Bell className={count ? "size-4 text-red-600" : "size-4"} />
         {count > 0 && (
           <span className="absolute -right-2 -top-2 grid min-w-5 place-items-center rounded-full bg-red-600 px-1 text-[11px] font-bold leading-5 text-white">
@@ -222,14 +228,14 @@ function NotificationMenu({
         {count > 0 && (
           <div className="mt-2 grid divide-y">
             {notifications.slice(0, 3).map((notification) => (
-              <Link className="rounded-lg px-2 py-3 text-sm transition-colors hover:bg-muted" href={notification.href} key={notification.id}>
+              <Link className="rounded-lg px-2 py-3 text-sm transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50" href={notification.href} key={notification.id}>
                 <span className="block font-medium">{notification.title}</span>
                 <span className="mt-1 block line-clamp-2 text-xs leading-5 text-muted-foreground">{notification.body}</span>
               </Link>
             ))}
           </div>
         )}
-        <Link className="mt-2 block rounded-lg px-2 py-2 text-sm font-semibold text-primary hover:bg-muted" href="/dashboard/notifications">View all notifications</Link>
+        <Link className="mt-2 block rounded-lg px-2 py-2 text-sm font-semibold text-primary hover:bg-muted focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50" href="/dashboard/notifications">View all notifications</Link>
       </div>
     </details>
   )

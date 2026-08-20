@@ -366,7 +366,7 @@ export default async function ProfessionalProfilePage({
               <Button type="submit">Add skill</Button>
             </form>
             {skills.map((skill) => (
-              <form action={saveProfessionalSkill} className="grid gap-3 rounded-xl border border-border p-4 sm:grid-cols-[1fr_10rem_6rem_auto_auto]" key={skill.id}>
+              <form action={saveProfessionalSkill} className="grid gap-3 rounded-xl border border-border p-4 lg:grid-cols-[minmax(0,1fr)_10rem_6rem_auto_auto]" key={skill.id}>
                 <input name="skillId" type="hidden" value={skill.id} />
                 <Input defaultValue={skill.name} maxLength={80} minLength={2} name="name" required />
                 <select className="h-11 rounded-lg border border-input bg-background px-3 text-sm" defaultValue={skill.proficiency} name="proficiency">
