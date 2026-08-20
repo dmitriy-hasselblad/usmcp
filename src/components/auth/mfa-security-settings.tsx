@@ -59,10 +59,9 @@ export function MfaSecuritySettings() {
     const supabase = createClient()
     const { data, error: enrollError } = await supabase.auth.mfa.enroll({
       factorType: "totp",
-      friendlyName: "SM VIA authenticator",
     })
     setBusy(false)
-    if (enrollError || !data?.totp) {
+    if (enrollError || !data?.totp?.qr_code) {
       setError("We could not start two-step verification. Please try again.")
       return
     }
@@ -175,7 +174,7 @@ export function MfaSecuritySettings() {
           {qrCode && (
             // The Supabase MFA API returns a private inline SVG, not a hosted image.
             // eslint-disable-next-line @next/next/no-img-element
-            <img alt="QR code for SM VIA two-step verification" className="mt-5 size-48 rounded-xl border border-border bg-white p-3" src={`data:image/svg+xml;utf8,${encodeURIComponent(qrCode)}`} />
+            <img alt="QR code for SM VIA two-step verification" className="mt-5 size-48 rounded-xl border border-border bg-white p-3" src={qrCode} />
           )}
           {secret && <div className="mt-5 rounded-xl bg-muted p-4"><p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Can’t scan the code?</p><p className="mt-2 break-all font-mono text-sm">{secret}</p><Button className="mt-3" onClick={() => void navigator.clipboard.writeText(secret)} size="sm" type="button" variant="outline"><Copy />Copy setup key</Button></div>}
           <label className="mt-6 grid max-w-xs gap-2 text-sm font-medium">Six-digit code<Input autoComplete="one-time-code" inputMode="numeric" maxLength={6} onChange={(event) => setCode(event.target.value.replace(/\D/g, ""))} placeholder="000000" value={code} /></label>
