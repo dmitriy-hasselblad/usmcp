@@ -19,28 +19,8 @@ import { Card, CardContent } from "@/components/ui/card"
 import { getPublishedJobs } from "@/lib/jobs/public-jobs"
 import { getPublicOrganizations } from "@/lib/organizations/public-organizations"
 import healthcareTeamImage from "../../public/images/ushce-healthcare-team.png"
-import {
-  benefits,
-  careerPaths,
-  platformPrinciples,
-  popularSpecialties,
-  resources,
-} from "@/lib/marketing-data"
-
-const resourceImages: Record<string, { src: string; alt: string }> = {
-  "residency-application-timeline": {
-    src: "/images/resources/residency-application-timeline.png",
-    alt: "Healthcare professional planning a residency application timeline",
-  },
-  "choosing-a-healthcare-employer": {
-    src: "/images/resources/choosing-a-healthcare-employer.png",
-    alt: "Healthcare professionals discussing career opportunities",
-  },
-  "visa-supporting-healthcare-roles": {
-    src: "/images/resources/visa-supporting-healthcare-roles.png",
-    alt: "Healthcare professional reviewing international career credentials",
-  },
-}
+import { benefits, careerPaths, platformPrinciples, popularSpecialties } from "@/lib/marketing-data"
+import { resourceGuides } from "@/lib/resources/content"
 
 export default async function Home() {
   const [liveJobs, publicOrganizations] = await Promise.all([
@@ -274,20 +254,20 @@ export default async function Home() {
             </Button>
           </div>
           <div className="mt-10 grid gap-5 lg:grid-cols-3">
-            {resources.map((resource) => (
+            {resourceGuides.map((resource) => (
               <Link
                 className="group"
-                href={`/resources#${resource.slug}`}
+                href={`/resources/${resource.slug}`}
                 key={resource.slug}
               >
                 <Card className="h-full overflow-hidden border-border/80 bg-white transition-all group-hover:-translate-y-1 group-hover:shadow-xl">
                   <div className="relative h-40 overflow-hidden bg-muted">
                     <Image
-                      alt={resourceImages[resource.slug].alt}
+                      alt={resource.image.alt}
                       className="object-cover"
                       fill
                       sizes="(min-width: 1024px) 33vw, 100vw"
-                      src={resourceImages[resource.slug].src}
+                      src={resource.image.src}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950/25 via-transparent to-white/5" />
                     <span className="absolute left-5 top-5 grid size-10 place-items-center rounded-xl border border-white/80 bg-white/90 text-primary shadow-sm">
@@ -308,7 +288,7 @@ export default async function Home() {
                       {resource.readTime}
                     </p>
                     <span className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-primary">
-                      Read preview
+                      Read guide
                       <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
                     </span>
                   </CardContent>
