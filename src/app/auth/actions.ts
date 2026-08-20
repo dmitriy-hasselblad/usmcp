@@ -443,5 +443,5 @@ export async function completeOnboarding(formData: FormData) {
   }
 
   revalidatePath("/", "layout")
-  redirect("/dashboard")
+  redirect("/dashboard?security=setup")
 }

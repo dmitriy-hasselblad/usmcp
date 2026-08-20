@@ -8,22 +8,7 @@ import { SiteHeader } from "@/components/layout/site-header"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { resources } from "@/lib/marketing-data"
-
-const resourceImages: Record<string, { src: string; alt: string }> = {
-  "residency-application-timeline": {
-    src: "/images/resources/residency-application-timeline.png",
-    alt: "Healthcare professional planning a residency application timeline",
-  },
-  "choosing-a-healthcare-employer": {
-    src: "/images/resources/choosing-a-healthcare-employer.png",
-    alt: "Healthcare professionals discussing career opportunities",
-  },
-  "visa-supporting-healthcare-roles": {
-    src: "/images/resources/visa-supporting-healthcare-roles.png",
-    alt: "Healthcare professional reviewing international career credentials",
-  },
-}
+import { resourceGuides } from "@/lib/resources/content"
 
 export const metadata: Metadata = {
   title: "Healthcare Career Resources",
@@ -43,7 +28,7 @@ export default function ResourcesPage() {
               Practical guidance for healthcare career decisions.
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground">
-              SM VIA is building clear, U.S.-focused guidance for professionals,
+              Start with clear, U.S.-focused guidance for professionals,
               residency candidates, and international applicants. New practical
               resources will be added throughout Early Access.
             </p>
@@ -52,16 +37,16 @@ export default function ResourcesPage() {
 
         <section className="mx-auto max-w-7xl px-5 py-14 lg:px-8 lg:py-20">
           <div className="grid gap-5 lg:grid-cols-3">
-            {resources.map((resource) => (
+            {resourceGuides.map((resource) => (
               <article id={resource.slug} key={resource.slug}>
                 <Card className="h-full scroll-mt-28 overflow-hidden border-border/80 bg-white">
                   <div className="relative h-44 overflow-hidden bg-muted">
                     <Image
-                      alt={resourceImages[resource.slug].alt}
+                      alt={resource.image.alt}
                       className="object-cover"
                       fill
                       sizes="(min-width: 1024px) 33vw, 100vw"
-                      src={resourceImages[resource.slug].src}
+                      src={resource.image.src}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950/25 via-transparent to-white/5" />
                     <span className="absolute left-6 top-6 grid size-11 place-items-center rounded-xl border border-white/80 bg-white/90 text-primary shadow-sm">
@@ -82,7 +67,7 @@ export default function ResourcesPage() {
                       <span className="text-sm text-muted-foreground">
                         {resource.readTime}
                       </span>
-                      <Badge variant="outline">Coming soon</Badge>
+                      <Button asChild size="sm" variant="outline"><Link href={`/resources/${resource.slug}`}>Read guide <ArrowRight /></Link></Button>
                     </div>
                   </CardContent>
                 </Card>

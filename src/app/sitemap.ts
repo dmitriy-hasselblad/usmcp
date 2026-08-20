@@ -3,6 +3,7 @@ import type { MetadataRoute } from "next"
 import { getPublishedJobs } from "@/lib/jobs/public-jobs"
 import { getPublishedOrganizationPostSitemapEntries } from "@/lib/news/public-news"
 import { getPublicOrganizations } from "@/lib/organizations/public-organizations"
+import { resourceGuides } from "@/lib/resources/content"
 import { getAbsoluteUrl } from "@/lib/seo"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -57,5 +58,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }))
 
-  return [...staticPages, ...jobPages, ...organizationPages, ...newsPages]
+  const resourcePages = resourceGuides.map((guide) => ({
+    url: getAbsoluteUrl(`/resources/${guide.slug}`),
+    changeFrequency: "monthly" as const,
+    priority: 0.6,
+  }))
+
+  return [
+    ...staticPages,
+    ...resourcePages,
+    ...jobPages,
+    ...organizationPages,
+    ...newsPages,
+  ]
 }

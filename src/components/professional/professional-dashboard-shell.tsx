@@ -7,6 +7,7 @@ import {
   LayoutDashboard,
   Bell,
   ChartNoAxesCombined,
+  ShieldCheck,
   UserRound,
 } from "lucide-react"
 
@@ -16,7 +17,7 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { getUnreadNotificationCount } from "@/lib/notifications/unread-count"
 
-type ProfessionalRoute = "overview" | "profile" | "career" | "resumes" | "applications" | "insights" | "notifications"
+type ProfessionalRoute = "overview" | "profile" | "career" | "resumes" | "applications" | "insights" | "notifications" | "security"
 
 const routes = [
   {
@@ -60,6 +61,12 @@ const routes = [
     href: "/dashboard/notifications",
     label: "Notifications",
     icon: Bell,
+  },
+  {
+    key: "security",
+    href: "/dashboard/security",
+    label: "Security",
+    icon: ShieldCheck,
   },
   {
     key: "jobs",

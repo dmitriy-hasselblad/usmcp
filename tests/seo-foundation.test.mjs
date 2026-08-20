@@ -10,12 +10,14 @@ async function readProjectFile(relativePath) {
   return readFile(path.join(projectRoot, relativePath), "utf8")
 }
 
-test("sitemap indexes public marketing, jobs, organizations, and news pages", async () => {
+test("sitemap indexes public marketing, career resources, jobs, organizations, and news pages", async () => {
   const source = await readProjectFile("src/app/sitemap.ts")
 
   assert.match(source, /getPublishedJobs\(\)/)
   assert.match(source, /getPublicOrganizations\(\)/)
   assert.match(source, /getPublishedOrganizationPostSitemapEntries\(\)/)
+  assert.match(source, /resourceGuides/)
+  assert.match(source, /`\/resources\/\$\{guide\.slug\}`/)
   assert.match(source, /getAbsoluteUrl\("\/jobs"\)/)
   assert.doesNotMatch(source, /\/dashboard/)
 })

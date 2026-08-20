@@ -222,6 +222,21 @@ test("calendar downloads are private and available only for confirmed interviews
   assert.match(calendar, /escapeCalendarText/)
 })
 
+test("optional two-step verification protects accounts that opt in without changing data access", async () => {
+  const identity = await readProjectFile("src/lib/auth/session.ts")
+  const challenge = await readProjectFile("src/components/auth/mfa-challenge.tsx")
+  const settings = await readProjectFile("src/components/auth/mfa-security-settings.tsx")
+
+  assert.match(identity, /auth\.mfa\.getAuthenticatorAssuranceLevel\(\)/)
+  assert.match(identity, /currentLevel === "aal1" && assurance\.nextLevel === "aal2"/)
+  assert.match(identity, /redirect\(`\/auth\/mfa\?next=/)
+  assert.match(challenge, /auth\.mfa\.challenge\(/)
+  assert.match(challenge, /auth\.mfa\.verify\(/)
+  assert.match(settings, /factorType: "totp"/)
+  assert.match(settings, /auth\.mfa\.unenroll\(/)
+  assert.doesNotMatch(settings, /service_role|SUPABASE_SERVICE/i)
+})
+
 test("employer hiring insights are scoped to the current organization and aggregate only", async () => {
   const insightsPage = await readProjectFile(
     "src/app/dashboard/insights/page.tsx",

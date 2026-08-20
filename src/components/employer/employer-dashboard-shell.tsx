@@ -28,6 +28,7 @@ type EmployerRoute =
   | "team"
   | "news"
   | "notifications"
+  | "security"
 
 const routes = [
   {
@@ -83,6 +84,12 @@ const routes = [
     href: "/dashboard/organization",
     label: "Organization",
     icon: Building2,
+  },
+  {
+    key: "security",
+    href: "/dashboard/security",
+    label: "Security",
+    icon: ShieldCheck,
   },
 ] as const
 
