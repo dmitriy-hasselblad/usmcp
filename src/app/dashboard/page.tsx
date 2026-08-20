@@ -14,6 +14,7 @@ import {
 } from "lucide-react"
 
 import { ApplicationStatusBadge } from "@/components/applications/application-status-badge"
+import { MfaSecurityCard } from "@/components/auth/mfa-security-card"
 import { EmployerDashboardShell } from "@/components/employer/employer-dashboard-shell"
 import { EmployerPageHeader } from "@/components/employer/employer-page-header"
 import { JobStatusBadge } from "@/components/employer/job-status-badge"
@@ -142,6 +143,10 @@ async function EmployerOverview() {
           tone="teal"
           value={teamMembers ?? 0}
         />
+      </div>
+
+      <div className="mt-6">
+        <MfaSecurityCard />
       </div>
 
       <div className="mt-8 grid gap-6 xl:grid-cols-[1.55fr_0.75fr]">
@@ -387,6 +392,10 @@ async function ProfessionalDashboard({
             )}
           </CardContent>
         </Card>
+      </div>
+
+      <div className="mt-6">
+        <MfaSecurityCard />
       </div>
 
       <Card className="mt-6 bg-white">

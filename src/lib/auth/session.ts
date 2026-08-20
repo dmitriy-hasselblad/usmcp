@@ -21,6 +21,13 @@ export async function requireIdentity(nextPath = "/dashboard") {
     redirect(`/sign-in?next=${encodeURIComponent(next)}`)
   }
 
+  const { data: assurance } =
+    await supabase.auth.mfa.getAuthenticatorAssuranceLevel()
+  if (assurance?.currentLevel === "aal1" && assurance.nextLevel === "aal2") {
+    const next = isSafeInternalPath(nextPath) ? nextPath : "/dashboard"
+    redirect(`/auth/mfa?next=${encodeURIComponent(next)}`)
+  }
+
   const { data: accountStatus, error: accountStatusError } = await supabase.rpc(
     "get_current_account_status",
   )
