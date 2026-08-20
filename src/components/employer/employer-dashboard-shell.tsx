@@ -108,6 +108,12 @@ export async function EmployerDashboardShell({
   return (
     <div className="min-h-dvh bg-muted/35">
       <header className="border-b border-border bg-white">
+        <a
+          className="sr-only absolute left-5 top-3 z-50 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-lg focus:not-sr-only focus:outline-none focus:ring-3 focus:ring-ring/50"
+          href="#workspace-main-content"
+        >
+          Skip to main content
+        </a>
         <div className="mx-auto flex h-[4.5rem] max-w-[90rem] items-center justify-between px-5 lg:px-8">
           <Link aria-label="SM VIA home" href="/">
             <SmviaLogo />
@@ -145,7 +151,7 @@ export async function EmployerDashboardShell({
               return (
                 <Link
                   className={cn(
-                    "flex h-10 shrink-0 items-center gap-2.5 rounded-lg px-3 text-sm font-medium transition-colors",
+                    "flex h-10 shrink-0 items-center gap-2.5 rounded-lg px-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50",
                     active === route.key
                       ? "bg-primary text-primary-foreground"
                       : "text-muted-foreground hover:bg-muted hover:text-foreground",
@@ -165,7 +171,7 @@ export async function EmployerDashboardShell({
             })}
           </nav>
         </aside>
-        <main className="min-w-0 px-5 py-8 lg:px-10 lg:py-10">{children}</main>
+        <main className="min-w-0 px-5 py-8 lg:px-10 lg:py-10" id="workspace-main-content" tabIndex={-1}>{children}</main>
       </div>
     </div>
   )
