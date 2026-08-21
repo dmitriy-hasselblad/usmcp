@@ -19,7 +19,7 @@ export async function createResume() {
   const identity = await requireProfessional("/dashboard/resumes")
   const { count } = await identity.supabase.from("professional_resumes").select("id", { count: "exact", head: true }).eq("user_id", identity.userId)
   if ((count ?? 0) >= 10) redirect("/dashboard/resumes?error=You+can+keep+up+to+10+résumés.")
-  const { data, error } = await identity.supabase.from("professional_resumes").insert({ user_id: identity.userId, title: "Untitled résumé", content: emptyResumeContent }).select("id").single()
+  const { data, error } = await identity.supabase.from("professional_resumes").insert({ user_id: identity.userId, title: "Healthcare résumé", content: emptyResumeContent }).select("id").single()
   if (error || !data) redirect("/dashboard/resumes?error=The+résumé+could+not+be+created.")
   redirect(`/dashboard/resumes/${data.id}`)
 }

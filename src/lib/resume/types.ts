@@ -10,6 +10,7 @@ export type ResumeEntry = {
 
 export type ResumeContent = {
   fullName: string
+  professionalHeadline: string
   cityState: string
   phone: string
   email: string
@@ -20,11 +21,14 @@ export type ResumeContent = {
   education: ResumeEntry[]
   certifications: string
   skills: string
+  achievements: string
+  affiliations: string
   languages: string
 }
 
 export const emptyResumeContent: ResumeContent = {
   fullName: "",
+  professionalHeadline: "",
   cityState: "",
   phone: "",
   email: "",
@@ -35,6 +39,8 @@ export const emptyResumeContent: ResumeContent = {
   education: [],
   certifications: "",
   skills: "",
+  achievements: "",
+  affiliations: "",
   languages: "",
 }
 
@@ -65,6 +71,7 @@ export function parseResumeContent(value: unknown): ResumeContent {
       }) : []
   return {
     fullName: text("fullName", limits.short),
+    professionalHeadline: text("professionalHeadline", limits.short),
     cityState: text("cityState", limits.short),
     phone: text("phone", limits.phone),
     email: text("email", limits.email),
@@ -75,6 +82,8 @@ export function parseResumeContent(value: unknown): ResumeContent {
     education: entries("education"),
     certifications: text("certifications", limits.list),
     skills: text("skills", limits.list),
+    achievements: text("achievements", limits.list),
+    affiliations: text("affiliations", limits.list),
     languages: text("languages", limits.languages),
   }
 }
