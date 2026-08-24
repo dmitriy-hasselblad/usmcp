@@ -193,7 +193,7 @@ export default async function Home() {
           <div className="mx-auto max-w-7xl px-5 lg:px-8">
             <SectionHeading
               align="center"
-              eyebrow="Why SM VIA"
+              eyebrow="SM VIA · Specialized Medical Vocations & Industry Alliance"
               title="Healthcare careers need more than a generic job board."
               description="The platform brings the real structure of healthcare careers and hiring into one secure workflow."
               tone="inverted"
