@@ -39,6 +39,7 @@ import {
   educationTypeLabels,
   educationTypes,
   employmentTypes,
+  type DatePrecision,
   type CertificationRecord,
   type EducationRecord,
   type ExperienceRecord,
@@ -219,7 +220,7 @@ export default async function CareerHistoryPage({
               key={record.id}
               recordId={record.id}
               recordType="education"
-              subtitle={`${educationTypeLabels[record.education_type]} · ${dateRange(record.start_date, record.end_date, record.is_current)}`}
+              subtitle={`${educationTypeLabels[record.education_type]} · ${dateRange(record.start_date, record.start_date_precision, record.end_date, record.end_date_precision, record.is_current)}`}
               title={`${record.program} — ${record.institution}`}
             />
           ))}
@@ -245,7 +246,7 @@ export default async function CareerHistoryPage({
               key={record.id}
               recordId={record.id}
               recordType="experience"
-              subtitle={`${record.organization_name} · ${dateRange(record.start_date, record.end_date, record.is_current)}`}
+              subtitle={`${record.organization_name} · ${dateRange(record.start_date, record.start_date_precision, record.end_date, record.end_date_precision, record.is_current)}`}
               title={record.role_title}
             />
           ))}
@@ -271,7 +272,7 @@ export default async function CareerHistoryPage({
               key={record.id}
               recordId={record.id}
               recordType="license"
-              subtitle={`${record.issuing_state} · License ${record.license_number}${record.expires_on ? ` · Expires ${formatDate(record.expires_on)}` : ""}`}
+              subtitle={`${record.issuing_state} · License ${record.license_number}${record.expires_on ? ` · Expires ${formatPartialDate(record.expires_on, record.expires_on_precision)}` : ""}`}
               title={record.license_type}
             />
           ))}
@@ -297,7 +298,7 @@ export default async function CareerHistoryPage({
               key={record.id}
               recordId={record.id}
               recordType="certification"
-              subtitle={`${record.issuing_organization}${record.expires_on ? ` · Expires ${formatDate(record.expires_on)}` : ""}`}
+              subtitle={`${record.issuing_organization}${record.expires_on ? ` · Expires ${formatPartialDate(record.expires_on, record.expires_on_precision)}` : ""}`}
               title={record.name}
             />
           ))}
@@ -454,8 +455,10 @@ function EducationForm({
       />
       <DateFields
         endDate={record?.end_date}
+        endPrecision={record?.end_date_precision}
         isCurrent={record?.is_current}
         startDate={record?.start_date}
+        startPrecision={record?.start_date_precision}
       />
       <Textarea
         defaultValue={record?.description ?? ""}
@@ -511,8 +514,10 @@ function ExperienceForm({
       <LocationFields city={record?.city} stateCode={record?.state_code} />
       <DateFields
         endDate={record?.end_date}
+        endPrecision={record?.end_date_precision}
         isCurrent={record?.is_current}
         startDate={record?.start_date}
+        startPrecision={record?.start_date_precision}
         startRequired
       />
       <Textarea
@@ -560,18 +565,16 @@ function LicenseForm({
         name="issuingState"
         required
       />
-      <div className="grid gap-3 sm:grid-cols-2">
-        <Input
-          defaultValue={record?.issued_on ?? ""}
-          name="issuedOn"
-          type="date"
-        />
-        <Input
-          defaultValue={record?.expires_on ?? ""}
-          name="expiresOn"
-          type="date"
-        />
-      </div>
+      <PartialDateFields
+        endDate={record?.expires_on}
+        endName="expiresOn"
+        endPrecision={record?.expires_on_precision}
+        endLabel="Expires"
+        startDate={record?.issued_on}
+        startName="issuedOn"
+        startPrecision={record?.issued_on_precision}
+        startLabel="Issued"
+      />
     </RecordForm>
   )
 }
@@ -611,18 +614,16 @@ function CertificationForm({
         name="credentialId"
         placeholder="Credential ID (optional)"
       />
-      <div className="grid gap-3 sm:grid-cols-2">
-        <Input
-          defaultValue={record?.issued_on ?? ""}
-          name="issuedOn"
-          type="date"
-        />
-        <Input
-          defaultValue={record?.expires_on ?? ""}
-          name="expiresOn"
-          type="date"
-        />
-      </div>
+      <PartialDateFields
+        endDate={record?.expires_on}
+        endName="expiresOn"
+        endPrecision={record?.expires_on_precision}
+        endLabel="Expires"
+        startDate={record?.issued_on}
+        startName="issuedOn"
+        startPrecision={record?.issued_on_precision}
+        startLabel="Issued"
+      />
     </RecordForm>
   )
 }
@@ -675,31 +676,135 @@ function LocationFields({
 
 function DateFields({
   endDate,
+  endPrecision,
   isCurrent,
   startDate,
+  startPrecision,
   startRequired = false,
 }: {
   endDate?: string | null
+  endPrecision?: DatePrecision
   isCurrent?: boolean
   startDate?: string | null
+  startPrecision?: DatePrecision
   startRequired?: boolean
 }) {
   return (
     <>
-      <div className="grid gap-3 sm:grid-cols-2">
-        <Input
-          defaultValue={startDate ?? ""}
-          name="startDate"
-          required={startRequired}
-          type="date"
-        />
-        <Input defaultValue={endDate ?? ""} name="endDate" type="date" />
-      </div>
+      <PartialDateFields
+        endDate={endDate}
+        endName="end"
+        endPrecision={endPrecision}
+        endLabel="End"
+        startDate={startDate}
+        startName="start"
+        startPrecision={startPrecision}
+        startLabel="Start"
+        startRequired={startRequired}
+      />
       <label className="flex items-center gap-2 text-sm text-muted-foreground">
         <input defaultChecked={isCurrent} name="isCurrent" type="checkbox" />
         This is current
       </label>
     </>
+  )
+}
+
+const monthOptions = [
+  ["01", "January"],
+  ["02", "February"],
+  ["03", "March"],
+  ["04", "April"],
+  ["05", "May"],
+  ["06", "June"],
+  ["07", "July"],
+  ["08", "August"],
+  ["09", "September"],
+  ["10", "October"],
+  ["11", "November"],
+  ["12", "December"],
+] as const
+
+function PartialDateFields({
+  endDate,
+  endLabel,
+  endName,
+  endPrecision,
+  startDate,
+  startLabel,
+  startName,
+  startPrecision,
+  startRequired = false,
+}: {
+  endDate?: string | null
+  endLabel: string
+  endName: string
+  endPrecision?: DatePrecision
+  startDate?: string | null
+  startLabel: string
+  startName: string
+  startPrecision?: DatePrecision
+  startRequired?: boolean
+}) {
+  return (
+    <div className="grid gap-3 sm:grid-cols-2">
+      <PartialDateField
+        date={startDate}
+        label={startLabel}
+        name={startName}
+        precision={startPrecision}
+        required={startRequired}
+      />
+      <PartialDateField
+        date={endDate}
+        label={endLabel}
+        name={endName}
+        precision={endPrecision}
+      />
+    </div>
+  )
+}
+
+function PartialDateField({
+  date,
+  label,
+  name,
+  precision,
+  required = false,
+}: {
+  date?: string | null
+  label: string
+  name: string
+  precision?: DatePrecision
+  required?: boolean
+}) {
+  const [year = "", month = ""] = date?.split("-") ?? []
+  const showMonth = precision !== "year"
+
+  return (
+    <fieldset className="grid gap-2 rounded-lg border border-border p-3">
+      <legend className="px-1 text-xs font-medium text-muted-foreground">
+        {label}
+      </legend>
+      <Input
+        defaultValue={year}
+        inputMode="numeric"
+        max={2100}
+        min={1900}
+        name={`${name}Year`}
+        placeholder="Year"
+        required={required}
+        type="number"
+      />
+      <Select defaultValue={showMonth ? month : ""} name={`${name}Month`}>
+        <option value="">Year only</option>
+        {monthOptions.map(([value, monthLabel]) => (
+          <option key={value} value={value}>
+            {monthLabel}
+          </option>
+        ))}
+      </Select>
+    </fieldset>
   )
 }
 
@@ -749,14 +854,22 @@ function Select({
 
 function dateRange(
   startDate: string | null,
+  startPrecision: DatePrecision,
   endDate: string | null,
+  endPrecision: DatePrecision,
   isCurrent: boolean,
 ) {
-  const start = startDate ? formatDate(startDate) : "Date not provided"
-  return `${start}–${isCurrent ? "Present" : endDate ? formatDate(endDate) : "Not provided"}`
+  const start = startDate
+    ? formatPartialDate(startDate, startPrecision)
+    : "Date not provided"
+  return `${start}–${isCurrent ? "Present" : endDate ? formatPartialDate(endDate, endPrecision) : "Not provided"}`
 }
 
-function formatDate(value: string) {
+function formatPartialDate(value: string, precision: DatePrecision) {
+  if (precision === "year") {
+    return value.slice(0, 4)
+  }
+
   return new Intl.DateTimeFormat("en-US", {
     month: "short",
     year: "numeric",

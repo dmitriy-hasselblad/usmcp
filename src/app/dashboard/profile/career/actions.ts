@@ -12,12 +12,13 @@ import {
 import {
   employmentTypes,
   isEducationType,
+  type DatePrecision,
 } from "@/lib/professional/career-records"
 
 const careerPath = "/dashboard/profile/career"
 const uuidPattern =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
-const datePattern = /^\d{4}-\d{2}-\d{2}$/
+const yearPattern = /^(19|20)\d{2}$/
 
 async function requireProfessional() {
   const identity = await requireIdentity(careerPath)
@@ -41,21 +42,31 @@ function optional(value: string) {
   return value || null
 }
 
-function validOptionalDate(value: string) {
-  return value.length === 0 || datePattern.test(value)
+function partialDate(
+  year: string,
+  month: string,
+  required = false,
+): { date: string | null; precision: DatePrecision } | null {
+  if (!year && !month) {
+    return required ? null : { date: null, precision: "month" }
+  }
+
+  if (!yearPattern.test(year) || (month && !/^(0[1-9]|1[0-2])$/.test(month))) {
+    return null
+  }
+
+  return {
+    date: `${year}-${month || "01"}-01`,
+    precision: month ? "month" : "year",
+  }
 }
 
 function validDateRange(
-  startDate: string,
-  endDate: string,
+  startDate: string | null,
+  endDate: string | null,
   isCurrent = false,
 ) {
-  return (
-    validOptionalDate(startDate) &&
-    validOptionalDate(endDate) &&
-    (isCurrent || endDate.length > 0) &&
-    (!startDate || !endDate || endDate >= startDate)
-  )
+  return (isCurrent || endDate !== null) && (!startDate || !endDate || endDate >= startDate)
 }
 
 function finish(kind: "error" | "success", message: string) {
@@ -92,8 +103,14 @@ export async function saveEducation(formData: FormData) {
   const city = formString(formData, "city")
   const stateCode = formString(formData, "stateCode")
   const country = formString(formData, "country")
-  const startDate = formString(formData, "startDate")
-  const endDate = formString(formData, "endDate")
+  const start = partialDate(
+    formString(formData, "startYear"),
+    formString(formData, "startMonth"),
+  )
+  const end = partialDate(
+    formString(formData, "endYear"),
+    formString(formData, "endMonth"),
+  )
   const isCurrent = formData.get("isCurrent") === "on"
   const description = formString(formData, "description")
 
@@ -110,10 +127,13 @@ export async function saveEducation(formData: FormData) {
     country.length < 2 ||
     country.length > 100 ||
     description.length > 1200 ||
-    !validDateRange(startDate, endDate, isCurrent)
+    !start ||
+    !end ||
+    !validDateRange(start.date, end.date, isCurrent)
   ) {
     finish("error", "Review the education fields and try again.")
   }
+  if (!start || !end) return
 
   const values = {
     education_type: educationType,
@@ -123,8 +143,10 @@ export async function saveEducation(formData: FormData) {
     city: optional(city),
     state_code: optional(stateCode),
     country,
-    start_date: optional(startDate),
-    end_date: isCurrent ? null : optional(endDate),
+    start_date: start.date,
+    start_date_precision: start.precision,
+    end_date: isCurrent ? null : end.date,
+    end_date_precision: end.precision,
     is_current: isCurrent,
     description: optional(description),
   }
@@ -160,8 +182,15 @@ export async function saveExperience(formData: FormData) {
   const employmentType = formString(formData, "employmentType")
   const city = formString(formData, "city")
   const stateCode = formString(formData, "stateCode")
-  const startDate = formString(formData, "startDate")
-  const endDate = formString(formData, "endDate")
+  const start = partialDate(
+    formString(formData, "startYear"),
+    formString(formData, "startMonth"),
+    true,
+  )
+  const end = partialDate(
+    formString(formData, "endYear"),
+    formString(formData, "endMonth"),
+  )
   const isCurrent = formData.get("isCurrent") === "on"
   const description = formString(formData, "description")
 
@@ -175,12 +204,14 @@ export async function saveExperience(formData: FormData) {
       !employmentTypes.some((option) => option === employmentType)) ||
     city.length > 120 ||
     (stateCode && !isUsState(stateCode)) ||
-    !datePattern.test(startDate) ||
+    !start ||
+    !end ||
     description.length > 1600 ||
-    !validDateRange(startDate, endDate, isCurrent)
+    !validDateRange(start.date, end.date, isCurrent)
   ) {
     finish("error", "Review the experience fields and try again.")
   }
+  if (!start || !end) return
 
   const values = {
     organization_name: organizationName,
@@ -188,8 +219,10 @@ export async function saveExperience(formData: FormData) {
     employment_type: optional(employmentType),
     city: optional(city),
     state_code: optional(stateCode),
-    start_date: startDate,
-    end_date: isCurrent ? null : optional(endDate),
+    start_date: start.date,
+    start_date_precision: start.precision,
+    end_date: isCurrent ? null : end.date,
+    end_date_precision: end.precision,
     is_current: isCurrent,
     description: optional(description),
   }
@@ -223,8 +256,14 @@ export async function saveLicense(formData: FormData) {
   const licenseType = formString(formData, "licenseType")
   const licenseNumber = formString(formData, "licenseNumber")
   const issuingState = formString(formData, "issuingState")
-  const issuedOn = formString(formData, "issuedOn")
-  const expiresOn = formString(formData, "expiresOn")
+  const issued = partialDate(
+    formString(formData, "issuedOnYear"),
+    formString(formData, "issuedOnMonth"),
+  )
+  const expires = partialDate(
+    formString(formData, "expiresOnYear"),
+    formString(formData, "expiresOnMonth"),
+  )
 
   if (
     (id && !uuidPattern.test(id)) ||
@@ -233,19 +272,22 @@ export async function saveLicense(formData: FormData) {
     licenseNumber.length < 2 ||
     licenseNumber.length > 80 ||
     !isUsState(issuingState) ||
-    !validOptionalDate(issuedOn) ||
-    !validOptionalDate(expiresOn) ||
-    (issuedOn && expiresOn && expiresOn < issuedOn)
+    !issued ||
+    !expires ||
+    (issued.date && expires.date && expires.date < issued.date)
   ) {
     finish("error", "Review the license fields and try again.")
   }
+  if (!issued || !expires) return
 
   const values = {
     license_type: licenseType,
     license_number: licenseNumber,
     issuing_state: issuingState,
-    issued_on: optional(issuedOn),
-    expires_on: optional(expiresOn),
+    issued_on: issued.date,
+    issued_on_precision: issued.precision,
+    expires_on: expires.date,
+    expires_on_precision: expires.precision,
   }
   if (!(await canAddCareerRecord(identity, "professional_licenses")) && !id) {
     finish(
@@ -277,8 +319,14 @@ export async function saveCertification(formData: FormData) {
   const name = formString(formData, "name")
   const issuingOrganization = formString(formData, "issuingOrganization")
   const credentialId = formString(formData, "credentialId")
-  const issuedOn = formString(formData, "issuedOn")
-  const expiresOn = formString(formData, "expiresOn")
+  const issued = partialDate(
+    formString(formData, "issuedOnYear"),
+    formString(formData, "issuedOnMonth"),
+  )
+  const expires = partialDate(
+    formString(formData, "expiresOnYear"),
+    formString(formData, "expiresOnMonth"),
+  )
 
   if (
     (id && !uuidPattern.test(id)) ||
@@ -287,19 +335,22 @@ export async function saveCertification(formData: FormData) {
     issuingOrganization.length < 2 ||
     issuingOrganization.length > 180 ||
     credentialId.length > 100 ||
-    !validOptionalDate(issuedOn) ||
-    !validOptionalDate(expiresOn) ||
-    (issuedOn && expiresOn && expiresOn < issuedOn)
+    !issued ||
+    !expires ||
+    (issued.date && expires.date && expires.date < issued.date)
   ) {
     finish("error", "Review the certification fields and try again.")
   }
+  if (!issued || !expires) return
 
   const values = {
     name,
     issuing_organization: issuingOrganization,
     credential_id: optional(credentialId),
-    issued_on: optional(issuedOn),
-    expires_on: optional(expiresOn),
+    issued_on: issued.date,
+    issued_on_precision: issued.precision,
+    expires_on: expires.date,
+    expires_on_precision: expires.precision,
   }
   if (!(await canAddCareerRecord(identity, "professional_certifications")) && !id) {
     finish(

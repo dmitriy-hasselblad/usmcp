@@ -7,6 +7,7 @@ export const educationTypes = [
 ] as const
 
 export type EducationType = (typeof educationTypes)[number]
+export type DatePrecision = "year" | "month"
 
 export const educationTypeLabels: Record<EducationType, string> = {
   degree: "College or university degree",
@@ -36,7 +37,9 @@ export type EducationRecord = {
   state_code: string | null
   country: string
   start_date: string | null
+  start_date_precision: DatePrecision
   end_date: string | null
+  end_date_precision: DatePrecision
   is_current: boolean
   description: string | null
   created_at: string
@@ -52,7 +55,9 @@ export type ExperienceRecord = {
   city: string | null
   state_code: string | null
   start_date: string
+  start_date_precision: DatePrecision
   end_date: string | null
+  end_date_precision: DatePrecision
   is_current: boolean
   description: string | null
   created_at: string
@@ -66,7 +71,9 @@ export type LicenseRecord = {
   license_number: string
   issuing_state: string
   issued_on: string | null
+  issued_on_precision: DatePrecision
   expires_on: string | null
+  expires_on_precision: DatePrecision
   created_at: string
   updated_at: string
 }
@@ -78,7 +85,9 @@ export type CertificationRecord = {
   issuing_organization: string
   credential_id: string | null
   issued_on: string | null
+  issued_on_precision: DatePrecision
   expires_on: string | null
+  expires_on_precision: DatePrecision
   created_at: string
   updated_at: string
 }
