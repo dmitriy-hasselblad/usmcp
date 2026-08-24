@@ -9,6 +9,27 @@ import { formString, messagePath } from "@/lib/auth/validation"
 const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
 const allowedStatuses = ["approved", "under_review", "blocked"] as const
 
+export async function permanentlyDeleteJob(formData: FormData) {
+  const jobId = formString(formData, "jobId")
+  const confirmed = formData.get("confirmed") === "on"
+  const confirmation = formString(formData, "confirmation")
+  const identity = await requirePlatformAdmin("/admin/jobs")
+
+  if (!uuidPattern.test(jobId) || !confirmed || confirmation !== "DELETE") {
+    redirect(messagePath(`/admin/jobs/${jobId}`, "error", "Type DELETE and confirm the permanent removal."))
+  }
+
+  const { error } = await identity.supabase.rpc("delete_job_as_platform_admin", { target_job_id: jobId })
+  if (error) {
+    redirect(messagePath(`/admin/jobs/${jobId}`, "error", "The job could not be deleted. Jobs with applications are protected."))
+  }
+
+  revalidatePath("/admin")
+  revalidatePath("/admin/jobs")
+  revalidatePath("/jobs")
+  redirect(messagePath("/admin/jobs", "success", "Job permanently deleted."))
+}
+
 export async function changeJobModeration(formData: FormData) {
   const jobId = formString(formData, "jobId")
   const targetStatus = formString(formData, "targetStatus")

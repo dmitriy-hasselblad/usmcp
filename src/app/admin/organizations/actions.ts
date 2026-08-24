@@ -11,6 +11,29 @@ const organizationIdPattern =
 
 const allowedStatuses = ["pending", "verified", "rejected"] as const
 
+export async function permanentlyDeleteOrganization(formData: FormData) {
+  const organizationId = formString(formData, "organizationId")
+  const confirmed = formData.get("confirmed") === "on"
+  const confirmation = formString(formData, "confirmation")
+  const identity = await requirePlatformAdmin("/admin/organizations")
+
+  if (!organizationIdPattern.test(organizationId) || !confirmed || confirmation !== "DELETE") {
+    redirect(messagePath(`/admin/organizations/${organizationId}`, "error", "Type DELETE and confirm the permanent removal."))
+  }
+
+  const { error } = await identity.supabase.rpc("delete_organization_as_platform_admin", { target_organization_id: organizationId })
+  if (error) {
+    redirect(messagePath(`/admin/organizations/${organizationId}`, "error", "The organization could not be deleted. Organizations with applications are protected."))
+  }
+
+  revalidatePath("/admin")
+  revalidatePath("/admin/organizations")
+  revalidatePath("/admin/jobs")
+  revalidatePath("/companies")
+  revalidatePath("/jobs")
+  redirect(messagePath("/admin/organizations", "success", "Organization permanently deleted."))
+}
+
 export async function changeOrganizationVerification(formData: FormData) {
   const organizationId = formString(formData, "organizationId")
   const targetStatus = formString(formData, "targetStatus")

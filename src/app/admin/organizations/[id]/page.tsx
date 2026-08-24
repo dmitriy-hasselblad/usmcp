@@ -8,14 +8,16 @@ import {
   ExternalLink,
   FileText,
   ShieldCheck,
+  Trash2,
 } from "lucide-react"
 
-import { changeOrganizationVerification } from "@/app/admin/organizations/actions"
+import { changeOrganizationVerification, permanentlyDeleteOrganization } from "@/app/admin/organizations/actions"
 import { AdminShell } from "@/components/admin/admin-shell"
 import { AuthNotice } from "@/components/auth/auth-notice"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { formatAdminDate } from "@/lib/admin/directory"
 import { requirePlatformAdmin } from "@/lib/admin/session"
@@ -132,7 +134,8 @@ export default async function OrganizationReviewPage({
           </div>
         </div>
 
-        <Card className="h-fit bg-white">
+        <div className="grid content-start gap-6">
+        <Card className="bg-white">
           <CardContent className="p-6">
             <span className="grid size-11 place-items-center rounded-xl bg-violet-100 text-violet-700">
               <ShieldCheck className="size-5" />
@@ -167,6 +170,8 @@ export default async function OrganizationReviewPage({
             </div>
           </CardContent>
         </Card>
+        <DeleteOrganizationForm organizationId={organization.id} />
+        </div>
       </div>
     </AdminShell>
   )
@@ -210,6 +215,24 @@ function ModerationForm({
         {submitLabel}
       </Button>
     </form>
+  )
+}
+
+function DeleteOrganizationForm({ organizationId }: { organizationId: string }) {
+  return (
+    <Card className="border-red-200 bg-red-50">
+      <CardContent className="p-6">
+        <Trash2 className="size-6 text-red-700" />
+        <h2 className="mt-4 text-lg font-semibold text-red-950">Permanent removal</h2>
+        <p className="mt-2 text-sm leading-6 text-red-900">This permanently removes the organization and its empty jobs, team memberships, invitations, and posts. Organizations with applications are protected and cannot be removed.</p>
+        <form action={permanentlyDeleteOrganization} className="mt-5">
+          <input name="organizationId" type="hidden" value={organizationId} />
+          <label className="grid gap-2 text-sm font-medium text-red-950">Type DELETE to confirm<Input autoComplete="off" name="confirmation" required /></label>
+          <label className="mt-3 flex items-start gap-2 text-xs leading-5 text-red-900"><input className="mt-1 size-4" name="confirmed" required type="checkbox" />I understand this cannot be undone.</label>
+          <Button className="mt-4 w-full" type="submit" variant="destructive"><Trash2 /> Delete organization permanently</Button>
+        </form>
+      </CardContent>
+    </Card>
   )
 }
 

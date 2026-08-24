@@ -1,13 +1,13 @@
 import Link from "next/link"
 import type { ReactNode } from "react"
-import { BriefcaseBusiness, Building2, Flag, History, LayoutDashboard, Newspaper, ShieldCheck, UsersRound } from "lucide-react"
+import { BriefcaseBusiness, Building2, FileText, Flag, History, LayoutDashboard, Newspaper, ShieldCheck, UsersRound } from "lucide-react"
 
 import { SmviaLogo } from "@/components/brand/smvia-logo"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
-type AdminRoute = "overview" | "users" | "organizations" | "jobs" | "news" | "reports" | "audit"
+type AdminRoute = "overview" | "users" | "organizations" | "jobs" | "applications" | "news" | "reports" | "audit"
 
 const routes = [
   { key: "overview", href: "/admin", label: "Overview", icon: LayoutDashboard },
@@ -19,6 +19,7 @@ const routes = [
     icon: Building2,
   },
   { key: "jobs", href: "/admin/jobs", label: "Jobs", icon: BriefcaseBusiness },
+  { key: "applications", href: "/admin/applications", label: "Applications", icon: FileText },
   { key: "news", href: "/admin/news", label: "News", icon: Newspaper },
   { key: "reports", href: "/admin/reports", label: "Reports", icon: Flag },
   { key: "audit", href: "/admin/audit", label: "Audit log", icon: History },
