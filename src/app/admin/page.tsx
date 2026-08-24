@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Link from "next/link"
 import {
   BriefcaseBusiness,
   Building2,
@@ -55,11 +56,11 @@ export default async function AdminOverviewPage() {
       </div>
 
       <div className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
-        <Metric icon={UsersRound} label="Users" value={users ?? 0} />
-        <Metric icon={Building2} label="Organizations" value={organizations ?? 0} />
-        <Metric icon={ShieldCheck} label="Awaiting verification" value={pendingOrganizations ?? 0} />
-        <Metric icon={BriefcaseBusiness} label="Jobs" value={jobs ?? 0} />
-        <Metric icon={FileText} label="Applications" value={applications ?? 0} />
+        <Metric href="/admin/users" icon={UsersRound} label="Users" value={users ?? 0} />
+        <Metric href="/admin/organizations" icon={Building2} label="Organizations" value={organizations ?? 0} />
+        <Metric href="/admin/organizations?status=pending" icon={ShieldCheck} label="Awaiting verification" value={pendingOrganizations ?? 0} />
+        <Metric href="/admin/jobs" icon={BriefcaseBusiness} label="Jobs" value={jobs ?? 0} />
+        <Metric href="/admin/applications" icon={FileText} label="Applications" value={applications ?? 0} />
       </div>
 
       <Card className="mt-8 bg-white">
@@ -75,21 +76,25 @@ export default async function AdminOverviewPage() {
 }
 
 function Metric({
+  href,
   icon: Icon,
   label,
   value,
 }: {
+  href: string
   icon: typeof UsersRound
   label: string
   value: number
 }) {
   return (
-    <Card className="bg-white">
+    <Card className="bg-white transition-shadow hover:shadow-md">
+      <Link aria-label={`Open ${label}`} className="block focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50" href={href}>
       <CardContent className="p-5">
         <Icon className="size-5 text-primary" />
         <p className="mt-4 text-3xl font-semibold tracking-[-0.05em]">{value}</p>
         <p className="mt-1 text-sm text-muted-foreground">{label}</p>
       </CardContent>
+      </Link>
     </Card>
   )
 }
