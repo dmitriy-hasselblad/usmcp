@@ -39,6 +39,7 @@ import {
   educationTypeLabels,
   educationTypes,
   employmentTypes,
+  type DatePrecision,
   type CertificationRecord,
   type EducationRecord,
   type ExperienceRecord,
@@ -160,8 +161,8 @@ export default async function CareerHistoryPage({
             Career history
           </h1>
           <p className="mt-3 max-w-2xl leading-7 text-muted-foreground">
-            Add the education, clinical experience, licenses, and credentials
-            that make up your professional healthcare profile.
+            Add your most recent education, role, license, and certification.
+            Put all earlier career history in Résumé Builder.
           </p>
         </div>
         <div className="min-w-56 rounded-2xl border border-border bg-white p-4">
@@ -192,14 +193,22 @@ export default async function CareerHistoryPage({
         />
       </div>
 
+      <div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm leading-6 text-amber-950">
+        <strong>Keep this profile concise.</strong> Add only your most recent
+        record in each section. Put all earlier education, roles, licenses, and
+        certifications in Résumé Builder.
+      </div>
+
       <div className="mt-6 grid gap-6">
         <CareerSection
           description="Degrees, medical school, residency, fellowship, and clinical training."
           form={
-            <EducationForm
-              record={editingEducation}
-              showCancel={Boolean(query.editEducation)}
-            />
+            editingEducation || education.length === 0 ? (
+              <EducationForm
+                record={editingEducation}
+                showCancel={Boolean(query.editEducation)}
+              />
+            ) : null
           }
           icon={<GraduationCap className="size-5 text-primary" />}
           hasRecords={education.length > 0}
@@ -211,7 +220,7 @@ export default async function CareerHistoryPage({
               key={record.id}
               recordId={record.id}
               recordType="education"
-              subtitle={`${educationTypeLabels[record.education_type]} · ${dateRange(record.start_date, record.end_date, record.is_current)}`}
+              subtitle={`${educationTypeLabels[record.education_type]} · ${dateRange(record.start_date, record.start_date_precision, record.end_date, record.end_date_precision, record.is_current)}`}
               title={`${record.program} — ${record.institution}`}
             />
           ))}
@@ -220,10 +229,12 @@ export default async function CareerHistoryPage({
         <CareerSection
           description="Clinical, operational, academic, and leadership experience."
           form={
-            <ExperienceForm
-              record={editingExperience}
-              showCancel={Boolean(query.editExperience)}
-            />
+            editingExperience || experience.length === 0 ? (
+              <ExperienceForm
+                record={editingExperience}
+                showCancel={Boolean(query.editExperience)}
+              />
+            ) : null
           }
           icon={<BriefcaseBusiness className="size-5 text-primary" />}
           hasRecords={experience.length > 0}
@@ -235,7 +246,7 @@ export default async function CareerHistoryPage({
               key={record.id}
               recordId={record.id}
               recordType="experience"
-              subtitle={`${record.organization_name} · ${dateRange(record.start_date, record.end_date, record.is_current)}`}
+              subtitle={`${record.organization_name} · ${dateRange(record.start_date, record.start_date_precision, record.end_date, record.end_date_precision, record.is_current)}`}
               title={record.role_title}
             />
           ))}
@@ -244,10 +255,12 @@ export default async function CareerHistoryPage({
         <CareerSection
           description="State licenses used to establish professional eligibility."
           form={
-            <LicenseForm
-              record={editingLicense}
-              showCancel={Boolean(query.editLicense)}
-            />
+            editingLicense || licenses.length === 0 ? (
+              <LicenseForm
+                record={editingLicense}
+                showCancel={Boolean(query.editLicense)}
+              />
+            ) : null
           }
           icon={<ShieldCheck className="size-5 text-primary" />}
           hasRecords={licenses.length > 0}
@@ -259,7 +272,7 @@ export default async function CareerHistoryPage({
               key={record.id}
               recordId={record.id}
               recordType="license"
-              subtitle={`${record.issuing_state} · License ${record.license_number}${record.expires_on ? ` · Expires ${formatDate(record.expires_on)}` : ""}`}
+              subtitle={`${record.issuing_state} · License ${record.license_number}${record.expires_on ? ` · Expires ${formatPartialDate(record.expires_on, record.expires_on_precision)}` : ""}`}
               title={record.license_type}
             />
           ))}
@@ -268,10 +281,12 @@ export default async function CareerHistoryPage({
         <CareerSection
           description="Board certifications and other recognized professional credentials."
           form={
-            <CertificationForm
-              record={editingCertification}
-              showCancel={Boolean(query.editCertification)}
-            />
+            editingCertification || certifications.length === 0 ? (
+              <CertificationForm
+                record={editingCertification}
+                showCancel={Boolean(query.editCertification)}
+              />
+            ) : null
           }
           icon={<Award className="size-5 text-primary" />}
           hasRecords={certifications.length > 0}
@@ -283,7 +298,7 @@ export default async function CareerHistoryPage({
               key={record.id}
               recordId={record.id}
               recordType="certification"
-              subtitle={`${record.issuing_organization}${record.expires_on ? ` · Expires ${formatDate(record.expires_on)}` : ""}`}
+              subtitle={`${record.issuing_organization}${record.expires_on ? ` · Expires ${formatPartialDate(record.expires_on, record.expires_on_precision)}` : ""}`}
               title={record.name}
             />
           ))}
@@ -331,7 +346,18 @@ function CareerSection({
           )}
         </div>
         <div className="rounded-xl border border-border bg-muted/25 p-4">
-          {form}
+          {form ?? (
+            <div className="grid gap-3">
+              <h3 className="font-semibold">Most recent record saved</h3>
+              <p className="text-sm leading-6 text-muted-foreground">
+                Keep one current record in this section. Add earlier history in
+                Résumé Builder, where your full career can span multiple pages.
+              </p>
+              <Button asChild variant="outline">
+                <Link href="/dashboard/resumes">Open Résumé Builder</Link>
+              </Button>
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>
@@ -429,8 +455,10 @@ function EducationForm({
       />
       <DateFields
         endDate={record?.end_date}
+        endPrecision={record?.end_date_precision}
         isCurrent={record?.is_current}
         startDate={record?.start_date}
+        startPrecision={record?.start_date_precision}
       />
       <Textarea
         defaultValue={record?.description ?? ""}
@@ -486,8 +514,10 @@ function ExperienceForm({
       <LocationFields city={record?.city} stateCode={record?.state_code} />
       <DateFields
         endDate={record?.end_date}
+        endPrecision={record?.end_date_precision}
         isCurrent={record?.is_current}
         startDate={record?.start_date}
+        startPrecision={record?.start_date_precision}
         startRequired
       />
       <Textarea
@@ -535,18 +565,16 @@ function LicenseForm({
         name="issuingState"
         required
       />
-      <div className="grid gap-3 sm:grid-cols-2">
-        <Input
-          defaultValue={record?.issued_on ?? ""}
-          name="issuedOn"
-          type="date"
-        />
-        <Input
-          defaultValue={record?.expires_on ?? ""}
-          name="expiresOn"
-          type="date"
-        />
-      </div>
+      <PartialDateFields
+        endDate={record?.expires_on}
+        endName="expiresOn"
+        endPrecision={record?.expires_on_precision}
+        endLabel="Expires"
+        startDate={record?.issued_on}
+        startName="issuedOn"
+        startPrecision={record?.issued_on_precision}
+        startLabel="Issued"
+      />
     </RecordForm>
   )
 }
@@ -586,18 +614,16 @@ function CertificationForm({
         name="credentialId"
         placeholder="Credential ID (optional)"
       />
-      <div className="grid gap-3 sm:grid-cols-2">
-        <Input
-          defaultValue={record?.issued_on ?? ""}
-          name="issuedOn"
-          type="date"
-        />
-        <Input
-          defaultValue={record?.expires_on ?? ""}
-          name="expiresOn"
-          type="date"
-        />
-      </div>
+      <PartialDateFields
+        endDate={record?.expires_on}
+        endName="expiresOn"
+        endPrecision={record?.expires_on_precision}
+        endLabel="Expires"
+        startDate={record?.issued_on}
+        startName="issuedOn"
+        startPrecision={record?.issued_on_precision}
+        startLabel="Issued"
+      />
     </RecordForm>
   )
 }
@@ -650,31 +676,135 @@ function LocationFields({
 
 function DateFields({
   endDate,
+  endPrecision,
   isCurrent,
   startDate,
+  startPrecision,
   startRequired = false,
 }: {
   endDate?: string | null
+  endPrecision?: DatePrecision
   isCurrent?: boolean
   startDate?: string | null
+  startPrecision?: DatePrecision
   startRequired?: boolean
 }) {
   return (
     <>
-      <div className="grid gap-3 sm:grid-cols-2">
-        <Input
-          defaultValue={startDate ?? ""}
-          name="startDate"
-          required={startRequired}
-          type="date"
-        />
-        <Input defaultValue={endDate ?? ""} name="endDate" type="date" />
-      </div>
+      <PartialDateFields
+        endDate={endDate}
+        endName="end"
+        endPrecision={endPrecision}
+        endLabel="End"
+        startDate={startDate}
+        startName="start"
+        startPrecision={startPrecision}
+        startLabel="Start"
+        startRequired={startRequired}
+      />
       <label className="flex items-center gap-2 text-sm text-muted-foreground">
         <input defaultChecked={isCurrent} name="isCurrent" type="checkbox" />
         This is current
       </label>
     </>
+  )
+}
+
+const monthOptions = [
+  ["01", "January"],
+  ["02", "February"],
+  ["03", "March"],
+  ["04", "April"],
+  ["05", "May"],
+  ["06", "June"],
+  ["07", "July"],
+  ["08", "August"],
+  ["09", "September"],
+  ["10", "October"],
+  ["11", "November"],
+  ["12", "December"],
+] as const
+
+function PartialDateFields({
+  endDate,
+  endLabel,
+  endName,
+  endPrecision,
+  startDate,
+  startLabel,
+  startName,
+  startPrecision,
+  startRequired = false,
+}: {
+  endDate?: string | null
+  endLabel: string
+  endName: string
+  endPrecision?: DatePrecision
+  startDate?: string | null
+  startLabel: string
+  startName: string
+  startPrecision?: DatePrecision
+  startRequired?: boolean
+}) {
+  return (
+    <div className="grid gap-3 sm:grid-cols-2">
+      <PartialDateField
+        date={startDate}
+        label={startLabel}
+        name={startName}
+        precision={startPrecision}
+        required={startRequired}
+      />
+      <PartialDateField
+        date={endDate}
+        label={endLabel}
+        name={endName}
+        precision={endPrecision}
+      />
+    </div>
+  )
+}
+
+function PartialDateField({
+  date,
+  label,
+  name,
+  precision,
+  required = false,
+}: {
+  date?: string | null
+  label: string
+  name: string
+  precision?: DatePrecision
+  required?: boolean
+}) {
+  const [year = "", month = ""] = date?.split("-") ?? []
+  const showMonth = precision !== "year"
+
+  return (
+    <fieldset className="grid gap-2 rounded-lg border border-border p-3">
+      <legend className="px-1 text-xs font-medium text-muted-foreground">
+        {label}
+      </legend>
+      <Input
+        defaultValue={year}
+        inputMode="numeric"
+        max={2100}
+        min={1900}
+        name={`${name}Year`}
+        placeholder="Year"
+        required={required}
+        type="number"
+      />
+      <Select defaultValue={showMonth ? month : ""} name={`${name}Month`}>
+        <option value="">Year only</option>
+        {monthOptions.map(([value, monthLabel]) => (
+          <option key={value} value={value}>
+            {monthLabel}
+          </option>
+        ))}
+      </Select>
+    </fieldset>
   )
 }
 
@@ -724,14 +854,22 @@ function Select({
 
 function dateRange(
   startDate: string | null,
+  startPrecision: DatePrecision,
   endDate: string | null,
+  endPrecision: DatePrecision,
   isCurrent: boolean,
 ) {
-  const start = startDate ? formatDate(startDate) : "Date not provided"
-  return `${start}–${isCurrent ? "Present" : endDate ? formatDate(endDate) : "Not provided"}`
+  const start = startDate
+    ? formatPartialDate(startDate, startPrecision)
+    : "Date not provided"
+  return `${start}–${isCurrent ? "Present" : endDate ? formatPartialDate(endDate, endPrecision) : "Not provided"}`
 }
 
-function formatDate(value: string) {
+function formatPartialDate(value: string, precision: DatePrecision) {
+  if (precision === "year") {
+    return value.slice(0, 4)
+  }
+
   return new Intl.DateTimeFormat("en-US", {
     month: "short",
     year: "numeric",
