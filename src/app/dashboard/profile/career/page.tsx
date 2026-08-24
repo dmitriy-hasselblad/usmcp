@@ -160,8 +160,8 @@ export default async function CareerHistoryPage({
             Career history
           </h1>
           <p className="mt-3 max-w-2xl leading-7 text-muted-foreground">
-            Add the education, clinical experience, licenses, and credentials
-            that make up your professional healthcare profile.
+            Add your most recent education, role, license, and certification.
+            Put all earlier career history in Résumé Builder.
           </p>
         </div>
         <div className="min-w-56 rounded-2xl border border-border bg-white p-4">
@@ -192,14 +192,22 @@ export default async function CareerHistoryPage({
         />
       </div>
 
+      <div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm leading-6 text-amber-950">
+        <strong>Keep this profile concise.</strong> Add only your most recent
+        record in each section. Put all earlier education, roles, licenses, and
+        certifications in Résumé Builder.
+      </div>
+
       <div className="mt-6 grid gap-6">
         <CareerSection
           description="Degrees, medical school, residency, fellowship, and clinical training."
           form={
-            <EducationForm
-              record={editingEducation}
-              showCancel={Boolean(query.editEducation)}
-            />
+            editingEducation || education.length === 0 ? (
+              <EducationForm
+                record={editingEducation}
+                showCancel={Boolean(query.editEducation)}
+              />
+            ) : null
           }
           icon={<GraduationCap className="size-5 text-primary" />}
           hasRecords={education.length > 0}
@@ -220,10 +228,12 @@ export default async function CareerHistoryPage({
         <CareerSection
           description="Clinical, operational, academic, and leadership experience."
           form={
-            <ExperienceForm
-              record={editingExperience}
-              showCancel={Boolean(query.editExperience)}
-            />
+            editingExperience || experience.length === 0 ? (
+              <ExperienceForm
+                record={editingExperience}
+                showCancel={Boolean(query.editExperience)}
+              />
+            ) : null
           }
           icon={<BriefcaseBusiness className="size-5 text-primary" />}
           hasRecords={experience.length > 0}
@@ -244,10 +254,12 @@ export default async function CareerHistoryPage({
         <CareerSection
           description="State licenses used to establish professional eligibility."
           form={
-            <LicenseForm
-              record={editingLicense}
-              showCancel={Boolean(query.editLicense)}
-            />
+            editingLicense || licenses.length === 0 ? (
+              <LicenseForm
+                record={editingLicense}
+                showCancel={Boolean(query.editLicense)}
+              />
+            ) : null
           }
           icon={<ShieldCheck className="size-5 text-primary" />}
           hasRecords={licenses.length > 0}
@@ -268,10 +280,12 @@ export default async function CareerHistoryPage({
         <CareerSection
           description="Board certifications and other recognized professional credentials."
           form={
-            <CertificationForm
-              record={editingCertification}
-              showCancel={Boolean(query.editCertification)}
-            />
+            editingCertification || certifications.length === 0 ? (
+              <CertificationForm
+                record={editingCertification}
+                showCancel={Boolean(query.editCertification)}
+              />
+            ) : null
           }
           icon={<Award className="size-5 text-primary" />}
           hasRecords={certifications.length > 0}
@@ -331,7 +345,18 @@ function CareerSection({
           )}
         </div>
         <div className="rounded-xl border border-border bg-muted/25 p-4">
-          {form}
+          {form ?? (
+            <div className="grid gap-3">
+              <h3 className="font-semibold">Most recent record saved</h3>
+              <p className="text-sm leading-6 text-muted-foreground">
+                Keep one current record in this section. Add earlier history in
+                Résumé Builder, where your full career can span multiple pages.
+              </p>
+              <Button asChild variant="outline">
+                <Link href="/dashboard/resumes">Open Résumé Builder</Link>
+              </Button>
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>

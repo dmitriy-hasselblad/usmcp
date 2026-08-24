@@ -65,6 +65,23 @@ function finish(kind: "error" | "success", message: string) {
   redirect(messagePath(careerPath, kind, message))
 }
 
+async function canAddCareerRecord(
+  identity: Awaited<ReturnType<typeof requireProfessional>>,
+  table:
+    | "professional_education"
+    | "professional_experience"
+    | "professional_licenses"
+    | "professional_certifications",
+) {
+  const { data, error } = await identity.supabase
+    .from(table)
+    .select("id")
+    .eq("user_id", identity.userId)
+    .limit(1)
+
+  return !error && (data?.length ?? 0) === 0
+}
+
 export async function saveEducation(formData: FormData) {
   const identity = await requireProfessional()
   const id = formString(formData, "recordId")
@@ -110,6 +127,12 @@ export async function saveEducation(formData: FormData) {
     end_date: isCurrent ? null : optional(endDate),
     is_current: isCurrent,
     description: optional(description),
+  }
+  if (!(await canAddCareerRecord(identity, "professional_education")) && !id) {
+    finish(
+      "error",
+      "Keep only your most recent education record here. Add earlier education in Résumé Builder.",
+    )
   }
   const request = id
     ? identity.supabase
@@ -170,6 +193,12 @@ export async function saveExperience(formData: FormData) {
     is_current: isCurrent,
     description: optional(description),
   }
+  if (!(await canAddCareerRecord(identity, "professional_experience")) && !id) {
+    finish(
+      "error",
+      "Keep only your most recent experience here. Add earlier roles in Résumé Builder.",
+    )
+  }
   const request = id
     ? identity.supabase
         .from("professional_experience")
@@ -218,6 +247,12 @@ export async function saveLicense(formData: FormData) {
     issued_on: optional(issuedOn),
     expires_on: optional(expiresOn),
   }
+  if (!(await canAddCareerRecord(identity, "professional_licenses")) && !id) {
+    finish(
+      "error",
+      "Keep only your most recent license here. Add earlier credentials in Résumé Builder.",
+    )
+  }
   const request = id
     ? identity.supabase
         .from("professional_licenses")
@@ -265,6 +300,12 @@ export async function saveCertification(formData: FormData) {
     credential_id: optional(credentialId),
     issued_on: optional(issuedOn),
     expires_on: optional(expiresOn),
+  }
+  if (!(await canAddCareerRecord(identity, "professional_certifications")) && !id) {
+    finish(
+      "error",
+      "Keep only your most recent certification here. Add earlier credentials in Résumé Builder.",
+    )
   }
   const request = id
     ? identity.supabase
