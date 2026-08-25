@@ -1,6 +1,6 @@
 # SM VIA Next Steps
 
-Last updated: 2026-08-20
+Last updated: 2026-08-25
 
 ## Current product phase
 
@@ -163,11 +163,10 @@ spam complaints during Early Access.
 The product owner reactivated social sign-in on 2026-08-20. Deliver it as
 two separate, security-reviewed changes:
 
-1. **Google sign-in:** configure Supabase Google OAuth, preserve the existing
-   account-type onboarding choice, and verify sign-in, sign-out, account
-   linking, and failure states in Vercel Preview before Production.
-2. **LinkedIn sign-in:** follow only after Google is verified. Confirm the
-   current LinkedIn OAuth requirements and keep the same account-type and
+1. **Google sign-in:** completed and verified through PR #67.
+2. **LinkedIn sign-in:** the next planned authentication item. Confirm the
+   current LinkedIn OAuth requirements, configure only after a usable LinkedIn
+   developer application exists, and keep the same account-type and
    authorization boundaries.
 
 Neither provider may grant roles or organization access from provider profile
@@ -188,7 +187,22 @@ roadmap:
 
 ## Immediate next ticket
 
-**Ticket:** Formal soft-launch operations and search visibility.
+**Ticket:** Complete PR #72 brand-name and social-link Preview review, then
+configure LinkedIn sign-in when the product owner resumes the task.
+
+### Current delivery state
+
+- PR #72 is open on `codex/brand-name-metadata` and is intentionally not in
+  Production. It adds the exact visible name expansion `SM VIA - Specialized
+  Medical Vocations & Industry Alliance.` plus the organization LinkedIn and X
+  links in the public footer.
+- The Preview must be checked for compact footer spacing before an approved
+  merge. No schema or RLS changes are included.
+- LinkedIn sign-in is blocked only by LinkedIn developer-account/Page setup;
+  Google sign-in is already live.
+
+**After PR #72 is completed:** Formal soft-launch operations and search
+visibility.
 
 ### Goal
 
