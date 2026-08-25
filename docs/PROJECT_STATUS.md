@@ -1,6 +1,6 @@
 # SM VIA Project Status
 
-Last updated: 2026-08-19
+Last updated: 2026-08-25
 
 ## Purpose
 
@@ -25,11 +25,32 @@ English.
 ## Production baseline
 
 - Production branch: `main`
-- Latest confirmed product Pull Request: PR #63
-- PR #63 merge commit: `4854a0c`
-- Current `main` commit at branch handoff: `4854a0c`
+- Latest confirmed product Pull Request: PR #71
+- Current `main` commit at branch handoff: `1975906`
 - Production deployment status at verification: `Ready`
-- Latest Production verification date: 2026-08-19
+- Latest Production verification date: 2026-08-25
+
+### Current handoff: 2026-08-25
+
+- PR #71 is live in Production. Employers set the number of open positions,
+  mark accepted applicants as hired, and the opening count decreases safely;
+  the job closes when all positions are filled. The candidate and platform
+  administrator receive the associated notifications.
+- Structured career-history date fields support month/year precision without a
+  required day. Professional profile and education-record saving were repaired
+  and verified in Preview before the related Production release.
+- Production administration is assigned to `admin@smvia.org`. The retained
+  employer workspace is `r.dmitriy@yahoo.co.uk`; all other test users,
+  organizations, applications, jobs, News records, and their unused Storage
+  images were permanently removed at the product owner's direction.
+- PR #72 (`codex/brand-name-metadata`) is open and Preview-only. It changes the
+  public footer and Why SM VIA section to use the exact visible expansion
+  `SM VIA - Specialized Medical Vocations & Industry Alliance.` and adds
+  branded LinkedIn and X links. It has not been merged or deployed to
+  Production.
+- LinkedIn sign-in is the next planned authentication task. Do not configure
+  or merge it until the product owner resumes the work and provides a usable
+  LinkedIn developer application.
 
 PR #62 enabled Resend-backed transactional delivery for application status
 changes and employer messages. PR #63 introduced the branded SM VIA email
