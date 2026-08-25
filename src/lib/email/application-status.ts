@@ -26,11 +26,21 @@ type MessageNotificationEmail = {
   organizationName: string
 }
 
+type HiringNotificationEmail = {
+  applicationId: string
+  candidateFirstName: string
+  candidateLastName: string
+  jobTitle: string
+  organizationName: string
+  remainingOpenPositions: number
+}
+
 const statusCopy: Record<ApplicationStatus, { label: string; message: string }> = {
   submitted: { label: "Submitted", message: "Your application is now marked as submitted." },
   reviewing: { label: "Under review", message: "The hiring team is reviewing your application." },
   interview: { label: "Interview", message: "The hiring team moved your application to the interview stage." },
   offer: { label: "Offer", message: "The hiring team moved your application to the offer stage." },
+  hired: { label: "Hired", message: "The hiring team has marked your application as hired. Congratulations on your new role." },
   rejected: { label: "Not selected", message: "The hiring team has completed its review and did not select this application." },
   withdrawn: { label: "Withdrawn", message: "This application has been withdrawn." },
 }
@@ -94,6 +104,57 @@ export async function sendNewEmployerMessageEmail(input: MessageNotificationEmai
       body: JSON.stringify({ from, to: [recipient], subject, text, html: renderNewMessageHtml(input, applicationUrl) }),
     })
     return response.ok ? { outcome: "sent" } : { outcome: "failed", code: `provider_${response.status}` }
+  } catch {
+    return { outcome: "failed", code: "provider_unreachable" }
+  }
+}
+
+export async function sendHiringNotificationEmail(input: HiringNotificationEmail): Promise<EmailDeliveryResult> {
+  const mode = getDeliveryMode()
+  if (mode === "disabled") return { outcome: "skipped", code: "delivery_disabled" }
+
+  const apiKey = process.env.RESEND_API_KEY
+  const from = process.env.EMAIL_FROM
+  const testRecipient = process.env.EMAIL_TEST_RECIPIENT
+  if (!apiKey || !from) return { outcome: "skipped", code: "missing_email_configuration" }
+  if (mode === "test" && !testRecipient) return { outcome: "skipped", code: "missing_test_recipient" }
+
+  const recipient = mode === "test"
+    ? testRecipient!
+    : (process.env.PLATFORM_ADMIN_EMAIL ?? "admin@smvia.org")
+  if (!isEmail(recipient)) return { outcome: "failed", code: "invalid_recipient" }
+
+  const adminUrl = `${getApplicationOrigin(mode)}/admin/applications`
+  const candidateName = `${input.candidateFirstName} ${input.candidateLastName}`.trim()
+  try {
+    const response = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+        "Idempotency-Key": `application-hired-admin-${input.applicationId}`,
+      },
+      body: JSON.stringify({
+        from,
+        to: [recipient],
+        subject: `Hiring update: ${candidateName} hired for ${input.jobTitle}`,
+        html: renderEmailShell({
+          preview: `${candidateName} was hired for ${input.jobTitle}.`,
+          greeting: "Hello platform administrator,",
+          heading: "A candidate was hired",
+          message: `<strong>${escapeHtml(candidateName)}</strong> was marked as hired by <strong>${escapeHtml(input.organizationName)}</strong>. ${input.remainingOpenPositions} ${input.remainingOpenPositions === 1 ? "opening remains" : "openings remain"} for this role.`,
+          detailTitle: escapeHtml(input.jobTitle),
+          detailSubtitle: escapeHtml(input.organizationName),
+          badge: "Hiring recorded",
+          actionUrl: adminUrl,
+          actionLabel: "Review applications",
+        }),
+        text: `${candidateName} was marked as hired by ${input.organizationName} for ${input.jobTitle}. ${input.remainingOpenPositions} open positions remain. Review applications: ${adminUrl}`,
+      }),
+    })
+    return response.ok
+      ? { outcome: "sent" }
+      : { outcome: "failed", code: `provider_${response.status}` }
   } catch {
     return { outcome: "failed", code: "provider_unreachable" }
   }

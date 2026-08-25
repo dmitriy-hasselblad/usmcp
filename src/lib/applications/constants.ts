@@ -3,6 +3,7 @@ export const applicationStatuses = [
   "reviewing",
   "interview",
   "offer",
+  "hired",
   "rejected",
   "withdrawn",
 ] as const

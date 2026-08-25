@@ -161,6 +161,12 @@ export default async function JobPage({ params }: JobPageProps) {
                     <BriefcaseBusiness className="size-4" />
                     {job.type} · {job.setting}
                   </span>
+                  {job.source === "live" && typeof job.openPositions === "number" && (
+                    <span className="inline-flex items-center gap-2">
+                      <Building2 className="size-4" />
+                      {job.openPositions} {job.openPositions === 1 ? "open position" : "open positions"}
+                    </span>
+                  )}
                   <span className="inline-flex items-center gap-2">
                     <Clock3 className="size-4" />
                     {job.posted}

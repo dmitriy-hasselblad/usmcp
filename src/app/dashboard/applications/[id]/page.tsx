@@ -20,6 +20,7 @@ import { notFound, redirect } from "next/navigation"
 
 import {
   cancelApplicationInterview,
+  markApplicationHired,
   respondToApplicationInterview,
   scheduleApplicationInterview,
   sendApplicationMessage,
@@ -286,29 +287,50 @@ async function EmployerApplication({
                 The candidate withdrew this application. Its status can no
                 longer be changed.
               </p>
+            ) : application.status === "hired" ? (
+              <p className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm leading-6 text-emerald-900">
+                This candidate has been marked as hired. The job&apos;s remaining
+                open-position count has been updated.
+              </p>
             ) : canEdit ? (
-              <form action={updateApplicationStatus} className="mt-5 grid gap-3">
-                <input
-                  name="applicationId"
-                  type="hidden"
-                  value={application.id}
-                />
-                <label className="grid gap-2 text-sm font-medium">
-                  Update status
-                  <select
-                    className="h-11 w-full rounded-lg border border-input bg-background px-3 text-sm outline-none transition-shadow focus:border-ring focus:ring-3 focus:ring-ring/20"
-                    defaultValue={application.status}
-                    name="status"
-                  >
-                    {employerApplicationStatuses.map((status) => (
-                      <option key={status} value={status}>
-                        {statusLabel(status)}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-                <Button type="submit">Save status</Button>
-              </form>
+              <div className="mt-5 grid gap-3">
+                <form action={updateApplicationStatus} className="grid gap-3">
+                  <input
+                    name="applicationId"
+                    type="hidden"
+                    value={application.id}
+                  />
+                  <label className="grid gap-2 text-sm font-medium">
+                    Update status
+                    <select
+                      className="h-11 w-full rounded-lg border border-input bg-background px-3 text-sm outline-none transition-shadow focus:border-ring focus:ring-3 focus:ring-ring/20"
+                      defaultValue={application.status}
+                      name="status"
+                    >
+                      {employerApplicationStatuses.map((status) => (
+                        <option key={status} value={status}>
+                          {statusLabel(status)}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <Button type="submit">Save status</Button>
+                </form>
+                <form action={markApplicationHired}>
+                  <input name="applicationId" type="hidden" value={application.id} />
+                  <p className="mb-3 rounded-xl border border-amber-200 bg-amber-50 p-3 text-xs leading-5 text-amber-950">
+                    Confirm this only after the candidate accepts. One open
+                    position will be removed. When no positions remain, this
+                    job will close and move to your archived jobs.
+                  </p>
+                  <Button className="w-full" type="submit">
+                    Mark as hired
+                  </Button>
+                </form>
+                <p className="text-xs leading-5 text-muted-foreground">
+                  This notifies the candidate and platform administrator.
+                </p>
+              </div>
             ) : (
               <p className="mt-4 rounded-xl bg-muted p-4 text-sm leading-6 text-muted-foreground">
                 Your workspace role has view-only access to applicant statuses.
@@ -833,6 +855,7 @@ function statusLabel(status: ApplicationStatus) {
     reviewing: "In review",
     interview: "Interview",
     offer: "Offer",
+    hired: "Hired",
     rejected: "Not selected",
     withdrawn: "Withdrawn",
   }
