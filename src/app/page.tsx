@@ -195,7 +195,7 @@ export default async function Home() {
               align="center"
               eyebrow="Why SM VIA"
               title="Healthcare careers need more than a generic job board."
-              description="The platform brings the real structure of healthcare careers and hiring into one secure workflow."
+              description="SM VIA means Specialized Medical Vocations & Industry Alliance. The platform brings the real structure of healthcare careers and hiring into one secure workflow."
               tone="inverted"
             />
             <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

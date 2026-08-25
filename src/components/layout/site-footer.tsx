@@ -23,6 +23,9 @@ export function SiteFooter() {
       <div className="mx-auto grid max-w-7xl gap-10 px-5 py-12 sm:grid-cols-[1.2fr_1fr] lg:px-8">
         <div>
           <SmviaLogo />
+          <p className="mt-3 max-w-sm text-sm font-medium leading-6 text-foreground">
+            SM VIA stands for Specialized Medical Vocations &amp; Industry Alliance.
+          </p>
           <p className="mt-4 max-w-sm text-sm leading-6 text-muted-foreground">
             A more thoughtful way for healthcare professionals and organizations
             to move forward.
