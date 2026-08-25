@@ -33,6 +33,7 @@ export type PublishedJobRow = {
   profession: string
   experience_level: string
   required_skills: string[]
+  open_positions: number
 }
 
 export const getPublishedJobs = cache(async (): Promise<Job[]> => {
@@ -44,7 +45,7 @@ export const getPublishedJobs = cache(async (): Promise<Job[]> => {
   const { data, error } = await supabase
     .from("published_jobs")
     .select(
-      "id, slug, title, specialty, city, state_code, employment_type, workplace_type, salary_min, salary_max, salary_period, visa_support, description, published_at, expires_at, organization_id, organization_name, organization_slug, organization_type, organization_website, verification_status, profession, experience_level, required_skills",
+      "id, slug, title, specialty, city, state_code, employment_type, workplace_type, salary_min, salary_max, salary_period, visa_support, description, published_at, expires_at, organization_id, organization_name, organization_slug, organization_type, organization_website, verification_status, profession, experience_level, required_skills, open_positions",
     )
     .order("published_at", { ascending: false })
     .limit(200)
@@ -68,7 +69,7 @@ export const getPublishedJobBySlug = cache(
     const { data, error } = await supabase
       .from("published_jobs")
       .select(
-        "id, slug, title, specialty, city, state_code, employment_type, workplace_type, salary_min, salary_max, salary_period, visa_support, description, published_at, expires_at, organization_id, organization_name, organization_slug, organization_type, organization_website, verification_status, profession, experience_level, required_skills",
+        "id, slug, title, specialty, city, state_code, employment_type, workplace_type, salary_min, salary_max, salary_period, visa_support, description, published_at, expires_at, organization_id, organization_name, organization_slug, organization_type, organization_website, verification_status, profession, experience_level, required_skills, open_positions",
       )
       .eq("slug", slug)
       .maybeSingle()
@@ -126,6 +127,7 @@ export function toMarketplaceJob(row: PublishedJobRow): Job {
     expiresAt: row.expires_at,
     isPlatformDemo: isPlatformDemonstrationOrganization(row.organization_name),
     requiredSkills: row.required_skills ?? [],
+    openPositions: row.open_positions,
   }
 }
 

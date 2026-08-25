@@ -98,7 +98,7 @@ begin
   set status = 'hired'::public.application_status,
       updated_at = now()
   where id = target_application_id
-  returning updated_at into result_updated_at;
+  returning public.applications.updated_at into result_updated_at;
 
   update public.jobs
   set open_positions = next_open_positions,

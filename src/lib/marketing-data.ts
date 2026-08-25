@@ -45,6 +45,7 @@ export type Job = {
   expiresAt?: string
   isPlatformDemo?: boolean
   requiredSkills?: string[]
+  openPositions?: number
 }
 
 export type Employer = {
