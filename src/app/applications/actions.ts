@@ -12,7 +12,7 @@ import {
 } from "@/lib/applications/constants"
 import { requireIdentity } from "@/lib/auth/session"
 import { requireEmployerWorkspace } from "@/lib/employer/session"
-import { sendApplicationStatusEmail, sendNewEmployerMessageEmail } from "@/lib/email/application-status"
+import { sendApplicationStatusEmail, sendHiringNotificationEmail, sendNewEmployerMessageEmail } from "@/lib/email/application-status"
 import { applicationMessageAttachmentsBucket, applicationMessageAttachmentMaxBytes, isApplicationMessageAttachmentMimeType } from "@/lib/applications/message-attachments"
 
 function isUuid(value: string) {
@@ -237,6 +237,85 @@ export async function updateApplicationStatus(formData: FormData) {
       `/dashboard/applications/${applicationId}`,
       "success",
       "Application status updated.",
+    ),
+  )
+}
+
+export async function markApplicationHired(formData: FormData) {
+  const workspace = await requireEmployerWorkspace("/dashboard/applications")
+  const applicationId = formString(formData, "applicationId")
+  const returnPath = isUuid(applicationId)
+    ? `/dashboard/applications/${applicationId}`
+    : "/dashboard/applications"
+
+  if (!isUuid(applicationId)) {
+    redirect(messagePath(returnPath, "error", "The hiring decision is invalid."))
+  }
+
+  const { data, error } = await workspace.supabase.rpc("mark_application_hired", {
+    target_application_id: applicationId,
+  })
+  const result = data?.[0] as
+    | {
+        application_id: string
+        candidate_email: string
+        candidate_first_name: string
+        candidate_last_name?: string
+        job_title: string
+        organization_name: string
+        updated_at: string
+        remaining_open_positions: number
+        job_closed: boolean
+      }
+    | undefined
+
+  if (error || !result) {
+    redirect(messagePath(returnPath, "error", "We could not record this hiring decision. The opening may already be filled."))
+  }
+
+  after(async () => {
+    const [candidateDelivery, adminDelivery] = await Promise.all([
+      sendApplicationStatusEmail({
+        applicationId: result.application_id,
+        candidateEmail: result.candidate_email,
+        candidateFirstName: result.candidate_first_name,
+        jobTitle: result.job_title,
+        organizationName: result.organization_name,
+        status: "hired",
+        updatedAt: result.updated_at,
+      }),
+      sendHiringNotificationEmail({
+        applicationId: result.application_id,
+        candidateFirstName: result.candidate_first_name,
+        candidateLastName: result.candidate_last_name ?? "",
+        jobTitle: result.job_title,
+        organizationName: result.organization_name,
+        remainingOpenPositions: result.remaining_open_positions,
+      }),
+    ])
+
+    if (candidateDelivery.outcome === "failed" || adminDelivery.outcome === "failed") {
+      console.error("Hiring notification email delivery failed", {
+        applicationId: result.application_id,
+        candidateOutcome: candidateDelivery.outcome,
+        adminOutcome: adminDelivery.outcome,
+      })
+    }
+  })
+
+  revalidatePath("/")
+  revalidatePath("/jobs")
+  revalidatePath("/dashboard")
+  revalidatePath("/dashboard/jobs")
+  revalidatePath("/dashboard/applications")
+  revalidatePath(returnPath)
+  redirect(
+    messagePath(
+      returnPath,
+      "success",
+      result.job_closed
+        ? "Candidate marked as hired. All positions are filled, so this job is now closed."
+        : `Candidate marked as hired. ${result.remaining_open_positions} open positions remain.`,
     ),
   )
 }

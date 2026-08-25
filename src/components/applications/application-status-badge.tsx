@@ -7,6 +7,7 @@ const labels: Record<ApplicationStatus, string> = {
   reviewing: "In review",
   interview: "Interview",
   offer: "Offer",
+  hired: "Hired",
   rejected: "Not selected",
   withdrawn: "Withdrawn",
 }
@@ -16,6 +17,7 @@ const tones: Record<ApplicationStatus, string> = {
   reviewing: "border-amber-200 bg-amber-50 text-amber-800",
   interview: "border-violet-200 bg-violet-50 text-violet-800",
   offer: "border-emerald-200 bg-emerald-50 text-emerald-800",
+  hired: "border-emerald-300 bg-emerald-100 text-emerald-900",
   rejected: "border-slate-200 bg-slate-100 text-slate-700",
   withdrawn: "border-slate-200 bg-white text-slate-600",
 }

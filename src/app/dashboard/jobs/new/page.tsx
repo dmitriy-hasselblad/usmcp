@@ -167,6 +167,22 @@ export default async function NewJobPage({
                 </label>
 
                 <label className="grid gap-2 text-sm font-medium">
+                  Open positions
+                  <Input
+                    className="h-11"
+                    defaultValue={1}
+                    max={250}
+                    min={1}
+                    name="openPositions"
+                    required
+                    type="number"
+                  />
+                  <span className="text-xs font-normal text-muted-foreground">
+                    Enter the number of people you are hiring for this role. Each confirmed hire reduces this count automatically.
+                  </span>
+                </label>
+
+                <label className="grid gap-2 text-sm font-medium">
                   Required skills <span className="font-normal text-muted-foreground">Optional</span>
                   <Input className="h-11" maxLength={800} name="requiredSkills" placeholder="For example, Epic, ACLS, patient assessment" />
                   <span className="text-xs font-normal text-muted-foreground">Separate skills with commas. These power transparent candidate recommendations.</span>
