@@ -21,7 +21,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: getSiteUrl(),
   title: {
-    default: "SM VIA | The U.S. Healthcare Career Ecosystem",
+    default: "SM VIA | Specialized Medical Vocations & Industry Alliance",
     template: "%s | SM VIA",
   },
   description:
@@ -30,13 +30,13 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     siteName: "SM VIA",
-    title: "SM VIA | The U.S. Healthcare Career Ecosystem",
+    title: "SM VIA | Specialized Medical Vocations & Industry Alliance",
     description:
       "Healthcare opportunities, trusted organizations, and practical career guidance for the United States.",
   },
   twitter: {
     card: "summary",
-    title: "SM VIA | The U.S. Healthcare Career Ecosystem",
+    title: "SM VIA | Specialized Medical Vocations & Industry Alliance",
     description:
       "Healthcare opportunities, trusted organizations, and practical career guidance for the United States.",
   },

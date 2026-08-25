@@ -44,7 +44,7 @@ export function SiteFooter() {
       <div className="border-t border-border">
         <div className="mx-auto flex max-w-7xl flex-col gap-2 px-5 py-5 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between lg:px-8">
           <span>© {new Date().getFullYear()} SM VIA. All rights reserved.</span>
-          <span>The U.S. Healthcare Career Ecosystem</span>
+          <span>Specialized Medical Vocations &amp; Industry Alliance</span>
         </div>
       </div>
     </footer>
