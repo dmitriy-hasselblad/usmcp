@@ -24,7 +24,7 @@ export function SiteFooter() {
         <div>
           <SmviaLogo />
           <p className="mt-3 max-w-sm text-sm font-medium leading-6 text-foreground">
-            SM VIA stands for Specialized Medical Vocations &amp; Industry Alliance.
+            SM VIA - Specialized Medical Vocations &amp; Industry Alliance.
           </p>
           <p className="mt-4 max-w-sm text-sm leading-6 text-muted-foreground">
             A more thoughtful way for healthcare professionals and organizations
