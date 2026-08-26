@@ -116,21 +116,6 @@ export default async function Home() {
           </div>
         </section>
 
-        <section className="border-b border-border bg-white">
-          <div className="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-7 sm:flex-row sm:items-center sm:justify-between lg:px-8">
-            <p className="text-sm font-semibold text-muted-foreground">
-              Designed for the people and organizations behind U.S. healthcare.
-            </p>
-            <div className="flex flex-wrap items-center gap-x-7 gap-y-2 text-sm font-semibold tracking-[-0.02em] text-slate-400">
-              <span>Healthcare professionals</span>
-              <span>Hospitals and clinics</span>
-              <span>Recruiters</span>
-              <span>Residency candidates</span>
-              <span>International professionals</span>
-            </div>
-          </div>
-        </section>
-
         <section className="border-y border-border bg-muted/45" id="featured-jobs">
           <div className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28">
             <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
