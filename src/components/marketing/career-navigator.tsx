@@ -23,12 +23,9 @@ export function CareerNavigator() {
       <div className="rounded-[1.45rem] border border-white/10 bg-white/[0.07] p-5 text-white backdrop-blur sm:p-6">
         <p className="text-sm font-medium text-white/70">Career Navigator</p>
         <h2 className="mt-2 text-2xl font-semibold tracking-[-0.045em]">Where are you in your healthcare career?</h2>
-        <div className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-5 sm:gap-0">
+        <div className="mt-5 flex flex-wrap gap-2">
           {stages.map((item, index) => (
-            <div className="relative" key={item.title}>
-              <button className={index === selectedStage ? "relative z-10 w-full rounded-xl bg-teal-200 px-2 py-2 text-xs font-bold leading-4 text-slate-950 sm:rounded-full" : "relative z-10 w-full rounded-xl border border-white/15 bg-white/[0.06] px-2 py-2 text-xs font-semibold leading-4 text-white/75 transition hover:bg-white/[0.14] sm:rounded-full"} onClick={() => setSelectedStage(index)} type="button">{item.title}</button>
-              {index < stages.length - 1 ? <span className="pointer-events-none absolute left-[calc(50%+1.15rem)] top-1/2 z-0 hidden h-px w-[calc(100%-2.3rem)] bg-teal-200/45 sm:block" /> : null}
-            </div>
+            <button className={index === selectedStage ? "rounded-full bg-teal-200 px-3 py-1.5 text-xs font-bold text-slate-950" : "rounded-full border border-white/15 bg-white/[0.06] px-3 py-1.5 text-xs font-semibold text-white/75 transition hover:bg-white/[0.14]"} key={item.title} onClick={() => setSelectedStage(index)} type="button">{item.title}</button>
           ))}
         </div>
         <div className="mt-6 rounded-2xl border border-white/12 bg-slate-950/20 p-5">
