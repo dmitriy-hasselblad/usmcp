@@ -1,13 +1,12 @@
 import type { Metadata } from "next"
-import Image from "next/image"
 import Link from "next/link"
-import { ArrowRight, BookOpenText, GraduationCap, Globe2 } from "lucide-react"
+import { ArrowRight, GraduationCap, Globe2 } from "lucide-react"
 
 import { SiteFooter } from "@/components/layout/site-footer"
 import { SiteHeader } from "@/components/layout/site-header"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
+import { ResourceGuideGrid } from "@/components/resources/resource-guide-grid"
 import { resourceGuides } from "@/lib/resources/content"
 
 export const metadata: Metadata = {
@@ -36,44 +35,7 @@ export default function ResourcesPage() {
         </section>
 
         <section className="mx-auto max-w-7xl px-5 py-14 lg:px-8 lg:py-20">
-          <div className="grid gap-5 lg:grid-cols-3">
-            {resourceGuides.map((resource) => (
-              <article id={resource.slug} key={resource.slug}>
-                <Card className="h-full scroll-mt-28 overflow-hidden border-border/80 bg-white">
-                  <div className="relative h-44 overflow-hidden bg-muted">
-                    <Image
-                      alt={resource.image.alt}
-                      className="object-cover"
-                      fill
-                      sizes="(min-width: 1024px) 33vw, 100vw"
-                      src={resource.image.src}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/25 via-transparent to-white/5" />
-                    <span className="absolute left-6 top-6 grid size-11 place-items-center rounded-xl border border-white/80 bg-white/90 text-primary shadow-sm">
-                      <BookOpenText className="size-5" />
-                    </span>
-                  </div>
-                  <CardContent className="p-6">
-                    <p className="text-xs font-bold tracking-[0.12em] text-primary uppercase">
-                      {resource.category}
-                    </p>
-                    <h2 className="mt-3 text-xl font-semibold tracking-[-0.04em]">
-                      {resource.title}
-                    </h2>
-                    <p className="mt-3 text-sm leading-6 text-muted-foreground">
-                      {resource.description}
-                    </p>
-                    <div className="mt-5 flex items-center justify-between border-t border-border pt-5">
-                      <span className="text-sm text-muted-foreground">
-                        {resource.readTime}
-                      </span>
-                      <Button asChild size="sm" variant="outline"><Link href={`/resources/${resource.slug}`}>Read guide <ArrowRight /></Link></Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              </article>
-            ))}
-          </div>
+          <ResourceGuideGrid resources={resourceGuides} />
         </section>
 
         <section className="border-y border-border bg-muted/40" id="residency">

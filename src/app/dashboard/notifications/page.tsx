@@ -33,7 +33,7 @@ function one(value: string | string[] | undefined) {
 
 export const metadata = {
   title: "Notifications",
-  description: "Private SM VIA application updates.",
+  description: "Private SM VIA application and job-alert updates.",
 }
 
 export default async function NotificationsPage({ searchParams }: Props) {
@@ -105,7 +105,7 @@ function NotificationsContent({
             Notifications {unreadCount > 0 && <span className="ml-2 inline-grid min-w-7 place-items-center rounded-full bg-red-600 px-2 py-0.5 align-middle text-sm tracking-normal text-white">{unreadCount > 99 ? "99+" : unreadCount}</span>}
           </h1>
           <p className="mt-3 max-w-2xl leading-7 text-muted-foreground">
-            Application updates appear here. Unread updates are marked in red.
+            Application and job-alert updates appear here. Unread updates are marked in red.
           </p>
         </div>
         {unreadCount > 0 && (
@@ -165,7 +165,7 @@ function NotificationsContent({
             <Bell className="mx-auto size-6 text-primary" />
             <h2 className="mt-4 text-lg font-semibold">You are all caught up.</h2>
             <p className="mt-2 text-sm leading-6 text-muted-foreground">
-              New application and hiring-status updates will appear here.
+              New application, hiring-status, and job-alert updates will appear here.
             </p>
           </CardContent>
         </Card>
