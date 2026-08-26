@@ -4,9 +4,9 @@ import Image from "next/image"
 import {
   ArrowRight,
   BookOpenText,
-  ChevronRight,
   HeartPulse,
   ShieldCheck,
+  UsersRound,
 } from "lucide-react"
 
 import { JobCard } from "@/components/jobs/job-card"
@@ -20,7 +20,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { getPublishedJobs } from "@/lib/jobs/public-jobs"
 import { getPublicOrganizations } from "@/lib/organizations/public-organizations"
 import healthcareTeamImage from "../../public/images/ushce-healthcare-team.png"
-import { benefits, careerPaths, platformPrinciples, popularSpecialties } from "@/lib/marketing-data"
+import { benefits, platformPrinciples, popularSpecialties } from "@/lib/marketing-data"
 import { resourceGuides } from "@/lib/resources/content"
 
 export const metadata: Metadata = {
@@ -38,30 +38,19 @@ export default async function Home() {
     <div className="min-h-dvh overflow-hidden bg-background">
       <SiteHeader />
       <main id="top">
-        <section className="relative isolate overflow-hidden border-b border-border bg-slate-100">
-          <Image
-            alt=""
-            aria-hidden="true"
-            className="-z-20 object-cover object-[58%_center]"
-            fill
-            placeholder="blur"
-            priority
-            sizes="100vw"
-            src={healthcareTeamImage}
-          />
-          <div className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(248,252,255,0.98)_0%,rgba(248,252,255,0.94)_36%,rgba(238,248,248,0.54)_62%,rgba(8,42,70,0.18)_100%)] max-lg:bg-[linear-gradient(180deg,rgba(248,252,255,0.97)_0%,rgba(248,252,255,0.92)_48%,rgba(15,76,129,0.3)_100%)]" />
-          <div className="mx-auto grid max-w-7xl gap-14 px-5 py-16 sm:py-24 lg:grid-cols-[minmax(0,1.08fr)_minmax(23rem,0.92fr)] lg:items-center lg:px-8 lg:py-28">
-            <div>
+        <section className="relative isolate overflow-hidden border-b border-slate-200 bg-[#eef5f7]">
+          <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-80 bg-[radial-gradient(circle_at_72%_18%,rgba(80,174,198,0.2),transparent_41%),radial-gradient(circle_at_12%_92%,rgba(13,72,119,0.09),transparent_42%)]" />
+          <div className="mx-auto grid max-w-7xl gap-12 px-5 py-16 sm:py-20 lg:grid-cols-[minmax(0,1.02fr)_minmax(25rem,0.98fr)] lg:items-center lg:gap-16 lg:px-8 lg:py-24">
+            <div className="relative z-10">
               <div className="inline-flex items-center gap-2 rounded-full border border-primary/10 bg-white/80 px-3 py-1.5 text-xs font-semibold text-primary shadow-sm">
                 <HeartPulse className="size-3.5" />
                 Built for U.S. healthcare careers
               </div>
               <h1 className="mt-6 max-w-3xl text-5xl font-semibold tracking-[-0.065em] text-foreground sm:text-6xl lg:text-7xl">
-                Build your healthcare career in the U.S.
+                Where healthcare talent meets meaningful work.
               </h1>
               <p className="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground sm:text-xl">
-                Search focused healthcare opportunities, learn about employers,
-                and plan your next professional step in one clear ecosystem.
+                Discover focused healthcare opportunities, understand the people behind each organization, and move through your next career step with clarity.
               </p>
               <div className="mt-8 max-w-2xl">
                 <HeroSearch />
@@ -80,57 +69,51 @@ export default async function Home() {
               </div>
             </div>
 
-            <div className="relative mx-auto w-full max-w-lg lg:mx-0 lg:justify-self-end">
+            <div className="relative mx-auto w-full max-w-xl lg:mx-0 lg:justify-self-end">
               <div className="absolute -inset-4 -z-10 rounded-[2.5rem] bg-primary/10 blur-2xl" />
-              <div className="rounded-[2rem] border border-white/80 bg-[#0e416c]/95 p-5 shadow-[0_28px_70px_rgba(15,76,129,0.32)] backdrop-blur-sm sm:p-6">
-                <div className="rounded-[1.45rem] border border-white/10 bg-white/[0.07] p-5 text-white backdrop-blur sm:p-6">
-                  <p className="text-sm font-medium text-white/70">
-                    Start with your goal
-                  </p>
-                  <p className="mt-3 text-2xl font-semibold tracking-[-0.045em]">
-                    One ecosystem, built around the healthcare career journey.
-                  </p>
-                  <div className="mt-7 grid gap-3">
-                    {careerPaths.map((path, index) => (
-                      <Link
-                        className="group flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.06] p-3.5 transition-colors hover:bg-white/[0.11]"
-                        href={path.href}
-                        key={path.title}
-                      >
-                        <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-teal-300/15 text-xs font-bold text-teal-100">
-                          0{index + 1}
-                        </span>
-                        <span className="text-sm font-semibold">{path.title}</span>
-                        <ChevronRight className="ml-auto size-4 text-white/50 transition-transform group-hover:translate-x-0.5" />
-                      </Link>
-                    ))}
+              <div className="overflow-hidden rounded-[2rem] border border-white/90 bg-white p-2.5 shadow-[0_30px_80px_rgba(15,76,129,0.2)]">
+                <div className="relative aspect-[4/4.5] overflow-hidden rounded-[1.45rem] bg-slate-200">
+                  <Image alt="Healthcare professionals collaborating at work" className="object-cover object-[58%_center]" fill placeholder="blur" priority sizes="(min-width: 1024px) 42vw, 100vw" src={healthcareTeamImage} />
+                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,42,70,0.02)_37%,rgba(8,42,70,0.76)_100%)]" />
+                  <div className="absolute inset-x-4 bottom-4 rounded-2xl border border-white/15 bg-slate-950/55 p-4 text-white backdrop-blur-md sm:inset-x-5 sm:bottom-5 sm:p-5">
+                    <div className="flex items-center justify-between gap-4">
+                      <div>
+                        <p className="text-xs font-semibold tracking-[0.12em] text-cyan-100 uppercase">Healthcare, in motion</p>
+                        <p className="mt-1.5 text-lg font-semibold tracking-[-0.035em]">Built around real teams and real career paths.</p>
+                      </div>
+                      <UsersRound className="size-7 shrink-0 text-cyan-100" />
+                    </div>
                   </div>
-                </div>
-                <div className="mt-4 flex items-center gap-3 px-2 pb-1 text-xs text-blue-100/80">
-                  <ShieldCheck className="size-4 text-teal-200" />
-                  Published jobs are live and ready to explore.
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        <section className="border-b border-border bg-white">
-          <div className="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-7 sm:flex-row sm:items-center sm:justify-between lg:px-8">
-            <p className="text-sm font-semibold text-muted-foreground">
-              Designed for the people and organizations behind U.S. healthcare.
-            </p>
-            <div className="flex flex-wrap items-center gap-x-7 gap-y-2 text-sm font-semibold tracking-[-0.02em] text-slate-400">
-              <span>Healthcare professionals</span>
-              <span>Hospitals and clinics</span>
-              <span>Recruiters</span>
-              <span>Residency candidates</span>
-              <span>International professionals</span>
-            </div>
+        <section className="border-b border-slate-200 bg-white">
+          <div className="mx-auto grid max-w-7xl divide-y divide-slate-200 px-5 sm:grid-cols-3 sm:divide-x sm:divide-y-0 lg:px-8">
+            <Link className="group py-7 sm:px-7 sm:first:pl-0" href="/jobs">
+              <HeartPulse className="size-5 text-primary" />
+              <p className="mt-4 text-base font-semibold tracking-[-0.025em] text-slate-950">Healthcare professionals</p>
+              <p className="mt-1.5 text-sm leading-6 text-slate-500">Find work that reflects your specialty and career direction.</p>
+              <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-primary">Explore roles <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" /></span>
+            </Link>
+            <Link className="group py-7 sm:px-7" href="/for-employers">
+              <ShieldCheck className="size-5 text-primary" />
+              <p className="mt-4 text-base font-semibold tracking-[-0.025em] text-slate-950">Healthcare employers</p>
+              <p className="mt-1.5 text-sm leading-6 text-slate-500">Create a clear presence for the teams and roles you are building.</p>
+              <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-primary">For employers <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" /></span>
+            </Link>
+            <Link className="group py-7 sm:px-7 sm:last:pr-0" href="/resources">
+              <BookOpenText className="size-5 text-primary" />
+              <p className="mt-4 text-base font-semibold tracking-[-0.025em] text-slate-950">Career transitions</p>
+              <p className="mt-1.5 text-sm leading-6 text-slate-500">Use focused guidance for residency, licensing, and next steps.</p>
+              <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-primary">Explore guidance <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" /></span>
+            </Link>
           </div>
         </section>
 
-        <section className="border-y border-border bg-muted/45" id="featured-jobs">
+        <section className="bg-white" id="featured-jobs">
           <div className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28">
             <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
               <SectionHeading
