@@ -298,8 +298,8 @@ The following areas are not complete:
   Supabase Auth URL Configuration was updated on 2026-08-18.
 - Candidate job preferences, private saved searches, and in-product job-match
   alerts are in active development on `codex/aya-inspired-discovery`. The
-  related migration is not yet applied to Production and must be verified in a
-  Vercel Preview first.
+  related migration was applied to Production on 2026-08-26; the feature still
+  requires Vercel Preview verification before a pull request is merged.
 
 ## Local workstation setup
 

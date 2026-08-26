@@ -32,9 +32,10 @@ creates only private in-product notifications. Email alerts, salary guides,
 employer testimonials, staffing operations, and predictive matching are not
 part of this change.
 
-The migration `candidate_job_discovery_alerts` has **not** been applied to
-Production. It requires Preview verification and explicit product-owner
-approval before that step.
+The migration `candidate_job_discovery_alerts` was applied to Production on
+2026-08-26 after its schema, RLS policies, and grants were reviewed. The
+feature branch now requires Vercel Preview verification before a pull request
+is merged.
 
 ## Priority 1: Live public organization profiles
 
