@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import Link from "next/link"
 import Image from "next/image"
 import {
@@ -21,6 +22,10 @@ import { getPublicOrganizations } from "@/lib/organizations/public-organizations
 import healthcareTeamImage from "../../public/images/ushce-healthcare-team.png"
 import { benefits, careerPaths, platformPrinciples, popularSpecialties } from "@/lib/marketing-data"
 import { resourceGuides } from "@/lib/resources/content"
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+}
 
 export default async function Home() {
   const [liveJobs, publicOrganizations] = await Promise.all([

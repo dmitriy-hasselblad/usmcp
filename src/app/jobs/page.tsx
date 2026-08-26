@@ -25,6 +25,7 @@ export const metadata: Metadata = {
   title: "Healthcare Jobs",
   description:
     "Search U.S. healthcare jobs by profession, specialty, location, experience, and compensation.",
+  alternates: { canonical: "/jobs" },
 }
 
 type RawSearchParams = Promise<

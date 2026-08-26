@@ -11,6 +11,7 @@ import { Card, CardContent } from "@/components/ui/card"
 export const metadata: Metadata = {
   title: "Organization verification",
   description: "Learn what the SM VIA Verified organization badge means during Early Access.",
+  alternates: { canonical: "/verification" },
 }
 
 const reviewSteps = [

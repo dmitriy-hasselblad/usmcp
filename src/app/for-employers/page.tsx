@@ -18,6 +18,7 @@ export const metadata: Metadata = {
   title: "For Healthcare Employers",
   description:
     "Use SM VIA Early Access tools to publish healthcare opportunities, review applicants, and coordinate hiring.",
+  alternates: { canonical: "/for-employers" },
 }
 
 const employerFeatures = [

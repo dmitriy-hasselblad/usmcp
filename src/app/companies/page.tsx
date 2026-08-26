@@ -13,6 +13,7 @@ export const metadata: Metadata = {
   title: "Healthcare Organizations",
   description:
     "Explore U.S. healthcare organizations with active opportunities on SM VIA.",
+  alternates: { canonical: "/companies" },
 }
 
 export default async function CompaniesPage() {
