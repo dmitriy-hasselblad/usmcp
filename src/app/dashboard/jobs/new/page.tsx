@@ -7,12 +7,12 @@ import { AuthNotice } from "@/components/auth/auth-notice"
 import { AuthSubmitButton } from "@/components/auth/auth-submit-button"
 import { ProfessionSpecialtyFields } from "@/components/forms/profession-specialty-fields"
 import { UsLocationFields } from "@/components/forms/us-location-fields"
+import { JobDescriptionEditor } from "@/components/forms/job-description-editor"
 import { EmployerDashboardShell } from "@/components/employer/employer-dashboard-shell"
 import { EmployerPageHeader } from "@/components/employer/employer-page-header"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
 import {
   canManageJobs,
   employmentTypes,
@@ -226,12 +226,7 @@ export default async function NewJobPage({
 
                 <label className="grid gap-2 text-sm font-medium">
                   Job description
-                  <Textarea
-                    maxLength={10000}
-                    name="description"
-                    placeholder="Describe the role, responsibilities, qualifications, schedule, and benefits."
-                    rows={10}
-                  />
+                  <JobDescriptionEditor name="description" />
                 </label>
 
                 <label className="flex items-start gap-3 rounded-xl border border-border bg-muted/35 p-4 text-sm">

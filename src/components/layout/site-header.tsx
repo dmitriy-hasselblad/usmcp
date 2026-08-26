@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Bell, LayoutDashboard, LogOut, Menu, UserRound } from "lucide-react"
+import { Bell, ChevronDown, LayoutDashboard, LogOut, Menu, Settings, UserRound } from "lucide-react"
 
 import { SmviaLogo } from "@/components/brand/smvia-logo"
 import { Button } from "@/components/ui/button"
@@ -74,11 +74,6 @@ export async function SiteHeader() {
         <div className="hidden items-center gap-2 sm:flex">
           {identity ? (
             <>
-              {identity.email && (
-                <span className="hidden max-w-48 truncate text-sm text-muted-foreground xl:inline">
-                  {identity.email}
-                </span>
-              )}
               <Button asChild className="h-10 rounded-xl px-4 shadow-sm">
                 <Link href="/dashboard">
                   <LayoutDashboard />
@@ -86,12 +81,7 @@ export async function SiteHeader() {
                 </Link>
               </Button>
               <NotificationMenu notifications={identity.notifications} />
-              <form action="/auth/sign-out" method="post">
-                <Button className="h-10 px-4" type="submit" variant="ghost">
-                  <LogOut />
-                  Sign out
-                </Button>
-              </form>
+              <AccountMenu email={identity.email} />
             </>
           ) : (
             <>
@@ -159,6 +149,18 @@ export async function SiteHeader() {
                     </Link>
                   </Button>
                   <NotificationMenu notifications={identity.notifications} mobile />
+                  <Button asChild className="h-11" variant="outline">
+                    <Link href="/dashboard/profile">
+                      <UserRound />
+                      Profile
+                    </Link>
+                  </Button>
+                  <Button asChild className="h-11" variant="outline">
+                    <Link href="/dashboard/security">
+                      <Settings />
+                      Settings
+                    </Link>
+                  </Button>
                   <form action="/auth/sign-out" method="post">
                     <Button
                       className="h-11 w-full"
@@ -193,6 +195,46 @@ type HeaderNotification = {
   title: string
   body: string
   href: string
+}
+
+function AccountMenu({ email }: { email?: string }) {
+  const initial = email?.trim().charAt(0).toUpperCase() || "M"
+
+  return (
+    <details className="relative hidden lg:block">
+      <summary className="flex h-10 cursor-pointer list-none items-center gap-2 rounded-xl border border-border bg-white px-2.5 text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50 [&::-webkit-details-marker]:hidden">
+        <span className="grid size-6 place-items-center rounded-full bg-primary text-xs font-bold text-white">
+          {initial}
+        </span>
+        <ChevronDown className="size-3.5 text-muted-foreground" />
+        <span className="sr-only">Open account menu</span>
+      </summary>
+      <div className="absolute right-0 top-12 w-64 rounded-xl border border-border bg-white p-2 shadow-xl">
+        <div className="border-b border-border px-3 py-3">
+          <p className="text-sm font-semibold">Account</p>
+          <p className="mt-1 truncate text-xs text-muted-foreground">
+            {email ?? "SM VIA member"}
+          </p>
+        </div>
+        <div className="grid gap-1 p-1.5">
+          <Link className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50" href="/dashboard/profile">
+            <UserRound className="size-4" />
+            Profile
+          </Link>
+          <Link className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50" href="/dashboard/security">
+            <Settings className="size-4" />
+            Settings
+          </Link>
+          <form action="/auth/sign-out" method="post">
+            <button className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-medium text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50" type="submit">
+              <LogOut className="size-4" />
+              Sign out
+            </button>
+          </form>
+        </div>
+      </div>
+    </details>
+  )
 }
 
 function NotificationMenu({

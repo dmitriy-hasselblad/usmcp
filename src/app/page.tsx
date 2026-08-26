@@ -4,23 +4,29 @@ import Image from "next/image"
 import {
   ArrowRight,
   BookOpenText,
-  ChevronRight,
+  CheckCircle2,
   HeartPulse,
+  Route,
   ShieldCheck,
+  Stethoscope,
 } from "lucide-react"
 
 import { JobCard } from "@/components/jobs/job-card"
 import { SiteFooter } from "@/components/layout/site-footer"
 import { SiteHeader } from "@/components/layout/site-header"
+import { CareerNavigator } from "@/components/marketing/career-navigator"
+import { UsOpportunityMap } from "@/components/marketing/us-opportunity-map"
 import { HeroSearch } from "@/components/marketing/hero-search"
 import { SectionHeading } from "@/components/marketing/section-heading"
 import { OrganizationCard } from "@/components/organizations/organization-card"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import { usStates } from "@/lib/auth/validation"
+import { healthcareTaxonomy } from "@/lib/healthcare-taxonomy"
 import { getPublishedJobs } from "@/lib/jobs/public-jobs"
 import { getPublicOrganizations } from "@/lib/organizations/public-organizations"
 import healthcareTeamImage from "../../public/images/ushce-healthcare-team.png"
-import { benefits, careerPaths, platformPrinciples, popularSpecialties } from "@/lib/marketing-data"
+import { popularSpecialties } from "@/lib/marketing-data"
 import { resourceGuides } from "@/lib/resources/content"
 
 export const metadata: Metadata = {
@@ -33,6 +39,7 @@ export default async function Home() {
     getPublicOrganizations(),
   ])
   const featuredMarketplaceJobs = liveJobs.slice(0, 3)
+  const stateSummaries = getStateSummaries(liveJobs)
 
   return (
     <div className="min-h-dvh overflow-hidden bg-background">
@@ -78,54 +85,33 @@ export default async function Home() {
                   </Link>
                 ))}
               </div>
+              <div className="mt-5 flex flex-wrap gap-2">
+                {[
+                  ["Specialty", "/jobs"],
+                  ["License state", "/jobs"],
+                  ["Visa support", "/jobs?visa=true"],
+                  ["Salary", "/jobs"],
+                  ["Residency", "/resources#residency"],
+                ].map(([label, href]) => (
+                  <Link className="rounded-full border border-primary/15 bg-white/70 px-3 py-1.5 text-xs font-semibold text-primary transition hover:border-primary/35 hover:bg-white" href={href} key={label}>
+                    {label}
+                  </Link>
+                ))}
+              </div>
             </div>
 
             <div className="relative mx-auto w-full max-w-lg lg:mx-0 lg:justify-self-end">
               <div className="absolute -inset-4 -z-10 rounded-[2.5rem] bg-primary/10 blur-2xl" />
-              <div className="rounded-[2rem] border border-white/80 bg-[#0e416c]/95 p-5 shadow-[0_28px_70px_rgba(15,76,129,0.32)] backdrop-blur-sm sm:p-6">
-                <div className="rounded-[1.45rem] border border-white/10 bg-white/[0.07] p-5 text-white backdrop-blur sm:p-6">
-                  <p className="text-sm font-medium text-white/70">
-                    Start with your goal
-                  </p>
-                  <p className="mt-3 text-2xl font-semibold tracking-[-0.045em]">
-                    One ecosystem, built around the healthcare career journey.
-                  </p>
-                  <div className="mt-7 grid gap-3">
-                    {careerPaths.map((path, index) => (
-                      <Link
-                        className="group flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.06] p-3.5 transition-colors hover:bg-white/[0.11]"
-                        href={path.href}
-                        key={path.title}
-                      >
-                        <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-teal-300/15 text-xs font-bold text-teal-100">
-                          0{index + 1}
-                        </span>
-                        <span className="text-sm font-semibold">{path.title}</span>
-                        <ChevronRight className="ml-auto size-4 text-white/50 transition-transform group-hover:translate-x-0.5" />
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-                <div className="mt-4 flex items-center gap-3 px-2 pb-1 text-xs text-blue-100/80">
-                  <ShieldCheck className="size-4 text-teal-200" />
-                  Published jobs are live and ready to explore.
-                </div>
-              </div>
+              <CareerNavigator />
             </div>
           </div>
         </section>
 
         <section className="border-b border-border bg-white">
-          <div className="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-7 sm:flex-row sm:items-center sm:justify-between lg:px-8">
-            <p className="text-sm font-semibold text-muted-foreground">
-              Designed for the people and organizations behind U.S. healthcare.
-            </p>
-            <div className="flex flex-wrap items-center gap-x-7 gap-y-2 text-sm font-semibold tracking-[-0.02em] text-slate-400">
-              <span>Healthcare professionals</span>
-              <span>Hospitals and clinics</span>
-              <span>Recruiters</span>
-              <span>Residency candidates</span>
-              <span>International professionals</span>
+          <div className="mx-auto max-w-7xl px-5 py-8 lg:px-8">
+            <div className="flex flex-col gap-4 rounded-2xl border border-primary/10 bg-slate-50 px-5 py-5 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex items-center gap-4"><Route className="size-6 shrink-0 text-teal-700" /><p className="text-sm font-semibold text-foreground">Built specifically for U.S. healthcare careers</p></div>
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs font-semibold text-muted-foreground"><span>50 states</span><span className="text-teal-600">●</span><span>Healthcare-only taxonomy</span><span className="text-teal-600">●</span><span>Licensure-aware profiles</span><span className="text-teal-600">●</span><span>International career pathways</span></div>
             </div>
           </div>
         </section>
@@ -144,10 +130,19 @@ export default async function Home() {
                 </Link>
               </Button>
             </div>
-            {featuredMarketplaceJobs.length ? <div className="mt-10 grid gap-4 lg:grid-cols-3">
-              {featuredMarketplaceJobs.map((job) => <JobCard job={job} key={job.slug} />)}
-            </div> : <Card className="mt-10 border-dashed bg-white"><CardContent className="p-8 text-center"><h2 className="text-xl font-semibold">New opportunities are coming soon.</h2><p className="mt-2 text-sm leading-6 text-muted-foreground">Check back as verified employers publish roles, or explore the product-preview experience from the jobs page.</p><Button asChild className="mt-5" variant="outline"><Link href="/jobs?preview=true">View product previews</Link></Button></CardContent></Card>}
+            {featuredMarketplaceJobs.length ? <div className="mt-10 grid gap-5 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
+              <JobCard job={featuredMarketplaceJobs[0]} />
+              <Card className="border-primary/15 bg-[linear-gradient(135deg,#f8fcff_0%,#edf9f8_100%)]"><CardContent className="flex h-full flex-col justify-center p-7 sm:p-9"><span className="grid size-12 place-items-center rounded-2xl bg-primary/10 text-primary"><Stethoscope className="size-6" /></span><p className="mt-6 text-xs font-bold tracking-[0.14em] text-primary uppercase">Profile-powered discovery</p><h2 className="mt-3 max-w-lg text-3xl font-semibold tracking-[-0.05em]">Your next opportunity starts with your profile.</h2><p className="mt-4 max-w-xl text-sm leading-7 text-muted-foreground">Add your specialty, licenses, certifications, experience, location, and career preferences to make your search more relevant as the marketplace grows.</p><Button asChild className="mt-7 w-fit rounded-xl"><Link href="/dashboard/profile">Build your professional profile <ArrowRight /></Link></Button></CardContent></Card>
+            </div> : <Card className="mt-10 border-dashed bg-white"><CardContent className="grid gap-6 p-8 sm:grid-cols-[auto_1fr] sm:items-center"><span className="grid size-14 place-items-center rounded-2xl bg-primary/10 text-primary"><Stethoscope className="size-7" /></span><div><h2 className="text-xl font-semibold">Your next opportunity starts with your profile.</h2><p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Build a professional profile around your specialty, licenses, certifications, experience, location, and visa requirements while the marketplace grows.</p><Button asChild className="mt-5" variant="outline"><Link href="/dashboard/profile">Build your professional profile <ArrowRight /></Link></Button></div></CardContent></Card>}
           </div>
+        </section>
+
+        <section className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28" id="careers">
+          <div className="grid gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:items-start"><SectionHeading eyebrow="Explore healthcare careers" title="Start with your discipline, then follow your path." description="SM VIA organizes healthcare work around focused professions and specialties—not a generic list of job titles." /><div className="grid gap-3 sm:grid-cols-2">{healthcareTaxonomy.slice(0, 8).map((category) => { const firstProfession = category.professions[0]?.name; return <Link className="group rounded-2xl border border-border bg-white p-5 transition hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-lg" href={firstProfession ? `/jobs?profession=${encodeURIComponent(firstProfession)}` : "/jobs"} key={category.name}><p className="text-base font-semibold">{category.name}</p><p className="mt-2 text-sm text-muted-foreground">{category.professions.slice(0, 3).map((profession) => profession.name).join(" · ")}</p><span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary">Explore roles <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" /></span></Link> })}</div></div>
+        </section>
+
+        <section className="border-y border-border bg-slate-50">
+          <div className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-24"><SectionHeading eyebrow="U.S. opportunity map" title="Explore healthcare opportunities by state." description="Select a state to view opportunities. Live counts appear only where employers have published roles." /><UsOpportunityMap states={stateSummaries} /></div>
         </section>
 
         <section
@@ -195,51 +190,11 @@ export default async function Home() {
         </section>
 
         <section className="bg-primary py-20 text-white lg:py-28" id="why-smvia">
-          <div className="mx-auto max-w-7xl px-5 lg:px-8">
-            <SectionHeading
-              align="center"
-              eyebrow="Why SM VIA"
-              title="Healthcare careers need more than a generic job board."
-              description="The platform brings the real structure of healthcare careers and hiring into one secure workflow."
-              tone="inverted"
-            />
-            <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {benefits.map((benefit) => {
-                const Icon = benefit.icon
-                return (
-                  <div
-                    className="rounded-2xl border border-white/15 bg-white/[0.07] p-6"
-                    key={benefit.title}
-                  >
-                    <div className="grid size-10 place-items-center rounded-xl bg-white/10 text-teal-200">
-                      <Icon className="size-5" />
-                    </div>
-                    <h2 className="mt-5 text-lg font-semibold tracking-[-0.03em]">
-                      {benefit.title}
-                    </h2>
-                    <p className="mt-2 text-sm leading-6 text-blue-100/80">
-                      {benefit.description}
-                    </p>
-                  </div>
-                )
-              })}
-            </div>
-          </div>
+          <div className="mx-auto grid max-w-7xl gap-12 px-5 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:px-8"><div><p className="text-xs font-bold tracking-[0.15em] text-teal-200 uppercase">Why SM VIA</p><h2 className="mt-4 text-4xl font-semibold tracking-[-0.055em] sm:text-5xl">Healthcare careers need more than a generic job board.</h2><p className="mt-5 max-w-xl text-base leading-8 text-blue-100/85">SM VIA structures healthcare experience, licenses, certifications, training, and career goals so professionals can present their background clearly and employers can understand it faster.</p><Button asChild className="mt-8 rounded-xl bg-white text-primary hover:bg-white/90"><Link href="/dashboard/profile">Build your professional profile <ArrowRight /></Link></Button></div><div className="rounded-[2rem] border border-white/15 bg-white/[0.08] p-5 shadow-2xl sm:p-7"><div className="rounded-[1.4rem] bg-white p-6 text-slate-900"><div className="flex items-start justify-between gap-4"><div><p className="text-xs font-bold tracking-[0.14em] text-primary uppercase">Illustrative profile</p><h3 className="mt-2 text-2xl font-semibold tracking-[-0.04em]">Professional readiness</h3></div><span className="rounded-full bg-teal-50 px-3 py-1 text-xs font-bold text-teal-800">Private by default</span></div><div className="mt-6 h-2 overflow-hidden rounded-full bg-slate-100"><div className="h-full w-2/3 rounded-full bg-teal-600" /></div><div className="mt-6 grid gap-3 text-sm">{["Licensure and credentials", "Education and clinical training", "Experience and specialty", "Location and career preferences"].map((item) => <div className="flex items-center gap-3 rounded-xl border border-slate-100 p-3" key={item}><CheckCircle2 className="size-5 text-teal-700" />{item}</div>)}</div><p className="mt-5 text-xs leading-5 text-slate-500">The profile is a product illustration. Members decide what information to add and share.</p></div></div></div>
         </section>
 
         <section className="border-b border-border bg-white">
-          <div className="mx-auto grid max-w-7xl gap-px bg-border sm:grid-cols-2 lg:grid-cols-4">
-            {platformPrinciples.map((principle) => (
-              <div className="bg-white px-7 py-9" key={principle.value}>
-                <p className="text-lg font-semibold tracking-[-0.03em] text-primary">
-                  {principle.value}
-                </p>
-                <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                  {principle.label}
-                </p>
-              </div>
-            ))}
-          </div>
+          <div className="mx-auto max-w-7xl px-5 py-12 lg:px-8"><p className="text-center text-xs font-bold tracking-[0.15em] text-primary uppercase">SM VIA Path Line</p><div className="mt-8 grid gap-5 sm:grid-cols-5 sm:gap-0">{["Profile", "License", "Career", "Employer", "Growth"].map((item, index) => <div className="relative flex items-center gap-3 sm:flex-col sm:text-center" key={item}><span className="grid size-9 shrink-0 place-items-center rounded-full border-2 border-teal-600 bg-white text-xs font-bold text-teal-800">0{index + 1}</span>{index < 4 && <span className="absolute left-9 top-4 h-px w-7 bg-teal-300 sm:left-[calc(50%+1.2rem)] sm:top-4 sm:w-[calc(100%-2.4rem)]" />}<span className="text-sm font-semibold text-foreground">{item}</span></div>)}</div></div>
         </section>
 
         <section
@@ -307,4 +262,24 @@ export default async function Home() {
       <SiteFooter />
     </div>
   )
+}
+
+function getStateSummaries(
+  jobs: Awaited<ReturnType<typeof getPublishedJobs>>,
+) {
+  const counts = new Map<string, number>()
+  for (const job of jobs) {
+    if (job.stateCode) {
+      counts.set(job.stateCode, (counts.get(job.stateCode) ?? 0) + 1)
+    }
+  }
+
+  return [...counts.entries()]
+    .map(([code, count]) => ({
+      code,
+      count,
+      name: usStates.find(([stateCode]) => stateCode === code)?.[1] ?? code,
+    }))
+    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, "en-US"))
+    .slice(0, 4)
 }
