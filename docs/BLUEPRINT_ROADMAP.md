@@ -92,8 +92,9 @@ the recommended implementation order on page 3 as the governing sequence.
 - [x] Extended healthcare profile sections
 - [x] Recommended jobs (Production verified)
 - [x] Standalone résumé builder and PDF export (verified in Production through PR #36)
-- [ ] Google sign-in (deferred to final pre-launch pass)
-- [ ] LinkedIn sign-in (deferred to final pre-launch pass)
+- [x] Google sign-in (Production verified)
+- [ ] LinkedIn sign-in (in progress; requires LinkedIn OpenID Connect provider
+  configuration and Preview verification)
 
 ### Employer platform
 

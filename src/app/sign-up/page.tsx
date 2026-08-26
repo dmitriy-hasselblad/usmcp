@@ -7,6 +7,7 @@ import { AuthNotice } from "@/components/auth/auth-notice"
 import { AuthPageShell } from "@/components/auth/auth-page-shell"
 import { AuthSubmitButton } from "@/components/auth/auth-submit-button"
 import { GoogleAuthButton } from "@/components/auth/google-auth-button"
+import { LinkedInAuthButton } from "@/components/auth/linkedin-auth-button"
 import { Input } from "@/components/ui/input"
 import { isAuthEnabled } from "@/lib/supabase/env"
 
@@ -98,6 +99,7 @@ export default async function SignUpPage({
         </fieldset>
 
         <GoogleAuthButton disabled={!configured} mode="sign-up" />
+        <LinkedInAuthButton disabled={!configured} mode="sign-up" />
         <div className="flex items-center gap-3 text-xs text-muted-foreground" aria-hidden="true">
           <span className="h-px flex-1 bg-border" />
           <span>or create an account with email</span>
