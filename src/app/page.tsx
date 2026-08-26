@@ -6,7 +6,6 @@ import {
   BookOpenText,
   CheckCircle2,
   HeartPulse,
-  MapPinned,
   Route,
   ShieldCheck,
   Stethoscope,
@@ -16,6 +15,7 @@ import { JobCard } from "@/components/jobs/job-card"
 import { SiteFooter } from "@/components/layout/site-footer"
 import { SiteHeader } from "@/components/layout/site-header"
 import { CareerNavigator } from "@/components/marketing/career-navigator"
+import { UsOpportunityMap } from "@/components/marketing/us-opportunity-map"
 import { HeroSearch } from "@/components/marketing/hero-search"
 import { SectionHeading } from "@/components/marketing/section-heading"
 import { OrganizationCard } from "@/components/organizations/organization-card"
@@ -142,7 +142,7 @@ export default async function Home() {
         </section>
 
         <section className="border-y border-border bg-slate-50">
-          <div className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-24"><div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between"><SectionHeading eyebrow="U.S. opportunity map" title="Explore healthcare opportunities by state." description="Search roles by state now. Licensure guidance and deeper state context can grow alongside the marketplace." /><MapPinned className="size-10 text-teal-700" /></div>{stateSummaries.length ? <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{stateSummaries.map((item) => <Link className="rounded-2xl border border-border bg-white p-5 transition hover:border-primary/30 hover:shadow-lg" href={`/jobs?state=${item.code}`} key={item.code}><p className="text-lg font-semibold">{item.name}</p><p className="mt-2 text-sm text-muted-foreground">{item.count} {item.count === 1 ? "live opportunity" : "live opportunities"}</p><span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary">Explore {item.code} <ArrowRight className="size-4" /></span></Link>)}</div> : <Card className="mt-10 border-dashed bg-white"><CardContent className="p-7"><p className="font-semibold">The marketplace is built for all 50 states.</p><p className="mt-2 text-sm leading-6 text-muted-foreground">As organizations publish opportunities, state-by-state exploration will appear here with real counts and direct search links.</p></CardContent></Card>}</div>
+          <div className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-24"><SectionHeading eyebrow="U.S. opportunity map" title="Explore healthcare opportunities by state." description="Select a state to view opportunities. Live counts appear only where employers have published roles." /><UsOpportunityMap states={stateSummaries} /></div>
         </section>
 
         <section
