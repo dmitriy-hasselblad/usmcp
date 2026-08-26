@@ -6,6 +6,7 @@ import {
   GraduationCap,
   LayoutDashboard,
   Bell,
+  BookmarkCheck,
   ChartNoAxesCombined,
   ShieldCheck,
   UserRound,
@@ -17,7 +18,7 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { getUnreadNotificationCount } from "@/lib/notifications/unread-count"
 
-type ProfessionalRoute = "overview" | "profile" | "career" | "resumes" | "applications" | "insights" | "notifications" | "security"
+type ProfessionalRoute = "overview" | "profile" | "career" | "resumes" | "applications" | "insights" | "notifications" | "security" | "jobAlerts"
 
 const routes = [
   {
@@ -61,6 +62,12 @@ const routes = [
     href: "/dashboard/notifications",
     label: "Notifications",
     icon: Bell,
+  },
+  {
+    key: "jobAlerts",
+    href: "/dashboard/job-alerts",
+    label: "Job alerts",
+    icon: BookmarkCheck,
   },
   {
     key: "security",

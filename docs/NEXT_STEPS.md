@@ -1,6 +1,6 @@
 # SM VIA Next Steps
 
-Last updated: 2026-08-20
+Last updated: 2026-08-26
 
 ## Current product phase
 
@@ -12,6 +12,29 @@ The complete Early Access hiring loop works:
 `Employer creates job -> job appears publicly -> professional applies -> employer reviews -> private messaging -> interview scheduling -> calendar/video interview`
 
 The next work must complete Marketplace MVP before payments, messaging, or AI.
+
+## Active delivery branch
+
+**Branch:** `codex/aya-inspired-discovery`
+
+The Aya Healthcare review identified four suitable Early Access adaptations:
+
+1. Private candidate job preferences.
+2. Private saved job searches and in-product alerts when a matching job is
+   published.
+3. Topic filters for the existing Career Resources library.
+4. More structured job information where the existing marketplace model
+   needs it.
+
+The first three are implemented locally on this branch. The new
+`saved_job_searches` table is owner-scoped by RLS and the database trigger
+creates only private in-product notifications. Email alerts, salary guides,
+employer testimonials, staffing operations, and predictive matching are not
+part of this change.
+
+The migration `candidate_job_discovery_alerts` has **not** been applied to
+Production. It requires Preview verification and explicit product-owner
+approval before that step.
 
 ## Priority 1: Live public organization profiles
 

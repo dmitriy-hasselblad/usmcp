@@ -1,6 +1,6 @@
 # SM VIA Project Status
 
-Last updated: 2026-08-19
+Last updated: 2026-08-26
 
 ## Purpose
 
@@ -296,6 +296,10 @@ The following areas are not complete:
 - The domain `smvia.org` and `www.smvia.org` are connected to Production. The
   Production public site URL is configured as `https://smvia.org` in Vercel and
   Supabase Auth URL Configuration was updated on 2026-08-18.
+- Candidate job preferences, private saved searches, and in-product job-match
+  alerts are in active development on `codex/aya-inspired-discovery`. The
+  related migration is not yet applied to Production and must be verified in a
+  Vercel Preview first.
 
 ## Local workstation setup
 
