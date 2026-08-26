@@ -10,13 +10,13 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
+import { ProfessionSpecialtyFilter } from "@/components/jobs/profession-specialty-filter"
 import { usStates } from "@/lib/auth/validation"
 import {
   employmentTypes,
   experienceLevels,
   workplaceTypes,
 } from "@/lib/employer/constants"
-import { healthcareProfessions } from "@/lib/healthcare-taxonomy"
 import { filterJobs, type JobFilters } from "@/lib/jobs/job-filters"
 import { getPublishedJobs } from "@/lib/jobs/public-jobs"
 import { featuredJobs } from "@/lib/marketing-data"
@@ -46,9 +46,6 @@ export default async function JobsPage({
   const showPreviews = getString(params.preview) === "true"
   const allJobs = showPreviews ? [...liveJobs, ...featuredJobs] : liveJobs
   const jobs = filterJobs(allJobs, filters)
-  const specialties = [...new Set(allJobs.map((job) => job.specialty))].sort(
-    (a, b) => a.localeCompare(b, "en-US"),
-  )
   const activeFilterCount = getActiveFilterCount(filters)
   const preservedSearchFilters = getPreservedSearchFilters(filters, showPreviews)
 
@@ -135,19 +132,14 @@ export default async function JobsPage({
                     />
                   )}
 
-                  <FilterSelect
-                    defaultValue={filters.profession}
-                    label="Profession"
-                    name="profession"
-                    options={healthcareProfessions}
-                    placeholder="All professions"
-                  />
-                  <FilterSelect
-                    defaultValue={filters.specialty}
-                    label="Specialty"
-                    name="specialty"
-                    options={specialties}
-                    placeholder="All specialties"
+                  <ProfessionSpecialtyFilter
+                    defaultProfession={filters.profession}
+                    defaultSpecialty={filters.specialty}
+                    jobSpecialties={allJobs.map((job) => ({
+                      profession: job.profession,
+                      specialty: job.specialty,
+                    }))}
+                    selectClassName={selectClassName}
                   />
                   <FilterSelect
                     defaultValue={filters.state}
