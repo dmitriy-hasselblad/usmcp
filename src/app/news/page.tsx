@@ -24,6 +24,7 @@ export const metadata: Metadata = {
   title: "Healthcare News & Insights",
   description:
     "Updates and insights from verified U.S. healthcare organizations.",
+  alternates: { canonical: "/news" },
 }
 
 type SearchParams = Promise<{

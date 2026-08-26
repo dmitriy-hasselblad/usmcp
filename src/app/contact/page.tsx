@@ -13,6 +13,7 @@ import { Textarea } from "@/components/ui/textarea"
 export const metadata: Metadata = {
   title: "Contact SM VIA",
   description: "Contact the SM VIA team for platform, employer, privacy, and Early Access questions.",
+  alternates: { canonical: "/contact" },
 }
 
 type Props = { searchParams: Promise<{ error?: string | string[]; success?: string | string[] }> }

@@ -13,6 +13,7 @@ export const metadata: Metadata = {
   title: "Healthcare Career Resources",
   description:
             "Explore the growing SM VIA library for residency planning, employer research, and international healthcare careers.",
+  alternates: { canonical: "/resources" },
 }
 
 export default function ResourcesPage() {
