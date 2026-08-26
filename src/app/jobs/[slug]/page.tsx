@@ -14,6 +14,7 @@ import {
 } from "lucide-react"
 
 import { JobCard } from "@/components/jobs/job-card"
+import { JobDescriptionContent } from "@/lib/jobs/rich-text"
 import { AnalyticsLink } from "@/components/analytics/analytics-link"
 import { ReportContentLink } from "@/components/moderation/report-content-link"
 import { SiteFooter } from "@/components/layout/site-footer"
@@ -192,9 +193,7 @@ export default async function JobPage({ params }: JobPageProps) {
                 <CardTitle>About this role</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="whitespace-pre-line leading-7 text-muted-foreground">
-                  {job.summary}
-                </p>
+                <JobDescriptionContent value={job.description ?? job.summary} />
               </CardContent>
             </Card>
 

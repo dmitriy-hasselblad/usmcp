@@ -23,6 +23,7 @@ export type Job = {
   setting: string
   posted: string
   summary: string
+  description?: string
   responsibilities: string[]
   qualifications: string[]
   benefits: string[]

@@ -2,6 +2,7 @@ import { cache } from "react"
 
 import { usStates } from "@/lib/auth/validation"
 import type { Job } from "@/lib/marketing-data"
+import { plainTextFromJobDescription } from "@/lib/jobs/rich-text"
 import { isSupabaseConfigured } from "@/lib/supabase/env"
 import { createClient } from "@/lib/supabase/server"
 import { isPlatformDemonstrationOrganization } from "@/lib/platform-content"
@@ -107,9 +108,10 @@ export function toMarketplaceJob(row: PublishedJobRow): Job {
       day: "numeric",
       year: "numeric",
     }).format(new Date(row.published_at))}`,
-    summary:
-      row.description?.trim() ||
-      "This employer has published a new healthcare opportunity on SM VIA.",
+    summary: row.description?.trim()
+      ? plainTextFromJobDescription(row.description)
+      : "This employer has published a new healthcare opportunity on SM VIA.",
+    description: row.description?.trim() || undefined,
     responsibilities: [],
     qualifications: [],
     benefits: [],
