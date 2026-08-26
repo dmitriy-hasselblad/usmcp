@@ -7,6 +7,7 @@ import { AuthPageShell } from "@/components/auth/auth-page-shell"
 import { AuthNotice } from "@/components/auth/auth-notice"
 import { AuthSubmitButton } from "@/components/auth/auth-submit-button"
 import { GoogleAuthButton } from "@/components/auth/google-auth-button"
+import { LinkedInAuthButton } from "@/components/auth/linkedin-auth-button"
 import { Input } from "@/components/ui/input"
 import { isAuthEnabled } from "@/lib/supabase/env"
 import { createClient } from "@/lib/supabase/server"
@@ -65,6 +66,7 @@ export default async function SignInPage({
         <AuthNotice error="Authentication is not configured for this deployment yet." />
       )}
       <GoogleAuthButton disabled={!configured} mode="sign-in" next={next} />
+      <LinkedInAuthButton disabled={!configured} mode="sign-in" next={next} />
       <div className="flex items-center gap-3 text-xs text-muted-foreground" aria-hidden="true">
         <span className="h-px flex-1 bg-border" />
         <span>or continue with email</span>

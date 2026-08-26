@@ -5,6 +5,31 @@ import { isSafeInternalPath } from "@/lib/auth/validation"
 import { isAuthEnabled } from "@/lib/supabase/env"
 import { createClient } from "@/lib/supabase/server"
 
+function cleanNamePart(value: unknown) {
+  if (typeof value !== "string") return ""
+
+  return value.trim().replace(/\s+/g, " ").slice(0, 80)
+}
+
+function socialProfileName(metadata: Record<string, unknown>) {
+  const firstName = cleanNamePart(
+    metadata.given_name ?? metadata.first_name,
+  )
+  const lastName = cleanNamePart(
+    metadata.family_name ?? metadata.last_name,
+  )
+
+  if (firstName || lastName) return { firstName, lastName }
+
+  const fullName = cleanNamePart(metadata.full_name ?? metadata.name)
+  const [fallbackFirstName = "", ...remainingNameParts] = fullName.split(" ")
+
+  return {
+    firstName: fallbackFirstName,
+    lastName: remainingNameParts.join(" "),
+  }
+}
+
 export async function GET(request: NextRequest) {
   if (!isAuthEnabled()) {
     const unavailableUrl = new URL("/sign-in", request.url)
@@ -54,6 +79,38 @@ export async function GET(request: NextRequest) {
             "We could not finish setting up your account. Please try again.",
           )
           return NextResponse.redirect(errorUrl)
+        }
+      }
+
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+
+      if (user) {
+        const { firstName, lastName } = socialProfileName(user.user_metadata)
+
+        if (firstName || lastName) {
+          const { data: profile } = await supabase
+            .from("profiles")
+            .select("first_name, last_name")
+            .eq("id", user.id)
+            .maybeSingle()
+
+          const profileUpdate = {
+            ...(profile?.first_name?.trim() || !firstName
+              ? {}
+              : { first_name: firstName }),
+            ...(profile?.last_name?.trim() || !lastName
+              ? {}
+              : { last_name: lastName }),
+          }
+
+          if (Object.keys(profileUpdate).length) {
+            await supabase
+              .from("profiles")
+              .update(profileUpdate)
+              .eq("id", user.id)
+          }
         }
       }
 

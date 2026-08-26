@@ -187,12 +187,12 @@ spam complaints during Early Access.
 The product owner reactivated social sign-in on 2026-08-20. Deliver it as
 two separate, security-reviewed changes:
 
-1. **Google sign-in:** configure Supabase Google OAuth, preserve the existing
-   account-type onboarding choice, and verify sign-in, sign-out, account
-   linking, and failure states in Vercel Preview before Production.
-2. **LinkedIn sign-in:** follow only after Google is verified. Confirm the
-   current LinkedIn OAuth requirements and keep the same account-type and
-   authorization boundaries.
+1. **Google sign-in:** configured and verified in Production. Continue to
+   confirm sign-in, sign-out, account linking, and failure states during the
+   pre-launch review.
+2. **LinkedIn sign-in:** in progress. Use LinkedIn OpenID Connect, preserve
+   the same account-type onboarding choice, and verify sign-in, sign-out,
+   account linking, and failure states in Vercel Preview before Production.
 
 Neither provider may grant roles or organization access from provider profile
 data. SM VIA retains its own role, onboarding, membership, and RLS decisions.
