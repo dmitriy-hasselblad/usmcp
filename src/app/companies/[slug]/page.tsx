@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import {
@@ -17,6 +18,7 @@ import { OrganizationTrustBadge } from "@/components/organizations/organization-
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { getPublicOrganizationBySlug } from "@/lib/organizations/public-organizations"
+import { publicOrganizationLogoUrl } from "@/lib/employer/organization-logo"
 
 type OrganizationPageProps = {
   params: Promise<{ slug: string }>
@@ -60,6 +62,7 @@ export default async function OrganizationPage({
   }
 
   const activeJobs = organization.jobs.filter((job) => !job.isPlatformDemo)
+  const logoUrl = publicOrganizationLogoUrl(organization.logoPath)
 
   return (
     <div className="min-h-dvh bg-muted/30">
@@ -76,8 +79,18 @@ export default async function OrganizationPage({
             </Link>
 
             <div className="mt-8 flex flex-col gap-6 sm:flex-row sm:items-start">
-              <span className="grid size-16 shrink-0 place-items-center rounded-2xl bg-primary/8 text-primary">
-                <Building2 className="size-7" />
+              <span className="grid size-20 shrink-0 place-items-center overflow-hidden rounded-2xl bg-primary/8 text-primary">
+                {logoUrl ? (
+                  <Image
+                    alt={`${organization.name} logo`}
+                    className="size-full bg-white object-contain p-1.5"
+                    height={80}
+                    src={logoUrl}
+                    width={80}
+                  />
+                ) : (
+                  <Building2 className="size-8" />
+                )}
               </span>
               <div className="min-w-0 flex-1">
                 <OrganizationTrustBadge

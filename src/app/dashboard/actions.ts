@@ -23,6 +23,10 @@ import {
 } from "@/lib/employer/constants"
 import { isHealthcareProfession } from "@/lib/healthcare-taxonomy"
 import { requireEmployerWorkspace } from "@/lib/employer/session"
+import { organizationLogoMaxBytes, organizationLogoMimeTypes, organizationLogosBucket } from "@/lib/employer/organization-logo"
+
+type UploadActionResult = { ok: boolean; message: string }
+const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
 
 function optionalSalary(formData: FormData, name: string) {
   const value = formString(formData, name)
@@ -64,6 +68,29 @@ const allowedJobTransitions: Record<JobStatus, JobStatus[]> = {
   published: ["paused", "closed"],
   paused: ["published", "closed"],
   closed: ["draft"],
+}
+
+export async function registerOrganizationLogo(formData: FormData): Promise<UploadActionResult> {
+  const workspace = await requireEmployerWorkspace("/dashboard/organization")
+  if (!canManageOrganization(workspace.membership.role)) return { ok: false, message: "Only organization owners and admins can update the logo." }
+  const storagePath = formString(formData, "storagePath")
+  const mimeType = formString(formData, "mimeType")
+  const fileSize = Number(formString(formData, "fileSize"))
+  const [organizationId, uploadId, fileName, ...extra] = storagePath.split("/")
+  const expectedFileName = mimeType === "image/png" ? "logo.png" : mimeType === "image/webp" ? "logo.webp" : mimeType === "image/jpeg" ? "logo.jpg" : ""
+  if (extra.length || organizationId !== workspace.organization.id || !uuidPattern.test(uploadId ?? "") || fileName !== expectedFileName || !organizationLogoMimeTypes.some((type) => type === mimeType) || !Number.isInteger(fileSize) || fileSize < 1 || fileSize > organizationLogoMaxBytes) return { ok: false, message: "The logo details are invalid." }
+  const { data: objects, error: storageError } = await workspace.supabase.storage.from(organizationLogosBucket).list(`${organizationId}/${uploadId}`, { limit: 5, search: fileName })
+  const object = objects?.find((item) => item.name === fileName)
+  const metadata = object?.metadata as { mimetype?: string; size?: number } | null | undefined
+  if (storageError || !object || metadata?.size !== fileSize || (metadata?.mimetype && metadata.mimetype !== mimeType)) return { ok: false, message: "We could not verify the uploaded logo." }
+  const { data: current, error: currentError } = await workspace.supabase.from("organizations").select("logo_path").eq("id", workspace.organization.id).single()
+  if (currentError) return { ok: false, message: "We could not load the current organization logo." }
+  const { error } = await workspace.supabase.from("organizations").update({ logo_path: storagePath }).eq("id", workspace.organization.id)
+  if (error) return { ok: false, message: "We could not activate this logo." }
+  if (current.logo_path && current.logo_path !== storagePath) await workspace.supabase.storage.from(organizationLogosBucket).remove([current.logo_path])
+  revalidatePath("/dashboard", "layout")
+  revalidatePath("/organizations")
+  return { ok: true, message: "Organization logo updated." }
 }
 
 export async function updateOrganization(formData: FormData) {
@@ -304,6 +331,17 @@ export async function changeJobStatus(formData: FormData) {
           : "This job status change is not available.",
       ),
     )
+  }
+
+  if (status === "draft") {
+    const { count } = await workspace.supabase
+      .from("applications")
+      .select("id", { count: "exact", head: true })
+      .eq("job_id", jobId)
+
+    if ((count ?? 0) > 0) {
+      redirect(messagePath("/dashboard/jobs", "error", "Jobs with application history remain closed. Create a new job for a future opening."))
+    }
   }
 
   const { data: updatedJob, error } = await workspace.supabase

@@ -1,3 +1,4 @@
+import Image from "next/image"
 import Link from "next/link"
 import { ArrowRight, Building2, CalendarDays, Clock3, MapPin } from "lucide-react"
 
@@ -5,6 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { OrganizationTrustBadge } from "@/components/organizations/organization-trust-badge"
+import { publicOrganizationLogoUrl } from "@/lib/employer/organization-logo"
 import type { Job } from "@/lib/marketing-data"
 
 type JobCardProps = {
@@ -13,12 +15,24 @@ type JobCardProps = {
 }
 
 export function JobCard({ job, compact = false }: JobCardProps) {
+  const logoUrl = publicOrganizationLogoUrl(job.organizationLogoPath)
+
   return (
     <Card className="h-full border-border/80 bg-card transition-all hover:-translate-y-0.5 hover:shadow-lg">
       <CardContent className={compact ? "p-5" : "p-6"}>
         <div className="flex items-start justify-between gap-3">
-          <div className="grid size-11 place-items-center rounded-xl bg-primary/8 text-primary">
-            <Building2 className="size-5" />
+          <div className="grid size-11 shrink-0 place-items-center overflow-hidden rounded-xl bg-primary/8 text-primary">
+            {logoUrl ? (
+              <Image
+                alt={`${job.employer} logo`}
+                className="size-full bg-white object-contain p-1"
+                height={44}
+                src={logoUrl}
+                width={44}
+              />
+            ) : (
+              <Building2 className="size-5" />
+            )}
           </div>
           <div className="flex flex-wrap justify-end gap-2">
             <Badge
