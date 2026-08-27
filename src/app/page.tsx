@@ -39,7 +39,7 @@ export default async function Home() {
     getPublishedJobs(),
     getPublicOrganizations(),
   ])
-  const featuredMarketplaceJobs = liveJobs.slice(0, 6)
+  const featuredMarketplaceJobs = liveJobs.slice(0, 8)
   const stateSummaries = getStateSummaries(liveJobs)
 
   return (
@@ -133,33 +133,10 @@ export default async function Home() {
               </Button>
             </div>
             {featuredMarketplaceJobs.length ? (
-              <div className="mt-10 grid gap-5 xl:grid-cols-[minmax(0,1fr)_17rem] xl:items-start">
-                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                  {featuredMarketplaceJobs.map((job) => (
-                    <JobCard compact job={job} key={job.slug} />
-                  ))}
-                </div>
-                <Card className="border-primary/15 bg-[linear-gradient(135deg,#f8fcff_0%,#edf9f8_100%)] xl:sticky xl:top-24">
-                  <CardContent className="p-5">
-                    <span className="grid size-10 place-items-center rounded-xl bg-primary/10 text-primary">
-                      <Stethoscope className="size-5" />
-                    </span>
-                    <p className="mt-4 text-xs font-bold tracking-[0.12em] text-primary uppercase">
-                      Profile-powered discovery
-                    </p>
-                    <h2 className="mt-2 text-xl font-semibold tracking-[-0.04em]">
-                      Your next opportunity starts with your profile.
-                    </h2>
-                    <p className="mt-3 text-sm leading-6 text-muted-foreground">
-                      Add your specialty, licenses, experience, and location to make your search more relevant.
-                    </p>
-                    <Button asChild className="mt-5 w-full rounded-xl" size="sm">
-                      <Link href="/dashboard/profile">
-                        Build your profile <ArrowRight />
-                      </Link>
-                    </Button>
-                  </CardContent>
-                </Card>
+              <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                {featuredMarketplaceJobs.map((job) => (
+                  <JobCard compact job={job} key={job.slug} />
+                ))}
               </div>
             ) : (
               <Card className="mt-10 border-dashed bg-white">
