@@ -70,6 +70,34 @@ export function SiteFooter() {
                 <path d="M18.9 2.25h3.68l-8.04 9.19L24 21.75h-7.41l-5.8-7.58-6.63 7.58H.47l8.6-9.83L0 2.25h7.6l5.24 6.93 6.06-6.93Zm-1.3 17.27h2.04L6.49 4.37H4.3L17.6 19.52Z" fill="currentColor" />
               </svg>
             </a>
+            <a
+              aria-label="Follow SM VIA on Instagram"
+              className="grid size-8 place-items-center rounded-lg border border-border text-primary transition-colors hover:border-primary hover:bg-primary hover:text-white"
+              href="https://instagram.com/smvia.careers/"
+              rel="noreferrer"
+              target="_blank"
+            >
+              <svg aria-hidden="true" className="size-3.5" viewBox="0 0 24 24">
+                <rect
+                  height="15"
+                  rx="4"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  width="15"
+                  x="4.5"
+                  y="4.5"
+                />
+                <circle
+                  cx="12"
+                  cy="12"
+                  fill="none"
+                  r="3.5"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                />
+                <circle cx="16.8" cy="7.3" fill="currentColor" r="1.1" />
+              </svg>
+            </a>
             <span>Specialized Medical Vocations &amp; Industry Alliance</span>
           </div>
         </div>
