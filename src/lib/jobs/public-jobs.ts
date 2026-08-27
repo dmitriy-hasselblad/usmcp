@@ -30,6 +30,7 @@ export type PublishedJobRow = {
   organization_state_code?: string
   organization_description?: string | null
   organization_website: string | null
+  organization_logo_path?: string | null
   verification_status: string
   profession: string
   experience_level: string

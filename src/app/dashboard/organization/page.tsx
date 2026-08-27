@@ -8,6 +8,7 @@ import { EmployerDashboardShell } from "@/components/employer/employer-dashboard
 import { EmployerPageHeader } from "@/components/employer/employer-page-header"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
+import { OrganizationLogoForm } from "@/components/employer/organization-logo-form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { organizationTypes, usStates } from "@/lib/auth/validation"
@@ -168,6 +169,14 @@ export default async function OrganizationPage({
         </Card>
 
         <div className="grid content-start gap-4">
+          <Card className="bg-white">
+            <CardContent className="p-5">
+              <h2 className="font-semibold">Organization logo</h2>
+              <p className="mt-1 text-sm leading-6 text-muted-foreground">Use a clear logo so candidates can recognize your organization.</p>
+              {workspace.organization.logo_path && process.env.NEXT_PUBLIC_SUPABASE_URL && <img alt={`${workspace.organization.name} logo`} className="mt-4 size-20 rounded-xl border bg-white object-contain p-1" src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/organization-logos/${workspace.organization.logo_path}`} />}
+              {canEdit ? <div className="mt-4"><OrganizationLogoForm organizationId={workspace.organization.id} /></div> : <p className="mt-4 text-sm text-muted-foreground">Only owners and admins can update the logo.</p>}
+            </CardContent>
+          </Card>
           <Card className="bg-white">
             <CardContent className="p-5">
               <div className="flex items-start justify-between gap-3">

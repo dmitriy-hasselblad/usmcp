@@ -22,7 +22,7 @@ export function OrganizationCard({
       <CardContent className={compact ? "p-5" : "p-6 sm:p-7"}>
         <div className="flex items-start justify-between gap-5">
           <span className="grid size-12 shrink-0 place-items-center rounded-xl bg-primary/8 text-sm font-bold text-primary">
-            {getInitials(organization.name)}
+            {organization.logoPath ? <img alt={`${organization.name} logo`} className="size-full rounded-xl object-contain bg-white p-1" src={organizationLogoUrl(organization.logoPath)} /> : getInitials(organization.name)}
           </span>
           <OrganizationTrustBadge
             isPlatformDemo={organization.isPlatformProfile}
@@ -65,6 +65,11 @@ export function OrganizationCard({
       </CardContent>
     </Card>
   )
+}
+
+function organizationLogoUrl(path: string) {
+  const base = process.env.NEXT_PUBLIC_SUPABASE_URL
+  return base ? `${base}/storage/v1/object/public/organization-logos/${path}` : ""
 }
 
 function getInitials(name: string) {

@@ -24,7 +24,7 @@ type NotificationRecord = {
 }
 
 type Props = {
-  searchParams: Promise<{ error?: string | string[]; success?: string | string[] }>
+  searchParams: Promise<{ error?: string | string[]; success?: string | string[]; view?: string | string[] }>
 }
 
 function one(value: string | string[] | undefined) {
@@ -95,6 +95,8 @@ function NotificationsContent({
   query: Awaited<Props["searchParams"]>
 }) {
   const unreadCount = notifications.filter((notification) => !notification.read_at).length
+  const selectedView = one(query.view) === "unread" ? "unread" : "all"
+  const visibleNotifications = selectedView === "unread" ? notifications.filter((notification) => !notification.read_at) : notifications
 
   return (
     <div>
@@ -121,9 +123,11 @@ function NotificationsContent({
         <AuthNotice error={one(query.error)} success={one(query.success)} />
       </div>
 
-      {notifications.length ? (
+      <div className="mt-5 flex gap-2"><Button asChild size="sm" variant={selectedView === "all" ? "default" : "outline"}><Link href="/dashboard/notifications">All ({notifications.length})</Link></Button><Button asChild size="sm" variant={selectedView === "unread" ? "default" : "outline"}><Link href="/dashboard/notifications?view=unread">Unread ({unreadCount})</Link></Button></div>
+
+      {visibleNotifications.length ? (
         <div className="mt-7 grid gap-3">
-          {notifications.map((notification) => (
+          {visibleNotifications.map((notification) => (
             <Card
               className={notification.read_at ? "bg-white" : "border-primary/30 bg-primary/3"}
               key={notification.id}
@@ -163,7 +167,7 @@ function NotificationsContent({
         <Card className="mt-7 bg-white">
           <CardContent className="p-8 text-center">
             <Bell className="mx-auto size-6 text-primary" />
-            <h2 className="mt-4 text-lg font-semibold">You are all caught up.</h2>
+            <h2 className="mt-4 text-lg font-semibold">{selectedView === "unread" ? "No unread notifications." : "You are all caught up."}</h2>
             <p className="mt-2 text-sm leading-6 text-muted-foreground">
               New application, hiring-status, and job-alert updates will appear here.
             </p>
