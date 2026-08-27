@@ -35,6 +35,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: getAbsoluteUrl("/privacy"), changeFrequency: "yearly", priority: 0.2 },
     { url: getAbsoluteUrl("/cookies"), changeFrequency: "yearly", priority: 0.2 },
     { url: getAbsoluteUrl("/contact"), changeFrequency: "monthly", priority: 0.5 },
+    { url: getAbsoluteUrl("/faq"), changeFrequency: "monthly", priority: 0.5 },
   ]
 
   const jobPages = jobs.map((job) => ({
