@@ -39,7 +39,7 @@ export default async function Home() {
     getPublishedJobs(),
     getPublicOrganizations(),
   ])
-  const featuredMarketplaceJobs = liveJobs.slice(0, 3)
+  const featuredMarketplaceJobs = liveJobs.slice(0, 6)
   const stateSummaries = getStateSummaries(liveJobs)
 
   return (
@@ -132,10 +132,47 @@ export default async function Home() {
                 </Link>
               </Button>
             </div>
-            {featuredMarketplaceJobs.length ? <div className="mt-10 grid gap-5 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
-              <JobCard job={featuredMarketplaceJobs[0]} />
-              <Card className="border-primary/15 bg-[linear-gradient(135deg,#f8fcff_0%,#edf9f8_100%)]"><CardContent className="flex h-full flex-col justify-center p-7 sm:p-9"><span className="grid size-12 place-items-center rounded-2xl bg-primary/10 text-primary"><Stethoscope className="size-6" /></span><p className="mt-6 text-xs font-bold tracking-[0.14em] text-primary uppercase">Profile-powered discovery</p><h2 className="mt-3 max-w-lg text-3xl font-semibold tracking-[-0.05em]">Your next opportunity starts with your profile.</h2><p className="mt-4 max-w-xl text-sm leading-7 text-muted-foreground">Add your specialty, licenses, certifications, experience, location, and career preferences to make your search more relevant as the marketplace grows.</p><Button asChild className="mt-7 w-fit rounded-xl"><Link href="/dashboard/profile">Build your professional profile <ArrowRight /></Link></Button></CardContent></Card>
-            </div> : <Card className="mt-10 border-dashed bg-white"><CardContent className="grid gap-6 p-8 sm:grid-cols-[auto_1fr] sm:items-center"><span className="grid size-14 place-items-center rounded-2xl bg-primary/10 text-primary"><Stethoscope className="size-7" /></span><div><h2 className="text-xl font-semibold">Your next opportunity starts with your profile.</h2><p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Build a professional profile around your specialty, licenses, certifications, experience, location, and visa requirements while the marketplace grows.</p><Button asChild className="mt-5" variant="outline"><Link href="/dashboard/profile">Build your professional profile <ArrowRight /></Link></Button></div></CardContent></Card>}
+            {featuredMarketplaceJobs.length ? (
+              <div className="mt-10 grid gap-5 xl:grid-cols-[minmax(0,1fr)_17rem] xl:items-start">
+                <div className="grid gap-5 sm:grid-cols-2">
+                  {featuredMarketplaceJobs.map((job) => (
+                    <JobCard compact job={job} key={job.slug} />
+                  ))}
+                </div>
+                <Card className="border-primary/15 bg-[linear-gradient(135deg,#f8fcff_0%,#edf9f8_100%)] xl:sticky xl:top-24">
+                  <CardContent className="p-5">
+                    <span className="grid size-10 place-items-center rounded-xl bg-primary/10 text-primary">
+                      <Stethoscope className="size-5" />
+                    </span>
+                    <p className="mt-4 text-xs font-bold tracking-[0.12em] text-primary uppercase">
+                      Profile-powered discovery
+                    </p>
+                    <h2 className="mt-2 text-xl font-semibold tracking-[-0.04em]">
+                      Your next opportunity starts with your profile.
+                    </h2>
+                    <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                      Add your specialty, licenses, experience, and location to make your search more relevant.
+                    </p>
+                    <Button asChild className="mt-5 w-full rounded-xl" size="sm">
+                      <Link href="/dashboard/profile">
+                        Build your profile <ArrowRight />
+                      </Link>
+                    </Button>
+                  </CardContent>
+                </Card>
+              </div>
+            ) : (
+              <Card className="mt-10 border-dashed bg-white">
+                <CardContent className="grid gap-6 p-8 sm:grid-cols-[auto_1fr] sm:items-center">
+                  <span className="grid size-14 place-items-center rounded-2xl bg-primary/10 text-primary"><Stethoscope className="size-7" /></span>
+                  <div>
+                    <h2 className="text-xl font-semibold">Your next opportunity starts with your profile.</h2>
+                    <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Build a professional profile around your specialty, licenses, certifications, experience, location, and visa requirements while the marketplace grows.</p>
+                    <Button asChild className="mt-5" variant="outline"><Link href="/dashboard/profile">Build your professional profile <ArrowRight /></Link></Button>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </div>
         </section>
 
