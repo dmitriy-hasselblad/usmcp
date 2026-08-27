@@ -15,6 +15,7 @@ import { JobCard } from "@/components/jobs/job-card"
 import { SiteFooter } from "@/components/layout/site-footer"
 import { SiteHeader } from "@/components/layout/site-header"
 import { CareerNavigator } from "@/components/marketing/career-navigator"
+import { EarlyAccessNotice } from "@/components/marketing/early-access-notice"
 import { UsOpportunityMap } from "@/components/marketing/us-opportunity-map"
 import { HeroSearch } from "@/components/marketing/hero-search"
 import { SectionHeading } from "@/components/marketing/section-heading"
@@ -44,6 +45,7 @@ export default async function Home() {
   return (
     <div className="min-h-dvh overflow-hidden bg-background">
       <SiteHeader />
+      <EarlyAccessNotice />
       <main id="top">
         <section className="relative isolate overflow-hidden border-b border-border bg-slate-100">
           <Image
