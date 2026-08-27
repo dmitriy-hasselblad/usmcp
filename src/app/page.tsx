@@ -134,7 +134,7 @@ export default async function Home() {
             </div>
             {featuredMarketplaceJobs.length ? (
               <div className="mt-10 grid gap-5 xl:grid-cols-[minmax(0,1fr)_17rem] xl:items-start">
-                <div className="grid gap-5 sm:grid-cols-2">
+                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                   {featuredMarketplaceJobs.map((job) => (
                     <JobCard compact job={job} key={job.slug} />
                   ))}
