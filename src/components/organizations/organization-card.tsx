@@ -1,9 +1,11 @@
+import Image from "next/image"
 import Link from "next/link"
 import { ArrowRight, Building2, MapPin } from "lucide-react"
 
 import { OrganizationTrustBadge } from "@/components/organizations/organization-trust-badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import { publicOrganizationLogoUrl } from "@/lib/employer/organization-logo"
 import type { PublicOrganization } from "@/lib/organizations/public-organizations"
 
 type OrganizationCardProps = {
@@ -16,13 +18,24 @@ export function OrganizationCard({
   compact = false,
 }: OrganizationCardProps) {
   const jobCount = organization.jobs.filter((job) => !job.isPlatformDemo).length
+  const logoUrl = publicOrganizationLogoUrl(organization.logoPath)
 
   return (
     <Card className="h-full border-border/80 bg-white transition-all hover:-translate-y-0.5 hover:shadow-lg">
       <CardContent className={compact ? "p-5" : "p-6 sm:p-7"}>
         <div className="flex items-start justify-between gap-5">
-          <span className="grid size-12 shrink-0 place-items-center rounded-xl bg-primary/8 text-sm font-bold text-primary">
-            {organization.logoPath ? <img alt={`${organization.name} logo`} className="size-full rounded-xl object-contain bg-white p-1" src={organizationLogoUrl(organization.logoPath)} /> : getInitials(organization.name)}
+          <span className="grid size-12 shrink-0 place-items-center overflow-hidden rounded-xl bg-primary/8 text-primary">
+            {logoUrl ? (
+              <Image
+                alt={`${organization.name} logo`}
+                className="size-full bg-white object-contain p-1"
+                height={48}
+                src={logoUrl}
+                width={48}
+              />
+            ) : (
+              <Building2 className="size-5" />
+            )}
           </span>
           <OrganizationTrustBadge
             isPlatformDemo={organization.isPlatformProfile}
@@ -65,19 +78,4 @@ export function OrganizationCard({
       </CardContent>
     </Card>
   )
-}
-
-function organizationLogoUrl(path: string) {
-  const base = process.env.NEXT_PUBLIC_SUPABASE_URL
-  return base ? `${base}/storage/v1/object/public/organization-logos/${path}` : ""
-}
-
-function getInitials(name: string) {
-  return name
-    .split(/\s+/)
-    .filter(Boolean)
-    .map((word) => word[0])
-    .join("")
-    .slice(0, 2)
-    .toUpperCase()
 }
