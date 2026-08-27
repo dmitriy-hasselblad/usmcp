@@ -15,6 +15,7 @@ import { JobCard } from "@/components/jobs/job-card"
 import { SiteFooter } from "@/components/layout/site-footer"
 import { SiteHeader } from "@/components/layout/site-header"
 import { CareerNavigator } from "@/components/marketing/career-navigator"
+import { EarlyAccessNotice } from "@/components/marketing/early-access-notice"
 import { UsOpportunityMap } from "@/components/marketing/us-opportunity-map"
 import { HeroSearch } from "@/components/marketing/hero-search"
 import { SectionHeading } from "@/components/marketing/section-heading"
@@ -38,12 +39,13 @@ export default async function Home() {
     getPublishedJobs(),
     getPublicOrganizations(),
   ])
-  const featuredMarketplaceJobs = liveJobs.slice(0, 3)
+  const featuredMarketplaceJobs = liveJobs.slice(0, 8)
   const stateSummaries = getStateSummaries(liveJobs)
 
   return (
     <div className="min-h-dvh overflow-hidden bg-background">
       <SiteHeader />
+      <EarlyAccessNotice />
       <main id="top">
         <section className="relative isolate overflow-hidden border-b border-border bg-slate-100">
           <Image
@@ -130,10 +132,24 @@ export default async function Home() {
                 </Link>
               </Button>
             </div>
-            {featuredMarketplaceJobs.length ? <div className="mt-10 grid gap-5 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
-              <JobCard job={featuredMarketplaceJobs[0]} />
-              <Card className="border-primary/15 bg-[linear-gradient(135deg,#f8fcff_0%,#edf9f8_100%)]"><CardContent className="flex h-full flex-col justify-center p-7 sm:p-9"><span className="grid size-12 place-items-center rounded-2xl bg-primary/10 text-primary"><Stethoscope className="size-6" /></span><p className="mt-6 text-xs font-bold tracking-[0.14em] text-primary uppercase">Profile-powered discovery</p><h2 className="mt-3 max-w-lg text-3xl font-semibold tracking-[-0.05em]">Your next opportunity starts with your profile.</h2><p className="mt-4 max-w-xl text-sm leading-7 text-muted-foreground">Add your specialty, licenses, certifications, experience, location, and career preferences to make your search more relevant as the marketplace grows.</p><Button asChild className="mt-7 w-fit rounded-xl"><Link href="/dashboard/profile">Build your professional profile <ArrowRight /></Link></Button></CardContent></Card>
-            </div> : <Card className="mt-10 border-dashed bg-white"><CardContent className="grid gap-6 p-8 sm:grid-cols-[auto_1fr] sm:items-center"><span className="grid size-14 place-items-center rounded-2xl bg-primary/10 text-primary"><Stethoscope className="size-7" /></span><div><h2 className="text-xl font-semibold">Your next opportunity starts with your profile.</h2><p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Build a professional profile around your specialty, licenses, certifications, experience, location, and visa requirements while the marketplace grows.</p><Button asChild className="mt-5" variant="outline"><Link href="/dashboard/profile">Build your professional profile <ArrowRight /></Link></Button></div></CardContent></Card>}
+            {featuredMarketplaceJobs.length ? (
+              <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                {featuredMarketplaceJobs.map((job) => (
+                  <JobCard compact job={job} key={job.slug} />
+                ))}
+              </div>
+            ) : (
+              <Card className="mt-10 border-dashed bg-white">
+                <CardContent className="grid gap-6 p-8 sm:grid-cols-[auto_1fr] sm:items-center">
+                  <span className="grid size-14 place-items-center rounded-2xl bg-primary/10 text-primary"><Stethoscope className="size-7" /></span>
+                  <div>
+                    <h2 className="text-xl font-semibold">Your next opportunity starts with your profile.</h2>
+                    <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Build a professional profile around your specialty, licenses, certifications, experience, location, and visa requirements while the marketplace grows.</p>
+                    <Button asChild className="mt-5" variant="outline"><Link href="/dashboard/profile">Build your professional profile <ArrowRight /></Link></Button>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </div>
         </section>
 
@@ -191,10 +207,6 @@ export default async function Home() {
 
         <section className="bg-primary py-20 text-white lg:py-28" id="why-smvia">
           <div className="mx-auto grid max-w-7xl gap-12 px-5 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:px-8"><div><p className="text-xs font-bold tracking-[0.15em] text-teal-200 uppercase">Why SM VIA</p><h2 className="mt-4 text-4xl font-semibold tracking-[-0.055em] sm:text-5xl">Healthcare careers need more than a generic job board.</h2><p className="mt-5 max-w-xl text-base leading-8 text-blue-100/85">SM VIA structures healthcare experience, licenses, certifications, training, and career goals so professionals can present their background clearly and employers can understand it faster.</p><Button asChild className="mt-8 rounded-xl bg-white text-primary hover:bg-white/90"><Link href="/dashboard/profile">Build your professional profile <ArrowRight /></Link></Button></div><div className="rounded-[2rem] border border-white/15 bg-white/[0.08] p-5 shadow-2xl sm:p-7"><div className="rounded-[1.4rem] bg-white p-6 text-slate-900"><div className="flex items-start justify-between gap-4"><div><p className="text-xs font-bold tracking-[0.14em] text-primary uppercase">Illustrative profile</p><h3 className="mt-2 text-2xl font-semibold tracking-[-0.04em]">Professional readiness</h3></div><span className="rounded-full bg-teal-50 px-3 py-1 text-xs font-bold text-teal-800">Private by default</span></div><div className="mt-6 h-2 overflow-hidden rounded-full bg-slate-100"><div className="h-full w-2/3 rounded-full bg-teal-600" /></div><div className="mt-6 grid gap-3 text-sm">{["Licensure and credentials", "Education and clinical training", "Experience and specialty", "Location and career preferences"].map((item) => <div className="flex items-center gap-3 rounded-xl border border-slate-100 p-3" key={item}><CheckCircle2 className="size-5 text-teal-700" />{item}</div>)}</div><p className="mt-5 text-xs leading-5 text-slate-500">The profile is a product illustration. Members decide what information to add and share.</p></div></div></div>
-        </section>
-
-        <section className="border-b border-border bg-white">
-          <div className="mx-auto max-w-7xl px-5 py-12 lg:px-8"><p className="text-center text-xs font-bold tracking-[0.15em] text-primary uppercase">SM VIA Path Line</p><div className="mt-8 grid gap-5 sm:grid-cols-5 sm:gap-0">{["Profile", "License", "Career", "Employer", "Growth"].map((item, index) => <div className="relative flex items-center gap-3 sm:flex-col sm:text-center" key={item}><span className="grid size-9 shrink-0 place-items-center rounded-full border-2 border-teal-600 bg-white text-xs font-bold text-teal-800">0{index + 1}</span>{index < 4 && <span className="absolute left-9 top-4 h-px w-7 bg-teal-300 sm:left-[calc(50%+1.2rem)] sm:top-4 sm:w-[calc(100%-2.4rem)]" />}<span className="text-sm font-semibold text-foreground">{item}</span></div>)}</div></div>
         </section>
 
         <section
