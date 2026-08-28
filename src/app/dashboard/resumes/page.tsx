@@ -8,7 +8,7 @@ import { ProfessionalDashboardShell } from "@/components/professional/profession
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { requireIdentity } from "@/lib/auth/session"
-import { createResume, deleteResume } from "./actions"
+import { createExecutiveResume, createResume, deleteResume } from "./actions"
 
 export const metadata: Metadata = { title: "CV Builder", description: "Create private, ATS-friendly U.S. healthcare CVs." }
 
@@ -27,10 +27,10 @@ export default async function ResumesPage({ searchParams }: { searchParams: Prom
   return <ProfessionalDashboardShell active="resumes" email={identity.email}>
     <div className="flex flex-wrap items-start justify-between gap-5">
       <div><p className="text-xs font-bold tracking-[0.14em] text-primary uppercase">Private document workspace</p><h1 className="mt-3 text-3xl font-semibold tracking-[-0.05em] sm:text-4xl">My CVs</h1><p className="mt-3 max-w-2xl leading-7 text-muted-foreground">Choose from seven professional CV designs built for U.S. healthcare careers. Nothing is copied from your profile unless you type it here.</p></div>
-      <form action={createResume}><Button size="lg"><FilePlus2/>Create a CV</Button></form>
+      <div className="flex flex-wrap gap-2"><form action={createExecutiveResume}><Button size="lg" variant="outline">Start with executive example</Button></form><form action={createResume}><Button size="lg"><FilePlus2/>Create a CV</Button></form></div>
     </div>
     <div className="mt-6"><AuthNotice error={one(params.error) ?? (resumesError ? "Your CV drafts could not be loaded." : undefined)} success={one(params.success)}/></div>
-    <div className="mt-7 flex items-start gap-3 rounded-xl border border-blue-200 bg-blue-50 p-4 text-sm text-blue-950"><ShieldCheck className="mt-0.5 size-4 shrink-0"/><p>CVs are private and available only to you. PDF export is free during Early Access. Payment can be added later without changing your saved documents.</p></div>
+    <div className="mt-7 flex items-start gap-3 rounded-xl border border-blue-200 bg-blue-50 p-4 text-sm text-blue-950"><ShieldCheck className="mt-0.5 size-4 shrink-0"/><p>CVs are private and available only to you. Start with a blank CV or use the Healthcare Executive example as a guide, then replace every sample detail. PDF export is free during Early Access.</p></div>
     <div className="mt-7 grid gap-4">
       {(resumes ?? []).map((resume) => <Card key={resume.id} className="bg-white"><CardContent className="flex flex-wrap items-center justify-between gap-4 p-5"><div><h2 className="font-semibold">{resume.title}</h2><p className="mt-1 text-xs text-muted-foreground">Updated {new Intl.DateTimeFormat("en-US", { dateStyle: "medium" }).format(new Date(resume.updated_at))}</p></div><div className="flex gap-2"><Button asChild variant="outline"><Link href={`/dashboard/resumes/${resume.id}`}><FileText/>Open</Link></Button><form action={deleteResume}><input name="resumeId" type="hidden" value={resume.id}/><Button type="submit" variant="destructive">Delete</Button></form></div></CardContent></Card>)}
       {(resumes ?? []).length === 0 && <Card className="border-dashed bg-white"><CardContent className="py-12 text-center"><FileText className="mx-auto size-8 text-muted-foreground"/><h2 className="mt-4 font-semibold">Create your first healthcare CV</h2><p className="mt-2 text-sm text-muted-foreground">Create up to 10 tailored versions for different roles.</p></CardContent></Card>}

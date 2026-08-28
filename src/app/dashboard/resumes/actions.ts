@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 
 import { requireIdentity } from "@/lib/auth/session"
-import { defaultCvTemplateKey, emptyResumeContent, parseCvTemplateKey, parseResumeContent } from "@/lib/resume/types"
+import { defaultCvTemplateKey, emptyResumeContent, executiveResumeExample, parseCvTemplateKey, parseResumeContent } from "@/lib/resume/types"
 
 const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
 
@@ -20,6 +20,15 @@ export async function createResume() {
   const { count } = await identity.supabase.from("professional_resumes").select("id", { count: "exact", head: true }).eq("user_id", identity.userId)
   if ((count ?? 0) >= 10) redirect("/dashboard/resumes?error=You+can+keep+up+to+10+CVs.")
   const { data, error } = await identity.supabase.from("professional_resumes").insert({ user_id: identity.userId, title: "Healthcare CV", template_key: defaultCvTemplateKey, content: emptyResumeContent }).select("id").single()
+  if (error || !data) redirect("/dashboard/resumes?error=The+CV+could+not+be+created.")
+  redirect(`/dashboard/resumes/${data.id}`)
+}
+
+export async function createExecutiveResume() {
+  const identity = await requireProfessional("/dashboard/resumes")
+  const { count } = await identity.supabase.from("professional_resumes").select("id", { count: "exact", head: true }).eq("user_id", identity.userId)
+  if ((count ?? 0) >= 10) redirect("/dashboard/resumes?error=You+can+keep+up+to+10+CVs.")
+  const { data, error } = await identity.supabase.from("professional_resumes").insert({ user_id: identity.userId, title: "Healthcare Executive CV example", template_key: "executive_timeline", content: executiveResumeExample }).select("id").single()
   if (error || !data) redirect("/dashboard/resumes?error=The+CV+could+not+be+created.")
   redirect(`/dashboard/resumes/${data.id}`)
 }

@@ -2,7 +2,7 @@ import Link from "next/link"
 import type { ReactNode } from "react"
 import {
   BriefcaseBusiness,
-  FileText,
+  FileText, FilePenLine,
   GraduationCap,
   LayoutDashboard,
   Bell,
@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { getUnreadNotificationCount } from "@/lib/notifications/unread-count"
 
-type ProfessionalRoute = "overview" | "profile" | "career" | "resumes" | "applications" | "insights" | "notifications" | "security" | "jobAlerts"
+type ProfessionalRoute = "overview" | "profile" | "career" | "resumes" | "coverLetters" | "applications" | "insights" | "notifications" | "security" | "jobAlerts"
 
 const routes = [
   {
@@ -42,8 +42,14 @@ const routes = [
   {
     key: "resumes",
     href: "/dashboard/resumes",
-    label: "Résumé Builder",
+    label: "CV Builder",
     icon: FileText,
+  },
+  {
+    key: "coverLetters",
+    href: "/dashboard/cover-letters",
+    label: "Cover letters",
+    icon: FilePenLine,
   },
   {
     key: "applications",
