@@ -46,6 +46,11 @@ export default async function JobsPage({
   const showPreviews = getString(params.preview) === "true"
   const allJobs = showPreviews ? [...liveJobs, ...featuredJobs] : liveJobs
   const jobs = filterJobs(allJobs, filters)
+  const pageSize = 20
+  const requestedPage = getPositiveInteger(params.page)
+  const totalPages = Math.max(1, Math.ceil(jobs.length / pageSize))
+  const page = Math.min(requestedPage, totalPages)
+  const pageJobs = jobs.slice((page - 1) * pageSize, page * pageSize)
   const activeFilterCount = getActiveFilterCount(filters)
   const preservedSearchFilters = getPreservedSearchFilters(filters, showPreviews)
 
@@ -237,11 +242,16 @@ export default async function JobsPage({
           <div>
             {jobs.length > 0 ? (
               <>
-                <div className="grid gap-5 xl:grid-cols-2">
-                  {jobs.map((job) => (
-                    <JobCard job={job} key={job.slug} />
+                <div className="grid gap-4">
+                  {pageJobs.map((job) => (
+                    <JobCard job={job} key={job.slug} layout="row" />
                   ))}
                 </div>
+                <JobPagination
+                  page={page}
+                  params={params}
+                  totalPages={totalPages}
+                />
               </>
             ) : (
               <Card className="border-dashed border-border bg-card">
@@ -344,6 +354,11 @@ function getNonnegativeNumber(value: string | string[] | undefined) {
   return Number.isFinite(parsed) && parsed >= 0 ? parsed : undefined
 }
 
+function getPositiveInteger(value: string | string[] | undefined) {
+  const parsed = Number.parseInt(getString(value), 10)
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : 1
+}
+
 function getActiveFilterCount(filters: JobFilters) {
   return [
     filters.query,
@@ -375,4 +390,41 @@ function getPreservedSearchFilters(filters: JobFilters, showPreviews: boolean) {
       ["preview", showPreviews ? "true" : ""],
     ].filter((entry) => entry[1]),
   )
+}
+
+function JobPagination({
+  page,
+  params,
+  totalPages,
+}: {
+  page: number
+  params: Record<string, string | string[] | undefined>
+  totalPages: number
+}) {
+  if (totalPages <= 1) return null
+
+  return (
+    <nav aria-label="Jobs pages" className="mt-8 flex items-center justify-between gap-4 border-t border-border pt-6">
+      <p className="text-sm text-muted-foreground">Page {page} of {totalPages}</p>
+      <div className="flex gap-2">
+        {page > 1 ? (
+          <Button asChild size="sm" variant="outline"><Link href={getPageHref(params, page - 1)}>Previous</Link></Button>
+        ) : <Button disabled size="sm" variant="outline">Previous</Button>}
+        {page < totalPages ? (
+          <Button asChild size="sm"><Link href={getPageHref(params, page + 1)}>Next</Link></Button>
+        ) : <Button disabled size="sm">Next</Button>}
+      </div>
+    </nav>
+  )
+}
+
+function getPageHref(params: Record<string, string | string[] | undefined>, page: number) {
+  const query = new URLSearchParams()
+  Object.entries(params).forEach(([key, value]) => {
+    if (key === "page") return
+    const first = Array.isArray(value) ? value[0] : value
+    if (first) query.set(key, first)
+  })
+  query.set("page", String(page))
+  return `/jobs?${query.toString()}`
 }
