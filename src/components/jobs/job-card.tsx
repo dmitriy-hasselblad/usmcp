@@ -1,6 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
-import { ArrowRight, Building2, CalendarDays, Clock3, MapPin } from "lucide-react"
+import { ArrowRight, Building2, CalendarDays, Clock3, MapPin, UsersRound } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -94,6 +94,9 @@ export function JobCard({ job, compact = false, layout = "card" }: JobCardProps)
               <span className="inline-flex items-center gap-1.5"><Clock3 className="size-4 text-primary" />{job.type} · {job.setting}</span>
               {job.source === "live" && !job.isPlatformDemo && (
                 <span className="inline-flex items-center gap-1.5"><CalendarDays className="size-4 text-primary" />{job.posted}</span>
+              )}
+              {job.source === "live" && !job.isPlatformDemo && typeof job.openPositions === "number" && (
+                <span className="inline-flex items-center gap-1.5"><UsersRound className="size-4 text-primary" />{formatOpenPositions(job.openPositions)}</span>
               )}
               <span className="font-medium text-foreground">{job.salary}</span>
             </div>
@@ -196,6 +199,12 @@ export function JobCard({ job, compact = false, layout = "card" }: JobCardProps)
               {job.posted}
             </p>
           )}
+          {job.source === "live" && !job.isPlatformDemo && typeof job.openPositions === "number" && (
+            <p className="flex items-center gap-2">
+              <UsersRound className="size-4 text-primary" />
+              {formatOpenPositions(job.openPositions)}
+            </p>
+          )}
           <p className="font-medium text-foreground">{job.salary}</p>
         </div>
 
@@ -213,4 +222,8 @@ export function JobCard({ job, compact = false, layout = "card" }: JobCardProps)
       </CardContent>
     </Card>
   )
+}
+
+function formatOpenPositions(openPositions: number) {
+  return `${openPositions} open ${openPositions === 1 ? "position" : "positions"}`
 }
