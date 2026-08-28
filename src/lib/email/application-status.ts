@@ -35,6 +35,17 @@ type HiringNotificationEmail = {
   remainingOpenPositions: number
 }
 
+type JobSearchMatchEmail = {
+  savedSearchId: string
+  searchName: string
+  candidateEmail: string
+  candidateFirstName: string
+  jobTitle: string
+  organizationName: string
+  jobSlug: string
+  publishedAt: string
+}
+
 const statusCopy: Record<ApplicationStatus, { label: string; message: string }> = {
   submitted: { label: "Submitted", message: "Your application is now marked as submitted." },
   reviewing: { label: "Under review", message: "The hiring team is reviewing your application." },
@@ -160,6 +171,53 @@ export async function sendHiringNotificationEmail(input: HiringNotificationEmail
   }
 }
 
+export async function sendJobSearchMatchEmail(input: JobSearchMatchEmail): Promise<EmailDeliveryResult> {
+  const mode = getDeliveryMode()
+  if (mode === "disabled") return { outcome: "skipped", code: "delivery_disabled" }
+
+  const apiKey = process.env.RESEND_API_KEY
+  const from = process.env.EMAIL_FROM
+  const testRecipient = process.env.EMAIL_TEST_RECIPIENT
+  if (!apiKey || !from) return { outcome: "skipped", code: "missing_email_configuration" }
+  if (mode === "test" && !testRecipient) return { outcome: "skipped", code: "missing_test_recipient" }
+
+  const recipient = mode === "test" ? testRecipient! : input.candidateEmail
+  if (!isEmail(recipient)) return { outcome: "failed", code: "invalid_recipient" }
+
+  const jobUrl = `${getApplicationOrigin(mode)}/jobs/${input.jobSlug}`
+  try {
+    const response = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+        "Idempotency-Key": `job-alert-${input.savedSearchId}-${input.jobSlug}-${input.publishedAt.replace(/[^0-9]/g, "")}`,
+      },
+      body: JSON.stringify({
+        from,
+        to: [recipient],
+        subject: `New job match: ${input.jobTitle}`,
+        html: renderEmailShell({
+          preview: `${input.jobTitle} at ${input.organizationName} matches your saved search.`,
+          greeting: `Hello ${escapeHtml(input.candidateFirstName)},`,
+          heading: "A new job matches your search",
+          message: `<strong>${escapeHtml(input.jobTitle)}</strong> at <strong>${escapeHtml(input.organizationName)}</strong> matches your saved search, “${escapeHtml(input.searchName)}”.`,
+          detailTitle: escapeHtml(input.jobTitle),
+          detailSubtitle: escapeHtml(input.organizationName),
+          badge: "New match",
+          actionUrl: jobUrl,
+          actionLabel: "View job",
+          footer: "You received this email because email alerts are enabled for this saved search. You can change or remove alerts in your SM VIA Job alerts settings.",
+        }),
+        text: `Hello ${input.candidateFirstName},\n\n${input.jobTitle} at ${input.organizationName} matches your saved search, “${input.searchName}”.\n\nView job: ${jobUrl}\n\nYou received this email because email alerts are enabled for this saved search. Change or remove alerts in your SM VIA Job alerts settings.`,
+      }),
+    })
+    return response.ok ? { outcome: "sent" } : { outcome: "failed", code: `provider_${response.status}` }
+  } catch {
+    return { outcome: "failed", code: "provider_unreachable" }
+  }
+}
+
 function getDeliveryMode(): DeliveryMode {
   const value = process.env.EMAIL_DELIVERY_MODE
   return value === "test" || value === "live" ? value : "disabled"
@@ -211,10 +269,12 @@ type EmailShellInput = {
   badge: string
   actionUrl: string
   actionLabel: string
+  footer?: string
 }
 
 function renderEmailShell(input: EmailShellInput) {
-  return `<!doctype html><html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body style="margin:0;padding:0;background:#f3f7fa;font-family:Arial,Helvetica,sans-serif;color:#10213c"><div style="display:none;max-height:0;overflow:hidden;opacity:0;color:transparent">${input.preview}</div><table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#f3f7fa"><tr><td align="center" style="padding:32px 16px"><table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:600px;background:#ffffff;border:1px solid #dbe4ec;border-radius:18px"><tr><td style="padding:32px"><table role="presentation" cellspacing="0" cellpadding="0"><tr><td style="width:38px;height:38px;border-radius:9px;background:#0b315d;color:#ffffff;text-align:center;font-size:21px;font-weight:700;line-height:38px">+</td><td style="padding-left:11px;font-size:22px;font-weight:700;letter-spacing:0.04em;color:#0b315d">SM VIA</td></tr></table><div style="height:1px;background:#dbe4ec;margin:25px 0 28px"></div><p style="margin:0 0 10px;font-size:16px;line-height:24px;color:#3e5068">${input.greeting}</p><h1 style="margin:0 0 14px;font-size:30px;line-height:38px;letter-spacing:-0.4px;color:#10213c">${input.heading}</h1><p style="margin:0 0 24px;font-size:16px;line-height:26px;color:#3e5068">${input.message}</p><table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#f0f7fc;border:1px solid #c9e0f3;border-radius:12px"><tr><td style="padding:20px"><p style="margin:0 0 7px;font-size:17px;line-height:24px;font-weight:700;color:#10213c">${input.detailTitle}</p><p style="margin:0 0 13px;font-size:15px;line-height:22px;color:#53677e">${input.detailSubtitle}</p><span style="display:inline-block;padding:6px 10px;border-radius:999px;background:#d6eafc;color:#0b4c8c;font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase">${input.badge}</span></td></tr></table><table role="presentation" cellspacing="0" cellpadding="0" style="margin:28px 0 0"><tr><td style="border-radius:10px;background:#0b5cab"><a href="${escapeHtml(input.actionUrl)}" style="display:inline-block;padding:14px 22px;border-radius:10px;color:#ffffff;font-size:16px;font-weight:700;text-decoration:none">${input.actionLabel}</a></td></tr></table><div style="height:1px;background:#dbe4ec;margin:30px 0 20px"></div><p style="margin:0;font-size:13px;line-height:20px;color:#687a90">This transactional email was sent because you have an active application through SM VIA.</p></td></tr></table></td></tr></table></body></html>`
+  const footer = input.footer ?? "This transactional email was sent because you have an active application through SM VIA."
+  return `<!doctype html><html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body style="margin:0;padding:0;background:#f3f7fa;font-family:Arial,Helvetica,sans-serif;color:#10213c"><div style="display:none;max-height:0;overflow:hidden;opacity:0;color:transparent">${input.preview}</div><table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#f3f7fa"><tr><td align="center" style="padding:32px 16px"><table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:600px;background:#ffffff;border:1px solid #dbe4ec;border-radius:18px"><tr><td style="padding:32px"><table role="presentation" cellspacing="0" cellpadding="0"><tr><td style="width:38px;height:38px;border-radius:9px;background:#0b315d;color:#ffffff;text-align:center;font-size:21px;font-weight:700;line-height:38px">+</td><td style="padding-left:11px;font-size:22px;font-weight:700;letter-spacing:0.04em;color:#0b315d">SM VIA</td></tr></table><div style="height:1px;background:#dbe4ec;margin:25px 0 28px"></div><p style="margin:0 0 10px;font-size:16px;line-height:24px;color:#3e5068">${input.greeting}</p><h1 style="margin:0 0 14px;font-size:30px;line-height:38px;letter-spacing:-0.4px;color:#10213c">${input.heading}</h1><p style="margin:0 0 24px;font-size:16px;line-height:26px;color:#3e5068">${input.message}</p><table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#f0f7fc;border:1px solid #c9e0f3;border-radius:12px"><tr><td style="padding:20px"><p style="margin:0 0 7px;font-size:17px;line-height:24px;font-weight:700;color:#10213c">${input.detailTitle}</p><p style="margin:0 0 13px;font-size:15px;line-height:22px;color:#53677e">${input.detailSubtitle}</p><span style="display:inline-block;padding:6px 10px;border-radius:999px;background:#d6eafc;color:#0b4c8c;font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase">${input.badge}</span></td></tr></table><table role="presentation" cellspacing="0" cellpadding="0" style="margin:28px 0 0"><tr><td style="border-radius:10px;background:#0b5cab"><a href="${escapeHtml(input.actionUrl)}" style="display:inline-block;padding:14px 22px;border-radius:10px;color:#ffffff;font-size:16px;font-weight:700;text-decoration:none">${input.actionLabel}</a></td></tr></table><div style="height:1px;background:#dbe4ec;margin:30px 0 20px"></div><p style="margin:0;font-size:13px;line-height:20px;color:#687a90">${escapeHtml(footer)}</p></td></tr></table></td></tr></table></body></html>`
 }
 
 function renderText(input: ApplicationStatusEmail, applicationUrl: string) {

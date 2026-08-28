@@ -84,10 +84,32 @@ export async function createSavedJobSearch(formData: FormData) {
     workplace_type: workplaceType || null, experience_level: experienceLevel || null,
     visa_support: visa === "" ? null : visa === "yes", search_text: searchText || null,
     alerts_enabled: formData.get("alertsEnabled") === "on",
+    email_alerts_enabled: formData.get("emailAlertsEnabled") === "on",
   })
   if (error) redirect(messagePath("/dashboard/job-alerts", "error", "We could not save this job search."))
   revalidatePath("/dashboard/job-alerts")
-  redirect(messagePath("/dashboard/job-alerts", "success", "Saved search created. You will see matching new jobs in Notifications."))
+  redirect(messagePath("/dashboard/job-alerts", "success", "Saved search created. Matching jobs will appear in Notifications, and email alerts will be sent only if you opted in."))
+}
+
+export async function updateSavedJobSearchAlerts(formData: FormData) {
+  const identity = await requireProfessional()
+  const id = formString(formData, "id")
+  if (!/^[0-9a-f]{8}-[0-9a-f-]{27,}$/i.test(id)) {
+    redirect(messagePath("/dashboard/job-alerts", "error", "The saved search is invalid."))
+  }
+
+  const { error } = await identity.supabase
+    .from("saved_job_searches")
+    .update({
+      alerts_enabled: formData.get("alertsEnabled") === "on",
+      email_alerts_enabled: formData.get("emailAlertsEnabled") === "on",
+    })
+    .eq("id", id)
+    .eq("user_id", identity.userId)
+
+  if (error) redirect(messagePath("/dashboard/job-alerts", "error", "We could not update this alert."))
+  revalidatePath("/dashboard/job-alerts")
+  redirect(messagePath("/dashboard/job-alerts", "success", "Alert settings updated."))
 }
 
 export async function deleteSavedJobSearch(formData: FormData) {
