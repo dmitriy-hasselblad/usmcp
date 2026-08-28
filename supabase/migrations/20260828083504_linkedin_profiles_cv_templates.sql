@@ -40,10 +40,10 @@ select
   organizations.organization_type, organizations.state_code as organization_state_code,
   organizations.description as organization_description,
   organizations.website as organization_website,
-  organizations.linkedin_url as organization_linkedin_url,
   organizations.verification_status,
   jobs.profession, jobs.experience_level, jobs.required_skills, jobs.expires_at,
-  jobs.open_positions, organizations.logo_path as organization_logo_path
+  jobs.open_positions, organizations.logo_path as organization_logo_path,
+  organizations.linkedin_url as organization_linkedin_url
 from public.jobs
 join public.organizations on organizations.id = jobs.organization_id
 where jobs.status = 'published'
