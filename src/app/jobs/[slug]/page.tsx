@@ -81,14 +81,7 @@ export default async function JobPage({ params }: JobPageProps) {
       ? getLatestPublishedOrganizationPost(job.organizationId)
       : Promise.resolve(null),
   ])
-  const relatedJobs = [...liveJobs, ...featuredJobs]
-    .filter(
-      (candidate) =>
-        candidate.slug !== job.slug &&
-        (candidate.specialty === job.specialty ||
-          candidate.employer === job.employer)
-    )
-    .slice(0, 2)
+  const relatedJobs = getRelatedJobs(job, isLive ? liveJobs : featuredJobs)
 
   return (
     <div className="min-h-dvh bg-muted/30">
@@ -196,6 +189,27 @@ export default async function JobPage({ params }: JobPageProps) {
                 <JobDescriptionContent value={job.description ?? job.summary} />
               </CardContent>
             </Card>
+
+            {job.requiredSkills && job.requiredSkills.length > 0 && (
+              <Card className="border-border/80 bg-white">
+                <CardHeader>
+                  <CardTitle>Required skills</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-wrap gap-2">
+                    {job.requiredSkills.map((skill) => (
+                      <Badge
+                        className="border-primary/15 bg-primary/5 px-2.5 py-1 text-sm text-primary"
+                        key={skill}
+                        variant="outline"
+                      >
+                        {skill}
+                      </Badge>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
 
             {job.responsibilities.length > 0 && (
               <JobSection items={job.responsibilities} title="What you will do" />
@@ -327,7 +341,7 @@ export default async function JobPage({ params }: JobPageProps) {
                     Continue exploring
                   </p>
                   <h2 className="mt-3 text-3xl font-semibold tracking-[-0.05em]">
-                    Related roles
+                    Similar healthcare opportunities
                   </h2>
                 </div>
                 <Button
@@ -338,7 +352,7 @@ export default async function JobPage({ params }: JobPageProps) {
                   <Link href="/jobs">View all roles</Link>
                 </Button>
               </div>
-              <div className="mt-8 grid gap-5 lg:grid-cols-2">
+              <div className="mt-8 grid gap-5 lg:grid-cols-3">
                 {relatedJobs.map((relatedJob) => (
                   <JobCard job={relatedJob} key={relatedJob.slug} />
                 ))}
@@ -351,6 +365,39 @@ export default async function JobPage({ params }: JobPageProps) {
       <SiteFooter />
     </div>
   )
+}
+
+function getRelatedJobs(currentJob: Job, candidates: Job[]) {
+  const currentSkills = new Set(
+    (currentJob.requiredSkills ?? []).map((skill) => skill.toLocaleLowerCase()),
+  )
+
+  return candidates
+    .filter(
+      (candidate) =>
+        candidate.slug !== currentJob.slug && !candidate.isPlatformDemo,
+    )
+    .map((candidate) => {
+      const sharedSkills = (candidate.requiredSkills ?? []).filter((skill) =>
+        currentSkills.has(skill.toLocaleLowerCase()),
+      ).length
+      const score =
+        (candidate.profession === currentJob.profession ? 6 : 0) +
+        (candidate.specialty === currentJob.specialty ? 5 : 0) +
+        (candidate.stateCode === currentJob.stateCode ? 3 : 0) +
+        sharedSkills +
+        (candidate.organizationId === currentJob.organizationId ? 1 : 0)
+
+      return { candidate, score }
+    })
+    .filter(({ score }) => score > 0)
+    .sort(
+      (a, b) =>
+        b.score - a.score ||
+        (b.candidate.publishedAt ?? "").localeCompare(a.candidate.publishedAt ?? ""),
+    )
+    .slice(0, 3)
+    .map(({ candidate }) => candidate)
 }
 
 function getJobPosting(job: Job) {
