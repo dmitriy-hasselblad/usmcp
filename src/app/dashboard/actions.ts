@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
+import { after } from "next/server"
 
 import {
   formString,
@@ -23,6 +24,7 @@ import {
 } from "@/lib/employer/constants"
 import { isHealthcareProfession } from "@/lib/healthcare-taxonomy"
 import { requireEmployerWorkspace } from "@/lib/employer/session"
+import { sendMatchingJobAlertEmails } from "@/lib/jobs/job-alert-email"
 import { organizationLogoMaxBytes, organizationLogoMimeTypes, organizationLogosBucket } from "@/lib/employer/organization-logo"
 
 type UploadActionResult = { ok: boolean; message: string }
@@ -310,7 +312,7 @@ export async function changeJobStatus(formData: FormData) {
 
   const { data: existingJob } = await workspace.supabase
     .from("jobs")
-    .select("status, slug, posting_duration_days, expires_at, open_positions")
+    .select("status, slug, title, profession, specialty, state_code, city, employment_type, workplace_type, experience_level, visa_support, description, posting_duration_days, expires_at, open_positions")
     .eq("id", jobId)
     .eq("organization_id", workspace.organization.id)
     .maybeSingle()
@@ -352,7 +354,7 @@ export async function changeJobStatus(formData: FormData) {
     })
     .eq("id", jobId)
     .eq("organization_id", workspace.organization.id)
-    .select("id")
+    .select("id, published_at")
     .maybeSingle()
 
   if (error || !updatedJob) {
@@ -363,6 +365,27 @@ export async function changeJobStatus(formData: FormData) {
         "We could not update the job status.",
       ),
     )
+  }
+
+  if (status === "published" && updatedJob.published_at) {
+    after(async () => {
+      await sendMatchingJobAlertEmails({
+        id: updatedJob.id,
+        slug: existingJob.slug,
+        title: existingJob.title,
+        profession: existingJob.profession,
+        specialty: existingJob.specialty,
+        stateCode: existingJob.state_code,
+        city: existingJob.city,
+        employmentType: existingJob.employment_type,
+        workplaceType: existingJob.workplace_type,
+        experienceLevel: existingJob.experience_level,
+        visaSupport: existingJob.visa_support,
+        description: existingJob.description,
+        organizationName: workspace.organization.name,
+        publishedAt: updatedJob.published_at,
+      })
+    })
   }
 
   revalidatePath("/dashboard")
