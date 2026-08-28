@@ -111,6 +111,25 @@ test("application document choices remain private until a candidate selects them
   assert.match(applyPage, /name="coverLetterChoice"/)
 })
 
+test("a new application emails only the authorized hiring team", async () => {
+  const applicationActions = await readProjectFile("src/app/applications/actions.ts")
+  const delivery = await readProjectFile("src/lib/applications/new-application-email.ts")
+  const emailTemplate = await readProjectFile("src/lib/email/application-status.ts")
+
+  assert.match(applicationActions, /notifyHiringTeamOfNewApplication\(/)
+  assert.match(
+    applicationActions,
+    /select\("id, organization_id, candidate_first_name, candidate_last_name, job_title, organization_name"\)/,
+  )
+  assert.match(delivery, /import "server-only"/)
+  assert.match(delivery, /createAdminClient\(\)/)
+  assert.match(delivery, /\.in\("role", \["owner", "admin", "recruiter"\]\)/)
+  assert.match(delivery, /admin\.auth\.admin\.getUserById\(profile\.id\)/)
+  assert.match(emailTemplate, /sendApplicationReceivedEmail/)
+  assert.match(emailTemplate, /actionLabel: "Review application"/)
+  assert.match(emailTemplate, /Idempotency-Key.*application-received/s)
+})
+
 test("abuse reports remain private, RLS-protected, and auditable", async () => {
   const migration = await readProjectFile(
     "supabase/migrations/20260807170000_abuse_reporting_oversight.sql",

@@ -13,7 +13,8 @@ import {
 import { requireIdentity } from "@/lib/auth/session"
 import { requireEmployerWorkspace } from "@/lib/employer/session"
 import { sendApplicationStatusEmail, sendHiringNotificationEmail, sendNewEmployerMessageEmail } from "@/lib/email/application-status"
-import { applicationMessageAttachmentsBucket, applicationMessageAttachmentMaxBytes, isApplicationMessageAttachmentMimeType } from "@/lib/applications/message-attachments"
+import { notifyHiringTeamOfNewApplication } from "@/lib/applications/new-application-email"
+import { applicationMessageAttachmentMaxBytes, isApplicationMessageAttachmentMimeType } from "@/lib/applications/message-attachments"
 
 function isUuid(value: string) {
   return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
@@ -109,7 +110,7 @@ export async function submitApplication(formData: FormData) {
         coverLetterChoice?.source === "builder" ? coverLetterChoice.id : null,
       cover_letter: coverLetter,
     })
-    .select("id")
+    .select("id, organization_id, candidate_first_name, candidate_last_name, job_title, organization_name")
     .maybeSingle()
 
   if (error?.code === "23505") {
@@ -131,6 +132,23 @@ export async function submitApplication(formData: FormData) {
       ),
     )
   }
+
+  after(async () => {
+    const delivery = await notifyHiringTeamOfNewApplication({
+      applicationId: application.id,
+      organizationId: application.organization_id,
+      candidateFirstName: application.candidate_first_name,
+      candidateLastName: application.candidate_last_name,
+      jobTitle: application.job_title,
+      organizationName: application.organization_name,
+    })
+    if (delivery.outcome === "failed") {
+      console.error("New application email delivery failed", {
+        applicationId: application.id,
+        code: delivery.code,
+      })
+    }
+  })
 
   revalidatePath("/dashboard")
   revalidatePath("/dashboard/applications")
