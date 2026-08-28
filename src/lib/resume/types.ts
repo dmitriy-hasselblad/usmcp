@@ -26,6 +26,26 @@ export type ResumeContent = {
   languages: string
 }
 
+export const cvTemplates = [
+  { key: "clinical_sidebar", name: "Clinical sidebar", description: "A confident clinical layout with a focused credential column." },
+  { key: "modern_blue_header", name: "Modern blue header", description: "A fresh, structured format for broad healthcare roles." },
+  { key: "executive_timeline", name: "Executive timeline", description: "A leadership-ready template with a clear career chronology." },
+  { key: "accent_column", name: "Accent column", description: "A refined format with discreet color and strong information hierarchy." },
+  { key: "two_column_professional", name: "Two-column professional", description: "A compact, balanced layout for detailed clinical backgrounds." },
+  { key: "classic_medical", name: "Classic medical", description: "A traditional, ATS-friendly résumé for clinical practice." },
+  { key: "navy_sidebar", name: "Navy sidebar", description: "A modern professional template with a composed visual identity." },
+] as const
+
+export type CvTemplateKey = (typeof cvTemplates)[number]["key"]
+export const defaultCvTemplateKey: CvTemplateKey = "clinical_sidebar"
+
+export function parseCvTemplateKey(value: unknown): CvTemplateKey {
+  if (value === "us_healthcare_v1") return defaultCvTemplateKey
+  return cvTemplates.some((template) => template.key === value)
+    ? (value as CvTemplateKey)
+    : defaultCvTemplateKey
+}
+
 export const emptyResumeContent: ResumeContent = {
   fullName: "",
   professionalHeadline: "",

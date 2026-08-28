@@ -151,6 +151,17 @@ export default async function OnboardingPage({
                 ))}
               </select>
             </label>
+            <label className="grid gap-2 text-sm font-medium">
+              LinkedIn profile <span className="font-normal text-muted-foreground">Optional</span>
+              <Input
+                className="h-11"
+                maxLength={300}
+                name="linkedinUrl"
+                placeholder="https://www.linkedin.com/in/your-name"
+                type="url"
+              />
+              <span className="text-xs font-normal text-muted-foreground">Employers can view this after you apply.</span>
+            </label>
           </>
         ) : (
           <>
@@ -186,6 +197,16 @@ export default async function OnboardingPage({
                 name="positionTitle"
                 placeholder="For example, Talent Acquisition Director"
                 required
+              />
+            </label>
+            <label className="grid gap-2 text-sm font-medium">
+              Organization LinkedIn page <span className="font-normal text-muted-foreground">Optional</span>
+              <Input
+                className="h-11"
+                maxLength={300}
+                name="organizationLinkedInUrl"
+                placeholder="https://www.linkedin.com/company/your-organization"
+                type="url"
               />
             </label>
           </>

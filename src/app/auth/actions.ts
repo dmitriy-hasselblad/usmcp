@@ -14,6 +14,7 @@ import {
   organizationTypes,
 } from "@/lib/auth/validation"
 import { isHealthcareProfession } from "@/lib/healthcare-taxonomy"
+import { normalizeLinkedInUrl } from "@/lib/validation/linkedin"
 import { getSiteUrl, isAuthEnabled } from "@/lib/supabase/env"
 import { createClient } from "@/lib/supabase/server"
 
@@ -296,11 +297,14 @@ export async function completeOnboarding(formData: FormData) {
     const profession = formString(formData, "profession")
     const specialty = formString(formData, "specialty")
     const careerStage = formString(formData, "careerStage")
+    const linkedinUrlInput = formString(formData, "linkedinUrl")
+    const linkedinUrl = normalizeLinkedInUrl(linkedinUrlInput)
 
     if (
       !isHealthcareProfession(profession) ||
       !careerStages.some((option) => option === careerStage) ||
       specialty.length > 120
+      || (linkedinUrlInput && !linkedinUrl)
     ) {
       redirect(
         messagePath(
@@ -316,6 +320,7 @@ export async function completeOnboarding(formData: FormData) {
       specialty: specialty || null,
       state_code: stateCode,
       career_stage: careerStage,
+      linkedin_url: linkedinUrl,
     }
     const { data: existingProfessionalProfile } = await supabase
       .from("professional_profiles")
@@ -345,6 +350,8 @@ export async function completeOnboarding(formData: FormData) {
     const organizationName = formString(formData, "organizationName")
     const organizationType = formString(formData, "organizationType")
     const positionTitle = formString(formData, "positionTitle")
+    const organizationLinkedInInput = formString(formData, "organizationLinkedInUrl")
+    const organizationLinkedInUrl = normalizeLinkedInUrl(organizationLinkedInInput)
 
     if (
       organizationName.length < 2 ||
@@ -352,6 +359,7 @@ export async function completeOnboarding(formData: FormData) {
       !organizationTypes.some((option) => option === organizationType) ||
       positionTitle.length < 2 ||
       positionTitle.length > 120
+      || (organizationLinkedInInput && !organizationLinkedInUrl)
     ) {
       redirect(
         messagePath(
@@ -412,6 +420,31 @@ export async function completeOnboarding(formData: FormData) {
           "The employer profile was saved, but the organization workspace could not be created.",
         ),
       )
+    }
+
+    if (organizationLinkedInUrl) {
+      const { data: employerWorkspace } = await supabase
+        .from("employer_profiles")
+        .select("organization_id")
+        .eq("user_id", userId)
+        .maybeSingle()
+
+      if (employerWorkspace?.organization_id) {
+        const { error: linkedinError } = await supabase
+          .from("organizations")
+          .update({ linkedin_url: organizationLinkedInUrl })
+          .eq("id", employerWorkspace.organization_id)
+
+        if (linkedinError) {
+          redirect(
+            messagePath(
+              "/onboarding",
+              "error",
+              "Your workspace was created, but the organization LinkedIn page could not be saved.",
+            ),
+          )
+        }
+      }
     }
   } else {
     redirect(

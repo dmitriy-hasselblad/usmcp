@@ -93,6 +93,7 @@ export type ProfessionalProfileRecord = {
   headline: string | null
   city: string | null
   phone: string | null
+  linkedin_url: string | null
   biography: string | null
   years_experience: number | null
   languages: string[]

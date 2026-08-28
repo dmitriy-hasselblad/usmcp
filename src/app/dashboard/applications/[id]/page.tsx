@@ -429,6 +429,14 @@ function ApplicationBody({
               label="Submitted"
               value={formatDate(application.submitted_at)}
             />
+            {showCandidateContact && extendedProfile?.linkedin_url && (
+              <Detail
+                href={extendedProfile.linkedin_url}
+                icon={ExternalLink}
+                label="LinkedIn"
+                value="View professional profile"
+              />
+            )}
           </dl>
           {showCandidateContact && (
             <div className="mt-6 grid gap-3 border-t border-border pt-5 sm:grid-cols-2">
@@ -798,10 +806,12 @@ function formatCareerDate(value: string) {
 
 function Detail({
   icon: Icon,
+  href,
   label,
   value,
 }: {
   icon: typeof UserRound
+  href?: string
   label: string
   value: string
 }) {
@@ -811,7 +821,13 @@ function Detail({
         <Icon className="size-4" />
         {label}
       </dt>
-      <dd className="mt-1.5 font-semibold">{value}</dd>
+      <dd className="mt-1.5 font-semibold">
+        {href ? (
+          <a className="text-primary hover:underline" href={href} rel="noreferrer" target="_blank">
+            {value}
+          </a>
+        ) : value}
+      </dd>
     </div>
   )
 }

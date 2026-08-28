@@ -127,6 +127,20 @@ export default async function OrganizationPage({
                 />
               </label>
 
+              <label className="grid gap-2 text-sm font-medium">
+                Organization LinkedIn page <span className="font-normal text-muted-foreground">Optional</span>
+                <Input
+                  className="h-11"
+                  defaultValue={workspace.organization.linkedin_url ?? ""}
+                  disabled={!canEdit}
+                  maxLength={300}
+                  name="linkedinUrl"
+                  placeholder="https://www.linkedin.com/company/your-organization"
+                  type="url"
+                />
+                <span className="text-xs font-normal text-muted-foreground">This link appears on your public organization profile.</span>
+              </label>
+
               <div className="rounded-xl border border-border p-4">
                 <h2 className="font-semibold">Public contact details</h2>
                 <p className="mt-1 text-sm text-muted-foreground">Optional. These details appear on your public News articles.</p>

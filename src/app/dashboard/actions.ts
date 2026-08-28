@@ -23,6 +23,7 @@ import {
   type JobStatus,
 } from "@/lib/employer/constants"
 import { isHealthcareProfession } from "@/lib/healthcare-taxonomy"
+import { normalizeLinkedInUrl } from "@/lib/validation/linkedin"
 import { requireEmployerWorkspace } from "@/lib/employer/session"
 import { sendMatchingJobAlertEmails } from "@/lib/jobs/job-alert-email"
 import { organizationLogoMaxBytes, organizationLogoMimeTypes, organizationLogosBucket } from "@/lib/employer/organization-logo"
@@ -112,6 +113,8 @@ export async function updateOrganization(formData: FormData) {
   const organizationType = formString(formData, "organizationType")
   const stateCode = formString(formData, "stateCode")
   const website = formString(formData, "website")
+  const linkedinUrlInput = formString(formData, "linkedinUrl")
+  const linkedinUrl = normalizeLinkedInUrl(linkedinUrlInput)
   const description = formString(formData, "description")
   const publicEmail = formString(formData, "publicEmail")
   const publicPhone = formString(formData, "publicPhone")
@@ -126,6 +129,7 @@ export async function updateOrganization(formData: FormData) {
     !organizationTypes.some((option) => option === organizationType) ||
     !isUsState(stateCode) ||
     !isValidWebsite(website) ||
+    (linkedinUrlInput && !linkedinUrl) ||
     description.length > 2000 ||
     (publicEmail && !isValidEmail(publicEmail)) || publicPhone.length > 30 ||
     addressLine1.length > 160 || addressLine2.length > 160 || city.length > 120 || postalCode.length > 20
@@ -146,6 +150,7 @@ export async function updateOrganization(formData: FormData) {
       organization_type: organizationType,
       state_code: stateCode,
       website: website || null,
+      linkedin_url: linkedinUrl,
       description: description || null,
       public_email: publicEmail || null, public_phone: publicPhone || null,
       address_line1: addressLine1 || null, address_line2: addressLine2 || null,
