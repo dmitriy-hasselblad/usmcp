@@ -21,13 +21,37 @@ function isUuid(value: string) {
   )
 }
 
+type ApplicationDocumentChoice = {
+  id: string
+  source: "uploaded" | "builder"
+}
+
+function applicationDocumentChoice(value: string) {
+  if (!value) return null
+  const [source, id, extra] = value.split(":")
+  if (
+    extra ||
+    (source !== "uploaded" && source !== "builder") ||
+    !id ||
+    !isUuid(id)
+  ) {
+    return undefined
+  }
+  return { source, id } as ApplicationDocumentChoice
+}
+
 export async function submitApplication(formData: FormData) {
   const jobSlug = formString(formData, "jobSlug")
   const nextPath = jobSlug ? `/jobs/${jobSlug}/apply` : "/jobs"
   const identity = await requireIdentity(nextPath)
   const jobId = formString(formData, "jobId")
   const phone = formString(formData, "phone")
-  const resumeDocumentId = formString(formData, "resumeDocumentId")
+  const resumeChoice = applicationDocumentChoice(
+    formString(formData, "resumeChoice"),
+  )
+  const coverLetterChoice = applicationDocumentChoice(
+    formString(formData, "coverLetterChoice"),
+  )
   const coverLetter = formString(formData, "coverLetter")
 
   if (
@@ -35,7 +59,8 @@ export async function submitApplication(formData: FormData) {
     !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(jobSlug) ||
     phone.length < 7 ||
     phone.length > 30 ||
-    (resumeDocumentId.length > 0 && !isUuid(resumeDocumentId)) ||
+    resumeChoice === undefined ||
+    coverLetterChoice === undefined ||
     coverLetter.length < 30 ||
     coverLetter.length > 5000
   ) {
@@ -74,7 +99,14 @@ export async function submitApplication(formData: FormData) {
       job_id: jobId,
       candidate_id: identity.userId,
       phone,
-      resume_document_id: resumeDocumentId || null,
+      resume_document_id:
+        resumeChoice?.source === "uploaded" ? resumeChoice.id : null,
+      resume_builder_id:
+        resumeChoice?.source === "builder" ? resumeChoice.id : null,
+      cover_letter_document_id:
+        coverLetterChoice?.source === "uploaded" ? coverLetterChoice.id : null,
+      cover_letter_builder_id:
+        coverLetterChoice?.source === "builder" ? coverLetterChoice.id : null,
       cover_letter: coverLetter,
     })
     .select("id")

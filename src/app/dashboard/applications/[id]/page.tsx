@@ -476,7 +476,7 @@ function ApplicationBody({
 
       <ApplicationInterviews application={application} interviews={interviews} perspective={perspective} />
 
-      {(application.resume_document_id || application.resume_url) && (
+      {(application.resume_document_id || application.resume_builder_id || application.resume_url) && (
         <Card className="bg-white">
           <CardContent className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
             <div>
@@ -484,6 +484,8 @@ function ApplicationBody({
               <p className="mt-1 text-sm text-muted-foreground">
                 {application.resume_document_id
                   ? "Access is granted through this application using a short-lived secure link."
+                  : application.resume_builder_id
+                    ? "This candidate selected a private CV created with SM VIA CV Builder."
                   : "Open the legacy document link supplied with this application."}
               </p>
             </div>
@@ -495,6 +497,12 @@ function ApplicationBody({
                   Download secure resume <ExternalLink />
                 </Link>
               </Button>
+            ) : application.resume_builder_id ? (
+              <Button asChild>
+                <Link href={`/dashboard/applications/${application.id}/resume`}>
+                  Open selected CV <ExternalLink />
+                </Link>
+              </Button>
             ) : (
               <Button asChild>
                 <a
@@ -504,6 +512,34 @@ function ApplicationBody({
                 >
                   Open document <ExternalLink />
                 </a>
+              </Button>
+            )}
+          </CardContent>
+        </Card>
+      )}
+
+      {(application.cover_letter_document_id || application.cover_letter_builder_id) && (
+        <Card className="bg-white">
+          <CardContent className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h2 className="font-semibold">Attached cover letter</h2>
+              <p className="mt-1 text-sm text-muted-foreground">
+                {application.cover_letter_document_id
+                  ? "This uploaded cover letter is shared only with the authorized hiring team for this application."
+                  : "This cover letter was created with SM VIA Cover Letter Builder."}
+              </p>
+            </div>
+            {application.cover_letter_document_id ? (
+              <Button asChild>
+                <Link href={`/dashboard/documents/${application.cover_letter_document_id}/download`}>
+                  Download cover letter <ExternalLink />
+                </Link>
+              </Button>
+            ) : (
+              <Button asChild>
+                <Link href={`/dashboard/applications/${application.id}/cover-letter`}>
+                  Open cover letter <ExternalLink />
+                </Link>
               </Button>
             )}
           </CardContent>

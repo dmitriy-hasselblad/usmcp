@@ -94,6 +94,23 @@ test("private document and attachment downloads rely on RLS and never cache sign
   assert.match(documentsMigration, /user_id = \(select auth\.uid\(\)\)[\s\S]*applications\.resume_document_id = professional_documents\.id/)
 })
 
+test("application document choices remain private until a candidate selects them", async () => {
+  const migration = await readProjectFile(
+    "supabase/migrations/20260828133000_application_document_selection.sql",
+  )
+  const applyPage = await readProjectFile("src/app/jobs/[slug]/apply/page.tsx")
+
+  assert.match(migration, /resume_builder_id uuid/)
+  assert.match(migration, /cover_letter_document_id uuid/)
+  assert.match(migration, /cover_letter_builder_id uuid/)
+  assert.match(migration, /applications\.resume_builder_id = professional_resumes\.id/)
+  assert.match(migration, /applications\.cover_letter_builder_id = professional_cover_letters\.id/)
+  assert.match(migration, /applications\.cover_letter_document_id = professional_documents\.id/)
+  assert.match(migration, /revoke all on function private\.can_access_professional_document\(text\)/)
+  assert.match(applyPage, /name="resumeChoice"/)
+  assert.match(applyPage, /name="coverLetterChoice"/)
+})
+
 test("abuse reports remain private, RLS-protected, and auditable", async () => {
   const migration = await readProjectFile(
     "supabase/migrations/20260807170000_abuse_reporting_oversight.sql",
