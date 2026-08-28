@@ -11,6 +11,7 @@ import {
   messagePath,
 } from "@/lib/auth/validation"
 import { isHealthcareProfession } from "@/lib/healthcare-taxonomy"
+import { normalizeLinkedInUrl } from "@/lib/validation/linkedin"
 import {
   isAllowedProfessionalDocument,
   isProfessionalDocumentType,
@@ -46,6 +47,7 @@ export async function updateProfessionalProfile(formData: FormData) {
   const headline = formString(formData, "headline")
   const city = formString(formData, "city")
   const phone = formString(formData, "phone")
+  const linkedinUrl = normalizeLinkedInUrl(formString(formData, "linkedinUrl"))
   const biography = formString(formData, "biography")
   const languages = Array.from(
     new Set(
@@ -77,6 +79,7 @@ export async function updateProfessionalProfile(formData: FormData) {
     city.length > 120 ||
     (phone.length > 0 && phone.length < 7) ||
     phone.length > 30 ||
+    (formString(formData, "linkedinUrl") && !linkedinUrl) ||
     biography.length > 2000 ||
     languages.length > 12 ||
     languages.some((language) => language.length < 2 || language.length > 60) ||
@@ -118,6 +121,7 @@ export async function updateProfessionalProfile(formData: FormData) {
       headline: headline || null,
       city: city || null,
       phone: phone || null,
+      linkedin_url: linkedinUrl,
       biography: biography || null,
       years_experience: yearsExperience,
       languages,

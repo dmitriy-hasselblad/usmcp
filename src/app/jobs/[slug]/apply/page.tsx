@@ -60,6 +60,9 @@ export default async function ApplyPage({
     { data: profile },
     { data: professionalProfile },
     { data: resumeData },
+    { data: builtResumeData },
+    { data: uploadedCoverLetterData },
+    { data: builtCoverLetterData },
   ] = await Promise.all([
     identity.supabase
       .from("profiles")
@@ -78,6 +81,22 @@ export default async function ApplyPage({
       .eq("document_type", "resume")
       .order("is_primary", { ascending: false })
       .order("created_at", { ascending: false }),
+    identity.supabase
+      .from("professional_resumes")
+      .select("id, title, created_at")
+      .eq("user_id", identity.userId)
+      .order("updated_at", { ascending: false }),
+    identity.supabase
+      .from("professional_documents")
+      .select("id, title, created_at")
+      .eq("user_id", identity.userId)
+      .eq("document_type", "cover_letter")
+      .order("created_at", { ascending: false }),
+    identity.supabase
+      .from("professional_cover_letters")
+      .select("id, title, created_at")
+      .eq("user_id", identity.userId)
+      .order("updated_at", { ascending: false }),
   ])
 
   if (!profile?.onboarding_completed) {
@@ -168,9 +187,20 @@ export default async function ApplyPage({
   const fullName = [profile.first_name, profile.last_name]
     .filter(Boolean)
     .join(" ")
-  const resumes = (resumeData ?? []) as ApplicationResumeOption[]
-  const selectedResumeId =
-    resumes.find((resume) => resume.is_primary)?.id ?? resumes[0]?.id ?? ""
+  const uploadedResumes = (resumeData ?? []) as ApplicationUploadedResumeOption[]
+  const builtResumes = (builtResumeData ?? []) as ApplicationBuiltDocumentOption[]
+  const uploadedCoverLetters = (uploadedCoverLetterData ?? []) as ApplicationBuiltDocumentOption[]
+  const builtCoverLetters = (builtCoverLetterData ?? []) as ApplicationBuiltDocumentOption[]
+  const primaryUploadedResume = uploadedResumes.find((resume) => resume.is_primary)
+  const selectedResume = primaryUploadedResume
+    ? `uploaded:${primaryUploadedResume.id}`
+    : builtResumes[0]
+      ? `builder:${builtResumes[0].id}`
+      : uploadedResumes[0]
+        ? `uploaded:${uploadedResumes[0].id}`
+        : ""
+  const hasResumeOptions = uploadedResumes.length > 0 || builtResumes.length > 0
+  const hasCoverLetterOptions = uploadedCoverLetters.length > 0 || builtCoverLetters.length > 0
 
   return (
     <ApplyPageShell>
@@ -233,7 +263,7 @@ export default async function ApplyPage({
                 />
               </label>
 
-              {resumes.length ? (
+              {hasResumeOptions ? (
                 <label className="grid gap-2 text-sm font-medium">
                   Resume or CV{" "}
                   <span className="font-normal text-muted-foreground">
@@ -241,14 +271,19 @@ export default async function ApplyPage({
                   </span>
                   <select
                     className="h-11 w-full rounded-lg border border-input bg-background px-3 text-sm outline-none transition-shadow focus:border-ring focus:ring-3 focus:ring-ring/20"
-                    defaultValue={selectedResumeId}
-                    name="resumeDocumentId"
+                    defaultValue={selectedResume}
+                    name="resumeChoice"
                   >
                     <option value="">Apply without a resume</option>
-                    {resumes.map((resume) => (
-                      <option key={resume.id} value={resume.id}>
+                    {uploadedResumes.map((resume) => (
+                      <option key={resume.id} value={`uploaded:${resume.id}`}>
                         {resume.title}
-                        {resume.is_primary ? " (Primary)" : ""}
+                        {resume.is_primary ? " (Uploaded primary résumé)" : " (Uploaded résumé)"}
+                      </option>
+                    ))}
+                    {builtResumes.map((resume) => (
+                      <option key={resume.id} value={`builder:${resume.id}`}>
+                        {resume.title} (CV Builder)
                       </option>
                     ))}
                   </select>
@@ -263,8 +298,8 @@ export default async function ApplyPage({
                     No resume saved
                   </p>
                   <p className="mt-1 text-sm leading-6 text-amber-900/80">
-                    You can apply without a resume or upload one to your private
-                    professional profile first.
+                    You can apply without a resume, upload one to your private
+                    professional profile, or create one with CV Builder.
                   </p>
                   <Button asChild className="mt-3" size="sm" variant="outline">
                     <Link href="/dashboard/profile">
@@ -272,6 +307,34 @@ export default async function ApplyPage({
                     </Link>
                   </Button>
                 </div>
+              )}
+
+              {hasCoverLetterOptions && (
+                <label className="grid gap-2 text-sm font-medium">
+                  Attach a cover letter{" "}
+                  <span className="font-normal text-muted-foreground">
+                    (optional)
+                  </span>
+                  <select
+                    className="h-11 w-full rounded-lg border border-input bg-background px-3 text-sm outline-none transition-shadow focus:border-ring focus:ring-3 focus:ring-ring/20"
+                    name="coverLetterChoice"
+                  >
+                    <option value="">Do not attach a cover letter</option>
+                    {uploadedCoverLetters.map((letter) => (
+                      <option key={letter.id} value={`uploaded:${letter.id}`}>
+                        {letter.title} (Uploaded cover letter)
+                      </option>
+                    ))}
+                    {builtCoverLetters.map((letter) => (
+                      <option key={letter.id} value={`builder:${letter.id}`}>
+                        {letter.title} (Cover Letter Builder)
+                      </option>
+                    ))}
+                  </select>
+                  <span className="text-xs font-normal leading-5 text-muted-foreground">
+                    This is separate from your message below. Only the hiring team for this application can open it.
+                  </span>
+                </label>
               )}
 
               <label className="grid gap-2 text-sm font-medium">
@@ -351,8 +414,14 @@ function ProfileField({ label, value }: { label: string; value: string }) {
   )
 }
 
-type ApplicationResumeOption = {
+type ApplicationUploadedResumeOption = {
   id: string
   title: string
   is_primary: boolean
+}
+
+type ApplicationBuiltDocumentOption = {
+  id: string
+  title: string
+  created_at: string
 }

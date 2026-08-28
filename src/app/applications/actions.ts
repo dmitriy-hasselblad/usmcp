@@ -13,12 +13,32 @@ import {
 import { requireIdentity } from "@/lib/auth/session"
 import { requireEmployerWorkspace } from "@/lib/employer/session"
 import { sendApplicationStatusEmail, sendHiringNotificationEmail, sendNewEmployerMessageEmail } from "@/lib/email/application-status"
-import { applicationMessageAttachmentsBucket, applicationMessageAttachmentMaxBytes, isApplicationMessageAttachmentMimeType } from "@/lib/applications/message-attachments"
+import { notifyHiringTeamOfNewApplication } from "@/lib/applications/new-application-email"
+import { applicationMessageAttachmentMaxBytes, isApplicationMessageAttachmentMimeType } from "@/lib/applications/message-attachments"
 
 function isUuid(value: string) {
   return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
     value,
   )
+}
+
+type ApplicationDocumentChoice = {
+  id: string
+  source: "uploaded" | "builder"
+}
+
+function applicationDocumentChoice(value: string) {
+  if (!value) return null
+  const [source, id, extra] = value.split(":")
+  if (
+    extra ||
+    (source !== "uploaded" && source !== "builder") ||
+    !id ||
+    !isUuid(id)
+  ) {
+    return undefined
+  }
+  return { source, id } as ApplicationDocumentChoice
 }
 
 export async function submitApplication(formData: FormData) {
@@ -27,7 +47,12 @@ export async function submitApplication(formData: FormData) {
   const identity = await requireIdentity(nextPath)
   const jobId = formString(formData, "jobId")
   const phone = formString(formData, "phone")
-  const resumeDocumentId = formString(formData, "resumeDocumentId")
+  const resumeChoice = applicationDocumentChoice(
+    formString(formData, "resumeChoice"),
+  )
+  const coverLetterChoice = applicationDocumentChoice(
+    formString(formData, "coverLetterChoice"),
+  )
   const coverLetter = formString(formData, "coverLetter")
 
   if (
@@ -35,7 +60,8 @@ export async function submitApplication(formData: FormData) {
     !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(jobSlug) ||
     phone.length < 7 ||
     phone.length > 30 ||
-    (resumeDocumentId.length > 0 && !isUuid(resumeDocumentId)) ||
+    resumeChoice === undefined ||
+    coverLetterChoice === undefined ||
     coverLetter.length < 30 ||
     coverLetter.length > 5000
   ) {
@@ -74,10 +100,17 @@ export async function submitApplication(formData: FormData) {
       job_id: jobId,
       candidate_id: identity.userId,
       phone,
-      resume_document_id: resumeDocumentId || null,
+      resume_document_id:
+        resumeChoice?.source === "uploaded" ? resumeChoice.id : null,
+      resume_builder_id:
+        resumeChoice?.source === "builder" ? resumeChoice.id : null,
+      cover_letter_document_id:
+        coverLetterChoice?.source === "uploaded" ? coverLetterChoice.id : null,
+      cover_letter_builder_id:
+        coverLetterChoice?.source === "builder" ? coverLetterChoice.id : null,
       cover_letter: coverLetter,
     })
-    .select("id")
+    .select("id, organization_id, candidate_first_name, candidate_last_name, job_title, organization_name")
     .maybeSingle()
 
   if (error?.code === "23505") {
@@ -99,6 +132,23 @@ export async function submitApplication(formData: FormData) {
       ),
     )
   }
+
+  after(async () => {
+    const delivery = await notifyHiringTeamOfNewApplication({
+      applicationId: application.id,
+      organizationId: application.organization_id,
+      candidateFirstName: application.candidate_first_name,
+      candidateLastName: application.candidate_last_name,
+      jobTitle: application.job_title,
+      organizationName: application.organization_name,
+    })
+    if (delivery.outcome === "failed") {
+      console.error("New application email delivery failed", {
+        applicationId: application.id,
+        code: delivery.code,
+      })
+    }
+  })
 
   revalidatePath("/dashboard")
   revalidatePath("/dashboard/applications")

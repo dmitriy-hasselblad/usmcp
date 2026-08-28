@@ -35,6 +35,18 @@ type HiringNotificationEmail = {
   remainingOpenPositions: number
 }
 
+type ApplicationReceivedEmail = {
+  applicationId: string
+  candidateFirstName: string
+  candidateLastName: string
+  jobTitle: string
+  organizationName: string
+  recipients: Array<{
+    email: string
+    firstName: string | null
+  }>
+}
+
 type JobSearchMatchEmail = {
   savedSearchId: string
   searchName: string
@@ -169,6 +181,68 @@ export async function sendHiringNotificationEmail(input: HiringNotificationEmail
   } catch {
     return { outcome: "failed", code: "provider_unreachable" }
   }
+}
+
+/** Sends one private, branded notification to each authorized hiring-team member. */
+export async function sendApplicationReceivedEmail(input: ApplicationReceivedEmail): Promise<EmailDeliveryResult> {
+  const mode = getDeliveryMode()
+  if (mode === "disabled") return { outcome: "skipped", code: "delivery_disabled" }
+
+  const apiKey = process.env.RESEND_API_KEY
+  const from = process.env.EMAIL_FROM
+  const testRecipient = process.env.EMAIL_TEST_RECIPIENT
+  if (!apiKey || !from) return { outcome: "skipped", code: "missing_email_configuration" }
+  if (mode === "test" && !testRecipient) return { outcome: "skipped", code: "missing_test_recipient" }
+
+  const recipients = mode === "test"
+    ? [{ email: testRecipient!, firstName: "there" }]
+    : [...new Map(input.recipients.filter((recipient) => isEmail(recipient.email)).map((recipient) => [recipient.email.toLowerCase(), recipient])).values()]
+
+  if (!recipients.length) return { outcome: "skipped", code: "no_hiring_team_recipients" }
+
+  const applicationUrl = `${getApplicationOrigin(mode)}/dashboard/applications/${input.applicationId}`
+  const candidateName = `${input.candidateFirstName} ${input.candidateLastName}`.trim()
+  const deliveries = await Promise.all(
+    recipients.map(async (recipient) => {
+      try {
+        const response = await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${apiKey}`,
+            "Content-Type": "application/json",
+            "Idempotency-Key": `application-received-${input.applicationId}-${recipient.email.toLowerCase()}`,
+          },
+          body: JSON.stringify({
+            from,
+            to: [recipient.email],
+            subject: `New application: ${input.jobTitle}`,
+            html: renderEmailShell({
+              preview: `${candidateName} applied for ${input.jobTitle}.`,
+              greeting: `Hello ${escapeHtml(recipient.firstName ?? "there")},`,
+              heading: "A new candidate applied",
+              message: `<strong>${escapeHtml(candidateName)}</strong> submitted an application for <strong>${escapeHtml(input.jobTitle)}</strong> at ${escapeHtml(input.organizationName)}. Sign in to review the profile, selected documents, and application message securely.`,
+              detailTitle: escapeHtml(input.jobTitle),
+              detailSubtitle: escapeHtml(input.organizationName),
+              badge: "New application",
+              actionUrl: applicationUrl,
+              actionLabel: "Review application",
+              footer: "This transactional email was sent because you are an authorized member of a hiring team on SM VIA.",
+            }),
+            text: `Hello ${recipient.firstName ?? "there"},\n\n${candidateName} submitted an application for ${input.jobTitle} at ${input.organizationName}. Sign in to review the candidate's profile, selected documents, and application message.\n\nReview application: ${applicationUrl}\n\nThis transactional email was sent because you are an authorized member of a hiring team on SM VIA.`,
+          }),
+        })
+        return response.ok
+          ? { outcome: "sent" as const }
+          : { outcome: "failed" as const, code: `provider_${response.status}` }
+      } catch {
+        return { outcome: "failed" as const, code: "provider_unreachable" }
+      }
+    }),
+  )
+
+  const failed = deliveries.find((delivery) => delivery.outcome === "failed")
+  if (failed && deliveries.every((delivery) => delivery.outcome === "failed")) return failed
+  return { outcome: "sent" }
 }
 
 export async function sendJobSearchMatchEmail(input: JobSearchMatchEmail): Promise<EmailDeliveryResult> {

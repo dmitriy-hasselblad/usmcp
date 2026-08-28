@@ -9,6 +9,7 @@ export type ResumeEntry = {
 }
 
 export type ResumeContent = {
+  isExecutiveExample: boolean
   fullName: string
   professionalHeadline: string
   cityState: string
@@ -22,11 +23,33 @@ export type ResumeContent = {
   certifications: string
   skills: string
   achievements: string
+  researchPublications: string
   affiliations: string
   languages: string
 }
 
+export const cvTemplates = [
+  { key: "clinical_sidebar", name: "Clinical sidebar", description: "A confident clinical layout with a focused credential column." },
+  { key: "modern_blue_header", name: "Modern blue header", description: "A fresh, structured format for broad healthcare roles." },
+  { key: "executive_timeline", name: "Executive timeline", description: "A leadership-ready template with a clear career chronology." },
+  { key: "accent_column", name: "Accent column", description: "A refined format with discreet color and strong information hierarchy." },
+  { key: "two_column_professional", name: "Two-column professional", description: "A compact, balanced layout for detailed clinical backgrounds." },
+  { key: "classic_medical", name: "Classic medical", description: "A traditional, ATS-friendly résumé for clinical practice." },
+  { key: "navy_sidebar", name: "Navy sidebar", description: "A modern professional template with a composed visual identity." },
+] as const
+
+export type CvTemplateKey = (typeof cvTemplates)[number]["key"]
+export const defaultCvTemplateKey: CvTemplateKey = "clinical_sidebar"
+
+export function parseCvTemplateKey(value: unknown): CvTemplateKey {
+  if (value === "us_healthcare_v1") return defaultCvTemplateKey
+  return cvTemplates.some((template) => template.key === value)
+    ? (value as CvTemplateKey)
+    : defaultCvTemplateKey
+}
+
 export const emptyResumeContent: ResumeContent = {
+  isExecutiveExample: false,
   fullName: "",
   professionalHeadline: "",
   cityState: "",
@@ -40,6 +63,7 @@ export const emptyResumeContent: ResumeContent = {
   certifications: "",
   skills: "",
   achievements: "",
+  researchPublications: "",
   affiliations: "",
   languages: "",
 }
@@ -70,6 +94,7 @@ export function parseResumeContent(value: unknown): ResumeContent {
         return { id: field("id") || crypto.randomUUID(), title: field("title"), organization: field("organization"), location: field("location"), startDate: field("startDate", 30), endDate: field("endDate", 30), details: field("details", limits.details) }
       }) : []
   return {
+    isExecutiveExample: record.isExecutiveExample === true,
     fullName: text("fullName", limits.short),
     professionalHeadline: text("professionalHeadline", limits.short),
     cityState: text("cityState", limits.short),
@@ -83,7 +108,34 @@ export function parseResumeContent(value: unknown): ResumeContent {
     certifications: text("certifications", limits.list),
     skills: text("skills", limits.list),
     achievements: text("achievements", limits.list),
+    researchPublications: text("researchPublications", limits.list),
     affiliations: text("affiliations", limits.list),
     languages: text("languages", limits.languages),
   }
+}
+
+export const executiveResumeExample: ResumeContent = {
+  isExecutiveExample: true,
+  fullName: "Jordan Morgan, MHA, FACHE",
+  professionalHeadline: "Healthcare Operations Executive",
+  cityState: "Chicago, IL 60601",
+  phone: "(312) 555-0147",
+  email: "jordan.morgan@example.com",
+  linkedin: "https://www.linkedin.com/in/jordan-morgan",
+  summary: "Healthcare operations executive with 15 years of experience leading hospital and ambulatory-care teams. Focused on access, quality, workforce development, and sustainable clinical operations across complex care settings.",
+  licenses: "Fellow, American College of Healthcare Executives (FACHE)\nLean Six Sigma Black Belt\nCertified Professional in Healthcare Quality (CPHQ)",
+  certifications: "ACLS — American Heart Association\nBLS — American Heart Association",
+  skills: "Hospital operations\nClinical quality improvement\nStrategic planning\nBudget stewardship\nPhysician and workforce engagement\nCare access and throughput",
+  experience: [
+    { id: "executive-1", title: "Vice President, Clinical Operations", organization: "Regional Medical Center", location: "Chicago, IL", startDate: "Jan 2021", endDate: "Present", details: "Led cross-functional operations for a multi-site care network.\nImproved patient access and operational coordination through standardized care pathways.\nPartnered with clinical leaders on quality, staffing, and service-line priorities." },
+    { id: "executive-2", title: "Director, Ambulatory Services", organization: "Metropolitan Health System", location: "Evanston, IL", startDate: "Jun 2015", endDate: "Dec 2020", details: "Managed outpatient operations and performance-improvement programs.\nBuilt dashboards for patient-flow, experience, and operational metrics.\nDeveloped managers and interdisciplinary teams across clinical sites." },
+  ],
+  education: [
+    { id: "education-1", title: "Master of Health Administration", organization: "University of Illinois Chicago", location: "Chicago, IL", startDate: "2012", endDate: "2014", details: "" },
+    { id: "education-2", title: "Bachelor of Science, Health Sciences", organization: "Illinois State University", location: "Normal, IL", startDate: "2006", endDate: "2010", details: "" },
+  ],
+  achievements: "Led a multidisciplinary operating model for service-line growth.\nRecognized for building accountable, patient-centered clinical teams.",
+  researchPublications: "Quality-improvement and care-delivery interests: patient access, workforce retention, and clinical operations.",
+  affiliations: "American College of Healthcare Executives\nNational Association for Healthcare Quality",
+  languages: "English — Native proficiency",
 }

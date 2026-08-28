@@ -30,6 +30,7 @@ export type PublishedJobRow = {
   organization_state_code?: string
   organization_description?: string | null
   organization_website: string | null
+  organization_linkedin_url?: string | null
   organization_logo_path?: string | null
   verification_status: string
   profession: string
@@ -47,7 +48,7 @@ export const getPublishedJobs = cache(async (): Promise<Job[]> => {
   const { data, error } = await supabase
     .from("published_jobs")
     .select(
-      "id, slug, title, specialty, city, state_code, employment_type, workplace_type, salary_min, salary_max, salary_period, visa_support, description, published_at, expires_at, organization_id, organization_name, organization_slug, organization_type, organization_website, organization_logo_path, verification_status, profession, experience_level, required_skills, open_positions",
+      "id, slug, title, specialty, city, state_code, employment_type, workplace_type, salary_min, salary_max, salary_period, visa_support, description, published_at, expires_at, organization_id, organization_name, organization_slug, organization_type, organization_website, organization_linkedin_url, organization_logo_path, verification_status, profession, experience_level, required_skills, open_positions",
     )
     .order("published_at", { ascending: false })
     .limit(200)
@@ -71,7 +72,7 @@ export const getPublishedJobBySlug = cache(
     const { data, error } = await supabase
       .from("published_jobs")
       .select(
-        "id, slug, title, specialty, city, state_code, employment_type, workplace_type, salary_min, salary_max, salary_period, visa_support, description, published_at, expires_at, organization_id, organization_name, organization_slug, organization_type, organization_website, organization_logo_path, verification_status, profession, experience_level, required_skills, open_positions",
+        "id, slug, title, specialty, city, state_code, employment_type, workplace_type, salary_min, salary_max, salary_period, visa_support, description, published_at, expires_at, organization_id, organization_name, organization_slug, organization_type, organization_website, organization_linkedin_url, organization_logo_path, verification_status, profession, experience_level, required_skills, open_positions",
       )
       .eq("slug", slug)
       .maybeSingle()

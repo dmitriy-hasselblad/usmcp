@@ -111,17 +111,22 @@ export default async function OrganizationPage({
                   </span>
                 </div>
               </div>
-              {organization.website && (
-                <Button asChild className="rounded-xl" variant="outline">
-                  <a
-                    href={organization.website}
-                    rel="noreferrer"
-                    target="_blank"
-                  >
-                    Visit website <ArrowUpRight />
-                  </a>
-                </Button>
-              )}
+              <div className="flex flex-wrap gap-2">
+                {organization.linkedinUrl && (
+                  <Button asChild className="rounded-xl" variant="outline">
+                    <a href={organization.linkedinUrl} rel="noreferrer" target="_blank">
+                      <ArrowUpRight /> LinkedIn
+                    </a>
+                  </Button>
+                )}
+                {organization.website && (
+                  <Button asChild className="rounded-xl" variant="outline">
+                    <a href={organization.website} rel="noreferrer" target="_blank">
+                      Visit website <ArrowUpRight />
+                    </a>
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
         </section>

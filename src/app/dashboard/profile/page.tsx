@@ -253,6 +253,20 @@ export default async function ProfessionalProfilePage({
                 />
               </Field>
 
+              <Field label="LinkedIn profile (optional)">
+                <Input
+                  className="h-11"
+                  defaultValue={professionalProfile.linkedin_url ?? ""}
+                  maxLength={300}
+                  name="linkedinUrl"
+                  placeholder="https://www.linkedin.com/in/your-name"
+                  type="url"
+                />
+                <span className="text-xs font-normal text-muted-foreground">
+                  Organizations can view this after you apply, and in candidate search only when your profile is discoverable.
+                </span>
+              </Field>
+
               <Field label="Professional summary">
                 <Textarea
                   defaultValue={professionalProfile.biography ?? ""}

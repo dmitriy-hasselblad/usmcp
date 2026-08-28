@@ -17,6 +17,7 @@ export type PublicOrganization = {
   type: string
   description: string | null
   website: string | null
+  linkedinUrl: string | null
   location: string
   verificationStatus: string
   logoPath: string | null
@@ -25,7 +26,7 @@ export type PublicOrganization = {
 }
 
 const publicOrganizationSelection =
-  "id, slug, title, specialty, city, state_code, employment_type, workplace_type, salary_min, salary_max, salary_period, visa_support, description, published_at, organization_id, organization_name, organization_slug, organization_type, organization_state_code, organization_description, organization_website, organization_logo_path, verification_status, profession, experience_level"
+  "id, slug, title, specialty, city, state_code, employment_type, workplace_type, salary_min, salary_max, salary_period, visa_support, description, published_at, organization_id, organization_name, organization_slug, organization_type, organization_state_code, organization_description, organization_website, organization_linkedin_url, organization_logo_path, verification_status, profession, experience_level"
 
 export const getPublicOrganizations = cache(
   async (): Promise<PublicOrganization[]> => {
@@ -48,6 +49,7 @@ export const getPublicOrganizations = cache(
         type: row.organization_type,
         description: row.organization_description?.trim() || null,
         website: getSafeWebsite(row.organization_website),
+        linkedinUrl: getSafeWebsite(row.organization_linkedin_url ?? null),
         location: formatOrganizationLocation(row.organization_state_code),
         verificationStatus: row.verification_status,
         logoPath: row.organization_logo_path ?? null,
