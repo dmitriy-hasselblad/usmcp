@@ -22,6 +22,7 @@ export type ResumeContent = {
   certifications: string
   skills: string
   achievements: string
+  researchPublications: string
   affiliations: string
   languages: string
 }
@@ -60,6 +61,7 @@ export const emptyResumeContent: ResumeContent = {
   certifications: "",
   skills: "",
   achievements: "",
+  researchPublications: "",
   affiliations: "",
   languages: "",
 }
@@ -103,6 +105,7 @@ export function parseResumeContent(value: unknown): ResumeContent {
     certifications: text("certifications", limits.list),
     skills: text("skills", limits.list),
     achievements: text("achievements", limits.list),
+    researchPublications: text("researchPublications", limits.list),
     affiliations: text("affiliations", limits.list),
     languages: text("languages", limits.languages),
   }
