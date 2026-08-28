@@ -25,6 +25,7 @@ export const professionalDocumentMaxBytes = 8 * 1024 * 1024
 
 export const professionalDocumentTypes = [
   "resume",
+  "cover_letter",
   "license",
   "certification",
   "other",
@@ -38,6 +39,7 @@ export const professionalDocumentTypeLabels: Record<
   string
 > = {
   resume: "Resume or CV",
+  cover_letter: "Cover letter",
   license: "Professional license",
   certification: "Certification",
   other: "Other credential",
@@ -65,7 +67,9 @@ export function isAllowedProfessionalDocument(
   mimeType: string,
 ) {
   const allowed =
-    documentType === "resume" ? resumeMimeTypes : credentialMimeTypes
+    documentType === "resume" || documentType === "cover_letter"
+      ? resumeMimeTypes
+      : credentialMimeTypes
 
   return allowed.some((type) => type === mimeType)
 }

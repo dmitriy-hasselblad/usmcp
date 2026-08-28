@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import { requireIdentity } from "@/lib/auth/session"
 import { emptyCoverLetterContent, parseCoverLetterContent } from "@/lib/cover-letter/types"
+import { professionalDocumentsBucket } from "@/lib/professional/constants"
 
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
 
@@ -40,4 +41,42 @@ export async function deleteCoverLetter(formData: FormData) {
   const { error } = await identity.supabase.from("professional_cover_letters").delete().eq("id", id).eq("user_id", identity.userId)
   if (error) redirect("/dashboard/cover-letters?error=The+cover+letter+could+not+be+deleted.")
   revalidatePath("/dashboard/cover-letters"); redirect("/dashboard/cover-letters?success=Cover+letter+deleted.")
+}
+
+export async function deleteUploadedCoverLetter(formData: FormData) {
+  const id = String(formData.get("documentId") ?? "")
+  if (!uuid.test(id)) {
+    redirect("/dashboard/cover-letters?error=The+selected+cover+letter+is+invalid.")
+  }
+
+  const identity = await professional("/dashboard/cover-letters")
+  const { data: document } = await identity.supabase
+    .from("professional_documents")
+    .select("storage_path")
+    .eq("id", id)
+    .eq("user_id", identity.userId)
+    .eq("document_type", "cover_letter")
+    .maybeSingle()
+
+  if (!document) {
+    redirect("/dashboard/cover-letters?error=The+selected+cover+letter+is+unavailable.")
+  }
+
+  const { error } = await identity.supabase
+    .from("professional_documents")
+    .delete()
+    .eq("id", id)
+    .eq("user_id", identity.userId)
+    .eq("document_type", "cover_letter")
+
+  if (error) {
+    redirect("/dashboard/cover-letters?error=The+cover+letter+could+not+be+removed.")
+  }
+
+  await identity.supabase.storage
+    .from(professionalDocumentsBucket)
+    .remove([document.storage_path])
+
+  revalidatePath("/dashboard/cover-letters")
+  redirect("/dashboard/cover-letters?success=Uploaded+cover+letter+removed.")
 }
