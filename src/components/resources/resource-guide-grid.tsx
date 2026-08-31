@@ -9,10 +9,9 @@ import type { ResourceGuide } from "@/lib/resources/content"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 
-const filters = ["All topics", "Residency guide", "Career insight", "International careers"] as const
-
 export function ResourceGuideGrid({ resources }: { resources: ResourceGuide[] }) {
-  const [activeFilter, setActiveFilter] = useState<(typeof filters)[number]>("All topics")
+  const filters = ["All topics", ...new Set(resources.map((resource) => resource.category))]
+  const [activeFilter, setActiveFilter] = useState("All topics")
 
   const visibleResources = useMemo(
     () =>
@@ -49,15 +48,14 @@ export function ResourceGuideGrid({ resources }: { resources: ResourceGuide[] })
         {visibleResources.map((resource) => (
           <article id={resource.slug} key={resource.slug}>
             <Card className="h-full scroll-mt-28 overflow-hidden border-border/80 bg-white">
-              <div className="relative h-44 overflow-hidden bg-muted">
-                <Image
+              <div className="relative h-44 overflow-hidden bg-[linear-gradient(135deg,#f7fbff_0%,#eefaf7_60%,#edf5ff_100%)]">
+                {resource.image && <><Image
                   alt={resource.image.alt}
                   className="object-cover"
                   fill
                   sizes="(min-width: 1024px) 33vw, 100vw"
                   src={resource.image.src}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/25 via-transparent to-white/5" />
+                /><div className="absolute inset-0 bg-gradient-to-t from-slate-950/25 via-transparent to-white/5" /></>}
                 <span className="absolute left-6 top-6 grid size-11 place-items-center rounded-xl border border-white/80 bg-white/90 text-primary shadow-sm">
                   <BookOpenText className="size-5" />
                 </span>

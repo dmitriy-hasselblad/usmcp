@@ -4,7 +4,7 @@ export type ResourceGuide = {
   title: string
   description: string
   readTime: string
-  image: { src: string; alt: string }
+  image?: { src: string; alt: string }
   introduction: string
   sections: { heading: string; paragraphs: string[]; checklist?: string[] }[]
   note?: string
@@ -104,6 +104,83 @@ export const resourceGuides: ResourceGuide[] = [
       },
     ],
     note: "SM VIA does not provide legal or immigration advice and does not guarantee that any employer will sponsor a candidate.",
+  },
+  {
+    slug: "build-a-healthcare-cv-that-gets-read",
+    category: "CV & applications",
+    title: "How to build a healthcare CV that makes your experience clear",
+    description: "Organize credentials, clinical experience, and achievements so a hiring team can understand your background quickly.",
+    readTime: "6 min read",
+    introduction: "A healthcare CV is not a list of every duty you have ever held. It is a clear professional record that helps a recruiter or hiring manager understand your scope of practice, credentials, and the impact of your experience.",
+    sections: [
+      {
+        heading: "Lead with the information a healthcare employer needs first",
+        paragraphs: ["Start with your name, credentials, city and state, professional contact details, and a LinkedIn or professional website link when it adds useful context. Keep personal details out of a U.S.-format CV: no photograph, date of birth, family information, or full home address.", "Follow with a concise professional summary. Name your profession, specialty or care setting, years or level of experience, and one or two strengths that are relevant to the roles you want."],
+        checklist: ["Current credentials and professional contact details", "Professional summary tailored to your target role", "Active licenses and essential certifications", "Clinical experience in reverse chronological order"],
+      },
+      {
+        heading: "Make clinical experience specific",
+        paragraphs: ["For each role, include your title, organization, location, and dates. Then use three to five concise bullets that describe the work you performed, the patients or care setting you supported, and the outcomes you influenced.", "Use accurate action verbs such as Managed, Coordinated, Performed, Improved, Educated, or Collaborated. Add a metric only when you can explain and support it; a precise, truthful statement is stronger than an inflated claim."],
+      },
+      {
+        heading: "Place licensure and certifications where they can be found",
+        paragraphs: ["For many U.S. healthcare roles, licensure and certification are screening requirements. Put this section near the top, before education, and state the issuing body, jurisdiction, status, and renewal or expiration date where appropriate.", "Keep your CV current. A recruiter should not need to guess whether a license is active or whether an ACLS or BLS certification is still valid."],
+      },
+      {
+        heading: "Choose a simple, readable format",
+        paragraphs: ["Use a consistent typeface, clear section headings, and enough white space to scan quickly. A polished document should help the reader, not compete for attention with decorative elements.", "SM VIA’s CV Builder is designed around this structure and lets you keep multiple private versions for different specialties or career goals."],
+      },
+    ],
+  },
+  {
+    slug: "write-a-healthcare-cover-letter-with-purpose",
+    category: "CV & applications",
+    title: "Write a healthcare cover letter with purpose",
+    description: "Use a short, tailored letter to connect your experience to a specific role without repeating your CV.",
+    readTime: "5 min read",
+    introduction: "A good cover letter gives the hiring team a reason to look more closely at your application. It should be focused on one opportunity, written in your own voice, and short enough to read in one sitting.",
+    sections: [
+      {
+        heading: "Start with the role and your strongest match",
+        paragraphs: ["Open by naming the position and organization. Then state the part of your background that is most relevant: specialty experience, care setting, leadership scope, clinical training, or a credential the role requires.", "Avoid generic openings that could be sent to any employer. One specific sentence about the work or organization is more persuasive than a long introduction."],
+      },
+      {
+        heading: "Use one or two evidence-based examples",
+        paragraphs: ["Choose examples that show how you work: coordinating complex care, improving a workflow, supporting a patient population, mentoring colleagues, or working effectively in a high-acuity environment.", "The letter should add context to your CV, not repeat every role. Explain why an experience matters for this opportunity."],
+      },
+      {
+        heading: "Finish with a clear next step",
+        paragraphs: ["Close by expressing interest in discussing the role and confirming the documents included with your application. Keep the tone professional and direct.", "Before sending, check the organization name, role title, dates, and attachments. Small mistakes can make a tailored application look rushed."],
+        checklist: ["Role and organization named correctly", "One or two relevant examples", "No unsupported clinical or performance claims", "CV and selected cover letter attached intentionally"],
+      },
+    ],
+  },
+  {
+    slug: "create-a-healthcare-job-search-plan",
+    category: "Job search",
+    title: "Create a healthcare job search plan you can sustain",
+    description: "Turn a broad search into a practical weekly routine with defined role criteria, alerts, and follow-up steps.",
+    readTime: "6 min read",
+    introduction: "Healthcare career searches become easier to manage when you define what you are looking for before every new listing changes your plan. A simple routine helps you compare opportunities consistently and follow up without losing important details.",
+    sections: [
+      {
+        heading: "Define your non-negotiables and preferences",
+        paragraphs: ["Separate essential requirements from preferences. Examples include profession, specialty, state licensure eligibility, schedule, employment type, commute, relocation, and visa considerations. This makes it easier to recognize a genuine match.", "Review these criteria when your circumstances change, but do not rewrite them for every posting. Consistency makes comparisons more useful."],
+        checklist: ["Target profession and specialty", "States or regions you can work in", "Employment and workplace preferences", "Credentials you already hold and those in progress", "Compensation and schedule considerations"],
+      },
+      {
+        heading: "Set alerts, then make time to evaluate them",
+        paragraphs: ["A saved search can reduce repetitive browsing, but an alert is only useful when you have a routine for reviewing it. Choose a realistic schedule for reading new roles, tailoring applications, and recording follow-ups.", "Do not apply automatically to every alert. Read the requirements, confirm the employer and work setting, and decide whether your materials represent a real match."],
+      },
+      {
+        heading: "Keep a private application record",
+        paragraphs: ["Track the role, organization, date applied, contact, documents used, and next action. This prevents duplicate applications and gives you useful context if an employer contacts you later.", "After interviews or recruiter conversations, record a few factual notes while they are fresh. They will help you compare opportunities and prepare thoughtful follow-up questions."],
+      },
+      {
+        heading: "Review progress every two weeks",
+        paragraphs: ["Look at the quality of roles, not only the number of applications. If you are not seeing relevant opportunities, adjust your saved searches, location preferences, profile information, or target specialty.", "A good job search plan is designed to be repeated. Small, regular actions are more sustainable than occasional bursts of activity."],
+      },
+    ],
   },
 ]
 

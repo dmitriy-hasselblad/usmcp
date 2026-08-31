@@ -217,7 +217,7 @@ export default async function Home() {
             <SectionHeading
               eyebrow="Career resources"
               title="Practical guidance for the road ahead."
-              description="Explore focused introductions to residency planning, employer research, and international healthcare careers."
+              description="Explore CV, application, job-search, residency, employer, and international career guidance."
             />
             <Button asChild className="h-10 w-fit rounded-xl" variant="outline">
               <Link href="/resources">
@@ -233,15 +233,14 @@ export default async function Home() {
                 key={resource.slug}
               >
                 <Card className="h-full overflow-hidden border-border/80 bg-white transition-all group-hover:-translate-y-1 group-hover:shadow-xl">
-                  <div className="relative h-40 overflow-hidden bg-muted">
-                    <Image
+                  <div className="relative h-40 overflow-hidden bg-[linear-gradient(135deg,#f7fbff_0%,#eff9f7_52%,#f8fcff_100%)]">
+                    {resource.image && <><Image
                       alt={resource.image.alt}
                       className="object-cover"
                       fill
                       sizes="(min-width: 1024px) 33vw, 100vw"
                       src={resource.image.src}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/25 via-transparent to-white/5" />
+                    /><div className="absolute inset-0 bg-gradient-to-t from-slate-950/25 via-transparent to-white/5" /></>}
                     <span className="absolute left-5 top-5 grid size-10 place-items-center rounded-xl border border-white/80 bg-white/90 text-primary shadow-sm">
                       <BookOpenText className="size-5" />
                     </span>
