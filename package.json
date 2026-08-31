@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "test:access": "node --test tests/access-boundaries.test.mjs",
-    "test:critical": "pnpm test:access && pnpm test:soft-launch && pnpm test:seo && node --test tests/job-recommendations.test.mjs tests/public-verification.test.mjs",
+    "test:critical": "pnpm test:access && pnpm test:soft-launch && pnpm test:seo && node --test tests/job-recommendations.test.mjs tests/public-verification.test.mjs tests/mobile-layout.test.mjs",
     "test:seo": "node --test tests/seo-foundation.test.mjs",
     "test:soft-launch": "node --test tests/soft-launch-content.test.mjs",
     "test:taxonomy": "node tests/healthcare-taxonomy.test.mjs"

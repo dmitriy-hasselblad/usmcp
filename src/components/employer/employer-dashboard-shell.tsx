@@ -139,13 +139,13 @@ export async function EmployerDashboardShell({
               Employer workspace
             </Badge>
           </div>
-          <nav aria-label="Employer workspace" className="flex gap-1.5 overflow-x-auto lg:grid">
+          <nav aria-label="Employer workspace" className="grid grid-cols-2 gap-1.5 sm:grid-cols-3 lg:grid-cols-1">
             {routes.map((route) => {
               const Icon = route.icon
               return (
                 <Link
                   className={cn(
-                    "flex h-10 shrink-0 items-center gap-2.5 rounded-lg px-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50",
+                    "flex min-w-0 items-center gap-2 rounded-lg px-2.5 py-2 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50 sm:text-sm lg:h-10 lg:px-3",
                     active === route.key
                       ? "bg-primary text-primary-foreground"
                       : "text-muted-foreground hover:bg-muted hover:text-foreground",
@@ -154,7 +154,7 @@ export async function EmployerDashboardShell({
                   key={route.key}
                 >
                   <Icon className="size-4" />
-                  <span>{route.label}</span>
+                  <span className="min-w-0 truncate">{route.label}</span>
                   {route.key === "notifications" && unreadNotificationCount > 0 && (
                     <span className="ml-auto grid min-w-5 place-items-center rounded-full bg-red-600 px-1 text-[11px] font-bold leading-5 text-white">
                       {unreadNotificationCount > 99 ? "99+" : unreadNotificationCount}
