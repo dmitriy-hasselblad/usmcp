@@ -130,6 +130,13 @@ export default async function OrganizationPage({
                 </div>
               </div>
               <div className="flex flex-wrap gap-2">
+                {!organization.isPlatformProfile && (
+                  <Button asChild className="rounded-xl" variant="outline">
+                    <Link href={`/companies/${organization.slug}/claim`}>
+                      Claim this profile <ShieldCheck />
+                    </Link>
+                  </Button>
+                )}
                 {organization.linkedinUrl && (
                   <Button asChild className="rounded-xl" variant="outline">
                     <a href={organization.linkedinUrl} rel="noreferrer" target="_blank">

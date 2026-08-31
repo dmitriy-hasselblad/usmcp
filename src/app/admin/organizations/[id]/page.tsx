@@ -11,7 +11,7 @@ import {
   Trash2,
 } from "lucide-react"
 
-import { changeOrganizationVerification, permanentlyDeleteOrganization } from "@/app/admin/organizations/actions"
+import { changeOrganizationVerification, permanentlyDeleteOrganization, reviewOrganizationClaim } from "@/app/admin/organizations/actions"
 import { AdminShell } from "@/components/admin/admin-shell"
 import { AuthNotice } from "@/components/auth/auth-notice"
 import { Badge } from "@/components/ui/badge"
@@ -49,6 +49,7 @@ export default async function OrganizationReviewPage({
     { data: organization, error: organizationError },
     { count: jobs },
     { count: applications },
+    { data: claims },
   ] = await Promise.all([
     identity.supabase
       .from("organizations")
@@ -65,6 +66,11 @@ export default async function OrganizationReviewPage({
       .from("applications")
       .select("id", { count: "exact", head: true })
       .eq("organization_id", id),
+    identity.supabase
+      .from("organization_claims")
+      .select("id, claimant_id, claimant_title, work_email, relationship, status, review_note, created_at, reviewed_at")
+      .eq("organization_id", id)
+      .order("created_at", { ascending: false }),
   ])
 
   if (organizationError || !organization) notFound()
@@ -132,6 +138,22 @@ export default async function OrganizationReviewPage({
             <Metric icon={BriefcaseBusiness} label="Jobs" value={jobs ?? 0} />
             <Metric icon={FileText} label="Applications" value={applications ?? 0} />
           </div>
+
+          <Card className="bg-white">
+            <CardContent className="p-6">
+              <h2 className="text-lg font-semibold">Profile ownership claims</h2>
+              <p className="mt-2 text-sm leading-6 text-muted-foreground">Review representatives requesting access to this organization’s employer workspace.</p>
+              <div className="mt-5 grid gap-4">
+                {claims?.length ? claims.map((claim) => (
+                  <div className="rounded-xl border border-border p-5" key={claim.id}>
+                    <div className="flex flex-wrap items-center justify-between gap-3"><div><p className="font-semibold">{claim.claimant_title}</p><p className="mt-1 text-sm text-muted-foreground">{claim.work_email} · Submitted {formatAdminDate(claim.created_at)}</p></div><VerificationBadge status={claim.status} /></div>
+                    <p className="mt-4 whitespace-pre-wrap text-sm leading-6">{claim.relationship}</p>
+                    {claim.status === "pending" ? <div className="mt-5 grid gap-4 border-t pt-5 md:grid-cols-2"><ClaimReviewForm claimId={claim.id} organizationId={organization.id} targetStatus="approved"/><ClaimReviewForm claimId={claim.id} organizationId={organization.id} targetStatus="rejected"/></div> : <p className="mt-5 border-t pt-4 text-sm leading-6 text-muted-foreground"><span className="font-medium text-foreground">Review note:</span> {claim.review_note ?? "No note recorded."}</p>}
+                  </div>
+                )) : <p className="rounded-xl border border-dashed border-border p-5 text-sm text-muted-foreground">No ownership claims have been submitted for this organization.</p>}
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         <div className="grid content-start gap-6">
@@ -175,6 +197,11 @@ export default async function OrganizationReviewPage({
       </div>
     </AdminShell>
   )
+}
+
+function ClaimReviewForm({ claimId, organizationId, targetStatus }: { claimId: string; organizationId: string; targetStatus: "approved" | "rejected" }) {
+  const isApproval = targetStatus === "approved"
+  return <form action={reviewOrganizationClaim} className="rounded-xl border border-border p-4"><input name="claimId" type="hidden" value={claimId}/><input name="organizationId" type="hidden" value={organizationId}/><input name="targetStatus" type="hidden" value={targetStatus}/><label className="grid gap-2 text-sm font-medium">{isApproval ? "Approval note" : "Rejection note"}<Textarea maxLength={1000} minLength={2} name="reviewNote" placeholder={isApproval ? "Explain what you verified." : "Explain what information is needed."} required rows={3}/></label><label className="mt-3 flex items-start gap-2 text-xs leading-5 text-muted-foreground"><input className="mt-1 size-4" name="confirmed" required type="checkbox" />I confirm this ownership decision and understand it will be recorded in the audit log.</label><Button className="mt-4 w-full" type="submit" variant={isApproval ? "outline" : "destructive"}>{isApproval ? "Approve claim" : "Reject claim"}</Button></form>
 }
 
 function ModerationForm({

@@ -10,6 +10,7 @@ const organizationIdPattern =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
 
 const allowedStatuses = ["pending", "verified", "rejected"] as const
+const claimStatuses = ["approved", "rejected"] as const
 
 export async function permanentlyDeleteOrganization(formData: FormData) {
   const organizationId = formString(formData, "organizationId")
@@ -92,4 +93,44 @@ export async function changeOrganizationVerification(formData: FormData) {
       `Organization verification changed to ${targetStatus}.`,
     ),
   )
+}
+
+export async function reviewOrganizationClaim(formData: FormData) {
+  const claimId = formString(formData, "claimId")
+  const organizationId = formString(formData, "organizationId")
+  const targetStatus = formString(formData, "targetStatus")
+  const reviewNote = formString(formData, "reviewNote")
+  const confirmed = formData.get("confirmed") === "on"
+  const returnPath = organizationIdPattern.test(organizationId)
+    ? `/admin/organizations/${organizationId}`
+    : "/admin/organizations"
+  const identity = await requirePlatformAdmin(returnPath)
+
+  if (
+    !organizationIdPattern.test(claimId) ||
+    !organizationIdPattern.test(organizationId) ||
+    !claimStatuses.some((status) => status === targetStatus) ||
+    reviewNote.length < 2 ||
+    reviewNote.length > 1000 ||
+    !confirmed
+  ) {
+    redirect(messagePath(returnPath, "error", "Confirm the claim decision and provide a review note."))
+  }
+
+  const { error } = await identity.supabase.rpc("review_organization_claim", {
+    target_claim_id: claimId,
+    target_status: targetStatus,
+    target_review_note: reviewNote,
+  })
+
+  if (error) {
+    redirect(messagePath(returnPath, "error", "The claim could not be reviewed. It may no longer be pending."))
+  }
+
+  revalidatePath("/admin")
+  revalidatePath("/admin/organizations")
+  revalidatePath(returnPath)
+  revalidatePath("/companies")
+  revalidatePath("/companies/[slug]", "page")
+  redirect(messagePath(returnPath, "success", `Ownership claim ${targetStatus}.`))
 }
