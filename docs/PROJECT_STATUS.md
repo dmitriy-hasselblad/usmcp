@@ -1,6 +1,28 @@
 # SM VIA Project Status
 
-Last updated: 2026-08-26
+Last updated: 2026-08-28
+
+## Latest handoff — 2026-08-28
+
+The product owner confirmed that PR #85 has been merged and that its Production
+deployment is ready. The implementation delivers a branded transactional email
+to every eligible organization owner, admin, and recruiter when a candidate
+submits a new application. The email includes the candidate and role context
+and a secure button that opens the relevant application in the employer
+workspace. Delivery is intentionally server-only, recipient selection is based
+on authorized organization membership, and the sending path is idempotent.
+
+The immediately preceding application-document work is also live: candidates
+can select a saved SM VIA CV or uploaded résumé and, optionally, a saved or
+uploaded cover letter while applying. The employer receives only the documents
+explicitly selected for that application.
+
+For the next session, start by switching to `main`, pulling the merged work,
+and checking the working tree. Do not delete the untracked local diagnostic
+file `tmp-diagnostics-hiring-email.sql`; it was created only for the completed
+email investigation and should be reviewed before any cleanup. Continue with
+the next product-owner request rather than reopening the completed employer
+new-application email feature.
 
 ## Purpose
 

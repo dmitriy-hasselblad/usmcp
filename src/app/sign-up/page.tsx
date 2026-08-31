@@ -14,6 +14,7 @@ import { isAuthEnabled } from "@/lib/supabase/env"
 export const metadata: Metadata = {
   title: "Create an Account",
   description: "Create a healthcare professional or employer account on SM VIA.",
+  robots: { index: false, follow: false },
 }
 
 type SignUpSearchParams = Promise<{

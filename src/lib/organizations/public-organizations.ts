@@ -58,9 +58,9 @@ export const getPublicOrganizations = cache(
       })
     }
 
-    return [...organizations.values()].sort((a, b) =>
-      a.name.localeCompare(b.name, "en-US"),
-    )
+    return [...organizations.values()]
+      .filter((organization) => !organization.isPlatformProfile)
+      .sort((a, b) => a.name.localeCompare(b.name, "en-US"))
   },
 )
 

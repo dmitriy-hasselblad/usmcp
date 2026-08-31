@@ -19,6 +19,7 @@ import { requireIdentity } from "@/lib/auth/session"
 export const metadata: Metadata = {
   title: "Complete Your Profile",
   description: "Complete your role-aware SM VIA account profile.",
+  robots: { index: false, follow: false },
 }
 
 type SearchParams = Promise<{

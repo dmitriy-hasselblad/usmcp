@@ -13,6 +13,7 @@ import { createClient } from "@/lib/supabase/server"
 export const metadata: Metadata = {
   title: "Choose a New Password",
   description: "Update the password for your SM VIA account.",
+  robots: { index: false, follow: false },
 }
 
 type SearchParams = Promise<{

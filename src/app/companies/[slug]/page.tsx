@@ -11,6 +11,7 @@ import {
 } from "lucide-react"
 
 import { JobCard } from "@/components/jobs/job-card"
+import { Breadcrumbs } from "@/components/seo/breadcrumbs"
 import { ReportContentLink } from "@/components/moderation/report-content-link"
 import { SiteFooter } from "@/components/layout/site-footer"
 import { SiteHeader } from "@/components/layout/site-header"
@@ -19,6 +20,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { getPublicOrganizationBySlug } from "@/lib/organizations/public-organizations"
 import { publicOrganizationLogoUrl } from "@/lib/employer/organization-logo"
+import { getAbsoluteUrl, serializeJsonLd } from "@/lib/seo"
 
 type OrganizationPageProps = {
   params: Promise<{ slug: string }>
@@ -63,19 +65,35 @@ export default async function OrganizationPage({
 
   const activeJobs = organization.jobs.filter((job) => !job.isPlatformDemo)
   const logoUrl = publicOrganizationLogoUrl(organization.logoPath)
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: organization.name,
+    url: getAbsoluteUrl(`/companies/${organization.slug}`),
+    ...(logoUrl ? { logo: logoUrl } : {}),
+    ...(organization.website ? { sameAs: [organization.website, organization.linkedinUrl].filter(Boolean) } : organization.linkedinUrl ? { sameAs: [organization.linkedinUrl] } : {}),
+    areaServed: { "@type": "Country", name: "United States" },
+  }
 
   return (
     <div className="min-h-dvh bg-muted/30">
+      <script
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(organizationSchema) }}
+        type="application/ld+json"
+      />
       <SiteHeader />
       <main>
         <section className="border-b border-border bg-white">
           <div className="mx-auto max-w-7xl px-5 py-10 lg:px-8 lg:py-14">
-            <Link
-              className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
-              href="/companies"
-            >
-              <ArrowLeft className="size-4" />
-              Back to healthcare organizations
+            <Breadcrumbs
+              items={[
+                { label: "Home", href: "/" },
+                { label: "Healthcare organizations", href: "/companies" },
+                { label: organization.name },
+              ]}
+            />
+            <Link className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline" href="/companies">
+              <ArrowLeft className="size-4" /> Back to healthcare organizations
             </Link>
 
             <div className="mt-8 flex flex-col gap-6 sm:flex-row sm:items-start">
