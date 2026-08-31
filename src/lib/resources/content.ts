@@ -111,6 +111,10 @@ export const resourceGuides: ResourceGuide[] = [
     title: "How to build a healthcare CV that makes your experience clear",
     description: "Organize credentials, clinical experience, and achievements so a hiring team can understand your background quickly.",
     readTime: "6 min read",
+    image: {
+      src: "/images/resources/healthcare-cv-guide.png",
+      alt: "Healthcare professional reviewing a CV and professional credentials",
+    },
     introduction: "A healthcare CV is not a list of every duty you have ever held. It is a clear professional record that helps a recruiter or hiring manager understand your scope of practice, credentials, and the impact of your experience.",
     sections: [
       {
@@ -138,6 +142,10 @@ export const resourceGuides: ResourceGuide[] = [
     title: "Write a healthcare cover letter with purpose",
     description: "Use a short, tailored letter to connect your experience to a specific role without repeating your CV.",
     readTime: "5 min read",
+    image: {
+      src: "/images/resources/healthcare-cover-letter-guide.png",
+      alt: "Healthcare professional writing a tailored cover letter at a desk",
+    },
     introduction: "A good cover letter gives the hiring team a reason to look more closely at your application. It should be focused on one opportunity, written in your own voice, and short enough to read in one sitting.",
     sections: [
       {
@@ -161,6 +169,10 @@ export const resourceGuides: ResourceGuide[] = [
     title: "Create a healthcare job search plan you can sustain",
     description: "Turn a broad search into a practical weekly routine with defined role criteria, alerts, and follow-up steps.",
     readTime: "6 min read",
+    image: {
+      src: "/images/resources/healthcare-job-search-plan.png",
+      alt: "Healthcare professional planning a job search with a calendar and notebook",
+    },
     introduction: "Healthcare career searches become easier to manage when you define what you are looking for before every new listing changes your plan. A simple routine helps you compare opportunities consistently and follow up without losing important details.",
     sections: [
       {
