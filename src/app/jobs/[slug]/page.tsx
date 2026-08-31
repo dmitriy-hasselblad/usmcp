@@ -14,6 +14,7 @@ import {
 } from "lucide-react"
 
 import { JobCard } from "@/components/jobs/job-card"
+import { Breadcrumbs } from "@/components/seo/breadcrumbs"
 import { JobDescriptionContent } from "@/lib/jobs/rich-text"
 import { AnalyticsLink } from "@/components/analytics/analytics-link"
 import { ReportContentLink } from "@/components/moderation/report-content-link"
@@ -52,6 +53,8 @@ export async function generateMetadata({
     return { title: "Job not found" }
   }
 
+  const isLive = job.source === "live" && !job.isPlatformDemo
+
   return {
     title: `${job.title} at ${job.employer}`,
     description: `${job.title} healthcare opportunity in ${job.location}.`,
@@ -62,6 +65,7 @@ export async function generateMetadata({
       title: `${job.title} at ${job.employer}`,
       description: `${job.title} healthcare opportunity in ${job.location}.`,
     },
+    ...(isLive ? {} : { robots: { index: false, follow: false } }),
   }
 }
 
@@ -95,12 +99,15 @@ export default async function JobPage({ params }: JobPageProps) {
       <main>
         <section className="border-b border-border bg-white">
           <div className="mx-auto max-w-7xl px-5 py-10 lg:px-8 lg:py-14">
-            <Link
-              className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
-              href="/jobs"
-            >
-              <ArrowLeft className="size-4" />
-              Back to healthcare jobs
+            <Breadcrumbs
+              items={[
+                { label: "Home", href: "/" },
+                { label: "Healthcare jobs", href: "/jobs" },
+                { label: job.title },
+              ]}
+            />
+            <Link className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline" href="/jobs">
+              <ArrowLeft className="size-4" /> Back to healthcare jobs
             </Link>
 
             <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-end">
@@ -416,6 +423,8 @@ function getJobPosting(job: Job) {
     title: job.title,
     description: job.summary,
     datePosted: job.publishedAt,
+    ...(job.expiresAt ? { validThrough: job.expiresAt } : {}),
+    directApply: true,
     employmentType,
     hiringOrganization: {
       "@type": "Organization",

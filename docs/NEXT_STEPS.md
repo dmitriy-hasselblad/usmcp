@@ -1,6 +1,15 @@
 # SM VIA Next Steps
 
-Last updated: 2026-08-26
+Last updated: 2026-08-28
+
+## Latest continuation note
+
+PR #85 is merged and its Production deployment has been confirmed by the
+product owner. It adds branded employer email notifications for newly submitted
+applications. The candidate-controlled CV/résumé and cover-letter selection
+flow is also live in Production. Begin the next session from current `main`
+after a pull; do not repeat these completed features unless a regression is
+reported.
 
 ## Current product phase
 

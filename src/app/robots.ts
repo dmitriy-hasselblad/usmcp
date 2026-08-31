@@ -19,8 +19,12 @@ export default function robots(): MetadataRoute.Robots {
         "/sign-up",
         "/forgot-password",
         "/update-password",
+        "/verification",
+        "/auth/",
+        "/api/",
       ],
     },
     sitemap: getAbsoluteUrl("/sitemap.xml"),
+    host: getAbsoluteUrl("/"),
   }
 }

@@ -61,13 +61,13 @@ export function AdminShell({
           <Badge className="mb-5 hidden bg-violet-100 text-violet-800 lg:inline-flex" variant="secondary">
             Platform administration
           </Badge>
-          <nav aria-label="Platform administration" className="flex gap-1.5 overflow-x-auto lg:grid">
+          <nav aria-label="Platform administration" className="grid grid-cols-2 gap-1.5 sm:grid-cols-3 lg:grid-cols-1">
             {routes.map((route) => {
               const Icon = route.icon
               return (
                 <Link
                   className={cn(
-                    "flex h-10 shrink-0 items-center gap-2.5 rounded-lg px-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50",
+                    "flex min-w-0 items-center gap-2 rounded-lg px-2.5 py-2 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50 sm:text-sm lg:h-10 lg:px-3",
                     active === route.key
                       ? "bg-primary text-primary-foreground"
                       : "text-muted-foreground hover:bg-muted hover:text-foreground",
@@ -76,7 +76,7 @@ export function AdminShell({
                   key={route.key}
                 >
                   <Icon className="size-4" />
-                  {route.label}
+                  <span className="min-w-0 truncate">{route.label}</span>
                 </Link>
               )
             })}

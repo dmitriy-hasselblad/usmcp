@@ -15,6 +15,7 @@ import { createClient } from "@/lib/supabase/server"
 export const metadata: Metadata = {
   title: "Sign In",
   description: "Sign in to your SM VIA account.",
+  robots: { index: false, follow: false },
 }
 
 type SignInSearchParams = Promise<{
