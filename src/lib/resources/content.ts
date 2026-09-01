@@ -11,6 +11,60 @@ export type ResourceGuide = {
   sources?: { label: string; url: string }[]
 }
 
+function createStateLicensureGuide({
+  state,
+  slug,
+  authority,
+  applicationService,
+  applicationUrl,
+  verificationService,
+  verificationUrl,
+  image,
+}: {
+  state: string
+  slug: string
+  authority: string
+  applicationService: string
+  applicationUrl: string
+  verificationService: string
+  verificationUrl: string
+  image: ResourceGuide["image"]
+}): ResourceGuide {
+  return {
+    slug,
+    category: "Licensure guides",
+    title: `${state} healthcare licensure: a practical research checklist`,
+    description: `Identify the correct ${state} licensing authority, confirm your professional pathway, and use official services before planning a start date.`,
+    readTime: "6 min read",
+    image,
+    introduction: `${state} healthcare licensure is profession-specific. Start with your exact professional title and intended scope of practice, then use the current instructions issued by the authority responsible for that profession.`,
+    sections: [
+      {
+        heading: "Match your role to the right licensing authority",
+        paragraphs: [`${authority} provides a starting point for regulated professions, but individual healthcare professions may have their own board, portal, forms, and eligibility requirements. Confirm the authority for your exact credential before taking the next step.`, "Do not assume that an endorsement, compact, training, examination, or renewal route applies because it is available to another profession. Read the current route for your own profession and circumstances."],
+        checklist: ["Exact professional title and credential", "Relevant board or licensing authority", "Initial, endorsement, compact, training, or renewal pathway", "Target role’s timing and employer credentialing requirements"],
+      },
+      {
+        heading: "Use official application information before gathering documents",
+        paragraphs: [`Begin with ${applicationService}. The correct checklist may vary by profession and can require education verification, examination history, prior license verification, background information, or documents sent directly from an institution or another authority.`, "Prepare only what the relevant board asks for. Keep a private record of each request, sending organization, date, and confirmation so you can follow up accurately."],
+      },
+      {
+        heading: "Verify status through the official record",
+        paragraphs: [`Use ${verificationService} to check a current public record when appropriate. A resume, third-party profile, submitted application, or employer conversation is not a substitute for official confirmation.`, "Before relying on a start date or an offer that requires professional authorization, confirm your current status with the authority responsible for your license."],
+      },
+      {
+        heading: "Keep individual decisions with the licensing authority",
+        paragraphs: ["Rules, forms, and operating procedures can change. Consult current official instructions and contact the relevant board when you need an answer for your own application or circumstances.", `SM VIA does not process ${state} license applications, determine eligibility, or guarantee a licensing outcome.`],
+      },
+    ],
+    note: `This is general career information, not legal, immigration, or professional licensing advice. Always confirm requirements directly with the appropriate ${state} licensing authority.`,
+    sources: [
+      { label: authority, url: applicationUrl },
+      { label: verificationService, url: verificationUrl },
+    ],
+  }
+}
+
 export const resourceGuides: ResourceGuide[] = [
   {
     slug: "florida-healthcare-licensure-research-checklist",
@@ -163,6 +217,54 @@ export const resourceGuides: ResourceGuide[] = [
       { label: "New York State — online license verification", url: "https://op-prod.nysed.gov/verification-search" },
       { label: "Office of the Professions — general licensing information", url: "https://www.op.nysed.gov/about/general-information-policies" },
     ],
+  },
+  {
+    ...createStateLicensureGuide({
+      state: "Pennsylvania",
+      slug: "pennsylvania-healthcare-licensure-research-checklist",
+      authority: "Pennsylvania Department of State — Professional Licensing",
+      applicationService: "Pennsylvania’s Professional Licensing services and the appropriate licensing board",
+      applicationUrl: "https://www.pa.gov/agencies/dos/programs/professional-licensing",
+      verificationService: "Pennsylvania Licensing System (PALS)",
+      verificationUrl: "https://www.pals.pa.gov/#/page/default",
+      image: { src: "/images/resources/pennsylvania-licensure-research-checklist.png", alt: "Healthcare professional reviewing Pennsylvania licensure documents" },
+    }),
+  },
+  {
+    ...createStateLicensureGuide({
+      state: "Illinois",
+      slug: "illinois-healthcare-licensure-research-checklist",
+      authority: "Illinois Department of Financial and Professional Regulation",
+      applicationService: "Illinois Division of Professional Regulation and the appropriate profession page",
+      applicationUrl: "https://idfpr.illinois.gov/dpr.html",
+      verificationService: "Illinois professional license lookup",
+      verificationUrl: "https://www.illinois.gov/services/service.professional-license-look-up.html",
+      image: { src: "/images/resources/illinois-licensure-research-checklist.png", alt: "Healthcare professional reviewing Illinois licensure documents" },
+    }),
+  },
+  {
+    ...createStateLicensureGuide({
+      state: "Ohio",
+      slug: "ohio-healthcare-licensure-research-checklist",
+      authority: "Ohio professional licensing boards",
+      applicationService: "the appropriate Ohio professional licensing board and eLicense Ohio",
+      applicationUrl: "https://elicense.ohio.gov/",
+      verificationService: "eLicense Ohio license lookup",
+      verificationUrl: "https://elicense.ohio.gov/",
+      image: { src: "/images/resources/ohio-licensure-research-checklist.png", alt: "Healthcare professional reviewing Ohio licensure documents" },
+    }),
+  },
+  {
+    ...createStateLicensureGuide({
+      state: "Georgia",
+      slug: "georgia-healthcare-licensure-research-checklist",
+      authority: "Georgia Professional Licensing Boards and profession-specific boards",
+      applicationService: "Georgia’s professional licensing information and the relevant profession board",
+      applicationUrl: "https://georgia.gov/professional-licenses-certifications",
+      verificationService: "Georgia professional license verification",
+      verificationUrl: "https://secure.sos.state.ga.us/verification/",
+      image: { src: "/images/resources/georgia-licensure-research-checklist.png", alt: "Healthcare professional reviewing Georgia licensure documents" },
+    }),
   },
   {
     slug: "residency-application-timeline",
