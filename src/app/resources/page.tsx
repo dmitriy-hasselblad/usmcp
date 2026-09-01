@@ -35,18 +35,18 @@ export default function ResourcesPage() {
           </div>
         </section>
 
-        <section className="border-b border-border bg-muted/25">
+        <section className="border-b border-border bg-[linear-gradient(135deg,#e1f5ee_0%,#eaf5ff_54%,#f8fcff_100%)]">
           <div className="mx-auto max-w-7xl px-5 py-10 lg:px-8 lg:py-12">
-            <div className="rounded-2xl border border-border bg-white p-6 sm:flex sm:items-center sm:justify-between sm:gap-8 sm:p-8">
+            <div className="rounded-2xl border border-teal-700/20 bg-white/75 p-6 shadow-sm sm:flex sm:items-center sm:justify-between sm:gap-8 sm:p-8">
               <div className="flex gap-4">
-                <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary"><MapPinned className="size-5" /></span>
+                <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-teal-700 text-white shadow-sm"><MapPinned className="size-5" /></span>
                 <div>
-                  <p className="text-xs font-bold tracking-[0.13em] text-primary uppercase">New directory</p>
+                  <p className="text-xs font-bold tracking-[0.13em] text-teal-800 uppercase">State licensure hub</p>
                   <h2 className="mt-2 text-2xl font-semibold tracking-[-0.04em]">Healthcare licensure by state</h2>
                   <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Browse all 50 states, then use published guides to start with official licensing sources.</p>
                 </div>
               </div>
-              <Button asChild className="mt-5 shrink-0 sm:mt-0" variant="outline">
+              <Button asChild className="mt-5 shrink-0 bg-teal-700 text-white hover:bg-teal-800 sm:mt-0">
                 <Link href="/resources/licensure">Browse states <ArrowRight /></Link>
               </Button>
             </div>
@@ -54,7 +54,7 @@ export default function ResourcesPage() {
         </section>
 
         <section className="mx-auto max-w-7xl px-5 py-14 lg:px-8 lg:py-20">
-          <ResourceGuideGrid resources={resourceGuides} />
+          <ResourceGuideGrid resources={resourceGuides.filter((guide) => guide.category !== "Licensure guides")} />
         </section>
 
         <section className="border-y border-border bg-muted/40" id="residency">
