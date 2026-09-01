@@ -18,6 +18,7 @@ test("sitemap indexes public marketing, career resources, jobs, organizations, a
   assert.match(source, /getPublishedOrganizationPostSitemapEntries\(\)/)
   assert.match(source, /resourceGuides/)
   assert.match(source, /`\/resources\/\$\{guide\.slug\}`/)
+  assert.match(source, /getAbsoluteUrl\("\/resources\/licensure"\)/)
   assert.match(source, /getAbsoluteUrl\("\/jobs"\)/)
   assert.doesNotMatch(source, /\/dashboard/)
 })

@@ -32,6 +32,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly",
       priority: 0.6,
     },
+    {
+      url: getAbsoluteUrl("/resources/licensure"),
+      changeFrequency: "weekly",
+      priority: 0.7,
+    },
     { url: getAbsoluteUrl("/privacy"), changeFrequency: "yearly", priority: 0.2 },
     { url: getAbsoluteUrl("/cookies"), changeFrequency: "yearly", priority: 0.2 },
     { url: getAbsoluteUrl("/contact"), changeFrequency: "monthly", priority: 0.5 },
