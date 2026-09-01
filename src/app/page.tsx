@@ -41,6 +41,9 @@ export default async function Home() {
   ])
   const featuredMarketplaceJobs = liveJobs.slice(0, 8)
   const stateSummaries = getStateSummaries(liveJobs)
+  const featuredCareerResources = resourceGuides.filter(
+    (resource) => resource.category !== "Licensure guides",
+  )
 
   return (
     <div className="min-h-dvh overflow-hidden bg-background">
@@ -226,7 +229,7 @@ export default async function Home() {
             </Button>
           </div>
           <div className="mt-10 grid gap-5 lg:grid-cols-3">
-            {resourceGuides.map((resource) => (
+            {featuredCareerResources.map((resource) => (
               <Link
                 className="group"
                 href={`/resources/${resource.slug}`}
