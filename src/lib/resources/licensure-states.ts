@@ -25,8 +25,10 @@ export const licensureStates: LicensureState[] = stateNames.map(([name, abbrevia
   name,
   abbreviation,
   slug: name.toLowerCase().replace(/\s+/g, "-"),
-  guideHref:
-    abbreviation === "FL"
-      ? "/resources/florida-healthcare-licensure-research-checklist"
-      : undefined,
+  guideHref: ({
+    FL: "/resources/florida-healthcare-licensure-research-checklist",
+    TX: "/resources/texas-healthcare-licensure-research-checklist",
+    CA: "/resources/california-healthcare-licensure-research-checklist",
+    NY: "/resources/new-york-healthcare-licensure-research-checklist",
+  } as Record<string, string | undefined>)[abbreviation],
 }))

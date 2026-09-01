@@ -54,6 +54,105 @@ export const resourceGuides: ResourceGuide[] = [
     ],
   },
   {
+    slug: "texas-healthcare-licensure-research-checklist",
+    category: "Licensure guides",
+    title: "Texas healthcare licensure: a practical research checklist",
+    description: "Find the right Texas board, confirm your pathway, and use official verification tools before planning a start date.",
+    readTime: "7 min read",
+    introduction: "Texas healthcare licensure is governed by the board that regulates your exact profession. Start with the professional title and scope of the role—not a general job category—then follow the board’s current instructions for your pathway.",
+    sections: [
+      {
+        heading: "Match the role to the right Texas authority",
+        paragraphs: ["Texas does not use one license process for every healthcare profession. Physicians, physician assistants, radiologic technologists, respiratory care practitioners, nurses, pharmacists, therapists, and other professionals may have different licensing authorities and portals.", "Confirm the target role’s exact title with the employer. Then locate the applicable Texas board and read its current application instructions before requesting documents or paying a fee."],
+        checklist: ["Exact Texas professional title", "Relevant state board or licensing authority", "Initial, endorsement, compact, training, or renewal pathway", "Employer credentialing and intended start date"],
+      },
+      {
+        heading: "Use the profession-specific application portal",
+        paragraphs: ["The Texas Medical Board provides application and verification services for the professions it regulates. The Texas Board of Nursing maintains a separate Nurse Portal for nursing applications and other account actions.", "Do not assume that a nursing route, a physician route, or an interstate compact option applies to another profession. The applicable board is the source for current eligibility, documentation, and submission requirements."],
+      },
+      {
+        heading: "Verify current status through the official system",
+        paragraphs: ["Before accepting a start date that depends on authorization to practice, check the official verification service for your profession. The Texas Medical Board’s public lookup provides license and permit information for the professions it regulates; nursing verification has its own official process.", "An employer’s interest or a submitted application does not establish that you are authorized to practice. Keep your own record of each document request, confirmation, and status update."],
+      },
+      {
+        heading: "Use current board instructions for individual decisions",
+        paragraphs: ["Rules and operational procedures can change, and personal circumstances can affect an application. Confirm requirements directly with the relevant board before making a decision about work, relocation, or a start date.", "SM VIA does not process Texas license applications, assess eligibility, or guarantee any licensing outcome."],
+      },
+    ],
+    note: "This is general career information, not legal, immigration, or professional licensing advice. Always confirm requirements directly with the appropriate Texas licensing authority.",
+    sources: [
+      { label: "Texas Medical Board — Applicants and licensees", url: "https://www.tmb.texas.gov/apply-renew" },
+      { label: "Texas Medical Board — Look up a license", url: "https://www.tmb.texas.gov/index.php/resources/for-the-public/look-up-a-license" },
+      { label: "Texas Board of Nursing — Nurse Portal and licensure", url: "https://www.bon.texas.gov/" },
+    ],
+  },
+  {
+    slug: "california-healthcare-licensure-research-checklist",
+    category: "Licensure guides",
+    title: "California healthcare licensure: a practical research checklist",
+    description: "Identify your California board, use the correct licensing service, and check official records before relying on a role or start date.",
+    readTime: "7 min read",
+    introduction: "California licenses many healthcare professions through distinct boards and committees. Start by matching your exact profession to the relevant California authority, then use its current instructions for the pathway you are considering.",
+    sections: [
+      {
+        heading: "Identify the board that regulates your profession",
+        paragraphs: ["The California Department of Consumer Affairs includes multiple healthcare licensing boards and committees. A physician, registered nurse, physical therapist, physician assistant, respiratory care practitioner, psychologist, pharmacist, or other professional may need a different board and different requirements.", "Use the role title in the job posting and your own credential type to identify the correct authority. Do not rely on a general California application page if your profession has a dedicated board."],
+        checklist: ["Exact California professional title", "Relevant board, committee, or department", "Initial, postgraduate training, endorsement, or other pathway", "Current license status in every jurisdiction where you have practiced"],
+      },
+      {
+        heading: "Read the current checklist before applying",
+        paragraphs: ["The Medical Board of California directs physician applicants to its application information and checklist before applying. Other boards publish their own requirements, documents, and routes through California’s licensing services.", "Prepare only the documents requested for your profession and pathway. Education, training, fingerprinting, examinations, prior licenses, and explanations for disclosures can be handled differently depending on the board."],
+      },
+      {
+        heading: "Verify licenses through official records",
+        paragraphs: ["California’s Department of Consumer Affairs provides an online license search for many regulated professions. The Medical Board of California also publishes its own verification and licensee profile information for the professionals it regulates.", "Use official verification rather than a resume, third-party profile, or employer statement when you need to confirm a status. A pending application does not itself establish authority to practice."],
+      },
+      {
+        heading: "Confirm your own pathway with the right authority",
+        paragraphs: ["Licensure requirements and processing procedures can change. Review the current instructions from your board before accepting a role, relocating, or choosing a proposed start date.", "SM VIA does not submit California applications, determine eligibility, or guarantee that an individual will receive a license."],
+      },
+    ],
+    note: "This is general career information, not legal, immigration, or professional licensing advice. Always confirm requirements directly with the appropriate California licensing authority.",
+    sources: [
+      { label: "California Department of Consumer Affairs — licensing services", url: "https://www.ca.gov/departments/210/" },
+      { label: "California Department of Consumer Affairs — license search", url: "https://search.dca.ca.gov/" },
+      { label: "Medical Board of California — physician and surgeon license", url: "https://www.mbc.ca.gov/Licensing/Physicians-and-Surgeons/Apply/Physicians-and-Surgeons-License/default.aspx" },
+    ],
+  },
+  {
+    slug: "new-york-healthcare-licensure-research-checklist",
+    category: "Licensure guides",
+    title: "New York healthcare licensure: a practical research checklist",
+    description: "Use New York’s Office of the Professions to identify the correct licensure route, direct-source documents, and verify your professional status.",
+    readTime: "7 min read",
+    introduction: "New York professional licensing is managed through the New York State Education Department’s Office of the Professions for many healthcare occupations. Start with your exact profession and its current requirements before deciding how to proceed.",
+    sections: [
+      {
+        heading: "Find the requirements for your exact profession",
+        paragraphs: ["The Office of the Professions provides profession-specific licensing information. Healthcare titles that sound similar can still have different education, examination, registration, or application requirements.", "Identify the precise license you need for the work you intend to perform in New York. Then read the relevant profession page rather than relying on an employer’s job title alone."],
+        checklist: ["Exact New York profession and license type", "Current registration or license status elsewhere", "Initial application, endorsement, examination, or limited-permit route", "Required direct-source education and license verification"],
+      },
+      {
+        heading: "Plan for direct-source documentation",
+        paragraphs: ["New York’s Office of the Professions publishes guidance on how education, experience, examination, and prior license information must be verified. Some documents need to be sent directly by the institution, supervisor, or licensing authority.", "For example, nursing applicants who hold an out-of-state license may use Nursys where applicable, while other situations may require the appropriate verification form. Always follow the instructions for your own profession and route."],
+      },
+      {
+        heading: "Check license information in the official verification service",
+        paragraphs: ["New York’s online verification system is maintained by the Office of the Professions and is its primary source for public license verification. Use it to check a current record instead of relying on an unofficial profile or an old document.", "Submitting an application, receiving an offer, or completing one part of the process does not itself authorize professional practice. Confirm your record and registration status through the official system."],
+      },
+      {
+        heading: "Keep the final decision with the licensing authority",
+        paragraphs: ["Licensing rules, forms, and procedures can change. Read the current Office of the Professions guidance and contact the relevant authority when you need an answer about your individual circumstances.", "SM VIA does not process New York applications, assess eligibility, or guarantee a licensing decision."],
+      },
+    ],
+    note: "This is general career information, not legal, immigration, or professional licensing advice. Always confirm requirements directly with the appropriate New York licensing authority.",
+    sources: [
+      { label: "New York State Education Department — Office of the Professions", url: "https://www.op.nysed.gov/" },
+      { label: "New York State — online license verification", url: "https://op-prod.nysed.gov/verification-search" },
+      { label: "Office of the Professions — general licensing information", url: "https://www.op.nysed.gov/about/general-information-policies" },
+    ],
+  },
+  {
     slug: "residency-application-timeline",
     category: "Residency guide",
     title: "How to create a residency application timeline that works for you",
