@@ -6,6 +6,7 @@ import {
   BookOpenText,
   CheckCircle2,
   HeartPulse,
+  MapPinned,
   Route,
   ShieldCheck,
   Stethoscope,
@@ -162,6 +163,24 @@ export default async function Home() {
 
         <section className="border-y border-border bg-slate-50">
           <div className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-24"><SectionHeading eyebrow="U.S. opportunity map" title="Explore healthcare opportunities by state." description="Select a state to view opportunities. Live counts appear only where employers have published roles." /><UsOpportunityMap states={stateSummaries} /></div>
+        </section>
+
+        <section className="border-b border-border bg-[linear-gradient(135deg,#e1f5ee_0%,#eaf5ff_54%,#f8fcff_100%)]">
+          <div className="mx-auto max-w-7xl px-5 py-10 lg:px-8 lg:py-12">
+            <div className="rounded-2xl border border-teal-700/20 bg-white/75 p-6 shadow-sm sm:flex sm:items-center sm:justify-between sm:gap-8 sm:p-8">
+              <div className="flex gap-4">
+                <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-teal-700 text-white shadow-sm"><MapPinned className="size-5" /></span>
+                <div>
+                  <p className="text-xs font-bold tracking-[0.13em] text-teal-800 uppercase">State licensure hub</p>
+                  <h2 className="mt-2 text-2xl font-semibold tracking-[-0.04em]">Healthcare licensure by state</h2>
+                  <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Browse all 50 states, then use published guides to start with official licensing sources.</p>
+                </div>
+              </div>
+              <Button asChild className="mt-5 shrink-0 bg-teal-700 text-white hover:bg-teal-800 sm:mt-0">
+                <Link href="/resources/licensure">Browse states <ArrowRight /></Link>
+              </Button>
+            </div>
+          </div>
         </section>
 
         <section
