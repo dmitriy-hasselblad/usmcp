@@ -8,9 +8,51 @@ export type ResourceGuide = {
   introduction: string
   sections: { heading: string; paragraphs: string[]; checklist?: string[] }[]
   note?: string
+  sources?: { label: string; url: string }[]
 }
 
 export const resourceGuides: ResourceGuide[] = [
+  {
+    slug: "florida-healthcare-licensure-research-checklist",
+    category: "Licensure guides",
+    title: "Florida healthcare licensure: a practical research checklist",
+    description: "Use the official Florida resources to identify the correct profession, pathway, documents, and verification steps before applying.",
+    readTime: "7 min read",
+    image: {
+      src: "/images/resources/florida-licensure-research-checklist.png",
+      alt: "Healthcare professional researching Florida licensure requirements",
+    },
+    introduction: "Florida licensure is profession-specific. Before you spend money, accept a role, or send documents, identify the exact license or registration you need and read the current requirements issued by the relevant Florida board or department.",
+    sections: [
+      {
+        heading: "Identify the exact profession and pathway",
+        paragraphs: ["Begin with the profession you intend to practice, not just the job title. A registered nurse, physician, physician assistant, therapist, pharmacist, and trainee may be governed by different boards, pathways, examinations, and document requirements.", "Then determine whether you are applying for an initial license, endorsement from another jurisdiction, an interstate compact pathway, a training registration, or another limited pathway. Do not assume a pathway applies simply because you hold a license elsewhere."],
+        checklist: ["Exact profession and Florida board", "Current license status in every jurisdiction", "Initial, endorsement, compact, or training pathway", "Target role’s start date and any employer-specific requirements"],
+      },
+      {
+        heading: "Use Florida’s official MQA services first",
+        paragraphs: ["Florida’s Division of Medical Quality Assurance provides the central starting point for applications, renewals, license verification, and help resources. Create or use an MQA account only through the official service and keep your application contact details current.", "The MQA portal is the right place to begin, but it does not replace the profession-specific instructions published by your board. Read both before submitting an application."],
+      },
+      {
+        heading: "Prepare documents according to your board’s checklist",
+        paragraphs: ["Requirements may include education verification, examination history, license verification from another jurisdiction, background screening, employment history, and explanations or supporting records for affirmative disclosures. The exact list varies by profession and pathway.", "Use the exact name that appears on your application for every document where possible. Keep a private record of what you requested, the date, the issuing organization, and when it was sent."],
+      },
+      {
+        heading: "Verify status before relying on an offer or start date",
+        paragraphs: ["A job offer, credentialing request, or an employer’s interest does not itself grant permission to practice. Confirm your status through the official Florida system and discuss a realistic start date with the employer.", "If you need a formal certification of a license held in another state, contact the relevant issuing board. Florida’s own certification process differs for some professions, including nurses and physicians."],
+      },
+      {
+        heading: "Keep this guide as a research tool, not personal advice",
+        paragraphs: ["Licensing rules, processing procedures, and documentation requirements can change. For a decision that affects your ability to practice, rely on the current official board instructions and ask the board or a qualified adviser about your individual circumstances.", "SM VIA does not process applications, assess eligibility, or guarantee a licensing outcome."],
+      },
+    ],
+    note: "This is general career information, not legal, immigration, or professional licensing advice. Always confirm requirements directly with the appropriate Florida licensing authority.",
+    sources: [
+      { label: "Florida Department of Health — MQA Help Center", url: "https://www.flhealthsource.gov/help-center/landing-page.html" },
+      { label: "Florida Department of Health — License Certification", url: "https://flhealthsource.gov/license-certification/" },
+      { label: "Florida Board of Medicine — Applying for a New License", url: "https://flboardofmedicine.gov/applying-for-a-new-license-4/" },
+    ],
+  },
   {
     slug: "residency-application-timeline",
     category: "Residency guide",
