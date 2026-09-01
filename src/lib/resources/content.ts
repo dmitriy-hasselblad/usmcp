@@ -59,6 +59,10 @@ export const resourceGuides: ResourceGuide[] = [
     title: "Texas healthcare licensure: a practical research checklist",
     description: "Find the right Texas board, confirm your pathway, and use official verification tools before planning a start date.",
     readTime: "7 min read",
+    image: {
+      src: "/images/resources/texas-licensure-research-checklist.png",
+      alt: "Healthcare professional reviewing Texas licensure documents",
+    },
     introduction: "Texas healthcare licensure is governed by the board that regulates your exact profession. Start with the professional title and scope of the role—not a general job category—then follow the board’s current instructions for your pathway.",
     sections: [
       {
@@ -92,6 +96,10 @@ export const resourceGuides: ResourceGuide[] = [
     title: "California healthcare licensure: a practical research checklist",
     description: "Identify your California board, use the correct licensing service, and check official records before relying on a role or start date.",
     readTime: "7 min read",
+    image: {
+      src: "/images/resources/california-licensure-research-checklist.png",
+      alt: "Healthcare professional reviewing California licensure documents",
+    },
     introduction: "California licenses many healthcare professions through distinct boards and committees. Start by matching your exact profession to the relevant California authority, then use its current instructions for the pathway you are considering.",
     sections: [
       {
@@ -125,6 +133,10 @@ export const resourceGuides: ResourceGuide[] = [
     title: "New York healthcare licensure: a practical research checklist",
     description: "Use New York’s Office of the Professions to identify the correct licensure route, direct-source documents, and verify your professional status.",
     readTime: "7 min read",
+    image: {
+      src: "/images/resources/new-york-licensure-research-checklist.png",
+      alt: "Healthcare professional reviewing New York licensure documents",
+    },
     introduction: "New York professional licensing is managed through the New York State Education Department’s Office of the Professions for many healthcare occupations. Start with your exact profession and its current requirements before deciding how to proceed.",
     sections: [
       {
