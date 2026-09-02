@@ -31,6 +31,19 @@ export function SiteFooter() {
             A more thoughtful way for healthcare professionals and organizations
             to move forward.
           </p>
+          <a
+            aria-label="Featured on Maidensail"
+            className="mt-5 inline-flex rounded-lg opacity-80 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+            href="https://maidensail.com/startup/sm-via"
+            rel="dofollow"
+          >
+            {/* External SVG badge supplied by Maidensail. */}
+            <img
+              alt="Featured on Maidensail"
+              height={44}
+              src="https://maidensail.com/badge/sm-via.svg"
+            />
+          </a>
         </div>
         <div className="grid grid-cols-2 gap-x-6 gap-y-3 text-sm sm:grid-cols-3">
           {footerLinks.map((link) => (
