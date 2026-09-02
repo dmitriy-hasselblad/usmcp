@@ -40,5 +40,11 @@ export const licensureStates: LicensureState[] = stateNames.map(([name, abbrevia
     WA: "/resources/washington-healthcare-licensure-research-checklist",
     MI: "/resources/michigan-healthcare-licensure-research-checklist",
     VA: "/resources/virginia-healthcare-licensure-research-checklist",
+    CO: "/resources/colorado-healthcare-licensure-research-checklist",
+    IN: "/resources/indiana-healthcare-licensure-research-checklist",
+    TN: "/resources/tennessee-healthcare-licensure-research-checklist",
+    CT: "/resources/connecticut-healthcare-licensure-research-checklist",
+    WI: "/resources/wisconsin-healthcare-licensure-research-checklist",
+    UT: "/resources/utah-healthcare-licensure-research-checklist",
   } as Record<string, string | undefined>)[abbreviation],
 }))
