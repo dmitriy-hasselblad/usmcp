@@ -19,6 +19,7 @@ const navigation = [
   { href: "/companies", label: "Organizations" },
   { href: "/news", label: "News & insights" },
   { href: "/resources", label: "Career resources" },
+  { href: "/career-paths", label: "Career paths" },
   { href: "/for-employers", label: "For employers" },
 ]
 

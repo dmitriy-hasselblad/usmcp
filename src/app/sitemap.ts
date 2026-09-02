@@ -4,6 +4,7 @@ import { getPublishedJobs } from "@/lib/jobs/public-jobs"
 import { getPublishedOrganizationPostSitemapEntries } from "@/lib/news/public-news"
 import { getPublicOrganizations } from "@/lib/organizations/public-organizations"
 import { resourceGuides } from "@/lib/resources/content"
+import { careerPaths } from "@/lib/career-paths/content"
 import { getAbsoluteUrl } from "@/lib/seo"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -37,6 +38,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly",
       priority: 0.7,
     },
+    { url: getAbsoluteUrl("/career-paths"), changeFrequency: "monthly", priority: 0.7 },
     { url: getAbsoluteUrl("/privacy"), changeFrequency: "yearly", priority: 0.2 },
     { url: getAbsoluteUrl("/cookies"), changeFrequency: "yearly", priority: 0.2 },
     { url: getAbsoluteUrl("/contact"), changeFrequency: "monthly", priority: 0.5 },
@@ -69,10 +71,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency: "monthly" as const,
     priority: 0.6,
   }))
+  const careerPathPages = careerPaths.map((path) => ({
+    url: getAbsoluteUrl(`/career-paths/${path.slug}`),
+    changeFrequency: "monthly" as const,
+    priority: 0.65,
+  }))
 
   return [
     ...staticPages,
     ...resourcePages,
+    ...careerPathPages,
     ...jobPages,
     ...organizationPages,
     ...newsPages,
