@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { ArrowRight, GraduationCap, Globe2, MapPinned } from "lucide-react"
+import { ArrowRight, BadgeDollarSign, GraduationCap, Globe2, MapPinned } from "lucide-react"
 
 import { SiteFooter } from "@/components/layout/site-footer"
 import { SiteHeader } from "@/components/layout/site-header"
@@ -44,7 +44,7 @@ export default function ResourcesPage() {
         </section>
 
         <section className="border-b border-border bg-[linear-gradient(135deg,#e1f5ee_0%,#eaf5ff_54%,#f8fcff_100%)]">
-          <div className="mx-auto max-w-7xl px-5 py-10 lg:px-8 lg:py-12">
+          <div className="mx-auto grid max-w-7xl gap-5 px-5 py-10 lg:grid-cols-2 lg:px-8 lg:py-12">
             <div className="rounded-2xl border border-teal-700/20 bg-white/75 p-6 shadow-sm sm:flex sm:items-center sm:justify-between sm:gap-8 sm:p-8">
               <div className="flex gap-4">
                 <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-teal-700 text-white shadow-sm"><MapPinned className="size-5" /></span>
@@ -56,6 +56,19 @@ export default function ResourcesPage() {
               </div>
               <Button asChild className="mt-5 shrink-0 bg-teal-700 text-white hover:bg-teal-800 sm:mt-0">
                 <Link href="/resources/licensure">Browse states <ArrowRight /></Link>
+              </Button>
+            </div>
+            <div className="rounded-2xl border border-primary/20 bg-primary p-6 text-primary-foreground shadow-sm sm:flex sm:items-center sm:justify-between sm:gap-8 sm:p-8">
+              <div className="flex gap-4">
+                <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-white/15 text-white shadow-sm"><BadgeDollarSign className="size-5" /></span>
+                <div>
+                  <p className="text-xs font-bold tracking-[0.13em] text-teal-100 uppercase">Salary hub</p>
+                  <h2 className="mt-2 text-2xl font-semibold tracking-[-0.04em]">Healthcare salaries by state</h2>
+                  <p className="mt-2 max-w-2xl text-sm leading-6 text-teal-50">Compare official BLS wage estimates, then search for relevant roles on SM VIA.</p>
+                </div>
+              </div>
+              <Button asChild className="mt-5 shrink-0 bg-white text-primary hover:bg-teal-50 sm:mt-0">
+                <Link href="/salary">Explore salaries <ArrowRight /></Link>
               </Button>
             </div>
           </div>

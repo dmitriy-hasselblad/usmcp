@@ -1,0 +1,790 @@
+{
+  "sourceName": "U.S. Bureau of Labor Statistics, Occupational Employment and Wage Statistics (OEWS)",
+  "sourceUrl": "https://www.bls.gov/oes/2025/may/oessrcst.htm",
+  "release": "May 2025",
+  "retrievedAt": "2026-09-02",
+  "states": [
+    {
+      "code": "FL",
+      "name": "Florida"
+    },
+    {
+      "code": "TX",
+      "name": "Texas"
+    },
+    {
+      "code": "CA",
+      "name": "California"
+    },
+    {
+      "code": "NY",
+      "name": "New York"
+    },
+    {
+      "code": "PA",
+      "name": "Pennsylvania"
+    },
+    {
+      "code": "IL",
+      "name": "Illinois"
+    },
+    {
+      "code": "OH",
+      "name": "Ohio"
+    },
+    {
+      "code": "GA",
+      "name": "Georgia"
+    },
+    {
+      "code": "NC",
+      "name": "North Carolina"
+    },
+    {
+      "code": "NJ",
+      "name": "New Jersey"
+    },
+    {
+      "code": "MA",
+      "name": "Massachusetts"
+    },
+    {
+      "code": "WA",
+      "name": "Washington"
+    },
+    {
+      "code": "MI",
+      "name": "Michigan"
+    },
+    {
+      "code": "VA",
+      "name": "Virginia"
+    },
+    {
+      "code": "CO",
+      "name": "Colorado"
+    },
+    {
+      "code": "IN",
+      "name": "Indiana"
+    },
+    {
+      "code": "TN",
+      "name": "Tennessee"
+    },
+    {
+      "code": "CT",
+      "name": "Connecticut"
+    },
+    {
+      "code": "WI",
+      "name": "Wisconsin"
+    },
+    {
+      "code": "UT",
+      "name": "Utah"
+    }
+  ],
+  "occupations": [
+    {
+      "slug": "registered-nurse",
+      "name": "Registered Nurse",
+      "soc": "291141",
+      "national": {
+        "mean": 101420,
+        "p10": 68940,
+        "p25": 80330,
+        "median": 97550,
+        "p75": 112350,
+        "p90": 137470
+      },
+      "stateMedianAnnual": {
+        "FL": 84190,
+        "TX": 95970,
+        "CA": 140270,
+        "NY": 109440,
+        "PA": 96430,
+        "IL": 95990,
+        "OH": 82510,
+        "GA": 93550,
+        "NC": 84350,
+        "NJ": 106500,
+        "MA": 104550,
+        "WA": 124200,
+        "MI": 94300,
+        "VA": 93600,
+        "CO": 100260,
+        "IN": 83500,
+        "TN": 81500,
+        "CT": 102740,
+        "WI": 95530,
+        "UT": 84600
+      }
+    },
+    {
+      "slug": "nurse-practitioner",
+      "name": "Nurse Practitioner",
+      "soc": "291171",
+      "national": {
+        "mean": 137300,
+        "p10": 101340,
+        "p25": 117990,
+        "median": 132300,
+        "p75": 156700,
+        "p90": 174420
+      },
+      "stateMedianAnnual": {
+        "FL": 129510,
+        "TX": 131670,
+        "CA": 168520,
+        "NY": 153510,
+        "PA": 130140,
+        "IL": 130680,
+        "OH": 124870,
+        "GA": 129430,
+        "NC": 128990,
+        "NJ": 159310,
+        "MA": 142440,
+        "WA": 156100,
+        "MI": 131450,
+        "VA": 127810,
+        "CO": 132930,
+        "IN": 128830,
+        "TN": 117590,
+        "CT": 138470,
+        "WI": 131980,
+        "UT": 130920
+      }
+    },
+    {
+      "slug": "physician-assistant",
+      "name": "Physician Assistant",
+      "soc": "291071",
+      "national": {
+        "mean": 141280,
+        "p10": 99380,
+        "p25": 120670,
+        "median": 135880,
+        "p75": 163980,
+        "p90": 190280
+      },
+      "stateMedianAnnual": {
+        "FL": 129620,
+        "TX": 134550,
+        "CA": 165650,
+        "NY": 160880,
+        "PA": 127070,
+        "IL": 131950,
+        "OH": 132090,
+        "GA": 115390,
+        "NC": 129360,
+        "NJ": 165690,
+        "MA": 142410,
+        "WA": 164360,
+        "MI": 131510,
+        "VA": 135940,
+        "CO": 134540,
+        "IN": 132050,
+        "TN": 118240,
+        "CT": 139860,
+        "WI": 133950,
+        "UT": 134740
+      }
+    },
+    {
+      "slug": "licensed-practical-nurse",
+      "name": "Licensed Practical Nurse",
+      "soc": "292061",
+      "national": {
+        "mean": 67050,
+        "p10": 49740,
+        "p25": 59000,
+        "median": 64400,
+        "p75": 76030,
+        "p90": 83440
+      },
+      "stateMedianAnnual": {
+        "FL": 61770,
+        "TX": 62240,
+        "CA": 79750,
+        "NY": 67180,
+        "PA": 63940,
+        "IL": 75000,
+        "OH": 61950,
+        "GA": 62030,
+        "NC": 63270,
+        "NJ": 75160,
+        "MA": 80220,
+        "WA": 83150,
+        "MI": 65460,
+        "VA": 64920,
+        "CO": 73880,
+        "IN": 65720,
+        "TN": 58870,
+        "CT": 73690,
+        "WI": 63760,
+        "UT": 63230
+      }
+    },
+    {
+      "slug": "medical-assistant",
+      "name": "Medical Assistant",
+      "soc": "319092",
+      "national": {
+        "mean": 46120,
+        "p10": 36050,
+        "p25": 38470,
+        "median": 45690,
+        "p75": 49180,
+        "p90": 59310
+      },
+      "stateMedianAnnual": {
+        "FL": 43680,
+        "TX": 39520,
+        "CA": 49660,
+        "NY": 48000,
+        "PA": 43920,
+        "IL": 46090,
+        "OH": 42810,
+        "GA": 41600,
+        "NC": 45140,
+        "NJ": 47210,
+        "MA": 49460,
+        "WA": 59290,
+        "MI": 39870,
+        "VA": 44740,
+        "CO": 48400,
+        "IN": 45110,
+        "TN": 39570,
+        "CT": 47430,
+        "WI": 48680,
+        "UT": 45360
+      }
+    },
+    {
+      "slug": "nursing-assistant",
+      "name": "Nursing Assistant",
+      "soc": "311131",
+      "national": {
+        "mean": 42700,
+        "p10": 33940,
+        "p25": 37260,
+        "median": 42260,
+        "p75": 47220,
+        "p90": 51980
+      },
+      "stateMedianAnnual": {
+        "FL": 37510,
+        "TX": 37500,
+        "CA": 47630,
+        "NY": 48590,
+        "PA": 44590,
+        "IL": 45960,
+        "OH": 39010,
+        "GA": 37680,
+        "NC": 38460,
+        "NJ": 46830,
+        "MA": 46680,
+        "WA": 49180,
+        "MI": 39570,
+        "VA": 43200,
+        "CO": 47380,
+        "IN": 38330,
+        "TN": 37990,
+        "CT": 44790,
+        "WI": 45130,
+        "UT": 39840
+      }
+    },
+    {
+      "slug": "dental-hygienist",
+      "name": "Dental Hygienist",
+      "soc": "291292",
+      "national": {
+        "mean": null,
+        "p10": null,
+        "p25": null,
+        "median": null,
+        "p75": null,
+        "p90": null
+      },
+      "stateMedianAnnual": {
+        "FL": null,
+        "TX": null,
+        "CA": null,
+        "NY": null,
+        "PA": null,
+        "IL": null,
+        "OH": null,
+        "GA": null,
+        "NC": null,
+        "NJ": null,
+        "MA": null,
+        "WA": null,
+        "MI": null,
+        "VA": null,
+        "CO": null,
+        "IN": null,
+        "TN": null,
+        "CT": null,
+        "WI": null,
+        "UT": null
+      }
+    },
+    {
+      "slug": "physical-therapist",
+      "name": "Physical Therapist",
+      "soc": "291123",
+      "national": {
+        "mean": 105280,
+        "p10": 77140,
+        "p25": 86160,
+        "median": 102760,
+        "p75": 121160,
+        "p90": 135140
+      },
+      "stateMedianAnnual": {
+        "FL": 101040,
+        "TX": 105810,
+        "CA": 124190,
+        "NY": 100660,
+        "PA": 101380,
+        "IL": 105250,
+        "OH": 103050,
+        "GA": 102700,
+        "NC": 99910,
+        "NJ": 112140,
+        "MA": 103790,
+        "WA": 105950,
+        "MI": 100900,
+        "VA": 101450,
+        "CO": 102030,
+        "IN": 101560,
+        "TN": 100140,
+        "CT": 104360,
+        "WI": 101840,
+        "UT": 99880
+      }
+    },
+    {
+      "slug": "occupational-therapist",
+      "name": "Occupational Therapist",
+      "soc": "291122",
+      "national": {
+        "mean": 101280,
+        "p10": 71690,
+        "p25": 82510,
+        "median": 100330,
+        "p75": 116670,
+        "p90": 131950
+      },
+      "stateMedianAnnual": {
+        "FL": 99360,
+        "TX": 106140,
+        "CA": 124510,
+        "NY": 96390,
+        "PA": 98440,
+        "IL": 99700,
+        "OH": 99390,
+        "GA": 104010,
+        "NC": 92940,
+        "NJ": 103410,
+        "MA": 100930,
+        "WA": 107670,
+        "MI": 89910,
+        "VA": 100710,
+        "CO": 106720,
+        "IN": 97020,
+        "TN": 97700,
+        "CT": 102440,
+        "WI": 92390,
+        "UT": 97150
+      }
+    },
+    {
+      "slug": "speech-language-pathologist",
+      "name": "Speech-Language Pathologist",
+      "soc": "291127",
+      "national": {
+        "mean": 98170,
+        "p10": 62900,
+        "p25": 77730,
+        "median": 97870,
+        "p75": 114570,
+        "p90": 134160
+      },
+      "stateMedianAnnual": {
+        "FL": 99990,
+        "TX": 99910,
+        "CA": 118970,
+        "NY": 100610,
+        "PA": 92960,
+        "IL": 95080,
+        "OH": 93300,
+        "GA": 96760,
+        "NC": 86460,
+        "NJ": 101560,
+        "MA": 101310,
+        "WA": 105550,
+        "MI": 89120,
+        "VA": 96250,
+        "CO": 110750,
+        "IN": 87360,
+        "TN": 84630,
+        "CT": 100110,
+        "WI": 83000,
+        "UT": 91560
+      }
+    },
+    {
+      "slug": "pharmacist",
+      "name": "Pharmacist",
+      "soc": "291051",
+      "national": {
+        "mean": 140920,
+        "p10": 99290,
+        "p25": 129380,
+        "median": 140910,
+        "p75": 161840,
+        "p90": 174230
+      },
+      "stateMedianAnnual": {
+        "FL": 135970,
+        "TX": 138260,
+        "CA": 164610,
+        "NY": 142090,
+        "PA": 138160,
+        "IL": 139080,
+        "OH": 137020,
+        "GA": 137120,
+        "NC": 138860,
+        "NJ": 137620,
+        "MA": 138170,
+        "WA": 160610,
+        "MI": 137860,
+        "VA": 144060,
+        "CO": 156030,
+        "IN": 144290,
+        "TN": 133390,
+        "CT": 141290,
+        "WI": 148740,
+        "UT": 144240
+      }
+    },
+    {
+      "slug": "radiologic-technologist",
+      "name": "Radiologic Technologist",
+      "soc": "291124",
+      "national": {
+        "mean": 114990,
+        "p10": 80560,
+        "p25": 92060,
+        "median": 105310,
+        "p75": 126340,
+        "p90": 156710
+      },
+      "stateMedianAnnual": {
+        "FL": 100920,
+        "TX": 105770,
+        "CA": 166450,
+        "NY": 129620,
+        "PA": 100540,
+        "IL": 124600,
+        "OH": 98650,
+        "GA": 94460,
+        "NC": 99250,
+        "NJ": 129460,
+        "MA": 106300,
+        "WA": 125880,
+        "MI": 95890,
+        "VA": 103310,
+        "CO": 108020,
+        "IN": 96690,
+        "TN": 83520,
+        "CT": 116170,
+        "WI": 93600,
+        "UT": 107660
+      }
+    },
+    {
+      "slug": "diagnostic-medical-sonographer",
+      "name": "Diagnostic Medical Sonographer",
+      "soc": "292032",
+      "national": {
+        "mean": null,
+        "p10": null,
+        "p25": null,
+        "median": null,
+        "p75": null,
+        "p90": null
+      },
+      "stateMedianAnnual": {
+        "FL": null,
+        "TX": null,
+        "CA": null,
+        "NY": null,
+        "PA": null,
+        "IL": null,
+        "OH": null,
+        "GA": null,
+        "NC": null,
+        "NJ": null,
+        "MA": null,
+        "WA": null,
+        "MI": null,
+        "VA": null,
+        "CO": null,
+        "IN": null,
+        "TN": null,
+        "CT": null,
+        "WI": null,
+        "UT": null
+      }
+    },
+    {
+      "slug": "respiratory-therapist",
+      "name": "Respiratory Therapist",
+      "soc": "291126",
+      "national": {
+        "mean": 87300,
+        "p10": 63660,
+        "p25": 74520,
+        "median": 82280,
+        "p75": 98730,
+        "p90": 118050
+      },
+      "stateMedianAnnual": {
+        "FL": 81160,
+        "TX": 79540,
+        "CA": 104820,
+        "NY": 107810,
+        "PA": 78490,
+        "IL": 84090,
+        "OH": 79920,
+        "GA": 83700,
+        "NC": 80090,
+        "NJ": 100810,
+        "MA": 102170,
+        "WA": 101130,
+        "MI": 79850,
+        "VA": 82910,
+        "CO": 86220,
+        "IN": 79730,
+        "TN": 72140,
+        "CT": 85230,
+        "WI": 84210,
+        "UT": 80650
+      }
+    },
+    {
+      "slug": "clinical-laboratory-technologist",
+      "name": "Clinical Laboratory Technologist",
+      "soc": "292010",
+      "national": {
+        "mean": 67350,
+        "p10": 38910,
+        "p25": 47650,
+        "median": 62930,
+        "p75": 81450,
+        "p90": 100990
+      },
+      "stateMedianAnnual": {
+        "FL": 60510,
+        "TX": 59290,
+        "CA": 76010,
+        "NY": 97280,
+        "PA": 51680,
+        "IL": 71950,
+        "OH": 63800,
+        "GA": 62180,
+        "NC": 60650,
+        "NJ": 68450,
+        "MA": 79120,
+        "WA": 72760,
+        "MI": 61260,
+        "VA": 61050,
+        "CO": 70050,
+        "IN": 57080,
+        "TN": 62070,
+        "CT": 65310,
+        "WI": 60670,
+        "UT": 49090
+      }
+    },
+    {
+      "slug": "emergency-medical-technician",
+      "name": "Emergency Medical Technician",
+      "soc": "292042",
+      "national": {
+        "mean": 52750,
+        "p10": 36000,
+        "p25": 39840,
+        "median": 48150,
+        "p75": 60790,
+        "p90": 76810
+      },
+      "stateMedianAnnual": {
+        "FL": null,
+        "TX": null,
+        "CA": null,
+        "NY": null,
+        "PA": null,
+        "IL": null,
+        "OH": null,
+        "GA": null,
+        "NC": null,
+        "NJ": null,
+        "MA": null,
+        "WA": null,
+        "MI": null,
+        "VA": null,
+        "CO": null,
+        "IN": null,
+        "TN": null,
+        "CT": null,
+        "WI": null,
+        "UT": null
+      }
+    },
+    {
+      "slug": "surgical-technologist",
+      "name": "Surgical Technologist",
+      "soc": "292055",
+      "national": {
+        "mean": 68710,
+        "p10": 45940,
+        "p25": 54690,
+        "median": 64650,
+        "p75": 79750,
+        "p90": 96940
+      },
+      "stateMedianAnnual": {
+        "FL": 62440,
+        "TX": 65220,
+        "CA": 81310,
+        "NY": 79550,
+        "PA": 62680,
+        "IL": 64650,
+        "OH": 62420,
+        "GA": 64010,
+        "NC": 60920,
+        "NJ": 77200,
+        "MA": 80870,
+        "WA": 77270,
+        "MI": 63320,
+        "VA": 67580,
+        "CO": 75740,
+        "IN": 64240,
+        "TN": 60530,
+        "CT": 79890,
+        "WI": 74120,
+        "UT": 62720
+      }
+    },
+    {
+      "slug": "medical-health-services-manager",
+      "name": "Medical and Health Services Manager",
+      "soc": "119111",
+      "national": {
+        "mean": 140970,
+        "p10": 73390,
+        "p25": 94700,
+        "median": 123860,
+        "p75": 166100,
+        "p90": 224340
+      },
+      "stateMedianAnnual": {
+        "FL": 120360,
+        "TX": 114150,
+        "CA": 141480,
+        "NY": 164120,
+        "PA": 103670,
+        "IL": 117850,
+        "OH": 106140,
+        "GA": 131910,
+        "NC": 114410,
+        "NJ": 145650,
+        "MA": 134360,
+        "WA": 145290,
+        "MI": 107570,
+        "VA": 129270,
+        "CO": 134910,
+        "IN": 104140,
+        "TN": 107120,
+        "CT": 130790,
+        "WI": 128320,
+        "UT": 114980
+      }
+    },
+    {
+      "slug": "health-information-technologist",
+      "name": "Health Information Technologist",
+      "soc": "151211",
+      "national": {
+        "mean": 114610,
+        "p10": 67340,
+        "p25": 82860,
+        "median": 105850,
+        "p75": 134110,
+        "p90": 167710
+      },
+      "stateMedianAnnual": {
+        "FL": 101900,
+        "TX": 107390,
+        "CA": 127720,
+        "NY": 109610,
+        "PA": 98550,
+        "IL": 101570,
+        "OH": 102320,
+        "GA": 106240,
+        "NC": 106850,
+        "NJ": 122890,
+        "MA": 128240,
+        "WA": 129410,
+        "MI": 103410,
+        "VA": 120840,
+        "CO": 127750,
+        "IN": 98810,
+        "TN": 95630,
+        "CT": 109600,
+        "WI": 100440,
+        "UT": 98770
+      }
+    },
+    {
+      "slug": "medical-scientist",
+      "name": "Medical Scientist",
+      "soc": "191042",
+      "national": {
+        "mean": 116840,
+        "p10": 64800,
+        "p25": 79840,
+        "median": 103410,
+        "p75": 139380,
+        "p90": 177780
+      },
+      "stateMedianAnnual": {
+        "FL": 94940,
+        "TX": 80470,
+        "CA": 136990,
+        "NY": 87760,
+        "PA": 99190,
+        "IL": 82330,
+        "OH": 83910,
+        "GA": 92450,
+        "NC": 102980,
+        "NJ": 129280,
+        "MA": 128210,
+        "WA": 105680,
+        "MI": 84310,
+        "VA": 93620,
+        "CO": null,
+        "IN": 81110,
+        "TN": 102720,
+        "CT": 116990,
+        "WI": 82530,
+        "UT": 82940
+      }
+    }
+  ]
+}

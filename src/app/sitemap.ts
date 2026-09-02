@@ -4,6 +4,7 @@ import { getPublishedJobs } from "@/lib/jobs/public-jobs"
 import { getPublishedOrganizationPostSitemapEntries } from "@/lib/news/public-news"
 import { getPublicOrganizations } from "@/lib/organizations/public-organizations"
 import { resourceGuides } from "@/lib/resources/content"
+import { salaryOccupations, salaryStates } from "@/lib/salary/data"
 import { getAbsoluteUrl } from "@/lib/seo"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -35,6 +36,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     {
       url: getAbsoluteUrl("/resources/licensure"),
       changeFrequency: "weekly",
+      priority: 0.7,
+    },
+    {
+      url: getAbsoluteUrl("/salary"),
+      changeFrequency: "monthly",
       priority: 0.7,
     },
     { url: getAbsoluteUrl("/privacy"), changeFrequency: "yearly", priority: 0.2 },
@@ -70,9 +76,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }))
 
+  const salaryPages = salaryOccupations.flatMap((occupation) =>
+    salaryStates.map((state) => ({
+      url: getAbsoluteUrl(`/salary/${occupation.slug}/${state.code.toLowerCase()}`),
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    })),
+  )
+
   return [
     ...staticPages,
     ...resourcePages,
+    ...salaryPages,
     ...jobPages,
     ...organizationPages,
     ...newsPages,
