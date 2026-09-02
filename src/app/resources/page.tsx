@@ -8,12 +8,20 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ResourceGuideGrid } from "@/components/resources/resource-guide-grid"
 import { resourceGuides } from "@/lib/resources/content"
+import { socialImageMetadata } from "@/components/seo/social-card"
 
 export const metadata: Metadata = {
   title: "Healthcare Career Resources",
   description:
             "Explore the growing SM VIA library for residency planning, employer research, and international healthcare careers.",
   alternates: { canonical: "/resources" },
+  openGraph: {
+    images: socialImageMetadata("/resources/opengraph-image"),
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/resources/opengraph-image"],
+  },
 }
 
 export default function ResourcesPage() {

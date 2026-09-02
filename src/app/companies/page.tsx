@@ -8,12 +8,20 @@ import { OrganizationCard } from "@/components/organizations/organization-card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { getPublicOrganizations } from "@/lib/organizations/public-organizations"
+import { socialImageMetadata } from "@/components/seo/social-card"
 
 export const metadata: Metadata = {
   title: "Healthcare Organizations",
   description:
     "Explore U.S. healthcare organizations with active opportunities on SM VIA.",
   alternates: { canonical: "/companies" },
+  openGraph: {
+    images: socialImageMetadata("/companies/opengraph-image"),
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/companies/opengraph-image"],
+  },
 }
 
 export default async function CompaniesPage() {

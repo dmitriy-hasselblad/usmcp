@@ -79,6 +79,33 @@ test("root metadata establishes a canonical site base and social defaults", asyn
   assert.match(source, /metadataBase: getSiteUrl\(\)/)
   assert.match(source, /openGraph:/)
   assert.match(source, /twitter:/)
+  assert.match(source, /socialImageMetadata\("\/opengraph-image"\)/)
+  assert.match(source, /card: "summary_large_image"/)
+})
+
+test("public discovery pages and live jobs publish branded social image routes", async () => {
+  const [jobs, companies, resources, jobDetail, jobImage] = await Promise.all([
+    readProjectFile("src/app/jobs/page.tsx"),
+    readProjectFile("src/app/companies/page.tsx"),
+    readProjectFile("src/app/resources/page.tsx"),
+    readProjectFile("src/app/jobs/[slug]/page.tsx"),
+    readProjectFile("src/app/jobs/[slug]/opengraph-image.tsx"),
+  ])
+
+  for (const [source, imagePath] of [
+    [jobs, "/jobs/opengraph-image"],
+    [companies, "/companies/opengraph-image"],
+    [resources, "/resources/opengraph-image"],
+  ]) {
+    assert.ok(source.includes(imagePath))
+    assert.match(source, /summary_large_image/)
+  }
+
+  assert.match(jobDetail, /\/jobs\/\$\{job\.slug\}\/opengraph-image/)
+  assert.match(jobDetail, /summary_large_image/)
+  assert.match(jobImage, /getPublishedJobBySlug\(slug\)/)
+  assert.match(jobImage, /width: 1200/)
+  assert.match(jobImage, /height: 630/)
 })
 
 test("optional analytics remains behind an explicit visitor consent choice", async () => {
