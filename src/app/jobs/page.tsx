@@ -20,12 +20,20 @@ import {
 import { filterJobs, type JobFilters } from "@/lib/jobs/job-filters"
 import { getPublishedJobs } from "@/lib/jobs/public-jobs"
 import { featuredJobs } from "@/lib/marketing-data"
+import { socialImageMetadata } from "@/components/seo/social-card"
 
 export const metadata: Metadata = {
   title: "Healthcare Jobs",
   description:
     "Search U.S. healthcare jobs by profession, specialty, location, experience, and compensation.",
   alternates: { canonical: "/jobs" },
+  openGraph: {
+    images: socialImageMetadata("/jobs/opengraph-image"),
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/jobs/opengraph-image"],
+  },
 }
 
 type RawSearchParams = Promise<

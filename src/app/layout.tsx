@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google"
 import { CookieConsentProvider } from "@/components/privacy/cookie-consent-provider"
 import { ConsentAwareAnalytics } from "@/components/privacy/consent-aware-analytics"
 import { getSiteUrl } from "@/lib/seo"
+import { socialImageMetadata } from "@/components/seo/social-card"
 
 import "./globals.css"
 import "@livekit/components-styles"
@@ -33,12 +34,14 @@ export const metadata: Metadata = {
     title: "SM VIA | The U.S. Healthcare Career Ecosystem",
     description:
       "Healthcare opportunities, trusted organizations, and practical career guidance for the United States.",
+    images: socialImageMetadata("/opengraph-image"),
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: "SM VIA | The U.S. Healthcare Career Ecosystem",
     description:
       "Healthcare opportunities, trusted organizations, and practical career guidance for the United States.",
+    images: ["/opengraph-image"],
   },
 }
 

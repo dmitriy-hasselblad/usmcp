@@ -34,6 +34,7 @@ import {
 } from "@/lib/news/public-news"
 import { featuredJobs, getJobBySlug, type Job } from "@/lib/marketing-data"
 import { getAbsoluteUrl, serializeJsonLd } from "@/lib/seo"
+import { socialImageMetadata } from "@/components/seo/social-card"
 
 type JobPageProps = {
   params: Promise<{ slug: string }>
@@ -64,6 +65,13 @@ export async function generateMetadata({
       url: `/jobs/${job.slug}`,
       title: `${job.title} at ${job.employer}`,
       description: `${job.title} healthcare opportunity in ${job.location}.`,
+      images: socialImageMetadata(`/jobs/${job.slug}/opengraph-image`),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${job.title} at ${job.employer}`,
+      description: `${job.title} healthcare opportunity in ${job.location}.`,
+      images: [`/jobs/${job.slug}/opengraph-image`],
     },
     ...(isLive ? {} : { robots: { index: false, follow: false } }),
   }
