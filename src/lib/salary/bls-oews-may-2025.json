@@ -304,7 +304,7 @@
         "mean": null,
         "p10": null,
         "p25": null,
-        "median": null,
+        "median": 98100,
         "p75": null,
         "p90": null
       },
@@ -514,7 +514,7 @@
         "mean": null,
         "p10": null,
         "p25": null,
-        "median": null,
+        "median": 96590,
         "p75": null,
         "p90": null
       },
@@ -619,7 +619,7 @@
         "mean": 52750,
         "p10": 36000,
         "p25": 39840,
-        "median": 48150,
+        "median": 44470,
         "p75": 60790,
         "p90": 76810
       },
