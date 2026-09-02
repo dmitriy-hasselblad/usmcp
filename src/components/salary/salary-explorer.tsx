@@ -6,7 +6,7 @@ import { useState } from "react"
 import type { SalaryOccupation, SalaryState } from "@/lib/salary/data"
 import { Button } from "@/components/ui/button"
 
-const selectClassName = "h-12 w-full rounded-xl border border-input bg-white px-3 text-sm outline-none transition-shadow focus:border-ring focus:ring-3 focus:ring-ring/20"
+const selectClassName = "h-12 w-full rounded-xl border border-input bg-white px-3 text-sm text-foreground outline-none transition-shadow focus:border-ring focus:ring-3 focus:ring-ring/20"
 
 export function SalaryExplorer({
   occupations,
