@@ -479,6 +479,47 @@ export const resourceGuides: ResourceGuide[] = [
     ],
   },
   {
+    slug: "how-to-evaluate-a-healthcare-job-offer",
+    category: "Job search",
+    title: "How to evaluate a healthcare job offer",
+    description: "Compare compensation, schedule, benefits, career support, and written conditions so you can choose a healthcare role with clarity.",
+    readTime: "7 min read",
+    image: {
+      src: "/images/resources/evaluating-healthcare-job-offers.png",
+      alt: "Healthcare professional comparing two job offers at a desk",
+    },
+    introduction: "A healthcare job offer is more than a title and a salary. Before you decide, compare every offer against the same priorities: the work itself, the full compensation package, the schedule, the support you will receive, and the conditions you are being asked to accept. A written side-by-side comparison makes the tradeoffs easier to see.",
+    sections: [
+      {
+        heading: "Start with a one-page comparison",
+        paragraphs: ["Create one private note for each offer and answer the same questions in the same order. Use the written offer and job description as your starting point, then mark what is confirmed, what needs clarification, and what is only a verbal expectation.", "Do not compare one role's salary with another role's schedule or benefits from memory. A simple, consistent scorecard keeps the decision focused on the factors that matter to you."],
+        checklist: ["Role title, employer, location, and care setting", "Base compensation and any differentials", "Schedule, call, weekend, holiday, and overtime expectations", "Benefits, paid time off, retirement, and professional-development support", "Credentialing, start-date, repayment, and commitment conditions"],
+      },
+      {
+        heading: "Compare total compensation, not only base pay",
+        paragraphs: ["Ask how base pay is calculated and whether the role includes shift, weekend, night, call, productivity, or geographic differentials. If there is a sign-on, relocation, retention, or performance bonus, ask for the amount, timing, eligibility rules, and repayment conditions in writing.", "Benefits can materially change the value of an offer. Compare health coverage, retirement contributions, paid time off, continuing education, professional dues, licensing support, and any support for relocation or training. Use published wage data as context, but remember that a wage estimate cannot describe an individual employer's complete package."],
+      },
+      {
+        heading: "Make the daily work visible",
+        paragraphs: ["Clarify the expected schedule: hours, shift length, onsite or hybrid requirements, weekends, holidays, on-call frequency, overtime, and how schedules are assigned or changed. For clinical roles, ask about typical patient volume, acuity, staffing, coverage, documentation systems, and escalation support.", "A role can look similar on paper but feel very different in practice. Ask what changed most for the last person in the position, why the position is open, and what support is available during a difficult shift or unusually busy period."],
+      },
+      {
+        heading: "Review the written conditions before you rely on them",
+        paragraphs: ["Confirm whether the offer and start date depend on licensure, credentialing, background review, health screening, payer enrollment, references, immigration authorization, or another approval. Ask who coordinates each requirement and what happens if a timeline changes.", "Read any service commitment, repayment clause, restrictive covenant, confidentiality language, classification, malpractice coverage, and termination provision carefully. A verbal answer may be helpful, but it does not change the written agreement. Seek qualified legal, tax, insurance, or employment advice when a term affects your individual circumstances."],
+      },
+      {
+        heading: "Decide with clear questions, not pressure",
+        paragraphs: ["Before accepting, list the questions that remain unanswered and request a written response or the relevant policy. You can also ask for reasonable time to review the offer. A professional employer should be able to explain the role, timeline, and terms without making clarity feel like a problem.", "Choose the offer that best fits your current priorities and your next professional step—not simply the offer with the largest initial number. Keep a private copy of the offer, job description, benefits summary, and your comparison notes."],
+      },
+    ],
+    sources: [
+      { label: "U.S. Bureau of Labor Statistics — Occupational Employment and Wage Statistics", url: "https://www.bls.gov/oes/" },
+      { label: "U.S. Department of Labor — benefits and leave", url: "https://www.dol.gov/general/topic/benefits-leave" },
+      { label: "SM VIA — Healthcare Salary Hub", url: "/salary" },
+    ],
+    note: "This guide is general career information, not legal, tax, insurance, licensing, or employment advice. Review your written offer and seek qualified advice for terms that affect your individual circumstances.",
+  },
+  {
     slug: "credentialing-questions-before-accepting-a-healthcare-role",
     category: "Job search",
     title: "Credentialing questions to ask before accepting a healthcare role",
