@@ -96,9 +96,14 @@ export default function ResourcesPage() {
                 International career pathways
               </h2>
               <p className="mt-3 leading-7 text-muted-foreground">
-                Planned guides will help candidates identify questions about
-                licensing, credential review, sponsorship, and employer support.
+                Start with a practical research framework for licensing,
+                credential review, sponsorship, and employer support.
               </p>
+              <Button asChild className="mt-6" variant="outline">
+                <Link href="/resources/visa-supporting-healthcare-roles">
+                  Explore the guide <ArrowRight />
+                </Link>
+              </Button>
             </div>
           </div>
         </section>
