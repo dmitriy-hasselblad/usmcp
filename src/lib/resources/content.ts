@@ -491,7 +491,12 @@ export const resourceGuides: ResourceGuide[] = [
       },
       {
         heading: "Separate licensing from immigration",
-        paragraphs: ["Professional authorization to practice is not the same as permission to work in the United States. Many healthcare professions are regulated by state boards, credentialing bodies, or both.", "Create a list of the requirements for the state and profession you are pursuing. Ask the employer what they can confirm, and use official licensing and immigration sources for decisions that affect your status."],
+        paragraphs: ["Professional authorization to practice is not the same as permission to work in the United States. Many healthcare professions are regulated by state boards, credentialing bodies, or both.", "Create a separate checklist for the state license or registration, education and credential review, any profession-specific screening, and the employer's immigration process. An employer can explain its own hiring process, but it cannot replace the authority responsible for your license or immigration decision."],
+      },
+      {
+        heading: "Use the pathway that matches your profession",
+        paragraphs: ["The relevant process is different for different healthcare professions. International medical graduates pursuing U.S. graduate medical education should use the current ECFMG certification requirements and Pathways information. Some healthcare professionals seeking an occupational visa may need a VisaScreen® credentials assessment.", "These resources do not decide whether a particular job will sponsor you, whether you are eligible for a state license, or when you may begin work. Review the current instructions for your profession and circumstances before paying a fee, submitting documents, relocating, or relying on an anticipated start date."],
+        checklist: ["Exact profession and intended U.S. state", "Current license or registration status", "Credential or certification pathway relevant to your profession", "Employer's written explanation of sponsorship and credentialing support"],
       },
       {
         heading: "Protect your information and your time",
@@ -501,6 +506,11 @@ export const resourceGuides: ResourceGuide[] = [
         heading: "Use qualified advice for personal decisions",
         paragraphs: ["This guide is general career information, not legal or immigration advice. Individual circumstances can change what options are available.", "For decisions about your immigration status or professional authorization, consult the relevant official agency or a qualified professional who can advise on your circumstances."],
       },
+    ],
+    sources: [
+      { label: "U.S. Citizenship and Immigration Services — Working in the United States", url: "https://www.uscis.gov/working-in-the-united-states" },
+      { label: "ECFMG Certification — international medical graduates", url: "https://pathways-data.ecfmg.org/certification/index.html" },
+      { label: "CGFNS / TruMerit — VisaScreen® Visa Credentials Assessment", url: "https://www.cgfns.org/services/certification/visascreen-visa-credentials-assessment/" },
     ],
     note: "SM VIA does not provide legal or immigration advice and does not guarantee that any employer will sponsor a candidate.",
   },
