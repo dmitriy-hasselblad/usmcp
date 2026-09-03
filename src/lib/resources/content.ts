@@ -479,6 +479,47 @@ export const resourceGuides: ResourceGuide[] = [
     ],
   },
   {
+    slug: "credentialing-questions-before-accepting-a-healthcare-role",
+    category: "Job search",
+    title: "Credentialing questions to ask before accepting a healthcare role",
+    description: "Use a practical checklist to clarify licensure, onboarding, verification, coverage, and a realistic start date before you rely on an offer.",
+    readTime: "7 min read",
+    image: {
+      src: "/images/resources/healthcare-credentialing-checklist.png",
+      alt: "Healthcare professional reviewing an offer and credentialing checklist",
+    },
+    introduction: "An offer is an important milestone, but it may not be the final step before you can begin work. Healthcare employers can have separate requirements for licensure, credentialing, payer enrollment, background review, onboarding, and role-specific training. Use these questions to understand what is confirmed, what is still pending, and who owns each next step.",
+    sections: [
+      {
+        heading: "Clarify the role and the proposed start date",
+        paragraphs: ["Ask for the role title, work location, employment type, reporting relationship, expected schedule, and offer terms in writing. Confirm whether the proposed start date is firm or depends on any credentialing, licensure, background, onboarding, or payer-enrollment milestones.", "A transparent employer should be able to explain the sequence of steps and the person coordinating them. If a requirement is still pending, ask what happens if it takes longer than expected and whether there is an alternative orientation or training start date."],
+        checklist: ["Written job title, location, schedule, and offer terms", "Whether the start date is conditional", "Credentialing contact and expected process", "What must be complete before patient-facing work begins"],
+      },
+      {
+        heading: "Confirm professional authorization and verification",
+        paragraphs: ["Ask which active license, registration, certification, or controlled-substance authorization applies to the role and state. Confirm whether the employer will verify it directly, what documentation it needs from you, and whether any credential needs renewal before the planned start date.", "For roles that require a formal credentialing file, ask which items must be obtained directly from the issuing source and which documents you should provide yourself. Do not rely on a résumé, a screenshot, or an informal email as proof of authority to practice."],
+      },
+      {
+        heading: "Ask what the credentialing review covers",
+        paragraphs: ["Credentialing can involve education and training verification, work history, references, malpractice coverage or claims history, and professional-history checks. The scope depends on the role, organization, payer arrangements, and applicable rules.", "Ask whether the employer expects you to provide a National Practitioner Data Bank Self-Query or another specific report. The NPDB allows healthcare professionals to review reports matched to their own information; it does not make your record public."],
+      },
+      {
+        heading: "Understand coverage, benefits, and obligations",
+        paragraphs: ["Ask whether malpractice insurance applies to your role, who provides it, and where you can review the coverage summary. If compensation includes sign-on, relocation, training, or tuition support, ask for the repayment conditions and any service commitment in writing.", "Review benefits, time off, call expectations, orientation pay, supervision, and any non-compete, non-solicitation, or restrictive-covenant language with appropriate professional advice before signing. Do not assume that a verbal explanation changes a written agreement."],
+      },
+      {
+        heading: "Keep a simple written record",
+        paragraphs: ["Save the offer, job description, credentialing requests, confirmations, and your own notes in a private folder. Record the person responsible for each outstanding item and the date you last followed up.", "This guide helps you ask better questions. It does not replace the employer's requirements, your licensing authority, or qualified legal, tax, or insurance advice for your circumstances."],
+      },
+    ],
+    sources: [
+      { label: "National Practitioner Data Bank — practitioner Self-Query", url: "https://www.npdb.hrsa.gov/pract/selfQueryBasics.jsp" },
+      { label: "HHS Office of Inspector General — exclusions program and LEIE", url: "https://www.oig.hhs.gov/exclusions/" },
+      { label: "SM VIA — healthcare licensure by state", url: "/resources/licensure" },
+    ],
+    note: "This is general career information, not legal, licensing, tax, insurance, or employment advice. Review your written offer and confirm your own requirements with the relevant employer, licensing authority, and qualified adviser.",
+  },
+  {
     slug: "visa-supporting-healthcare-roles",
     category: "International careers",
     title: "A practical introduction to visa-supporting healthcare roles",
