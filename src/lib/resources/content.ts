@@ -424,7 +424,7 @@ export const resourceGuides: ResourceGuide[] = [
     sections: [
       {
         heading: "Start with fixed dates",
-        paragraphs: ["Add the dates you cannot move first: examination windows, application-system milestones, letter deadlines, graduation requirements, and interview commitments. Then work backward to create your preparation windows.", "Keep program requirements in the same place as your timeline. A date without its related document or task is easy to overlook."],
+        paragraphs: ["Add the dates you cannot move first: examination windows, application-system milestones, letter deadlines, graduation requirements, and interview commitments. Then work backward to create your preparation windows.", "Use the current ERAS and NRMP applicant calendars as the source of truth for the active season. Dates can change from one application cycle to the next, so do not reuse an old personal timeline without checking the latest official calendar."],
         checklist: ["Exams and score-release windows", "Application opening and submission dates", "Letters of recommendation", "Program-specific documents", "Interview and travel or virtual-interview availability"],
       },
       {
@@ -440,6 +440,12 @@ export const resourceGuides: ResourceGuide[] = [
         paragraphs: ["Create a concise introduction to your experience and the kind of training environment you are seeking. Prepare thoughtful questions about supervision, patient population, call expectations, wellbeing, and professional development.", "For every interview, keep a short private reflection after the conversation. Over time, these notes make comparisons more accurate than relying on memory alone."],
       },
     ],
+    sources: [
+      { label: "AAMC — current ERAS timelines for residency applicants", url: "https://students-residents.aamc.org/eras-tools-and-worksheets-residency-applicants/2027-eras-timelines-residency-applicants" },
+      { label: "NRMP — Main Residency Match applicant calendar", url: "https://www.nrmp.org/match-calendars/" },
+      { label: "AAMC — Residency Explorer and application process", url: "https://students-residents.aamc.org/apply-smart-residency/understand-application-process" },
+    ],
+    note: "Residency requirements, program participation, and application deadlines can change by season and specialty. Confirm current details directly with ERAS, NRMP, and each program before submitting materials or making travel plans.",
   },
   {
     slug: "choosing-a-healthcare-employer",

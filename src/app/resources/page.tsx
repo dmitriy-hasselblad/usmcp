@@ -86,9 +86,14 @@ export default function ResourcesPage() {
                 Residency and training
               </h2>
               <p className="mt-3 leading-7 text-muted-foreground">
-                Planned resources will cover application organization, program
-                research, interview preparation, and major training milestones.
+                Build an application timeline, organize documents, compare
+                programs, and keep current ERAS and Match deadlines visible.
               </p>
+              <Button asChild className="mt-6" variant="outline">
+                <Link href="/resources/residency-application-timeline">
+                  Plan your timeline <ArrowRight />
+                </Link>
+              </Button>
             </div>
             <div className="rounded-2xl border border-border bg-white p-7">
               <Globe2 className="size-6 text-primary" />
