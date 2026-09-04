@@ -5,6 +5,7 @@ export type ResourceGuide = {
   description: string
   readTime: string
   image?: { src: string; alt: string }
+  audience?: "employer"
   introduction: string
   sections: { heading: string; paragraphs: string[]; checklist?: string[] }[]
   note?: string
@@ -518,6 +519,81 @@ export const resourceGuides: ResourceGuide[] = [
       { label: "SM VIA — Healthcare Salary Hub", url: "/salary" },
     ],
     note: "This guide is general career information, not legal, tax, insurance, licensing, or employment advice. Review your written offer and seek qualified advice for terms that affect your individual circumstances.",
+  },
+  {
+    slug: "preparing-for-a-healthcare-interview",
+    category: "Job search",
+    title: "Preparing for a healthcare interview",
+    description: "Prepare clear examples, practical questions, and a confident interview plan for your next healthcare role.",
+    readTime: "6 min read",
+    image: {
+      src: "/images/resources/healthcare-interview-preparation.png",
+      alt: "Healthcare professional preparing notes for an interview",
+    },
+    introduction: "A healthcare interview is your chance to help an employer understand how you work, not simply repeat your CV. The most useful preparation connects your experience to the role, shows how you approach patient care or professional collaboration, and gives you the information you need to evaluate the opportunity in return.",
+    sections: [
+      {
+        heading: "Read the role as a working brief",
+        paragraphs: ["Review the job title, required credentials, care setting, schedule, responsibilities, and preferred experience. Highlight the three to five requirements where your experience is strongest, then choose a specific example for each one.", "Research the organization through its public profile, website, and current job listing. Focus on facts you can connect to the role: its care setting, patient population, services, locations, or professional priorities. Avoid generic praise that could apply to any employer."],
+        checklist: ["Role requirements matched to your own experience", "Current license, credential, and certification details", "Three relevant work examples", "Organization, location, and care-setting research", "Practical interview time, format, and contact confirmed"],
+      },
+      {
+        heading: "Prepare evidence, not memorized answers",
+        paragraphs: ["Choose examples that show clinical judgment, communication, safety, teamwork, leadership, workflow improvement, education, or handling a difficult situation. Keep each story accurate and concise: explain the situation, your responsibility, what you did, and the outcome.", "Do not invent numbers or claim responsibility for work you cannot explain. A clear example of how you contributed to a team is stronger than a polished but vague answer."],
+      },
+      {
+        heading: "Expect healthcare-specific questions",
+        paragraphs: ["Be ready to discuss your scope of practice, patient population, care setting, documentation systems, certifications, and how you work within a multidisciplinary team. For roles that involve safety, explain how you escalate concerns, communicate handoffs, and use established processes.", "If you are changing specialty, location, or career direction, prepare a short explanation that connects your existing strengths to the new role. Keep the focus on what you can contribute and what you are actively doing to prepare."],
+      },
+      {
+        heading: "Bring questions that reveal the real role",
+        paragraphs: ["Interviews are also your opportunity to understand what daily work will be like. Ask about onboarding, staffing, schedule, patient volume or workload, support during difficult situations, success measures, and what the team needs from the new hire.", "If you receive an offer, request written details and use the same questions to compare it with other opportunities. An interview answer provides context; the written offer and applicable policies describe the terms you are being asked to accept."],
+        checklist: ["How is orientation structured?", "What does a typical shift or workweek look like?", "How are coverage and escalation handled?", "How will success be measured in the first 90 days?", "What are the next steps and expected timeline?"],
+      },
+      {
+        heading: "Finish professionally",
+        paragraphs: ["Confirm the next step before the conversation ends. Afterwards, send a concise thank-you message that names the role, reinforces one relevant strength, and thanks the interviewer for the information they shared.", "Keep your notes private and factual. They will help you prepare for a follow-up conversation and compare the opportunity thoughtfully if an offer arrives."],
+      },
+    ],
+    note: "This is general career information. Follow your profession's standards, the employer's stated process, and any confidentiality requirements that apply to your own experience.",
+  },
+  {
+    slug: "how-to-publish-a-trustworthy-healthcare-job",
+    category: "For employers",
+    audience: "employer",
+    title: "How to publish a trustworthy healthcare job",
+    description: "Give qualified healthcare professionals the information they need to understand a role and apply with confidence.",
+    readTime: "6 min read",
+    image: {
+      src: "/images/resources/trustworthy-healthcare-job-posting.png",
+      alt: "Healthcare hiring professional preparing a clear job listing",
+    },
+    introduction: "A strong healthcare job posting does more than attract applications. It helps the right professionals decide whether the role fits their credentials, practical circumstances, and career goals. Clear information reduces avoidable back-and-forth and builds trust before the first conversation.",
+    sections: [
+      {
+        heading: "Lead with the actual role",
+        paragraphs: ["Use the professional title candidates will recognize, then state the specialty, care setting, location, employment type, and whether the work is on-site, hybrid, or remote. Do not rely on an internal title alone if it does not clearly describe the work.", "Make the employer identifiable. Candidates should be able to see the organization name, public organization profile, and a credible point of contact or application path before providing sensitive information."],
+        checklist: ["Clear professional title and specialty", "Organization name and public profile", "City, state, and care setting", "Employment type and workplace expectations", "Accurate application route and contact"],
+      },
+      {
+        heading: "Separate required credentials from preferences",
+        paragraphs: ["State the active license, certification, education, clinical experience, and scope-of-practice requirements that are genuinely necessary for the role. Separate these from preferred qualifications so candidates can assess themselves accurately.", "If a role depends on credentialing, background review, privileging, immigration authorization, or another approval, say so clearly. Avoid suggesting that an application or offer itself authorizes a professional to practice."],
+      },
+      {
+        heading: "Describe the work candidates will actually do",
+        paragraphs: ["Explain the patient population, typical responsibilities, schedule, call or weekend expectations, reporting relationship, staffing model, and the technology or workflow that is relevant to the position. Write about the work itself before using broad statements about culture.", "For clinical roles, a concise description of coverage, orientation, and team support is often more valuable than a long list of generic responsibilities."],
+      },
+      {
+        heading: "Be transparent about compensation and conditions",
+        paragraphs: ["Publish a good-faith compensation range where appropriate, explain whether it is base pay or includes differentials, and name material benefits or professional-development support. If a bonus, relocation package, repayment obligation, or service commitment applies, explain the important conditions before a candidate invests significant time.", "Do not promise a start date that depends on outstanding credentialing or licensure. Explain the expected process and the person who can answer role-specific questions."],
+      },
+      {
+        heading: "Keep the listing current and respectful",
+        paragraphs: ["Update the role when the location, compensation, requirements, or application status changes. Close it when hiring is complete. An outdated listing wastes candidates' time and weakens trust in the organization.", "Use an accessible, professional tone and avoid language that excludes people for reasons unrelated to the work. Ensure that the recruiting team can respond to applicants and honor the privacy commitments described in your application process."],
+        checklist: ["Role reviewed by the hiring manager", "Requirements and compensation checked for accuracy", "Credentialing and start-date conditions described", "Application route tested", "Listing owner assigned for updates and closure"],
+      },
+    ],
+    note: "This is general hiring information, not legal, employment, licensing, privacy, or compliance advice. Confirm your own obligations with qualified advisers and the authorities that apply to your organization and location.",
   },
   {
     slug: "credentialing-questions-before-accepting-a-healthcare-role",
