@@ -94,6 +94,30 @@ test("private document and attachment downloads rely on RLS and never cache sign
   assert.match(documentsMigration, /user_id = \(select auth\.uid\(\)\)[\s\S]*applications\.resume_document_id = professional_documents\.id/)
 })
 
+test("organization ownership claims remain private and require administrator review", async () => {
+  const migration = await readProjectFile(
+    "supabase/migrations/20260831102225_employer_profile_claims.sql",
+  )
+  const claimPage = await readProjectFile("src/app/companies/[slug]/claim/page.tsx")
+  const claimActions = await readProjectFile("src/app/companies/[slug]/claim/actions.ts")
+  const adminActions = await readProjectFile("src/app/admin/organizations/actions.ts")
+
+  assert.match(migration, /create table public\.organization_claims/)
+  assert.match(migration, /alter table public\.organization_claims enable row level security/)
+  assert.match(migration, /Claimants can read their own organization claims[\s\S]*claimant_id = \(select auth\.uid\(\)\)/)
+  assert.match(migration, /Employer accounts can submit organization claims[\s\S]*profiles\.account_type = 'employer'/)
+  assert.match(migration, /private\.is_public_claimable_organization\(organization_id\)/)
+  assert.match(migration, /create or replace function private\.review_organization_claim/)
+  assert.match(migration, /not private\.is_platform_admin\(\)/)
+  assert.match(migration, /insert into public\.organization_members/)
+  assert.match(migration, /private\.record_admin_audit_event/)
+  assert.match(claimPage, /Claim \{organization\.name\}/)
+  assert.match(claimActions, /from\("organization_claims"\)\.insert/)
+  assert.match(claimActions, /confirmed = formData\.get\("confirmed"\) === "on"/)
+  assert.match(adminActions, /export async function reviewOrganizationClaim/)
+  assert.match(adminActions, /rpc\("review_organization_claim"/)
+})
+
 test("application document choices remain private until a candidate selects them", async () => {
   const migration = await readProjectFile(
     "supabase/migrations/20260828133000_application_document_selection.sql",
