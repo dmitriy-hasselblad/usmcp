@@ -17,6 +17,7 @@ type JobCardProps = {
 
 export function JobCard({ job, compact = false, layout = "card" }: JobCardProps) {
   const logoUrl = publicOrganizationLogoUrl(job.organizationLogoPath)
+  const isUsaJobs = job.source === "usajobs"
 
   if (layout === "row") {
     return (
@@ -42,7 +43,9 @@ export function JobCard({ job, compact = false, layout = "card" }: JobCardProps)
                 className={
                   job.isPlatformDemo
                     ? "border-amber-200 bg-amber-50 text-amber-900"
-                    : job.source === "live"
+                    : isUsaJobs
+                      ? "border-sky-200 bg-sky-50 text-sky-800"
+                      : job.source === "live"
                       ? "border-emerald-200 bg-emerald-50 text-emerald-800"
                       : undefined
                 }
@@ -50,6 +53,8 @@ export function JobCard({ job, compact = false, layout = "card" }: JobCardProps)
               >
                 {job.isPlatformDemo
                   ? "Platform demonstration"
+                  : isUsaJobs
+                    ? "Federal opportunity · USAJOBS"
                   : job.source === "live"
                     ? "Live opportunity"
                     : "Product preview"}
@@ -70,12 +75,7 @@ export function JobCard({ job, compact = false, layout = "card" }: JobCardProps)
               {job.specialty}
             </p>
             <h3 className="mt-1 text-xl font-semibold tracking-[-0.04em]">
-              <Link
-                className="transition-colors hover:text-primary"
-                href={`/jobs/${job.slug}`}
-              >
-                {job.title}
-              </Link>
+              <JobTitleLink job={job} />
             </h3>
             <p className="mt-1 text-sm text-muted-foreground">
               {job.source === "live" && job.employerSlug ? (
@@ -103,9 +103,7 @@ export function JobCard({ job, compact = false, layout = "card" }: JobCardProps)
           </div>
 
           <Button asChild className="h-10 min-w-32 rounded-xl" variant="outline">
-            <Link href={`/jobs/${job.slug}`}>
-              View role <ArrowRight />
-            </Link>
+            <JobLink job={job} />
           </Button>
         </CardContent>
       </Card>
@@ -134,7 +132,9 @@ export function JobCard({ job, compact = false, layout = "card" }: JobCardProps)
               className={
                 job.isPlatformDemo
                   ? "border-amber-200 bg-amber-50 text-amber-900"
-                  : job.source === "live"
+                  : isUsaJobs
+                    ? "border-sky-200 bg-sky-50 text-sky-800"
+                    : job.source === "live"
                   ? "border-emerald-200 bg-emerald-50 text-emerald-800"
                   : undefined
               }
@@ -142,6 +142,8 @@ export function JobCard({ job, compact = false, layout = "card" }: JobCardProps)
             >
               {job.isPlatformDemo
                 ? "Platform demonstration"
+                : isUsaJobs
+                  ? "Federal opportunity · USAJOBS"
                 : job.source === "live"
                   ? "Live opportunity"
                   : "Product preview"}
@@ -164,12 +166,7 @@ export function JobCard({ job, compact = false, layout = "card" }: JobCardProps)
           {job.specialty}
         </p>
         <h3 className="mt-2 text-xl font-semibold tracking-[-0.04em]">
-          <Link
-            className="transition-colors hover:text-primary"
-            href={`/jobs/${job.slug}`}
-          >
-            {job.title}
-          </Link>
+          <JobTitleLink job={job} />
         </h3>
         <p className="mt-1 text-sm text-muted-foreground">
           {job.source === "live" && job.employerSlug ? (
@@ -215,12 +212,47 @@ export function JobCard({ job, compact = false, layout = "card" }: JobCardProps)
         )}
 
         <Button asChild className="mt-6 h-10 w-full rounded-xl" variant="outline">
-          <Link href={`/jobs/${job.slug}`}>
-            View role <ArrowRight />
-          </Link>
+          <JobLink job={job} />
         </Button>
       </CardContent>
     </Card>
+  )
+}
+
+function JobTitleLink({ job }: { job: Job }) {
+  if (job.source === "usajobs" && job.externalUrl) {
+    return (
+      <a
+        className="transition-colors hover:text-primary"
+        href={job.externalUrl}
+        rel="noreferrer"
+        target="_blank"
+      >
+        {job.title}
+      </a>
+    )
+  }
+
+  return (
+    <Link className="transition-colors hover:text-primary" href={`/jobs/${job.slug}`}>
+      {job.title}
+    </Link>
+  )
+}
+
+function JobLink({ job }: { job: Job }) {
+  if (job.source === "usajobs" && job.externalUrl) {
+    return (
+      <a href={job.externalUrl} rel="noreferrer" target="_blank">
+        View & apply on USAJOBS <ArrowRight />
+      </a>
+    )
+  }
+
+  return (
+    <Link href={`/jobs/${job.slug}`}>
+      View role <ArrowRight />
+    </Link>
   )
 }
 
