@@ -50,6 +50,18 @@ export default async function Home() {
   return (
     <div className="min-h-dvh overflow-hidden bg-background">
       <SiteHeader />
+      <section className="border-y border-teal-900/15 bg-[linear-gradient(135deg,#08375e_0%,#0b5970_100%)] text-white">
+        <div className="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-5 sm:flex-row sm:items-center sm:justify-between lg:px-8">
+          <div className="flex max-w-3xl gap-3">
+            <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-teal-300/15 text-teal-100"><Handshake className="size-5" /></span>
+            <div>
+              <p className="text-xs font-bold tracking-[0.13em] text-teal-200 uppercase">For healthcare associations</p>
+              <p className="mt-1 text-sm leading-6 text-blue-100/90">Share career opportunities and practical resources with your community — at no cost during Early Access.</p>
+            </div>
+          </div>
+          <Button asChild className="shrink-0 bg-white text-primary hover:bg-blue-50"><Link href="/for-associations">Partner with SM VIA <ArrowRight /></Link></Button>
+        </div>
+      </section>
       <EarlyAccessNotice />
       <main id="top">
         <section className="relative isolate overflow-hidden border-b border-border bg-slate-100">
@@ -225,20 +237,6 @@ export default async function Home() {
                 </CardContent>
               </Card>
             )}
-          </div>
-        </section>
-
-        <section className="border-y border-teal-900/15 bg-[linear-gradient(135deg,#08375e_0%,#0b5970_100%)] text-white">
-          <div className="mx-auto flex max-w-7xl flex-col gap-6 px-5 py-10 sm:flex-row sm:items-center sm:justify-between lg:px-8 lg:py-12">
-            <div className="flex max-w-3xl gap-4">
-              <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-teal-300/15 text-teal-100"><Handshake className="size-5" /></span>
-              <div>
-                <p className="text-xs font-bold tracking-[0.13em] text-teal-200 uppercase">For healthcare associations</p>
-                <h2 className="mt-2 text-2xl font-semibold tracking-[-0.04em]">Give your members another way to move forward.</h2>
-                <p className="mt-2 text-sm leading-6 text-blue-100/85">Share career opportunities and practical resources with your community — at no cost during Early Access.</p>
-              </div>
-            </div>
-            <Button asChild className="shrink-0 bg-white text-primary hover:bg-blue-50"><Link href="/for-associations">Partner with SM VIA <ArrowRight /></Link></Button>
           </div>
         </section>
 
