@@ -17,7 +17,8 @@ and private resume and credential storage.
 ## Public routes
 
 - `/` - product homepage and career pathways
-- `/jobs` - searchable live and preview job listings
+- `/jobs` - searchable SM VIA employer listings, product previews, and current
+  federal healthcare opportunities supplied by USAJOBS
 - `/jobs/[slug]` - public live or preview job details
 - `/jobs/[slug]/apply` - protected application form for live jobs
 - `/companies` - preview healthcare organization profiles
@@ -52,6 +53,27 @@ disabled until the database schema has been applied and
 `NEXT_PUBLIC_AUTH_ENABLED=true` is configured. The included proxy refreshes
 sessions, while protected routes and actions validate identity again on the
 server.
+
+### Optional USAJOBS source
+
+SM VIA can include current federal healthcare opportunities from the official
+USAJOBS API. This source is read at request time and is cached for about one
+hour; it is not imported into Supabase and does not create applications,
+employer accounts, or candidate records in SM VIA.
+
+Configure these server-only Vercel/local environment variables when enabling
+the integration:
+
+```text
+USAJOBS_API_KEY=<official USAJOBS API key>
+USAJOBS_API_EMAIL=<email registered with USAJOBS API>
+```
+
+Never expose the API key in browser code, source control, screenshots, or
+documentation. USAJOBS cards are visibly attributed, retain the official data
+context, and link candidates to USAJOBS for the job detail and application.
+They do not use SM VIA's internal application, document, notification, or
+employer-workflow paths.
 
 ## Project layout
 
@@ -106,6 +128,15 @@ Professionals can also maintain structured education, training, experience,
 license, and certification records. These records remain private until the
 professional applies to an organization's job, and are removed from that
 organization's access if the application is withdrawn.
+
+Federal USAJOBS opportunities are a separate, read-only catalog source. They
+are combined with active SM VIA employer jobs only for public discovery: the
+jobs listing, homepage cards, profession pathways, and U.S. opportunity map.
+The state map, profession filters, state filters, and their URL links use the
+same source data and therefore reflect additions or removals on the next
+hourly refresh. This does not change the publication duration, renewal,
+expiration, moderation, visibility, or application workflow for jobs published
+by registered SM VIA organizations.
 
 ## Recommended next milestone
 

@@ -1,8 +1,50 @@
 # SM VIA Project Status
 
-Last updated: 2026-08-28
+Last updated: 2026-09-07
 
-## Latest handoff — 2026-08-28
+## Latest handoff — 2026-09-07
+
+PR #102 is merged and confirmed in Production. SM VIA now displays current
+federal healthcare opportunities from the official USAJOBS API alongside
+employer-published SM VIA jobs. USAJOBS roles are clearly marked as federal
+opportunities, link directly to USAJOBS for official details and applications,
+and refresh approximately hourly.
+
+The source is intentionally read-only and external: it does not write to
+Supabase, create internal applications, or alter any registered organization's
+publication duration, renewal, expiration, moderation, visibility, applicant,
+or notification flow. The homepage cards, U.S. opportunity map, profession and
+state filters, and career-path links all incorporate the federal source. State
+counts and filter results adjust on the following scheduled cache refresh as
+USAJOBS roles appear or close.
+
+The production filter regression reported by the product owner is fixed:
+`/jobs?profession=Physician` and the homepage Physicians career card now return
+both matching USAJOBS roles and matching SM VIA employer-published roles.
+
+USAJOBS integration configuration is server-only in Vercel under
+`USAJOBS_API_KEY` (Secret) and `USAJOBS_API_EMAIL`. Never disclose, commit, or
+duplicate the API key. The user configured both variables for Preview and
+Production. No database migration was required.
+
+Verification completed before merge:
+
+- `pnpm build`
+- `pnpm test:critical`
+- Vercel Preview
+- Production `/jobs?profession=Physician`, including USAJOBS attribution,
+  direct official application links, and mixed-source filter results
+- browser console error check (no errors)
+
+PR #102 merge commit: `2cdf4696bd7b0e8447d544fc48d3fd30b3791e57`.
+
+For the next session, begin from current `main` after a pull. Do not delete or
+add the untracked local diagnostic file `tmp-diagnostics-hiring-email.sql`; it
+is user-owned and unrelated to USAJOBS. Continue with the product owner's next
+priority rather than revisiting completed USAJOBS work unless a regression is
+reported.
+
+## Previous handoff — 2026-08-28
 
 The product owner confirmed that PR #85 has been merged and that its Production
 deployment is ready. The implementation delivers a branded transactional email
@@ -47,9 +89,9 @@ English.
 ## Production baseline
 
 - Production branch: `main`
-- Latest confirmed product Pull Request: PR #63
-- PR #63 merge commit: `4854a0c`
-- Current `main` commit at branch handoff: `4854a0c`
+- Latest confirmed product Pull Request: PR #102
+- PR #102 merge commit: `2cdf4696bd7b0e8447d544fc48d3fd30b3791e57`
+- Current `main` commit at branch handoff: `2cdf4696bd7b0e8447d544fc48d3fd30b3791e57`
 - Production deployment status at verification: `Ready`
 - Latest Production verification date: 2026-08-19
 
@@ -116,6 +158,9 @@ content is not copied from a profile and is private to its owner.
 - Auth-aware public header
 - Homepage and hero job search
 - Public jobs listing
+- Official USAJOBS federal healthcare opportunity source, with hourly refresh,
+  source attribution, direct USAJOBS application links, and shared profession /
+  state discovery behavior
 - Public job details
 - Complete Blueprint job filters with shareable URLs and empty states
 - Live Supabase-backed healthcare organization directory and profile pages
@@ -318,6 +363,10 @@ The following areas are not complete:
 - The domain `smvia.org` and `www.smvia.org` are connected to Production. The
   Production public site URL is configured as `https://smvia.org` in Vercel and
   Supabase Auth URL Configuration was updated on 2026-08-18.
+- USAJOBS federal healthcare aggregation is live through PR #102. It is a
+  server-only external source, not a Supabase data import. It refreshes about
+  hourly and does not affect organization-published job lifecycles or internal
+  applications.
 - Candidate job preferences, private saved searches, and in-product job-match
   alerts are in active development on `codex/aya-inspired-discovery`. The
   related migration was applied to Production on 2026-08-26; the feature still
