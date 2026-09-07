@@ -6,15 +6,17 @@ import type { Job } from "@/lib/marketing-data"
 const USAJOBS_SEARCH_URL = "https://data.usajobs.gov/api/Search"
 const USAJOBS_SOURCE_NAME = "USAJOBS"
 const HEALTHCARE_OCCUPATIONAL_SERIES = [
-  "0602", // Medical Officer
-  "0610", // Nurse
-  "0630", // Dietitian and Nutritionist
-  "0631", // Occupational Therapist
-  "0633", // Physical Therapist
-  "0644", // Clinical Laboratory Science
-  "0649", // Medical Instrument Technician
-  "0660", // Pharmacist
-]
+  { code: "0602", profession: "Physician", specialty: "Federal healthcare" }, // Medical Officer
+  { code: "0610", profession: "Registered Nurse", specialty: "Federal healthcare" }, // Nurse
+  { code: "0630", profession: "Other Healthcare Professional", specialty: "Nutrition and dietetics" }, // Dietitian and Nutritionist
+  { code: "0631", profession: "Occupational Therapist", specialty: "Federal healthcare" },
+  { code: "0633", profession: "Physical Therapist", specialty: "Federal healthcare" },
+  { code: "0644", profession: "Clinical Laboratory Scientist", specialty: "Federal healthcare" }, // Clinical Laboratory Science
+  { code: "0649", profession: "Radiologic Technologist", specialty: "Federal healthcare" }, // Medical Instrument Technician
+  { code: "0660", profession: "Pharmacist", specialty: "Federal healthcare" },
+] as const
+
+type HealthcareOccupationalSeries = (typeof HEALTHCARE_OCCUPATIONAL_SERIES)[number]
 
 type UsaJobsSearchResponse = {
   SearchResult?: {
@@ -25,6 +27,11 @@ type UsaJobsSearchResponse = {
 type UsaJobsSearchItem = {
   MatchedObjectId?: string
   MatchedObjectDescriptor?: UsaJobsDescriptor
+}
+
+type UsaJobsSearchResult = {
+  item: UsaJobsSearchItem
+  series: HealthcareOccupationalSeries
 }
 
 type UsaJobsDescriptor = {
@@ -85,7 +92,7 @@ export async function getUsaJobsHealthcareOpportunities(): Promise<
       HEALTHCARE_OCCUPATIONAL_SERIES.map(async (series) => {
         const query = new URLSearchParams({
           Fields: "Full",
-          JobCategoryCode: series,
+          JobCategoryCode: series.code,
           ResultsPerPage: "20",
           SortDirection: "Desc",
           SortField: "openingdate",
@@ -102,21 +109,23 @@ export async function getUsaJobsHealthcareOpportunities(): Promise<
 
         if (!response.ok) {
           console.error("USAJOBS healthcare search failed", {
-            series,
+            series: series.code,
             status: response.status,
           })
           return []
         }
 
         const payload = (await response.json()) as UsaJobsSearchResponse
-        return payload.SearchResult?.SearchResultItems ?? []
+        return (payload.SearchResult?.SearchResultItems ?? []).map((item) => ({
+          item,
+          series,
+        }))
       }),
     )
     const seen = new Set<string>()
 
-    const items = responses.flat()
+    const items = interleaveSeriesResults(responses)
     const opportunities = items
-      .flat()
       .map(toUsaJobsOpportunity)
       .filter((job): job is UsaJobsOpportunity => Boolean(job))
       .filter((job) => {
@@ -134,8 +143,9 @@ export async function getUsaJobsHealthcareOpportunities(): Promise<
 }
 
 function toUsaJobsOpportunity(
-  item: UsaJobsSearchItem,
+  result: UsaJobsSearchResult,
 ): UsaJobsOpportunity | undefined {
+  const { item, series } = result
   const descriptor = item.MatchedObjectDescriptor
   if (!descriptor) return undefined
 
@@ -167,7 +177,7 @@ function toUsaJobsOpportunity(
     location: descriptor.PositionLocationDisplay?.trim() || `${city}, ${stateCode}`,
     salary: formatSalary(salaryMin, salaryMax, salaryPeriod),
     type: descriptor.PositionSchedule?.[0]?.Name?.trim() || "Schedule not listed",
-    specialty: category || "Federal healthcare",
+    specialty: category || series.specialty,
     setting: "Federal opportunity",
     posted: formatPostedDate(publishedAt),
     summary:
@@ -178,7 +188,7 @@ function toUsaJobsOpportunity(
     source: "usajobs",
     sourceName: USAJOBS_SOURCE_NAME,
     externalUrl,
-    profession: category || "Healthcare",
+    profession: series.profession,
     experienceLevel: "Not listed",
     city,
     stateCode,
@@ -190,6 +200,20 @@ function toUsaJobsOpportunity(
     expiresAt,
     requiredSkills: [],
   }
+}
+
+function interleaveSeriesResults(responses: UsaJobsSearchResult[][]) {
+  const results: UsaJobsSearchResult[] = []
+  const maxResults = Math.max(0, ...responses.map((items) => items.length))
+
+  for (let index = 0; index < maxResults; index += 1) {
+    for (const items of responses) {
+      const item = items[index]
+      if (item) results.push(item)
+    }
+  }
+
+  return results
 }
 
 function stateCodeFromUsaJobs(value: string | undefined) {
