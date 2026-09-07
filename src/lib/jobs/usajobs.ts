@@ -1,5 +1,6 @@
 import "server-only"
 
+import { usStates } from "@/lib/auth/validation"
 import type { Job } from "@/lib/marketing-data"
 
 const USAJOBS_SEARCH_URL = "https://data.usajobs.gov/api/Search"
@@ -200,8 +201,15 @@ function toUsaJobsOpportunity(
 }
 
 function stateCodeFromUsaJobs(value: string | undefined) {
-  const match = value?.match(/^US-([A-Z]{2})$/)
-  return match?.[1]
+  const normalized = value?.trim()
+  if (!normalized) return undefined
+
+  const apiCode = normalized.match(/^US-([A-Z]{2})$/)?.[1]
+  if (apiCode) return apiCode
+
+  return usStates.find(
+    ([code, name]) => normalized === code || normalized.toLowerCase() === name.toLowerCase(),
+  )?.[0]
 }
 
 function parseSalary(value: string | undefined) {
