@@ -19,6 +19,7 @@ import {
 } from "@/lib/employer/constants"
 import { filterJobs, type JobFilters } from "@/lib/jobs/job-filters"
 import { getPublishedJobs } from "@/lib/jobs/public-jobs"
+import { getUsaJobsHealthcareOpportunities } from "@/lib/jobs/usajobs"
 import { featuredJobs } from "@/lib/marketing-data"
 import { socialImageMetadata } from "@/components/seo/social-card"
 
@@ -50,9 +51,13 @@ export default async function JobsPage({
 }) {
   const params = await searchParams
   const filters = getFilters(params)
-  const liveJobs = await getPublishedJobs()
+  const [liveJobs, usaJobs] = await Promise.all([
+    getPublishedJobs(),
+    getUsaJobsHealthcareOpportunities(),
+  ])
   const showPreviews = getString(params.preview) === "true"
-  const allJobs = showPreviews ? [...liveJobs, ...featuredJobs] : liveJobs
+  const activeJobs = [...usaJobs, ...liveJobs]
+  const allJobs = showPreviews ? [...activeJobs, ...featuredJobs] : activeJobs
   const jobs = filterJobs(allJobs, filters)
   const pageSize = 20
   const requestedPage = getPositiveInteger(params.page)
@@ -79,13 +84,13 @@ export default async function JobsPage({
               <div>
                 <Badge
                   className={
-                    liveJobs.length
+                    activeJobs.length
                       ? "border-emerald-200 bg-emerald-50 text-emerald-800"
                       : undefined
                   }
                   variant="outline"
                 >
-                  {liveJobs.length ? "Live marketplace beta" : "Product preview"}
+                  {activeJobs.length ? "Live opportunities" : "Product preview"}
                 </Badge>
                 <h1 className="mt-4 text-4xl font-semibold tracking-[-0.055em] sm:text-5xl">
                   Healthcare jobs
@@ -94,6 +99,12 @@ export default async function JobsPage({
                   Search U.S. healthcare opportunities by profession,
                   specialty, location, work setting, experience, and pay.
                 </p>
+                {usaJobs.length > 0 && (
+                  <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">
+                    Federal opportunities are supplied by USAJOBS and link to
+                    USAJOBS for official details and applications. Refreshed hourly.
+                  </p>
+                )}
                 <div className="mt-5 flex flex-wrap gap-3">
                   <Button asChild size="sm" variant={showPreviews ? "outline" : "default"}>
                     <Link href={showPreviews ? "/jobs" : "/jobs?preview=true"}>
