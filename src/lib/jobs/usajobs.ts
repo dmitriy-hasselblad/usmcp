@@ -97,10 +97,7 @@ export async function getUsaJobsHealthcareOpportunities(): Promise<
             Host: "data.usajobs.gov",
             "User-Agent": apiEmail,
           },
-          // Keep unsuccessful API attempts out of the data cache. Once the
-          // connection is confirmed, successful responses can be cached by
-          // USAJOBS and Vercel at their respective layers.
-          cache: "no-store",
+          next: { revalidate: 3600 },
         })
 
         if (!response.ok) {
@@ -128,11 +125,6 @@ export async function getUsaJobsHealthcareOpportunities(): Promise<
         return true
       })
       .slice(0, 50)
-
-    console.info("USAJOBS healthcare search completed", {
-      matchingItems: items.length,
-      publishedOpportunities: opportunities.length,
-    })
 
     return opportunities
   } catch (error) {
