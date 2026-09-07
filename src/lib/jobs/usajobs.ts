@@ -13,7 +13,7 @@ const HEALTHCARE_OCCUPATIONAL_SERIES = [
   "0644", // Clinical Laboratory Science
   "0649", // Medical Instrument Technician
   "0660", // Pharmacist
-].join(";")
+]
 
 type UsaJobsSearchResponse = {
   SearchResult?: {
@@ -79,32 +79,41 @@ export async function getUsaJobsHealthcareOpportunities(): Promise<
     return []
   }
 
-  const query = new URLSearchParams({
-    JobCategoryCode: HEALTHCARE_OCCUPATIONAL_SERIES,
-    ResultsPerPage: "50",
-    SortDirection: "Desc",
-    SortField: "openingdate",
-    WhoMayApply: "Public",
-  })
-
   try {
-    const response = await fetch(`${USAJOBS_SEARCH_URL}?${query.toString()}`, {
-      headers: {
-        "Authorization-Key": apiKey,
-        "User-Agent": apiEmail,
-      },
-      next: { revalidate: 3600 },
-    })
+    const responses = await Promise.all(
+      HEALTHCARE_OCCUPATIONAL_SERIES.map(async (series) => {
+        const query = new URLSearchParams({
+          Fields: "Full",
+          JobCategoryCode: series,
+          ResultsPerPage: "20",
+          SortDirection: "Desc",
+          SortField: "openingdate",
+          WhoMayApply: "Public",
+        })
+        const response = await fetch(`${USAJOBS_SEARCH_URL}?${query.toString()}`, {
+          headers: {
+            "Authorization-Key": apiKey,
+            "User-Agent": apiEmail,
+          },
+          next: { revalidate: 3600 },
+        })
 
-    if (!response.ok) {
-      console.error("USAJOBS healthcare search failed", response.status)
-      return []
-    }
+        if (!response.ok) {
+          console.error("USAJOBS healthcare search failed", {
+            series,
+            status: response.status,
+          })
+          return []
+        }
 
-    const payload = (await response.json()) as UsaJobsSearchResponse
+        const payload = (await response.json()) as UsaJobsSearchResponse
+        return payload.SearchResult?.SearchResultItems ?? []
+      }),
+    )
     const seen = new Set<string>()
 
-    return (payload.SearchResult?.SearchResultItems ?? [])
+    return responses
+      .flat()
       .map(toUsaJobsOpportunity)
       .filter((job): job is UsaJobsOpportunity => Boolean(job))
       .filter((job) => {
@@ -112,6 +121,7 @@ export async function getUsaJobsHealthcareOpportunities(): Promise<
         seen.add(job.slug)
         return true
       })
+      .slice(0, 50)
   } catch (error) {
     console.error("USAJOBS healthcare search request failed", error)
     return []
