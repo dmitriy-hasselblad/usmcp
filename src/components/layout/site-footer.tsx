@@ -10,6 +10,7 @@ const footerLinks = [
   { href: "/verification", label: "Verification" },
   { href: "/news", label: "News & insights" },
   { href: "/for-employers", label: "For employers" },
+  { href: "/for-associations", label: "For associations" },
   { href: "/resources", label: "Career resources" },
   { href: "/salary", label: "Salary hub" },
   { href: "/contact", label: "Contact" },
