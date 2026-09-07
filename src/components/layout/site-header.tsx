@@ -20,6 +20,7 @@ const navigation = [
   { href: "/news", label: "News & insights" },
   { href: "/resources", label: "Career resources" },
   { href: "/for-employers", label: "For employers" },
+  { href: "/for-associations", label: "For associations" },
 ]
 
 async function getHeaderIdentity() {
@@ -59,7 +60,7 @@ export async function SiteHeader() {
           <SmviaLogo />
         </Link>
 
-        <nav className="hidden items-center gap-6 lg:flex" aria-label="Primary navigation">
+        <nav className="hidden items-center gap-5 lg:flex" aria-label="Primary navigation">
           {navigation.map((item) => (
             <Link
               className="rounded-md text-sm font-medium text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
