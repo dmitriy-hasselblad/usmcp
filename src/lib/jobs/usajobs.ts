@@ -93,9 +93,13 @@ export async function getUsaJobsHealthcareOpportunities(): Promise<
         const response = await fetch(`${USAJOBS_SEARCH_URL}?${query.toString()}`, {
           headers: {
             "Authorization-Key": apiKey,
+            Host: "data.usajobs.gov",
             "User-Agent": apiEmail,
           },
-          next: { revalidate: 3600 },
+          // Keep unsuccessful API attempts out of the data cache. Once the
+          // connection is confirmed, successful responses can be cached by
+          // USAJOBS and Vercel at their respective layers.
+          cache: "no-store",
         })
 
         if (!response.ok) {
