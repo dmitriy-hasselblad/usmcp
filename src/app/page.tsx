@@ -27,6 +27,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { usStates } from "@/lib/auth/validation"
 import { healthcareTaxonomy } from "@/lib/healthcare-taxonomy"
 import { getPublishedJobs } from "@/lib/jobs/public-jobs"
+import { getUsaJobsHealthcareOpportunities } from "@/lib/jobs/usajobs"
 import { getPublicOrganizations } from "@/lib/organizations/public-organizations"
 import healthcareTeamImage from "../../public/images/ushce-healthcare-team.png"
 import { popularSpecialties } from "@/lib/marketing-data"
@@ -37,12 +38,14 @@ export const metadata: Metadata = {
 }
 
 export default async function Home() {
-  const [liveJobs, publicOrganizations] = await Promise.all([
+  const [liveJobs, usaJobs, publicOrganizations] = await Promise.all([
     getPublishedJobs(),
+    getUsaJobsHealthcareOpportunities(),
     getPublicOrganizations(),
   ])
-  const featuredMarketplaceJobs = liveJobs.slice(0, 8)
-  const stateSummaries = getStateSummaries(liveJobs)
+  const activeJobs = [...usaJobs, ...liveJobs]
+  const featuredMarketplaceJobs = activeJobs.slice(0, 8)
+  const stateSummaries = getStateSummaries(activeJobs)
   const featuredCareerResources = resourceGuides.filter(
     (resource) => resource.category !== "Licensure guides",
   )
@@ -141,7 +144,7 @@ export default async function Home() {
               <SectionHeading
                 eyebrow="Live opportunities"
                 title="Explore newly published healthcare opportunities."
-                description="Browse employer-published roles from organizations building their teams on SM VIA."
+                description="Browse employer-published roles on SM VIA and current federal healthcare opportunities from USAJOBS."
               />
               <Button asChild className="h-10 w-fit rounded-xl" variant="outline">
                 <Link href="/jobs">
@@ -175,7 +178,7 @@ export default async function Home() {
         </section>
 
         <section className="border-y border-border bg-slate-50">
-          <div className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-24"><SectionHeading eyebrow="U.S. opportunity map" title="Explore healthcare opportunities by state." description="Select a state to view opportunities. Live counts appear only where employers have published roles." /><UsOpportunityMap states={stateSummaries} /></div>
+          <div className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-24"><SectionHeading eyebrow="U.S. opportunity map" title="Explore healthcare opportunities by state." description="Select a state to view current SM VIA and federal USAJOBS opportunities." /><UsOpportunityMap states={stateSummaries} /></div>
         </section>
 
         <section className="border-b border-border bg-[linear-gradient(135deg,#e1f5ee_0%,#eaf5ff_54%,#f8fcff_100%)]">
@@ -311,7 +314,7 @@ export default async function Home() {
 }
 
 function getStateSummaries(
-  jobs: Awaited<ReturnType<typeof getPublishedJobs>>,
+  jobs: Array<Awaited<ReturnType<typeof getPublishedJobs>>[number]>,
 ) {
   const counts = new Map<string, number>()
   for (const job of jobs) {
@@ -327,5 +330,4 @@ function getStateSummaries(
       name: usStates.find(([stateCode]) => stateCode === code)?.[1] ?? code,
     }))
     .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, "en-US"))
-    .slice(0, 4)
 }

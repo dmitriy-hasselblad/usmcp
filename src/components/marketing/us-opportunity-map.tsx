@@ -50,8 +50,8 @@ export function UsOpportunityMap({ states }: { states: readonly StateSummary[] }
       <div className="rounded-2xl bg-slate-50 p-5">
         <MapPinned className="size-7 text-teal-700" />
         <p className="mt-5 text-xs font-bold tracking-[0.14em] text-primary uppercase">Live opportunity signal</p>
-        <p className="mt-2 text-xl font-semibold tracking-[-0.04em]">{states.length ? "Explore where employers are hiring." : "Search any U.S. state."}</p>
-        <p className="mt-3 text-sm leading-6 text-muted-foreground">{states.length ? "Teal states have published opportunities. Select any state to refine your search." : "State availability will light up as employers publish opportunities."}</p>
+        <p className="mt-2 text-xl font-semibold tracking-[-0.04em]">{states.length ? "Explore where healthcare teams are hiring." : "Search any U.S. state."}</p>
+        <p className="mt-3 text-sm leading-6 text-muted-foreground">{states.length ? "Teal states have SM VIA or USAJOBS opportunities. Select any state to refine your search." : "State availability will light up as opportunities are published."}</p>
         <Link className="mt-6 inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline" href="/jobs">Browse all roles <ArrowRight className="size-4" /></Link>
       </div>
     </div>
