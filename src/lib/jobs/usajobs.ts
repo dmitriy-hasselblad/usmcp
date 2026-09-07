@@ -116,7 +116,8 @@ export async function getUsaJobsHealthcareOpportunities(): Promise<
     )
     const seen = new Set<string>()
 
-    return responses
+    const items = responses.flat()
+    const opportunities = items
       .flat()
       .map(toUsaJobsOpportunity)
       .filter((job): job is UsaJobsOpportunity => Boolean(job))
@@ -126,6 +127,13 @@ export async function getUsaJobsHealthcareOpportunities(): Promise<
         return true
       })
       .slice(0, 50)
+
+    console.info("USAJOBS healthcare search completed", {
+      matchingItems: items.length,
+      publishedOpportunities: opportunities.length,
+    })
+
+    return opportunities
   } catch (error) {
     console.error("USAJOBS healthcare search request failed", error)
     return []
