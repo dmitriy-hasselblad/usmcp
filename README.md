@@ -2,10 +2,11 @@
 
 The production foundation for a U.S.-focused healthcare career platform. The
 current MVP includes a responsive public website, live and product-preview job
-search, public job-detail pages, organization and employer sections, career
-resources, role-aware Supabase authentication, and a data-backed employer
-workspace with secure candidate applications, professional profile editing,
-and private resume and credential storage.
+search, official federal opportunities from USAJOBS, public job-detail pages,
+organization and employer sections, career resources, role-aware Supabase
+authentication, and a data-backed employer workspace with secure candidate
+applications, professional profile editing, and private resume and credential
+storage.
 
 ## Stack
 
@@ -23,6 +24,9 @@ and private resume and credential storage.
 - `/companies` - preview healthcare organization profiles
 - `/for-employers` - employer product introduction
 - `/resources` - career resource library preview
+- `/resources/licensure` - all 50 state licensure guides and official sources
+- `/salary` - Salary Hub with U.S. wage benchmarks by profession and state
+- `/for-associations` - Early Access information for healthcare associations
 - `/sign-in` and `/sign-up` - Supabase email and password access
 - `/forgot-password` and `/update-password` - account recovery
 - `/onboarding` - protected role-aware profile setup
@@ -39,6 +43,31 @@ and private resume and credential storage.
 All public interface content is written in English for a U.S. audience. Sample
 jobs and organizations are clearly labeled as product-preview content and are
 not presented as live or verified records.
+
+## Current public opportunity data
+
+The public marketplace combines published SM VIA roles with current official
+federal opportunities from USAJOBS. Federal roles remain external
+opportunities: each role identifies USAJOBS as its source and sends the
+candidate to the official USAJOBS application page. They do not enter the SM
+VIA application workflow.
+
+The homepage uses this combined active-role set for its featured opportunities,
+profession links, search results, and interactive U.S. opportunity map. The map
+uses a real state outline, shows a current count for each state with active
+roles, and each state opens the matching `/jobs?state=XX` search. Counts go up
+or down when an SM VIA role is published, paused, closed, or expires, and when
+the next USAJOBS refresh returns a changed federal listing set.
+
+USAJOBS data is fetched server-side and refreshed hourly. Configure these only
+as server-side Vercel secrets in Preview and Production:
+
+- `USAJOBS_API_KEY`
+- `USAJOBS_API_EMAIL`
+
+If either value is absent or the official source is temporarily unavailable,
+SM VIA continues to show its own published roles without exposing an error or
+blocking the marketplace.
 
 ## Local setup
 
