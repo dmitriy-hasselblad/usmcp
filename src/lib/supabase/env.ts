@@ -28,14 +28,23 @@ export function getSupabaseCredentials() {
 }
 
 export function getSiteUrl() {
+  const previewDeploymentUrl = process.env.NEXT_PUBLIC_VERCEL_URL
+  const isStaging = process.env.NEXT_PUBLIC_IS_STAGING === "true"
   const configuredUrl = process.env.NEXT_PUBLIC_SITE_URL
 
-  if (!configuredUrl) {
+  // Preview deployments should send confirmation and recovery links back to
+  // their own deployment, never to the public site.
+  const preferredUrl =
+    isStaging && previewDeploymentUrl
+      ? `https://${previewDeploymentUrl}`
+      : configuredUrl
+
+  if (!preferredUrl) {
     return "http://localhost:3000"
   }
 
   try {
-    return new URL(configuredUrl).origin
+    return new URL(preferredUrl).origin
   } catch {
     throw new Error(
       "NEXT_PUBLIC_SITE_URL must be a valid absolute URL, for example https://ushce.com.",
