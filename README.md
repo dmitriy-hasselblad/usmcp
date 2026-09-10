@@ -26,6 +26,7 @@ storage.
 - `/resources` - career resource library preview
 - `/resources/licensure` - all 50 state licensure guides and official sources
 - `/salary` - Salary Hub with U.S. wage benchmarks by profession and state
+- `/salary/[profession]/[state]` - state-specific wage benchmarks, licensure planning, live opportunities, employer links, and related professions
 - `/for-associations` - Early Access information for healthcare associations
 - `/sign-in` and `/sign-up` - Supabase email and password access
 - `/forgot-password` and `/update-password` - account recovery
@@ -68,6 +69,32 @@ as server-side Vercel secrets in Preview and Production:
 If either value is absent or the official source is temporarily unavailable,
 SM VIA continues to show its own published roles without exposing an error or
 blocking the marketplace.
+
+## Salary pages and discovery
+
+State salary pages use the relevant U.S. Bureau of Labor Statistics wage
+benchmark and place it in local career context: comparison with the national
+median, a direct link to the applicable state licensure guide, current SM VIA
+and USAJOBS opportunities in that state, employer pages when matching live
+roles exist, and related professions with their own state benchmarks. A role is
+never invented to fill a section; empty sections make the next relevant search
+or organization directory available instead.
+
+The sitemap includes the Salary Hub, the 50-state licensure resource library,
+individual licensure guides, association information, and salary URLs only
+where a state wage estimate exists. This avoids asking search engines to index
+thin salary pages without underlying data.
+
+## Planned external opportunity sources
+
+USAJOBS is the active external source. The next planned integration is the U.S.
+Department of Labor's CareerOneStop Jobs API, followed by a curated set of
+official employer career boards using Greenhouse and Lever. Each source will be
+implemented as a distinct external-opportunity adapter, retain clear source
+attribution, link candidates to the original employer application page, and
+remove expired or closed listings during scheduled refreshes. Public ATS APIs
+will be connected only for identified employers and only after their applicable
+terms and technical requirements are reviewed; no broad scraping is planned.
 
 ## Local setup
 
@@ -138,5 +165,8 @@ organization's access if the application is withdrawn.
 
 ## Recommended next milestone
 
-Add employer verification and interview scheduling, followed by notifications
-and candidate search.
+Request CareerOneStop API access, validate its current usage and attribution
+requirements, and implement it as the next official external opportunity
+source. Then add a small, curated Greenhouse/Lever healthcare-employer pilot.
+Employer verification, interview scheduling, notifications, and candidate
+search remain separate product milestones.
