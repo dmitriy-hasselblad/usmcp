@@ -119,6 +119,44 @@ builds it automatically. Follow `supabase/README.md`, apply the schema, configur
 the public environment variables, and enable authentication only after the
 database checks pass.
 
+### Isolated Preview / staging environment
+
+Preview deployments use a separate Supabase project (`smvia-staging`). This lets
+the team record demo employer accounts, candidate profiles, test jobs,
+applications, messages, organization logos, and uploaded documents without
+creating or changing any production records. The production Supabase project and
+the public `smvia.org` deployment remain separate.
+
+Configure the following values in Vercel with the **Preview** environment scope:
+
+- `NEXT_PUBLIC_SUPABASE_URL` — the staging Supabase project URL
+- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` — the staging project's publishable key
+- `NEXT_PUBLIC_IS_STAGING=true`
+
+Keep the production Supabase URL and publishable key scoped only to
+**Production**. The staging Supabase Authentication URL configuration must allow
+`https://*-dmitriy-hasselblads-projects.vercel.app/**` so email confirmation and
+password-recovery links return to the deployment where the user started.
+
+`NEXT_PUBLIC_VERCEL_URL` is supplied by Vercel to Preview deployments. The app
+uses it when `NEXT_PUBLIC_IS_STAGING=true`, which keeps confirmation and recovery
+flows inside the same preview instead of sending test users to the public site.
+
+The staging database is intentionally empty when created. Apply the consolidated
+schema and the safe, applicable migrations from `supabase/migrations/` before
+testing. Do not copy production users, applications, documents, or organization
+data into staging. The administrative transfer migration is intentionally
+excluded from a shared demo environment because it assigns privileged access to
+a specific account.
+
+Official USAJOBS opportunities can still appear in Preview because they are
+fetched from the public federal source at request time; they are external links,
+not records stored in either Supabase database.
+
+For preview video interviews, configure a dedicated Preview LiveKit test project
+and add its server credentials only to the Preview environment. Do not reuse or
+expose production media credentials in a shared demo environment.
+
 ## Current application milestone
 
 Employer accounts can manage their organization, create job drafts, and move
