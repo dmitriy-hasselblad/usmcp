@@ -29,6 +29,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     },
     {
+      url: getAbsoluteUrl("/for-associations"),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
       url: getAbsoluteUrl("/resources"),
       changeFrequency: "monthly",
       priority: 0.6,
@@ -77,11 +82,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }))
 
   const salaryPages = salaryOccupations.flatMap((occupation) =>
-    salaryStates.map((state) => ({
-      url: getAbsoluteUrl(`/salary/${occupation.slug}/${state.code.toLowerCase()}`),
-      changeFrequency: "monthly" as const,
-      priority: 0.6,
-    })),
+    salaryStates
+      .filter((state) => Boolean(occupation.stateMedianAnnual[state.code]))
+      .map((state) => ({
+        url: getAbsoluteUrl(`/salary/${occupation.slug}/${state.code.toLowerCase()}`),
+        changeFrequency: "monthly" as const,
+        priority: 0.6,
+      })),
   )
 
   return [
