@@ -107,7 +107,7 @@ export function UsOpportunityMap({ states }: { states: readonly StateSummary[] }
             })}
           </svg>
         </div>
-        <p className="mt-3 text-xs leading-5 text-muted-foreground">Select any state to refine the jobs directory. Count markers include matching SM VIA and USAJOBS opportunities.</p>
+        <p className="mt-3 text-xs leading-5 text-muted-foreground">Select any state to refine the jobs directory. Count markers include matching SM VIA, USAJOBS, and official employer opportunities.</p>
       </div>
 
       <div className="rounded-2xl bg-slate-50 p-5">

@@ -27,6 +27,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { usStates } from "@/lib/auth/validation"
 import { healthcareTaxonomy } from "@/lib/healthcare-taxonomy"
 import { getPublishedJobs } from "@/lib/jobs/public-jobs"
+import { getOfficialAtsHealthcareOpportunities } from "@/lib/jobs/official-ats"
 import { getUsaJobsHealthcareOpportunities } from "@/lib/jobs/usajobs"
 import { getPublicOrganizations } from "@/lib/organizations/public-organizations"
 import healthcareTeamImage from "../../public/images/ushce-healthcare-team.png"
@@ -38,12 +39,19 @@ export const metadata: Metadata = {
 }
 
 export default async function Home() {
-  const [liveJobs, usaJobs, publicOrganizations] = await Promise.all([
+  const [liveJobs, usaJobs, officialAtsJobs, publicOrganizations] = await Promise.all([
     getPublishedJobs(),
     getUsaJobsHealthcareOpportunities(),
+    getOfficialAtsHealthcareOpportunities(),
     getPublicOrganizations(),
   ])
-  const activeJobs = [...usaJobs, ...liveJobs]
+  const activeJobs = [
+    ...usaJobs.slice(0, 3),
+    ...officialAtsJobs.slice(0, 3),
+    ...liveJobs,
+    ...usaJobs.slice(3),
+    ...officialAtsJobs.slice(3),
+  ]
   const featuredMarketplaceJobs = activeJobs.slice(0, 8)
   const stateSummaries = getStateSummaries(activeJobs)
   const featuredCareerResources = resourceGuides.filter(
@@ -144,7 +152,7 @@ export default async function Home() {
               <SectionHeading
                 eyebrow="Live opportunities"
                 title="Explore newly published healthcare opportunities."
-                description="Browse employer-published roles on SM VIA and current federal healthcare opportunities from USAJOBS."
+                description="Browse employer-published roles on SM VIA, current federal healthcare opportunities from USAJOBS, and selected official employer career boards."
               />
               <Button asChild className="h-10 w-fit rounded-xl" variant="outline">
                 <Link href="/jobs">
@@ -178,7 +186,7 @@ export default async function Home() {
         </section>
 
         <section className="border-y border-border bg-slate-50">
-          <div className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-24"><SectionHeading eyebrow="U.S. opportunity map" title="Explore healthcare opportunities by state." description="Select a state to view current SM VIA and federal USAJOBS opportunities." /><UsOpportunityMap states={stateSummaries} /></div>
+          <div className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-24"><SectionHeading eyebrow="U.S. opportunity map" title="Explore healthcare opportunities by state." description="Select a state to view current SM VIA, federal USAJOBS, and official employer opportunities." /><UsOpportunityMap states={stateSummaries} /></div>
         </section>
 
         <section className="border-b border-border bg-[linear-gradient(135deg,#e1f5ee_0%,#eaf5ff_54%,#f8fcff_100%)]">

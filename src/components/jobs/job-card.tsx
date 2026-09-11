@@ -18,6 +18,8 @@ type JobCardProps = {
 export function JobCard({ job, compact = false, layout = "card" }: JobCardProps) {
   const logoUrl = publicOrganizationLogoUrl(job.organizationLogoPath)
   const isUsaJobs = job.source === "usajobs"
+  const isOfficialAtsOpportunity = job.source === "greenhouse" || job.source === "lever" || job.source === "ashby"
+  const isExternalOpportunity = isUsaJobs || isOfficialAtsOpportunity
 
   if (layout === "row") {
     return (
@@ -43,8 +45,8 @@ export function JobCard({ job, compact = false, layout = "card" }: JobCardProps)
                 className={
                   job.isPlatformDemo
                     ? "border-amber-200 bg-amber-50 text-amber-900"
-                    : isUsaJobs
-                      ? "border-sky-200 bg-sky-50 text-sky-800"
+                    : isExternalOpportunity
+                      ? "max-w-full whitespace-normal text-right leading-5 border-sky-200 bg-sky-50 text-sky-800"
                       : job.source === "live"
                       ? "border-emerald-200 bg-emerald-50 text-emerald-800"
                       : undefined
@@ -55,6 +57,8 @@ export function JobCard({ job, compact = false, layout = "card" }: JobCardProps)
                   ? "Platform demonstration"
                   : isUsaJobs
                     ? "Federal opportunity · USAJOBS"
+                  : isOfficialAtsOpportunity
+                    ? `Official employer · ${officialAtsProviderName(job.source)}`
                   : job.source === "live"
                     ? "Live opportunity"
                     : "Product preview"}
@@ -132,8 +136,8 @@ export function JobCard({ job, compact = false, layout = "card" }: JobCardProps)
               className={
                 job.isPlatformDemo
                   ? "border-amber-200 bg-amber-50 text-amber-900"
-                  : isUsaJobs
-                    ? "border-sky-200 bg-sky-50 text-sky-800"
+                  : isExternalOpportunity
+                    ? "max-w-full whitespace-normal text-right leading-5 border-sky-200 bg-sky-50 text-sky-800"
                     : job.source === "live"
                   ? "border-emerald-200 bg-emerald-50 text-emerald-800"
                   : undefined
@@ -144,6 +148,8 @@ export function JobCard({ job, compact = false, layout = "card" }: JobCardProps)
                 ? "Platform demonstration"
                 : isUsaJobs
                   ? "Federal opportunity · USAJOBS"
+                : isOfficialAtsOpportunity
+                  ? `Official employer · ${officialAtsProviderName(job.source)}`
                 : job.source === "live"
                   ? "Live opportunity"
                   : "Product preview"}
@@ -220,7 +226,7 @@ export function JobCard({ job, compact = false, layout = "card" }: JobCardProps)
 }
 
 function JobTitleLink({ job }: { job: Job }) {
-  if (job.source === "usajobs" && job.externalUrl) {
+  if ((job.source === "usajobs" || job.source === "greenhouse" || job.source === "lever" || job.source === "ashby") && job.externalUrl) {
     return (
       <a
         className="transition-colors hover:text-primary"
@@ -241,10 +247,10 @@ function JobTitleLink({ job }: { job: Job }) {
 }
 
 function JobLink({ job }: { job: Job }) {
-  if (job.source === "usajobs" && job.externalUrl) {
+  if ((job.source === "usajobs" || job.source === "greenhouse" || job.source === "lever" || job.source === "ashby") && job.externalUrl) {
     return (
       <a href={job.externalUrl} rel="noreferrer" target="_blank">
-        View & apply on USAJOBS <ArrowRight />
+        View & apply on {job.source === "usajobs" ? "USAJOBS" : job.sourceName ?? "employer site"} <ArrowRight />
       </a>
     )
   }
@@ -254,6 +260,12 @@ function JobLink({ job }: { job: Job }) {
       View role <ArrowRight />
     </Link>
   )
+}
+
+function officialAtsProviderName(source: Job["source"]) {
+  if (source === "greenhouse") return "Greenhouse"
+  if (source === "lever") return "Lever"
+  return "Ashby"
 }
 
 function formatOpenPositions(openPositions: number) {

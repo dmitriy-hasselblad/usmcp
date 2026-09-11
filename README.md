@@ -48,17 +48,19 @@ not presented as live or verified records.
 ## Current public opportunity data
 
 The public marketplace combines published SM VIA roles with current official
-federal opportunities from USAJOBS. Federal roles remain external
-opportunities: each role identifies USAJOBS as its source and sends the
-candidate to the official USAJOBS application page. They do not enter the SM
-VIA application workflow.
+federal opportunities from USAJOBS and a small curated group of official
+Greenhouse, Lever, and Ashby employer boards. Every external role retains a clear
+source label and sends the candidate to the original employer or USAJOBS page
+for complete details and application. External roles never enter the SM VIA
+application workflow.
 
 The homepage uses this combined active-role set for its featured opportunities,
 profession links, search results, and interactive U.S. opportunity map. The map
 uses a real state outline, shows a current count for each state with active
 roles, and each state opens the matching `/jobs?state=XX` search. Counts go up
 or down when an SM VIA role is published, paused, closed, or expires, and when
-the next USAJOBS refresh returns a changed federal listing set.
+the next source refresh returns a changed listing set. National or remote-only
+roles remain searchable but do not inflate a particular state's map count.
 
 USAJOBS data is fetched server-side and refreshed hourly. Configure these only
 as server-side Vercel secrets in Preview and Production:
@@ -66,9 +68,10 @@ as server-side Vercel secrets in Preview and Production:
 - `USAJOBS_API_KEY`
 - `USAJOBS_API_EMAIL`
 
-If either value is absent or the official source is temporarily unavailable,
-SM VIA continues to show its own published roles without exposing an error or
-blocking the marketplace.
+If either USAJOBS value is absent, or an official source is temporarily
+unavailable, SM VIA continues to show its own published roles and the remaining
+sources without exposing an error or blocking the marketplace. Greenhouse, Lever,
+and Ashby public boards do not require SM VIA credentials.
 
 ## Salary pages and discovery
 
@@ -87,14 +90,14 @@ thin salary pages without underlying data.
 
 ## Planned external opportunity sources
 
-USAJOBS is the active external source. The next planned integration is the U.S.
-Department of Labor's CareerOneStop Jobs API, followed by a curated set of
-official employer career boards using Greenhouse and Lever. Each source will be
-implemented as a distinct external-opportunity adapter, retain clear source
-attribution, link candidates to the original employer application page, and
-remove expired or closed listings during scheduled refreshes. Public ATS APIs
-will be connected only for identified employers and only after their applicable
-terms and technical requirements are reviewed; no broad scraping is planned.
+USAJOBS, Greenhouse, Lever, and Ashby are active external sources. The ATS pilot
+uses identified healthcare employers only: Habitat Health, Heartbeat Health, Lyra
+Health, Onos Health, Interra Health, and Citizen Health. Each source is a distinct
+external-opportunity adapter, retains clear attribution, links candidates to
+the original employer application page, and removes a listing automatically
+when it no longer appears in the next refresh. Public ATS APIs are connected
+only for identified employers and only after their applicable terms and
+technical behavior have been reviewed; no broad scraping is planned.
 
 ## Local setup
 
@@ -165,8 +168,9 @@ organization's access if the application is withdrawn.
 
 ## Recommended next milestone
 
-Request CareerOneStop API access, validate its current usage and attribution
-requirements, and implement it as the next official external opportunity
-source. Then add a small, curated Greenhouse/Lever healthcare-employer pilot.
-Employer verification, interview scheduling, notifications, and candidate
-search remain separate product milestones.
+Expand the curated Greenhouse/Lever/Ashby healthcare-employer pilot only after
+checking each prospective board's current public behavior and attribution
+requirements. CareerOneStop remains a possible later source once its access is
+available from the operating region. Employer verification, interview
+scheduling, notifications, and candidate search remain separate product
+milestones.
