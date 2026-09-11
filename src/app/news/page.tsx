@@ -69,30 +69,30 @@ export default async function PublicNewsPage({
   const organizationPosts = remainingPosts.filter((post) => !isSmviaCareerGuide(post))
 
   return (
-    <div className="min-h-dvh bg-muted/25">
+    <div className="min-h-dvh bg-[#f4f8fb] text-slate-950">
       <SiteHeader />
       <main>
-        <section className="border-b bg-[linear-gradient(135deg,#f8fbff_0%,#ffffff_48%,#edf8f6_100%)]">
-          <div className="mx-auto grid max-w-7xl gap-10 px-5 py-12 lg:grid-cols-[minmax(0,1fr)_25rem] lg:items-center lg:px-8 lg:py-16">
-            <div>
-              <Badge variant="outline">News &amp; insights</Badge>
-              <h1 className="mt-5 max-w-3xl text-4xl font-semibold tracking-[-0.06em] sm:text-5xl">
-                Career intelligence for U.S. healthcare.
+        <section className="border-b border-slate-200 bg-white">
+          <div className="mx-auto grid max-w-7xl gap-10 px-5 py-14 lg:grid-cols-[minmax(0,1fr)_32rem] lg:items-center lg:px-8 lg:py-20">
+            <div className="max-w-3xl">
+              <p className="text-xs font-bold tracking-[0.18em] text-primary uppercase">News &amp; insights</p>
+              <h1 className="mt-5 text-5xl font-semibold tracking-[-0.075em] sm:text-6xl lg:text-7xl">
+                Stories for the next move in healthcare.
               </h1>
-              <p className="mt-5 max-w-2xl text-lg leading-8 text-muted-foreground">
-                Practical guidance for career decisions, licensure, salaries,
-                employers, and the healthcare job market.
+              <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600">
+                Career guidance, licensure context, salary clarity, and practical
+                perspectives for U.S. healthcare professionals.
               </p>
-              <div className="mt-7 flex flex-wrap gap-2" aria-label="Browse article types">
-                <Button asChild size="sm"><Link href="/news">All</Link></Button>
-                <Button asChild size="sm" variant="outline"><Link href="#smvia-career-guides">SM VIA Career Guides</Link></Button>
-                <Button asChild size="sm" variant="outline"><Link href="#organization-updates">Organization updates</Link></Button>
+              <div className="mt-8 flex flex-wrap gap-2" aria-label="Browse article types">
+                <Button asChild className="rounded-full" size="sm"><Link href="/news">All insights</Link></Button>
+                <Button asChild className="rounded-full" size="sm" variant="outline"><Link href="#smvia-career-guides">Career guides</Link></Button>
+                <Button asChild className="rounded-full" size="sm" variant="outline"><Link href="#organization-updates">Organization updates</Link></Button>
               </div>
             </div>
             {featuredPost ? (
-              <Card className="overflow-hidden bg-white shadow-sm">
+              <Card className="overflow-hidden rounded-[1.75rem] border-slate-200 bg-white shadow-[0_18px_45px_rgba(15,23,42,0.10)]">
                 {newsCoverSrc(featuredPost) && (
-                  <div className="relative aspect-[16/8] bg-muted">
+                  <div className="relative aspect-[16/9] bg-muted">
                     <Image
                       alt=""
                       className="object-cover"
@@ -103,18 +103,18 @@ export default async function PublicNewsPage({
                     />
                   </div>
                 )}
-                <CardContent className="p-6">
-                  <p className="text-xs font-bold tracking-[0.14em] text-primary uppercase">
+                <CardContent className="p-7">
+                  <p className="text-xs font-bold tracking-[0.16em] text-primary uppercase">
                     {isSmviaCareerGuide(featuredPost)
                       ? "SM VIA Career Guide"
                       : "Featured insight"}
                   </p>
                   <p className="mt-2 text-xs text-muted-foreground">Published {formatNewsDate(featuredPost.published_at)}</p>
-                  <h2 className="mt-3 text-2xl font-semibold tracking-[-0.04em]">
+                  <h2 className="mt-3 text-3xl font-semibold leading-tight tracking-[-0.055em]">
                     <Link className="hover:text-primary" href={`/news/${featuredPost.slug}`}>{featuredPost.title}</Link>
                   </h2>
                   <p className="mt-3 line-clamp-3 text-sm leading-6 text-muted-foreground">{featuredPost.excerpt}</p>
-                  <Link className="mt-5 inline-flex text-sm font-semibold text-primary hover:underline" href={`/news/${featuredPost.slug}`}>Read article →</Link>
+                  <Link className="mt-6 inline-flex text-sm font-semibold text-primary hover:underline" href={`/news/${featuredPost.slug}`}>Read article →</Link>
                 </CardContent>
               </Card>
             ) : (
@@ -123,10 +123,9 @@ export default async function PublicNewsPage({
           </div>
         </section>
 
-        <section className="mx-auto max-w-7xl px-5 py-10 lg:px-8 lg:py-14">
-          <Card className="mb-10 bg-white">
-            <CardContent className="p-5 sm:p-6">
-              <div className="mb-5"><p className="text-xs font-bold tracking-[0.14em] text-primary uppercase">Browse the archive</p><h2 className="mt-2 text-xl font-semibold">Find a published article</h2></div>
+        <section className="mx-auto max-w-7xl px-5 py-12 lg:px-8 lg:py-16">
+          <div className="mb-14 rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
+              <div className="mb-5"><p className="text-xs font-bold tracking-[0.16em] text-primary uppercase">Browse insights</p><h2 className="mt-2 text-2xl font-semibold tracking-[-0.04em]">Find a published article</h2></div>
               <form
                 action="/news"
                 className="grid gap-4 sm:grid-cols-[minmax(10rem,14rem)_minmax(10rem,14rem)_auto] sm:items-end"
@@ -166,7 +165,7 @@ export default async function PublicNewsPage({
                   </select>
                 </label>
                 <div className="flex flex-wrap gap-3">
-                  <Button type="submit">Apply filters</Button>
+                  <Button className="rounded-full" type="submit">Apply filters</Button>
                   {filtered && (
                     <Button asChild variant="outline">
                       <Link href="/news">Clear filters</Link>
@@ -174,35 +173,34 @@ export default async function PublicNewsPage({
                   )}
                 </div>
               </form>
-              <p className="mt-4 text-sm text-muted-foreground">
+              <p className="mt-5 text-sm text-muted-foreground">
                 Showing {count} {count === 1 ? "article" : "articles"} · {periodLabel}
               </p>
-            </CardContent>
-          </Card>
+          </div>
 
           {posts.length ? (
             <>
-              {guidePosts.length > 0 && <section id="smvia-career-guides" className="scroll-mt-24"><div className="mb-6 flex flex-wrap items-end justify-between gap-4"><div><p className="text-xs font-bold tracking-[0.14em] text-primary uppercase">SM VIA career guides</p><h2 className="mt-2 text-3xl font-semibold tracking-[-0.05em]">Practical guidance for the next move.</h2><p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Independently researched career guidance from SM VIA — designed to help healthcare professionals make informed decisions.</p></div></div>
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {guidePosts.length > 0 && <section id="smvia-career-guides" className="scroll-mt-24"><div className="mb-8 flex flex-wrap items-end justify-between gap-4"><div><p className="text-xs font-bold tracking-[0.16em] text-primary uppercase">SM VIA career guides</p><h2 className="mt-2 text-4xl font-semibold tracking-[-0.065em]">Practical guidance for the next move.</h2><p className="mt-3 max-w-2xl text-base leading-7 text-muted-foreground">Independently researched career guidance from SM VIA — designed to help healthcare professionals make informed decisions.</p></div></div>
+            <div className="grid gap-7 md:grid-cols-2 lg:grid-cols-3">
               {guidePosts.map((post) => (
-                <Card className="overflow-hidden bg-white" key={post.id}>
+                <Card className="group overflow-hidden rounded-[1.5rem] border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl" key={post.id}>
                   {newsCoverSrc(post) && (
-                    <div className="relative aspect-[16/9]">
+                    <div className="relative aspect-[16/10] overflow-hidden">
                       <Image
                         alt=""
-                        className="object-cover"
+                        className="object-cover transition duration-500 group-hover:scale-[1.03]"
                         fill
                         sizes="(max-width: 768px) 100vw, 33vw"
                         src={newsCoverSrc(post)!}
                       />
                     </div>
                   )}
-                  <CardContent className="p-6">
-                    <Badge className="text-[0.65rem]" variant="secondary">SM VIA Career Guide</Badge>
+                  <CardContent className="p-7">
+                    <Badge className="rounded-full text-[0.65rem]" variant="secondary">SM VIA Career Guide</Badge>
                     <p className="mt-2 text-xs text-muted-foreground">
                       Published {formatNewsDate(post.published_at)}
                     </p>
-                    <h2 className="mt-3 text-xl font-semibold">
+                    <h2 className="mt-4 text-2xl font-semibold leading-tight tracking-[-0.045em]">
                       <Link
                         className="hover:text-primary"
                         href={`/news/${post.slug}`}
@@ -210,20 +208,21 @@ export default async function PublicNewsPage({
                         {post.title}
                       </Link>
                     </h2>
-                    <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                    <p className="mt-4 text-sm leading-6 text-muted-foreground">
                       {post.excerpt}
                     </p>
+                    <Link className="mt-5 inline-flex text-sm font-semibold text-primary hover:underline" href={`/news/${post.slug}`}>Read guide →</Link>
                   </CardContent>
                 </Card>
               ))}
             </div>
               </section>}
-              <section id="organization-updates" className="mt-14 scroll-mt-24 border-t pt-10">
-                <div className="mb-6 flex flex-wrap items-end justify-between gap-4"><div><p className="text-xs font-bold tracking-[0.14em] text-primary uppercase">Organization updates</p><h2 className="mt-2 text-3xl font-semibold tracking-[-0.05em]">From healthcare organizations.</h2><p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Updates, perspectives, and announcements published by participating healthcare employers and organizations.</p></div></div>
-                {organizationPosts.length ? <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">{organizationPosts.map((post) => (
-                  <Card className="overflow-hidden bg-white" key={post.id}>
-                    {newsCoverSrc(post) && <div className="relative aspect-[16/9]"><Image alt="" className="object-cover" fill sizes="(max-width: 768px) 100vw, 33vw" src={newsCoverSrc(post)!} /></div>}
-                    <CardContent className="p-6"><Badge className="text-[0.65rem]" variant="outline">Employer update</Badge><p className="mt-3 text-xs text-muted-foreground">Published {formatNewsDate(post.published_at)}</p><h2 className="mt-3 text-xl font-semibold"><Link className="hover:text-primary" href={`/news/${post.slug}`}>{post.title}</Link></h2><p className="mt-3 text-sm leading-6 text-muted-foreground">{post.excerpt}</p></CardContent>
+              <section id="organization-updates" className="mt-20 scroll-mt-24 border-t border-slate-300 pt-14">
+                <div className="mb-8 flex flex-wrap items-end justify-between gap-4"><div><p className="text-xs font-bold tracking-[0.16em] text-primary uppercase">Organization updates</p><h2 className="mt-2 text-4xl font-semibold tracking-[-0.065em]">From healthcare organizations.</h2><p className="mt-3 max-w-2xl text-base leading-7 text-muted-foreground">Updates, perspectives, and announcements published by participating healthcare employers and organizations.</p></div></div>
+                {organizationPosts.length ? <div className="grid gap-7 md:grid-cols-2 lg:grid-cols-3">{organizationPosts.map((post) => (
+                  <Card className="group overflow-hidden rounded-[1.5rem] border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl" key={post.id}>
+                    {newsCoverSrc(post) && <div className="relative aspect-[16/10] overflow-hidden"><Image alt="" className="object-cover transition duration-500 group-hover:scale-[1.03]" fill sizes="(max-width: 768px) 100vw, 33vw" src={newsCoverSrc(post)!} /></div>}
+                    <CardContent className="p-7"><Badge className="rounded-full text-[0.65rem]" variant="outline">Employer update</Badge><p className="mt-3 text-xs text-muted-foreground">Published {formatNewsDate(post.published_at)}</p><h2 className="mt-4 text-2xl font-semibold leading-tight tracking-[-0.045em]"><Link className="hover:text-primary" href={`/news/${post.slug}`}>{post.title}</Link></h2><p className="mt-4 text-sm leading-6 text-muted-foreground">{post.excerpt}</p></CardContent>
                   </Card>
                 ))}</div> : <Card className="bg-white"><CardContent className="p-7"><p className="font-semibold">Organization updates will appear here.</p><p className="mt-2 text-sm leading-6 text-muted-foreground">This area is reserved for verified healthcare organizations that publish their own updates on SM VIA.</p></CardContent></Card>}
               </section>

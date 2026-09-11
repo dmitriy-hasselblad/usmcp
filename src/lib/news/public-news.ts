@@ -134,7 +134,7 @@ export function formatNewsDate(value: string | null) {
 }
 
 const editorialCoverBySlug: Record<string, string> = {
-  "compare-nursing-job-offers": "/images/news/career-guidance-cover.png",
+  "compare-nursing-job-offers": "/images/news/news-hero-nurse.png",
   "compact-nursing-license-basics": "/images/news/licensure-cover.png",
   "texas-nursing-license-move-plan": "/images/news/texas-move-cover.png",
   "registered-nurse-salary-florida-context": "/images/news/florida-salary-cover.png",
