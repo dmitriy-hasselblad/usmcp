@@ -46,7 +46,7 @@ export function JobCard({ job, compact = false, layout = "card" }: JobCardProps)
                   job.isPlatformDemo
                     ? "border-amber-200 bg-amber-50 text-amber-900"
                     : isExternalOpportunity
-                      ? "border-sky-200 bg-sky-50 text-sky-800"
+                      ? "max-w-full whitespace-normal text-right leading-5 border-sky-200 bg-sky-50 text-sky-800"
                       : job.source === "live"
                       ? "border-emerald-200 bg-emerald-50 text-emerald-800"
                       : undefined
@@ -58,7 +58,7 @@ export function JobCard({ job, compact = false, layout = "card" }: JobCardProps)
                   : isUsaJobs
                     ? "Federal opportunity · USAJOBS"
                   : isOfficialAtsOpportunity
-                    ? `Official employer opportunity · ${job.source === "greenhouse" ? "Greenhouse" : "Lever"}`
+                    ? `Official employer · ${job.source === "greenhouse" ? "Greenhouse" : "Lever"}`
                   : job.source === "live"
                     ? "Live opportunity"
                     : "Product preview"}
@@ -137,7 +137,7 @@ export function JobCard({ job, compact = false, layout = "card" }: JobCardProps)
                 job.isPlatformDemo
                   ? "border-amber-200 bg-amber-50 text-amber-900"
                   : isExternalOpportunity
-                    ? "border-sky-200 bg-sky-50 text-sky-800"
+                    ? "max-w-full whitespace-normal text-right leading-5 border-sky-200 bg-sky-50 text-sky-800"
                     : job.source === "live"
                   ? "border-emerald-200 bg-emerald-50 text-emerald-800"
                   : undefined
@@ -149,7 +149,7 @@ export function JobCard({ job, compact = false, layout = "card" }: JobCardProps)
                 : isUsaJobs
                   ? "Federal opportunity · USAJOBS"
                 : isOfficialAtsOpportunity
-                  ? `Official employer opportunity · ${job.source === "greenhouse" ? "Greenhouse" : "Lever"}`
+                  ? `Official employer · ${job.source === "greenhouse" ? "Greenhouse" : "Lever"}`
                 : job.source === "live"
                   ? "Live opportunity"
                   : "Product preview"}
