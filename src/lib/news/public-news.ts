@@ -146,6 +146,24 @@ const editorialCoverBySlug: Record<string, string> = {
   "use-official-healthcare-job-postings": "/images/news/official-job-postings-cover.png",
 }
 
+export function isSmviaCareerGuide(post: {
+  slug: string
+  organizations?: { slug?: string | null; name?: string | null } | Array<{
+    slug?: string | null
+    name?: string | null
+  }> | null
+}) {
+  const organization = Array.isArray(post.organizations)
+    ? post.organizations[0]
+    : post.organizations
+
+  return Boolean(
+    editorialCoverBySlug[post.slug] ||
+      organization?.slug === "smvia-editorial" ||
+      organization?.name?.trim().toLowerCase() === "sm via",
+  )
+}
+
 export function newsCoverSrc(post: {
   id: string
   slug: string

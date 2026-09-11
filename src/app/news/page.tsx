@@ -12,6 +12,7 @@ import {
   formatNewsDate,
   getNewsArchiveYears,
   getPublishedOrganizationPosts,
+  isSmviaCareerGuide,
   newsCoverSrc,
   newsPageSize,
   newsMonthNames,
@@ -64,11 +65,8 @@ export default async function PublicNewsPage({
     : "All publication dates"
   const featuredPost = posts[0]
   const remainingPosts = posts.slice(1)
-  const isSmviaGuide = (post: (typeof posts)[number]) =>
-    post.organizations?.[0]?.slug === "smvia-editorial" ||
-    post.organizations?.[0]?.name?.trim().toLowerCase() === "sm via"
-  const guidePosts = remainingPosts.filter(isSmviaGuide)
-  const organizationPosts = remainingPosts.filter((post) => !isSmviaGuide(post))
+  const guidePosts = remainingPosts.filter(isSmviaCareerGuide)
+  const organizationPosts = remainingPosts.filter((post) => !isSmviaCareerGuide(post))
 
   return (
     <div className="min-h-dvh bg-muted/25">
@@ -106,7 +104,11 @@ export default async function PublicNewsPage({
                   </div>
                 )}
                 <CardContent className="p-6">
-                  <p className="text-xs font-bold tracking-[0.14em] text-primary uppercase">Featured insight</p>
+                  <p className="text-xs font-bold tracking-[0.14em] text-primary uppercase">
+                    {isSmviaCareerGuide(featuredPost)
+                      ? "SM VIA Career Guide"
+                      : "Featured insight"}
+                  </p>
                   <p className="mt-2 text-xs text-muted-foreground">Published {formatNewsDate(featuredPost.published_at)}</p>
                   <h2 className="mt-3 text-2xl font-semibold tracking-[-0.04em]">
                     <Link className="hover:text-primary" href={`/news/${featuredPost.slug}`}>{featuredPost.title}</Link>
