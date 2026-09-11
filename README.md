@@ -22,6 +22,8 @@ storage.
 - `/jobs/[slug]` - public live or preview job details
 - `/jobs/[slug]/apply` - protected application form for live jobs
 - `/companies` - preview healthcare organization profiles
+- `/news` - public editorial hub for SM VIA career guides and organization updates
+- `/news/[slug]` - individual public news or career-guide article
 - `/for-employers` - employer product introduction
 - `/resources` - career resource library preview
 - `/resources/licensure` - all 50 state licensure guides and official sources
@@ -44,6 +46,30 @@ storage.
 All public interface content is written in English for a U.S. audience. Sample
 jobs and organizations are clearly labeled as product-preview content and are
 not presented as live or verified records.
+
+## News and editorial hub (preview work in progress)
+
+The News & Insights route is being rebuilt as a distinct editorial destination,
+not a generic archive. The intended public structure is:
+
+- a wide, photo-led editorial hero with a career-intelligence message;
+- an **SM VIA Career Guides** section for independently researched, practical
+  guidance written by SM VIA;
+- a separate **Organization updates** section reserved for verified healthcare
+  organizations publishing their own material.
+
+The current preview branch is `codex/news-editorial-hub`. It contains ten
+staging-only SM VIA career-guide articles and distinct cover imagery. The articles
+remain in the staging Supabase project; no staging article has been copied to the
+production database, and no existing production organization news has been
+removed or changed.
+
+The visual layout remains an active design task. The target is the supplied
+editorial reference: a full-width pale-blue hero with a healthcare photograph
+anchored on the right, elegant serif headlines, low/wide image cards, and compact
+horizontal organization-update cards. Do not promote this branch to production
+until the page has been reviewed against that reference at desktop and mobile
+sizes.
 
 ## Current public opportunity data
 
