@@ -80,9 +80,7 @@ export async function getOfficialAtsHealthcareOpportunities(): Promise<OfficialA
     ),
   )
 
-  // Keep every reviewed employer represented. A large board must not crowd out
-  // another official source before its cards reach the marketplace.
-  return results.flatMap((jobs) => jobs.slice(0, 20)).slice(0, 80)
+  return results.flat()
 }
 
 async function getGreenhouseJobs(board: OfficialBoard) {

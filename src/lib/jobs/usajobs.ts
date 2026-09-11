@@ -133,7 +133,6 @@ export async function getUsaJobsHealthcareOpportunities(): Promise<
         seen.add(job.slug)
         return true
       })
-      .slice(0, 50)
 
     return opportunities
   } catch (error) {
