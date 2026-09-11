@@ -6,6 +6,8 @@ import { SiteFooter } from "@/components/layout/site-footer"
 import { SiteHeader } from "@/components/layout/site-header"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { LicensureStateSelector } from "@/components/marketing/licensure-state-selector"
+import { UsLicensureMap } from "@/components/marketing/us-licensure-map"
 import { licensureStates } from "@/lib/resources/licensure-states"
 
 export const metadata: Metadata = {
@@ -59,7 +61,12 @@ export default function LicensureByStatePage() {
             <p className="hidden text-sm text-muted-foreground sm:block">More state guides are added after source review.</p>
           </div>
 
-          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
+            <UsLicensureMap states={licensureStates} />
+            <LicensureStateSelector states={licensureStates} />
+          </div>
+
+          <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {licensureStates.map((state) => state.guideHref ? (
               <Link className="group rounded-2xl border border-primary/30 bg-white p-5 transition-colors hover:border-primary hover:bg-primary/[0.03]" href={state.guideHref} key={state.slug}>
                 <div className="flex items-start justify-between gap-3">
