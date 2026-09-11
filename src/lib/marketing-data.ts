@@ -29,7 +29,7 @@ export type Job = {
   benefits: string[]
   visaSupport?: boolean
   featured?: boolean
-  source?: "preview" | "live" | "usajobs" | "greenhouse" | "lever"
+  source?: "preview" | "live" | "usajobs" | "greenhouse" | "lever" | "ashby"
   externalUrl?: string
   sourceName?: string
   organizationType?: string

@@ -49,7 +49,7 @@ not presented as live or verified records.
 
 The public marketplace combines published SM VIA roles with current official
 federal opportunities from USAJOBS and a small curated group of official
-Greenhouse and Lever employer boards. Every external role retains a clear
+Greenhouse, Lever, and Ashby employer boards. Every external role retains a clear
 source label and sends the candidate to the original employer or USAJOBS page
 for complete details and application. External roles never enter the SM VIA
 application workflow.
@@ -70,8 +70,8 @@ as server-side Vercel secrets in Preview and Production:
 
 If either USAJOBS value is absent, or an official source is temporarily
 unavailable, SM VIA continues to show its own published roles and the remaining
-sources without exposing an error or blocking the marketplace. Greenhouse and
-Lever public boards do not require SM VIA credentials.
+sources without exposing an error or blocking the marketplace. Greenhouse, Lever,
+and Ashby public boards do not require SM VIA credentials.
 
 ## Salary pages and discovery
 
@@ -90,9 +90,9 @@ thin salary pages without underlying data.
 
 ## Planned external opportunity sources
 
-USAJOBS, Greenhouse, and Lever are active external sources. The Greenhouse and
-Lever pilot uses identified healthcare employers only: Habitat Health,
-Heartbeat Health, and Lyra Health. Each source is a distinct
+USAJOBS, Greenhouse, Lever, and Ashby are active external sources. The ATS pilot
+uses identified healthcare employers only: Habitat Health, Heartbeat Health, Lyra
+Health, Onos Health, Interra Health, and Citizen Health. Each source is a distinct
 external-opportunity adapter, retains clear attribution, links candidates to
 the original employer application page, and removes a listing automatically
 when it no longer appears in the next refresh. Public ATS APIs are connected
@@ -168,7 +168,7 @@ organization's access if the application is withdrawn.
 
 ## Recommended next milestone
 
-Expand the curated Greenhouse/Lever healthcare-employer pilot only after
+Expand the curated Greenhouse/Lever/Ashby healthcare-employer pilot only after
 checking each prospective board's current public behavior and attribution
 requirements. CareerOneStop remains a possible later source once its access is
 available from the operating region. Employer verification, interview

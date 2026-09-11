@@ -3,7 +3,7 @@ import "server-only"
 import { usStates } from "@/lib/auth/validation"
 import type { Job } from "@/lib/marketing-data"
 
-type AtsProvider = "greenhouse" | "lever"
+type AtsProvider = "greenhouse" | "lever" | "ashby"
 
 type OfficialBoard = {
   provider: AtsProvider
@@ -15,6 +15,9 @@ const OFFICIAL_HEALTHCARE_BOARDS: OfficialBoard[] = [
   { provider: "greenhouse", employer: "Habitat Health", boardToken: "habitathealth" },
   { provider: "lever", employer: "Heartbeat Health", boardToken: "heartbeathealth" },
   { provider: "lever", employer: "Lyra Health", boardToken: "lyrahealth" },
+  { provider: "ashby", employer: "Onos Health", boardToken: "OnosHealth" },
+  { provider: "ashby", employer: "Interra Health", boardToken: "InterraHealth" },
+  { provider: "ashby", employer: "Citizen Health", boardToken: "Citizen Health" },
 ]
 
 type GreenhouseResponse = {
@@ -38,8 +41,26 @@ type LeverResponseItem = {
   workplaceType?: string
 }
 
+type AshbyResponse = {
+  jobs?: AshbyResponseItem[]
+}
+
+type AshbyResponseItem = {
+  address?: { postalAddress?: { addressLocality?: string; addressRegion?: string } }
+  applyUrl?: string
+  compensation?: { scrapeableCompensationSalarySummary?: string }
+  employmentType?: string
+  id?: string
+  isListed?: boolean
+  jobUrl?: string
+  location?: string
+  publishedAt?: string
+  title?: string
+  workplaceType?: string
+}
+
 export type OfficialAtsOpportunity = Job & {
-  source: "greenhouse" | "lever"
+  source: AtsProvider
   externalUrl: string
   sourceName: string
 }
@@ -51,7 +72,11 @@ export type OfficialAtsOpportunity = Job & {
 export async function getOfficialAtsHealthcareOpportunities(): Promise<OfficialAtsOpportunity[]> {
   const results = await Promise.all(
     OFFICIAL_HEALTHCARE_BOARDS.map((board) =>
-      board.provider === "greenhouse" ? getGreenhouseJobs(board) : getLeverJobs(board),
+      board.provider === "greenhouse"
+        ? getGreenhouseJobs(board)
+        : board.provider === "lever"
+          ? getLeverJobs(board)
+          : getAshbyJobs(board),
     ),
   )
 
@@ -98,6 +123,27 @@ async function getLeverJobs(board: OfficialBoard) {
   }
 }
 
+async function getAshbyJobs(board: OfficialBoard) {
+  try {
+    const response = await fetch(
+      `https://api.ashbyhq.com/posting-api/job-board/${encodeURIComponent(board.boardToken)}?includeCompensation=true`,
+      { next: { revalidate: 3600 } },
+    )
+    if (!response.ok) {
+      console.error("Ashby job board request failed", { board: board.boardToken, status: response.status })
+      return []
+    }
+    const payload = (await response.json()) as AshbyResponse
+    return (payload.jobs ?? [])
+      .filter((job) => job.isListed)
+      .map((job) => toAshbyOpportunity(job, board))
+      .filter((job): job is OfficialAtsOpportunity => Boolean(job))
+  } catch (error) {
+    console.error("Ashby job board request failed", { board: board.boardToken, error })
+    return []
+  }
+}
+
 function toGreenhouseOpportunity(
   job: NonNullable<GreenhouseResponse["jobs"]>[number],
   board: OfficialBoard,
@@ -127,8 +173,29 @@ function toLeverOpportunity(job: LeverResponseItem, board: OfficialBoard): Offic
   })
 }
 
+function toAshbyOpportunity(job: AshbyResponseItem, board: OfficialBoard): OfficialAtsOpportunity | undefined {
+  const title = job.title?.trim()
+  const identifier = job.id?.trim()
+  const externalUrl = job.jobUrl?.trim() || job.applyUrl?.trim()
+  if (!title || !identifier || !externalUrl || !isHealthcareRole(title)) return undefined
+
+  const location = job.location?.trim() || ashbyAddressLocation(job)
+  return toOpportunity({
+    provider: "ashby",
+    board,
+    identifier,
+    title,
+    location,
+    type: humanizeEmploymentType(job.employmentType),
+    externalUrl,
+    publishedAt: job.publishedAt,
+    workplaceType: job.workplaceType,
+    salary: job.compensation?.scrapeableCompensationSalarySummary,
+  })
+}
+
 function toOpportunity({
-  provider, board, identifier, title, location, type, externalUrl, publishedAt, workplaceType,
+  provider, board, identifier, title, location, type, externalUrl, publishedAt, workplaceType, salary,
 }: {
   provider: AtsProvider
   board: OfficialBoard
@@ -139,6 +206,7 @@ function toOpportunity({
   externalUrl: string
   publishedAt?: string
   workplaceType?: string
+  salary?: string
 }): OfficialAtsOpportunity {
   const normalizedLocation = location?.trim() || "United States"
   const stateCode = stateCodeFromLocation(normalizedLocation) ?? ""
@@ -149,7 +217,7 @@ function toOpportunity({
     employer: board.employer,
     employerSlug: "",
     location: normalizedLocation,
-    salary: "Salary not listed",
+    salary: salary?.trim() || "Salary not listed",
     type: type?.trim() || "Schedule not listed",
     specialty: specialtyForTitle(title),
     setting: "Official employer opportunity",
@@ -170,6 +238,16 @@ function toOpportunity({
     publishedAt,
     requiredSkills: [],
   }
+}
+
+function ashbyAddressLocation(job: AshbyResponseItem) {
+  const address = job.address?.postalAddress
+  return [address?.addressLocality, address?.addressRegion].filter(Boolean).join(", ") || "United States"
+}
+
+function humanizeEmploymentType(value: string | undefined) {
+  if (!value) return undefined
+  return value.replace(/([a-z])([A-Z])/g, "$1 $2")
 }
 
 function isHealthcareRole(title: string) {

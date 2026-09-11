@@ -18,7 +18,7 @@ type JobCardProps = {
 export function JobCard({ job, compact = false, layout = "card" }: JobCardProps) {
   const logoUrl = publicOrganizationLogoUrl(job.organizationLogoPath)
   const isUsaJobs = job.source === "usajobs"
-  const isOfficialAtsOpportunity = job.source === "greenhouse" || job.source === "lever"
+  const isOfficialAtsOpportunity = job.source === "greenhouse" || job.source === "lever" || job.source === "ashby"
   const isExternalOpportunity = isUsaJobs || isOfficialAtsOpportunity
 
   if (layout === "row") {
@@ -58,7 +58,7 @@ export function JobCard({ job, compact = false, layout = "card" }: JobCardProps)
                   : isUsaJobs
                     ? "Federal opportunity · USAJOBS"
                   : isOfficialAtsOpportunity
-                    ? `Official employer · ${job.source === "greenhouse" ? "Greenhouse" : "Lever"}`
+                    ? `Official employer · ${officialAtsProviderName(job.source)}`
                   : job.source === "live"
                     ? "Live opportunity"
                     : "Product preview"}
@@ -149,7 +149,7 @@ export function JobCard({ job, compact = false, layout = "card" }: JobCardProps)
                 : isUsaJobs
                   ? "Federal opportunity · USAJOBS"
                 : isOfficialAtsOpportunity
-                  ? `Official employer · ${job.source === "greenhouse" ? "Greenhouse" : "Lever"}`
+                  ? `Official employer · ${officialAtsProviderName(job.source)}`
                 : job.source === "live"
                   ? "Live opportunity"
                   : "Product preview"}
@@ -226,7 +226,7 @@ export function JobCard({ job, compact = false, layout = "card" }: JobCardProps)
 }
 
 function JobTitleLink({ job }: { job: Job }) {
-  if ((job.source === "usajobs" || job.source === "greenhouse" || job.source === "lever") && job.externalUrl) {
+  if ((job.source === "usajobs" || job.source === "greenhouse" || job.source === "lever" || job.source === "ashby") && job.externalUrl) {
     return (
       <a
         className="transition-colors hover:text-primary"
@@ -247,7 +247,7 @@ function JobTitleLink({ job }: { job: Job }) {
 }
 
 function JobLink({ job }: { job: Job }) {
-  if ((job.source === "usajobs" || job.source === "greenhouse" || job.source === "lever") && job.externalUrl) {
+  if ((job.source === "usajobs" || job.source === "greenhouse" || job.source === "lever" || job.source === "ashby") && job.externalUrl) {
     return (
       <a href={job.externalUrl} rel="noreferrer" target="_blank">
         View & apply on {job.source === "usajobs" ? "USAJOBS" : job.sourceName ?? "employer site"} <ArrowRight />
@@ -260,6 +260,12 @@ function JobLink({ job }: { job: Job }) {
       View role <ArrowRight />
     </Link>
   )
+}
+
+function officialAtsProviderName(source: Job["source"]) {
+  if (source === "greenhouse") return "Greenhouse"
+  if (source === "lever") return "Lever"
+  return "Ashby"
 }
 
 function formatOpenPositions(openPositions: number) {
