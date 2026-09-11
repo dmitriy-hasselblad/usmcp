@@ -47,20 +47,6 @@ export function SiteFooter() {
                 src="https://maidensail.com/badge/sm-via.svg"
               />
             </a>
-            <a
-              aria-label="Featured on Product Hunt"
-              className="inline-flex rounded-lg opacity-80 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
-              href="https://www.producthunt.com/products/sm-via?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-sm-via"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <img
-                alt="SM VIA - Healthcare careers, jobs, and guidance—built for the U.S. | Product Hunt"
-                height={54}
-                src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1245456&theme=neutral&t=1788937012940"
-                width={250}
-              />
-            </a>
           </div>
         </div>
         <div className="grid grid-cols-2 gap-x-6 gap-y-3 text-sm sm:grid-cols-3">
