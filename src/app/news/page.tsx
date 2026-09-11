@@ -19,7 +19,6 @@ import {
   parseNewsPage,
   parseNewsYear,
 } from "@/lib/news/public-news"
-import { isPlatformDemonstrationOrganization } from "@/lib/platform-content"
 
 export const metadata: Metadata = {
   title: "Healthcare News & Insights",
@@ -65,6 +64,11 @@ export default async function PublicNewsPage({
     : "All publication dates"
   const featuredPost = posts[0]
   const remainingPosts = posts.slice(1)
+  const isSmviaGuide = (post: (typeof posts)[number]) =>
+    post.organizations?.[0]?.slug === "smvia-editorial" ||
+    post.organizations?.[0]?.name?.trim().toLowerCase() === "sm via"
+  const guidePosts = remainingPosts.filter(isSmviaGuide)
+  const organizationPosts = remainingPosts.filter((post) => !isSmviaGuide(post))
 
   return (
     <div className="min-h-dvh bg-muted/25">
@@ -81,10 +85,10 @@ export default async function PublicNewsPage({
                 Practical guidance for career decisions, licensure, salaries,
                 employers, and the healthcare job market.
               </p>
-              <div className="mt-7 flex flex-wrap gap-2" aria-label="Explore SM VIA topics">
-                <Button asChild size="sm" variant="outline"><Link href="/resources/licensure">Licensure by state</Link></Button>
-                <Button asChild size="sm" variant="outline"><Link href="/salary">Salary insights</Link></Button>
-                <Button asChild size="sm" variant="outline"><Link href="/resources">Career guides</Link></Button>
+              <div className="mt-7 flex flex-wrap gap-2" aria-label="Browse article types">
+                <Button asChild size="sm"><Link href="/news">All</Link></Button>
+                <Button asChild size="sm" variant="outline"><Link href="#smvia-career-guides">SM VIA Career Guides</Link></Button>
+                <Button asChild size="sm" variant="outline"><Link href="#organization-updates">Organization updates</Link></Button>
               </div>
             </div>
             {featuredPost ? (
@@ -176,9 +180,9 @@ export default async function PublicNewsPage({
 
           {posts.length ? (
             <>
-              {remainingPosts.length > 0 && <div className="mb-6 flex items-end justify-between gap-4"><div><p className="text-xs font-bold tracking-[0.14em] text-primary uppercase">Latest articles</p><h2 className="mt-2 text-3xl font-semibold tracking-[-0.05em]">Keep moving forward.</h2></div><p className="hidden max-w-sm text-right text-sm leading-6 text-muted-foreground sm:block">New perspectives from SM VIA and participating healthcare organizations.</p></div>}
+              {guidePosts.length > 0 && <section id="smvia-career-guides" className="scroll-mt-24"><div className="mb-6 flex flex-wrap items-end justify-between gap-4"><div><p className="text-xs font-bold tracking-[0.14em] text-primary uppercase">SM VIA career guides</p><h2 className="mt-2 text-3xl font-semibold tracking-[-0.05em]">Practical guidance for the next move.</h2><p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Independently researched career guidance from SM VIA — designed to help healthcare professionals make informed decisions.</p></div></div>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {remainingPosts.map((post) => (
+              {guidePosts.map((post) => (
                 <Card className="overflow-hidden bg-white" key={post.id}>
                   {newsCoverSrc(post) && (
                     <div className="relative aspect-[16/9]">
@@ -192,13 +196,7 @@ export default async function PublicNewsPage({
                     </div>
                   )}
                   <CardContent className="p-6">
-                    <p className="text-xs font-bold tracking-[0.12em] text-primary uppercase">
-                      {post.organizations?.[0]?.name ??
-                        "Healthcare organization"}
-                    </p>
-                {isPlatformDemonstrationOrganization(post.organizations?.[0]?.name) && (
-                      <p className="mt-2 text-xs font-semibold text-amber-800">Platform demonstration</p>
-                    )}
+                    <Badge className="text-[0.65rem]" variant="secondary">SM VIA Career Guide</Badge>
                     <p className="mt-2 text-xs text-muted-foreground">
                       Published {formatNewsDate(post.published_at)}
                     </p>
@@ -217,6 +215,16 @@ export default async function PublicNewsPage({
                 </Card>
               ))}
             </div>
+              </section>}
+              <section id="organization-updates" className="mt-14 scroll-mt-24 border-t pt-10">
+                <div className="mb-6 flex flex-wrap items-end justify-between gap-4"><div><p className="text-xs font-bold tracking-[0.14em] text-primary uppercase">Organization updates</p><h2 className="mt-2 text-3xl font-semibold tracking-[-0.05em]">From healthcare organizations.</h2><p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Updates, perspectives, and announcements published by participating healthcare employers and organizations.</p></div></div>
+                {organizationPosts.length ? <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">{organizationPosts.map((post) => (
+                  <Card className="overflow-hidden bg-white" key={post.id}>
+                    {newsCoverSrc(post) && <div className="relative aspect-[16/9]"><Image alt="" className="object-cover" fill sizes="(max-width: 768px) 100vw, 33vw" src={newsCoverSrc(post)!} /></div>}
+                    <CardContent className="p-6"><Badge className="text-[0.65rem]" variant="outline">Employer update</Badge><p className="mt-3 text-xs text-muted-foreground">Published {formatNewsDate(post.published_at)}</p><h2 className="mt-3 text-xl font-semibold"><Link className="hover:text-primary" href={`/news/${post.slug}`}>{post.title}</Link></h2><p className="mt-3 text-sm leading-6 text-muted-foreground">{post.excerpt}</p></CardContent>
+                  </Card>
+                ))}</div> : <Card className="bg-white"><CardContent className="p-7"><p className="font-semibold">Organization updates will appear here.</p><p className="mt-2 text-sm leading-6 text-muted-foreground">This area is reserved for verified healthcare organizations that publish their own updates on SM VIA.</p></CardContent></Card>}
+              </section>
             </>
           ) : (
             <Card className="bg-white">
