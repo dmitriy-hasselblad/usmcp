@@ -19,6 +19,7 @@ import {
 } from "@/lib/employer/constants"
 import { filterJobs, type JobFilters } from "@/lib/jobs/job-filters"
 import { getPublishedJobs } from "@/lib/jobs/public-jobs"
+import { getOfficialAtsHealthcareOpportunities } from "@/lib/jobs/official-ats"
 import { getUsaJobsHealthcareOpportunities } from "@/lib/jobs/usajobs"
 import { featuredJobs } from "@/lib/marketing-data"
 import { socialImageMetadata } from "@/components/seo/social-card"
@@ -51,12 +52,13 @@ export default async function JobsPage({
 }) {
   const params = await searchParams
   const filters = getFilters(params)
-  const [liveJobs, usaJobs] = await Promise.all([
+  const [liveJobs, usaJobs, officialAtsJobs] = await Promise.all([
     getPublishedJobs(),
     getUsaJobsHealthcareOpportunities(),
+    getOfficialAtsHealthcareOpportunities(),
   ])
   const showPreviews = getString(params.preview) === "true"
-  const activeJobs = [...usaJobs, ...liveJobs]
+  const activeJobs = [...usaJobs, ...officialAtsJobs, ...liveJobs]
   const allJobs = showPreviews ? [...activeJobs, ...featuredJobs] : activeJobs
   const jobs = filterJobs(allJobs, filters)
   const pageSize = 20
@@ -99,10 +101,9 @@ export default async function JobsPage({
                   Search U.S. healthcare opportunities by profession,
                   specialty, location, work setting, experience, and pay.
                 </p>
-                {usaJobs.length > 0 && (
+                {(usaJobs.length > 0 || officialAtsJobs.length > 0) && (
                   <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">
-                    Federal opportunities are supplied by USAJOBS and link to
-                    USAJOBS for official details and applications. Refreshed hourly.
+                    Selected official sources link directly to the original employer or USAJOBS listing for details and applications. Refreshed hourly.
                   </p>
                 )}
                 <div className="mt-5 flex flex-wrap gap-3">
