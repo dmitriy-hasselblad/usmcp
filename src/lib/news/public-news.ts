@@ -133,6 +133,29 @@ export function formatNewsDate(value: string | null) {
   }).format(new Date(value))
 }
 
+const editorialCoverBySlug: Record<string, string> = {
+  "compare-nursing-job-offers": "/images/news/career-guidance-cover.png",
+  "registered-nurse-salary-florida-context": "/images/news/career-guidance-cover.png",
+  "nurse-practitioner-vs-physician-associate": "/images/news/career-guidance-cover.png",
+  "travel-nursing-role-questions": "/images/news/career-guidance-cover.png",
+  "prepare-healthcare-interview": "/images/news/career-guidance-cover.png",
+  "compact-nursing-license-basics": "/images/news/licensure-cover.png",
+  "texas-nursing-license-move-plan": "/images/news/licensure-cover.png",
+  "licensure-when-relocating": "/images/news/licensure-cover.png",
+  "how-to-evaluate-hospital-employer": "/images/news/job-search-cover.png",
+  "use-official-healthcare-job-postings": "/images/news/job-search-cover.png",
+}
+
+export function newsCoverSrc(post: {
+  id: string
+  slug: string
+  cover_image_path?: string | null
+}) {
+  return post.cover_image_path
+    ? `/news/image/${post.id}`
+    : editorialCoverBySlug[post.slug]
+}
+
 export function parseNewsYear(value?: string) {
   if (!value || !/^\d{4}$/.test(value)) return undefined
   const year = Number(value)

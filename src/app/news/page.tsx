@@ -12,6 +12,7 @@ import {
   formatNewsDate,
   getNewsArchiveYears,
   getPublishedOrganizationPosts,
+  newsCoverSrc,
   newsPageSize,
   newsMonthNames,
   parseNewsMonth,
@@ -88,7 +89,7 @@ export default async function PublicNewsPage({
             </div>
             {featuredPost ? (
               <Card className="overflow-hidden bg-white shadow-sm">
-                {featuredPost.cover_image_path && (
+                {newsCoverSrc(featuredPost) && (
                   <div className="relative aspect-[16/8] bg-muted">
                     <Image
                       alt=""
@@ -96,7 +97,7 @@ export default async function PublicNewsPage({
                       fill
                       priority
                       sizes="(max-width: 1024px) 100vw, 400px"
-                      src={`/news/image/${featuredPost.id}`}
+                      src={newsCoverSrc(featuredPost)!}
                     />
                   </div>
                 )}
@@ -179,14 +180,14 @@ export default async function PublicNewsPage({
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {remainingPosts.map((post) => (
                 <Card className="overflow-hidden bg-white" key={post.id}>
-                  {post.cover_image_path && (
+                  {newsCoverSrc(post) && (
                     <div className="relative aspect-[16/9]">
                       <Image
                         alt=""
                         className="object-cover"
                         fill
                         sizes="(max-width: 768px) 100vw, 33vw"
-                        src={`/news/image/${post.id}`}
+                        src={newsCoverSrc(post)!}
                       />
                     </div>
                   )}

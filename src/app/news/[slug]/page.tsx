@@ -11,6 +11,7 @@ import {
   formatNewsDate,
   getPublishedOrganizationPost,
   getPublicNewsOrganization,
+  newsCoverSrc,
 } from "@/lib/news/public-news"
 import { isPlatformDemonstrationOrganization } from "@/lib/platform-content"
 
@@ -92,7 +93,7 @@ export default async function PublicNewsDetailPage({ params }: Props) {
           <div className="mt-5 text-sm text-muted-foreground">
             <span>Published {formatNewsDate(post.published_at)}</span>
           </div>
-          {post.cover_image_path && (
+          {newsCoverSrc(post) && (
             <div className="relative mt-10 aspect-[16/9] overflow-hidden rounded-3xl">
               <Image
                 alt=""
@@ -100,7 +101,7 @@ export default async function PublicNewsDetailPage({ params }: Props) {
                 priority
                 sizes="(max-width: 896px) 100vw, 896px"
                 className="object-cover"
-                src={`/news/image/${post.id}`}
+                src={newsCoverSrc(post)!}
               />
             </div>
           )}
