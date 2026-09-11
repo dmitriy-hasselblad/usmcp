@@ -135,15 +135,15 @@ export function formatNewsDate(value: string | null) {
 
 const editorialCoverBySlug: Record<string, string> = {
   "compare-nursing-job-offers": "/images/news/career-guidance-cover.png",
-  "registered-nurse-salary-florida-context": "/images/news/career-guidance-cover.png",
-  "nurse-practitioner-vs-physician-associate": "/images/news/career-guidance-cover.png",
-  "travel-nursing-role-questions": "/images/news/career-guidance-cover.png",
-  "prepare-healthcare-interview": "/images/news/career-guidance-cover.png",
   "compact-nursing-license-basics": "/images/news/licensure-cover.png",
-  "texas-nursing-license-move-plan": "/images/news/licensure-cover.png",
-  "licensure-when-relocating": "/images/news/licensure-cover.png",
+  "texas-nursing-license-move-plan": "/images/news/texas-move-cover.png",
+  "registered-nurse-salary-florida-context": "/images/news/florida-salary-cover.png",
   "how-to-evaluate-hospital-employer": "/images/news/job-search-cover.png",
-  "use-official-healthcare-job-postings": "/images/news/job-search-cover.png",
+  "nurse-practitioner-vs-physician-associate": "/images/news/advanced-practice-cover.png",
+  "travel-nursing-role-questions": "/images/news/travel-nursing-cover.png",
+  "prepare-healthcare-interview": "/images/news/healthcare-interview-cover.png",
+  "licensure-when-relocating": "/images/news/relocating-cover.png",
+  "use-official-healthcare-job-postings": "/images/news/official-job-postings-cover.png",
 }
 
 export function newsCoverSrc(post: {
