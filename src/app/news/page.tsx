@@ -72,13 +72,13 @@ export default async function PublicNewsPage({
       <SiteHeader />
       <main>
         <section className="relative isolate min-h-[27rem] overflow-hidden border-b border-sky-100 bg-[#eaf6fc] lg:min-h-[31rem]">
-          <div className="absolute inset-y-0 right-0 w-full lg:w-[68%]">
+          <div className="absolute inset-y-0 right-0 w-full lg:w-[60%]">
             <Image
               alt="Healthcare professional in a hospital"
-              className="-translate-x-[14%] scale-[1.32] object-cover object-[86%_center]"
+              className="object-contain object-left"
               fill
               priority
-              sizes="(max-width: 1024px) 100vw, 68vw"
+              sizes="(max-width: 1024px) 100vw, 60vw"
               src="/images/news/news-hero-nurse.png"
             />
           </div>
