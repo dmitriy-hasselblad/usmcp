@@ -75,7 +75,7 @@ export default async function PublicNewsPage({
           <div className="absolute inset-y-0 right-0 w-full lg:w-[68%]">
             <Image
               alt="Healthcare professional in a hospital"
-              className="object-cover object-[86%_center]"
+              className="-translate-x-[14%] scale-[1.32] object-cover object-[86%_center]"
               fill
               priority
               sizes="(max-width: 1024px) 100vw, 68vw"
