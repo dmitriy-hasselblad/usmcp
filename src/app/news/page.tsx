@@ -72,7 +72,7 @@ export default async function PublicNewsPage({
       <SiteHeader />
       <main>
         <section className="relative isolate min-h-[27rem] overflow-hidden border-b border-sky-100 bg-[#eaf6fc] lg:min-h-[31rem]">
-          <div className="absolute inset-y-0 right-0 w-full lg:right-8 lg:w-[60%] xl:right-[calc((100vw-80rem)/2+2rem)]">
+          <div className="absolute inset-y-0 right-0 w-full lg:right-8 lg:w-[60%]">
             <Image
               alt="Healthcare professional in a hospital"
               className="object-contain object-left"
