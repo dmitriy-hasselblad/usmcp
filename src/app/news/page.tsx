@@ -72,15 +72,19 @@ export default async function PublicNewsPage({
       <SiteHeader />
       <main>
         <section className="relative isolate min-h-[27rem] overflow-hidden border-b border-sky-100 bg-[#eaf6fc] lg:min-h-[31rem]">
-          <div className="absolute inset-y-0 right-0 w-full lg:right-8 lg:w-[60%]">
-            <Image
-              alt="Healthcare professional in a hospital"
-              className="object-contain object-left"
-              fill
-              priority
-              sizes="(max-width: 1024px) 100vw, 60vw"
-              src="/images/news/news-hero-nurse.png"
-            />
+          <div className="absolute inset-y-0 left-0 right-0 mx-auto max-w-7xl px-5 lg:px-8">
+            <div className="relative h-full">
+              <div className="absolute inset-y-0 right-0 w-full lg:w-[60%]">
+                <Image
+                  alt="Healthcare professional in a hospital"
+                  className="object-contain object-left"
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 60vw"
+                  src="/images/news/news-hero-nurse.png"
+                />
+              </div>
+            </div>
           </div>
           <div className="absolute inset-0 bg-[linear-gradient(90deg,#eaf6fc_0%,#edf8fd_40%,rgba(234,246,252,0.82)_53%,rgba(234,246,252,0.08)_72%)]" />
           <div className="relative mx-auto max-w-7xl px-5 py-16 lg:px-8 lg:py-24">
