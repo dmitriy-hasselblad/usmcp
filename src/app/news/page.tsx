@@ -64,6 +64,7 @@ export default async function PublicNewsPage({
       : String(year)
     : "All publication dates"
   const guidePosts = posts.filter(isSmviaCareerGuide)
+  const displayedGuidePosts = guidePosts.slice(0, 3)
   const organizationPosts = posts.filter((post) => !isSmviaCareerGuide(post))
 
   return (
@@ -74,7 +75,7 @@ export default async function PublicNewsPage({
           <div className="absolute inset-y-0 right-0 w-full lg:w-[52%]">
             <Image
               alt="Healthcare professional in a hospital"
-              className="object-cover object-[72%_center]"
+              className="object-cover object-[86%_center]"
               fill
               priority
               sizes="(max-width: 1024px) 100vw, 52vw"
@@ -157,9 +158,9 @@ export default async function PublicNewsPage({
 
           {posts.length ? (
             <>
-              {guidePosts.length > 0 && <section id="smvia-career-guides" className="scroll-mt-24"><div className="mb-7 flex flex-wrap items-baseline justify-between gap-4"><div className="flex flex-wrap items-baseline gap-x-7 gap-y-2"><p className="font-serif text-4xl font-semibold tracking-[-0.04em] text-[#123d63]">SM VIA CAREER GUIDES</p><p className="text-base text-slate-500">Practical, independently researched guidance from SM VIA.</p></div><Link className="text-sm font-semibold text-teal-600 hover:underline" href="#smvia-career-guides">View all career guides →</Link></div>
+              {guidePosts.length > 0 && <section id="smvia-career-guides" className="scroll-mt-24"><div className="mb-7 flex flex-wrap items-baseline justify-between gap-4"><div className="flex flex-wrap items-baseline gap-x-7 gap-y-2"><p className="font-serif text-4xl font-semibold tracking-[-0.04em] text-[#123d63]">SM VIA CAREER GUIDES</p><p className="text-base text-slate-500">Practical, independently researched guidance from SM VIA.</p></div>{guidePosts.length > 3 ? <Link className="text-sm font-semibold text-teal-600 hover:underline" href="/news/guides">View all career guides →</Link> : null}</div>
             <div className="grid gap-7 md:grid-cols-2 lg:grid-cols-3">
-              {guidePosts.map((post) => (
+              {displayedGuidePosts.map((post) => (
                 <Card className="group overflow-hidden rounded-lg border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl" key={post.id}>
                   {newsCoverSrc(post) && (
                     <div className="relative aspect-[16/8] overflow-hidden">

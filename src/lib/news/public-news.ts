@@ -53,6 +53,18 @@ export const getPublishedOrganizationPosts = cache(
   },
 )
 
+export const getSmviaCareerGuides = cache(async () => {
+  const { data } = await (await createClient())
+    .from("organization_posts")
+    .select(selection)
+    .eq("status", "published")
+    .eq("moderation_status", "approved")
+    .order("published_at", { ascending: false })
+    .limit(2000)
+
+  return (data ?? []).filter(isSmviaCareerGuide)
+})
+
 export const getLatestPublishedOrganizationPost = cache(
   async (organizationId: string) => {
     const { data } = await (await createClient())
