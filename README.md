@@ -47,29 +47,37 @@ All public interface content is written in English for a U.S. audience. Sample
 jobs and organizations are clearly labeled as product-preview content and are
 not presented as live or verified records.
 
-## News and editorial hub (preview work in progress)
+## News and editorial hub
 
-The News & Insights route is being rebuilt as a distinct editorial destination,
-not a generic archive. The intended public structure is:
+News & Insights is a public editorial destination with a photo-led,
+career-intelligence hero and two deliberately separate streams:
 
-- a wide, photo-led editorial hero with a career-intelligence message;
-- an **SM VIA Career Guides** section for independently researched, practical
-  guidance written by SM VIA;
-- a separate **Organization updates** section reserved for verified healthcare
-  organizations publishing their own material.
+- **SM VIA Career Guides** — independently researched, practical guidance
+  published by SM VIA;
+- **Organization updates** — material published by verified healthcare
+  organizations.
 
-The current preview branch is `codex/news-editorial-hub`. It contains ten
-staging-only SM VIA career-guide articles and distinct cover imagery. The articles
-remain in the staging Supabase project; no staging article has been copied to the
-production database, and no existing production organization news has been
-removed or changed.
+Both streams have independent archives and filters. Career Guides can be
+filtered by publication year and month. Organization updates can be filtered by
+organization, publication year, and month. An organization enters that dropdown
+automatically only after its first approved publication, so organizations with
+no updates do not appear. Each stream shows the newest three cards on the
+landing view; older material is available through that stream's own paginated
+archive without displacing the other stream.
 
-The visual layout remains an active design task. The target is the supplied
-editorial reference: a full-width pale-blue hero with a healthcare photograph
-anchored on the right, elegant serif headlines, low/wide image cards, and compact
-horizontal organization-update cards. Do not promote this branch to production
-until the page has been reviewed against that reference at desktop and mobile
-sizes.
+The ten initial SM VIA Career Guides, including their distinct cover imagery and
+official-source reading lists, are published in both staging and production.
+Existing production organization news remains intact and appears alongside the
+guides; no publication data is overwritten by an interface deployment.
+
+## Homepage focus
+
+The homepage intentionally prioritizes search, current opportunities, the U.S.
+opportunity map, state licensure, organization discovery, and the SM VIA product
+story. The large **Explore healthcare careers** taxonomy grid and **Career
+resources** card gallery were removed from the homepage to reduce visual
+overload. Their destination pages remain available in the header, footer, and
+relevant in-page links.
 
 ## Current public opportunity data
 
