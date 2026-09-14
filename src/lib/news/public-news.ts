@@ -158,6 +158,59 @@ const editorialCoverBySlug: Record<string, string> = {
   "use-official-healthcare-job-postings": "/images/news/official-job-postings-cover.png",
 }
 
+export type EditorialGuideSource = {
+  label: string
+  publisher: string
+  href: string
+}
+
+const editorialGuideSourcesBySlug: Record<string, EditorialGuideSource[]> = {
+  "compare-nursing-job-offers": [
+    { label: "Leave benefits", publisher: "U.S. Department of Labor", href: "https://www.dol.gov/general/topic/benefits-leave" },
+    { label: "Registered Nurses: occupation profile", publisher: "O*NET OnLine / U.S. Department of Labor", href: "https://www.onetonline.org/link/summary/29-1141.00" },
+  ],
+  "compact-nursing-license-basics": [
+    { label: "How the Nurse Licensure Compact works", publisher: "Nurse Licensure Compact", href: "https://nursecompact.com/how-it-works.page" },
+    { label: "Contact a Board of Nursing", publisher: "NCSBN", href: "https://www.ncsbn.org/contact-bon.page" },
+  ],
+  "texas-nursing-license-move-plan": [
+    { label: "Licensure by endorsement", publisher: "Texas Board of Nursing", href: "https://www.bon.texas.gov/licensure_endorsement.asp.html" },
+    { label: "Nurses and the Nurse Licensure Compact", publisher: "Nurse Licensure Compact", href: "https://nursecompact.com/how-it-works/nurses-and-the-nlc.page" },
+  ],
+  "registered-nurse-salary-florida-context": [
+    { label: "Florida occupational employment and wage estimates", publisher: "U.S. Bureau of Labor Statistics", href: "https://www.bls.gov/oes/2023/may/oes_fl.htm" },
+    { label: "Occupational Employment and Wage Statistics tables", publisher: "U.S. Bureau of Labor Statistics", href: "https://www.bls.gov/oes/tables.htm" },
+  ],
+  "how-to-evaluate-hospital-employer": [
+    { label: "Job scams: how to spot and avoid them", publisher: "Federal Trade Commission", href: "https://consumer.ftc.gov/articles/job-scams" },
+    { label: "Registered Nurses: occupation profile", publisher: "O*NET OnLine / U.S. Department of Labor", href: "https://www.onetonline.org/link/summary/29-1141.00" },
+  ],
+  "nurse-practitioner-vs-physician-associate": [
+    { label: "Nurse Practitioner Certification Board", publisher: "AANPCB / NPCB", href: "https://www.aanpcert.org/" },
+    { label: "NCCPA certification information", publisher: "National Commission on Certification of Physician Assistants", href: "https://www.nccpa.net/" },
+    { label: "Contact a Board of Nursing", publisher: "NCSBN", href: "https://www.ncsbn.org/contact-bon.page" },
+  ],
+  "travel-nursing-role-questions": [
+    { label: "Travel nurses and the Nurse Licensure Compact", publisher: "Nurse Licensure Compact", href: "https://nursecompact.com/how-it-works/nurses-and-the-nlc.page" },
+    { label: "Contact a Board of Nursing", publisher: "NCSBN", href: "https://www.ncsbn.org/contact-bon.page" },
+  ],
+  "prepare-healthcare-interview": [
+    { label: "Registered Nurses: occupation profile", publisher: "O*NET OnLine / U.S. Department of Labor", href: "https://www.onetonline.org/link/summary/29-1141.00" },
+  ],
+  "licensure-when-relocating": [
+    { label: "Nurses and the Nurse Licensure Compact", publisher: "Nurse Licensure Compact", href: "https://nursecompact.com/how-it-works/nurses-and-the-nlc.page" },
+    { label: "Contact a Board of Nursing", publisher: "NCSBN", href: "https://www.ncsbn.org/contact-bon.page" },
+  ],
+  "use-official-healthcare-job-postings": [
+    { label: "Job scams: how to spot and avoid them", publisher: "Federal Trade Commission", href: "https://consumer.ftc.gov/articles/job-scams" },
+    { label: "How to create an application", publisher: "USAJOBS Help Center", href: "https://help.usajobs.gov/how-to/application" },
+  ],
+}
+
+export function getEditorialGuideSources(slug: string) {
+  return editorialGuideSourcesBySlug[slug] ?? []
+}
+
 export function isSmviaCareerGuide(post: {
   slug: string
   organizations?: { slug?: string | null; name?: string | null } | Array<{

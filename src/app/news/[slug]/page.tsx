@@ -9,8 +9,10 @@ import { ReportContentLink } from "@/components/moderation/report-content-link"
 import { Badge } from "@/components/ui/badge"
 import {
   formatNewsDate,
+  getEditorialGuideSources,
   getPublishedOrganizationPost,
   getPublicNewsOrganization,
+  isSmviaCareerGuide,
   newsCoverSrc,
 } from "@/lib/news/public-news"
 import { isPlatformDemonstrationOrganization } from "@/lib/platform-content"
@@ -59,6 +61,8 @@ export default async function PublicNewsDetailPage({ params }: Props) {
       organization.public_phone ||
       address.length)
   const isUshceEditorial = isPlatformDemonstrationOrganization(organization?.name)
+  const isSmviaGuide = isSmviaCareerGuide({ slug: post.slug })
+  const guideSources = getEditorialGuideSources(post.slug)
 
   return (
     <div className="min-h-dvh bg-white">
@@ -82,7 +86,11 @@ export default async function PublicNewsDetailPage({ params }: Props) {
             </p>
           )}
           <Badge className="mt-4" variant="outline">
-            {isUshceEditorial ? "Platform demonstration" : "Organization insight"}
+            {isSmviaGuide
+              ? "SM VIA Career Guide"
+              : isUshceEditorial
+                ? "Platform demonstration"
+                : "Organization insight"}
           </Badge>
           <h1 className="mt-5 text-4xl font-semibold tracking-[-0.055em] sm:text-5xl">
             {post.title}
@@ -108,6 +116,24 @@ export default async function PublicNewsDetailPage({ params }: Props) {
           <div className="mt-10 whitespace-pre-wrap text-base leading-8 text-foreground">
             {post.body}
           </div>
+          {guideSources.length > 0 && (
+            <section className="mt-10 rounded-2xl border border-sky-200 bg-sky-50/70 p-6">
+              <h2 className="text-xl font-semibold text-slate-950">Official sources and further reading</h2>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                This guide is original SM VIA editorial content. The sources below support the regulatory, wage, certification, or safety context discussed here. Requirements can change, so confirm decisions directly with the relevant board, employer, or agency.
+              </p>
+              <ul className="mt-5 grid gap-3 text-sm">
+                {guideSources.map((source) => (
+                  <li key={source.href}>
+                    <a className="font-semibold text-primary hover:underline" href={source.href} rel="noreferrer" target="_blank">
+                      {source.label}
+                    </a>
+                    <span className="text-slate-600"> · {source.publisher}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
           {isUshceEditorial && (
             <section className="mt-10 rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-950">
               <h2 className="font-semibold">Demonstration note</h2>
