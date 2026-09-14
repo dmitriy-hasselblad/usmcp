@@ -3,7 +3,6 @@ import Link from "next/link"
 import Image from "next/image"
 import {
   ArrowRight,
-  BookOpenText,
   CheckCircle2,
   Handshake,
   HeartPulse,
@@ -25,14 +24,12 @@ import { OrganizationCard } from "@/components/organizations/organization-card"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { usStates } from "@/lib/auth/validation"
-import { healthcareTaxonomy } from "@/lib/healthcare-taxonomy"
 import { getPublishedJobs } from "@/lib/jobs/public-jobs"
 import { getOfficialAtsHealthcareOpportunities } from "@/lib/jobs/official-ats"
 import { getUsaJobsHealthcareOpportunities } from "@/lib/jobs/usajobs"
 import { getPublicOrganizations } from "@/lib/organizations/public-organizations"
 import healthcareTeamImage from "../../public/images/ushce-healthcare-team.png"
 import { popularSpecialties } from "@/lib/marketing-data"
-import { resourceGuides } from "@/lib/resources/content"
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
@@ -54,10 +51,6 @@ export default async function Home() {
   ]
   const featuredMarketplaceJobs = activeJobs.slice(0, 8)
   const stateSummaries = getStateSummaries(activeJobs)
-  const featuredCareerResources = resourceGuides.filter(
-    (resource) => resource.category !== "Licensure guides",
-  )
-
   return (
     <div className="min-h-dvh overflow-hidden bg-background">
       <SiteHeader />
@@ -181,10 +174,6 @@ export default async function Home() {
           </div>
         </section>
 
-        <section className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28" id="careers">
-          <div className="grid gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:items-start"><SectionHeading eyebrow="Explore healthcare careers" title="Start with your discipline, then follow your path." description="SM VIA organizes healthcare work around focused professions and specialties—not a generic list of job titles." /><div className="grid gap-3 sm:grid-cols-2">{healthcareTaxonomy.slice(0, 8).map((category) => { const firstProfession = category.professions[0]?.name; return <Link className="group rounded-2xl border border-border bg-white p-5 transition hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-lg" href={firstProfession ? `/jobs?profession=${encodeURIComponent(firstProfession)}` : "/jobs"} key={category.name}><p className="text-base font-semibold">{category.name}</p><p className="mt-2 text-sm text-muted-foreground">{category.professions.slice(0, 3).map((profession) => profession.name).join(" · ")}</p><span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary">Explore roles <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" /></span></Link> })}</div></div>
-        </section>
-
         <section className="border-y border-border bg-slate-50">
           <div className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-24"><SectionHeading eyebrow="U.S. opportunity map" title="Explore healthcare opportunities by state." description="Select a state to view current SM VIA, federal USAJOBS, and official employer opportunities." /><UsOpportunityMap states={stateSummaries} /></div>
         </section>
@@ -253,66 +242,6 @@ export default async function Home() {
 
         <section className="bg-primary py-20 text-white lg:py-28" id="why-smvia">
           <div className="mx-auto grid max-w-7xl gap-12 px-5 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:px-8"><div><p className="text-xs font-bold tracking-[0.15em] text-teal-200 uppercase">Why SM VIA</p><h2 className="mt-4 text-4xl font-semibold tracking-[-0.055em] sm:text-5xl">Healthcare careers need more than a generic job board.</h2><p className="mt-5 max-w-xl text-base leading-8 text-blue-100/85">SM VIA structures healthcare experience, licenses, certifications, training, and career goals so professionals can present their background clearly and employers can understand it faster.</p><Button asChild className="mt-8 rounded-xl bg-white text-primary hover:bg-white/90"><Link href="/dashboard/profile">Build your professional profile <ArrowRight /></Link></Button></div><div className="rounded-[2rem] border border-white/15 bg-white/[0.08] p-5 shadow-2xl sm:p-7"><div className="rounded-[1.4rem] bg-white p-6 text-slate-900"><div className="flex items-start justify-between gap-4"><div><p className="text-xs font-bold tracking-[0.14em] text-primary uppercase">Illustrative profile</p><h3 className="mt-2 text-2xl font-semibold tracking-[-0.04em]">Professional readiness</h3></div><span className="rounded-full bg-teal-50 px-3 py-1 text-xs font-bold text-teal-800">Private by default</span></div><div className="mt-6 h-2 overflow-hidden rounded-full bg-slate-100"><div className="h-full w-2/3 rounded-full bg-teal-600" /></div><div className="mt-6 grid gap-3 text-sm">{["Licensure and credentials", "Education and clinical training", "Experience and specialty", "Location and career preferences"].map((item) => <div className="flex items-center gap-3 rounded-xl border border-slate-100 p-3" key={item}><CheckCircle2 className="size-5 text-teal-700" />{item}</div>)}</div><p className="mt-5 text-xs leading-5 text-slate-500">The profile is a product illustration. Members decide what information to add and share.</p></div></div></div>
-        </section>
-
-        <section
-          className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28"
-          id="resources"
-        >
-          <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-            <SectionHeading
-              eyebrow="Career resources"
-              title="Practical guidance for the road ahead."
-              description="Explore CV, application, job-search, residency, employer, and international career guidance."
-            />
-            <Button asChild className="h-10 w-fit rounded-xl" variant="outline">
-              <Link href="/resources">
-                View all resources <ArrowRight />
-              </Link>
-            </Button>
-          </div>
-          <div className="mt-10 grid gap-5 lg:grid-cols-3">
-            {featuredCareerResources.map((resource) => (
-              <Link
-                className="group"
-                href={`/resources/${resource.slug}`}
-                key={resource.slug}
-              >
-                <Card className="h-full overflow-hidden border-border/80 bg-white transition-all group-hover:-translate-y-1 group-hover:shadow-xl">
-                  <div className="relative h-40 overflow-hidden bg-[linear-gradient(135deg,#f7fbff_0%,#eff9f7_52%,#f8fcff_100%)]">
-                    {resource.image && <><Image
-                      alt={resource.image.alt}
-                      className="object-cover"
-                      fill
-                      sizes="(min-width: 1024px) 33vw, 100vw"
-                      src={resource.image.src}
-                    /><div className="absolute inset-0 bg-gradient-to-t from-slate-950/25 via-transparent to-white/5" /></>}
-                    <span className="absolute left-5 top-5 grid size-10 place-items-center rounded-xl border border-white/80 bg-white/90 text-primary shadow-sm">
-                      <BookOpenText className="size-5" />
-                    </span>
-                  </div>
-                  <CardContent className="p-6">
-                    <p className="text-xs font-bold tracking-[0.12em] text-primary uppercase">
-                      {resource.category}
-                    </p>
-                    <h2 className="mt-3 text-xl font-semibold tracking-[-0.04em]">
-                      {resource.title}
-                    </h2>
-                    <p className="mt-3 text-sm leading-6 text-muted-foreground">
-                      {resource.description}
-                    </p>
-                    <p className="mt-4 text-sm text-muted-foreground">
-                      {resource.readTime}
-                    </p>
-                    <span className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-primary">
-                      Read guide
-                      <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-                    </span>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
-          </div>
         </section>
 
       </main>
