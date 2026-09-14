@@ -90,10 +90,10 @@ export default async function PublicNewsPage({
           <div className="relative mx-auto max-w-7xl px-5 py-16 lg:flex lg:h-full lg:items-center lg:px-8 lg:py-0">
             <div className="max-w-4xl">
               <p className="text-xs font-bold tracking-[0.2em] text-sky-800/70 uppercase">Perspective for a stronger healthcare workforce</p>
-              <h1 className="mt-6 max-w-4xl font-serif text-5xl font-semibold leading-[0.98] tracking-[-0.05em] text-[#0c2340] sm:text-6xl lg:text-7xl">
+              <h1 className="mt-6 max-w-4xl text-5xl font-semibold leading-[0.98] tracking-[-0.065em] text-[#0c2340] sm:text-6xl lg:text-7xl">
                 Career intelligence for U.S. healthcare.
               </h1>
-              <p className="mt-6 max-w-2xl font-serif text-xl leading-8 text-slate-600">
+              <p className="mt-6 max-w-2xl text-xl leading-8 text-slate-600">
                 Independent guidance, employer news and practical resources — all in one place, from SM VIA.
               </p>
               <div className="mt-8 flex flex-wrap gap-3" aria-label="Browse article types">
@@ -162,7 +162,7 @@ export default async function PublicNewsPage({
 
           {posts.length ? (
             <>
-              {guidePosts.length > 0 && <section id="smvia-career-guides" className="scroll-mt-24"><div className="mb-7 flex flex-wrap items-baseline justify-between gap-4"><div className="flex flex-wrap items-baseline gap-x-7 gap-y-2"><p className="font-serif text-4xl font-semibold tracking-[-0.04em] text-[#123d63]">SM VIA CAREER GUIDES</p><p className="text-base text-slate-500">Practical, independently researched guidance from SM VIA.</p></div>{guidePosts.length > 3 ? <Link className="text-sm font-semibold text-teal-600 hover:underline" href="/news/guides">View all career guides →</Link> : null}</div>
+              {guidePosts.length > 0 && <section id="smvia-career-guides" className="scroll-mt-24"><div className="mb-7 flex flex-wrap items-baseline justify-between gap-4"><div className="flex flex-wrap items-baseline gap-x-7 gap-y-2"><p className="text-4xl font-semibold tracking-[-0.055em] text-[#123d63]">SM VIA CAREER GUIDES</p><p className="text-base text-slate-500">Practical, independently researched guidance from SM VIA.</p></div>{guidePosts.length > 3 ? <Link className="text-sm font-semibold text-teal-600 hover:underline" href="/news/guides">View all career guides →</Link> : null}</div>
             <div className="grid gap-7 md:grid-cols-2 lg:grid-cols-3">
               {displayedGuidePosts.map((post) => (
                 <Card className="group overflow-hidden rounded-lg border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl" key={post.id}>
@@ -182,7 +182,7 @@ export default async function PublicNewsPage({
                     <p className="mt-2 text-xs text-muted-foreground">
                       Published {formatNewsDate(post.published_at)}
                     </p>
-                    <h2 className="mt-4 font-serif text-2xl font-semibold leading-[1.08] tracking-[-0.035em] text-[#142c48]">
+                    <h2 className="mt-4 text-2xl font-semibold leading-[1.08] tracking-[-0.045em] text-[#142c48]">
                       <Link
                         className="hover:text-primary"
                         href={`/news/${post.slug}`}
@@ -200,7 +200,7 @@ export default async function PublicNewsPage({
             </div>
               </section>}
               <section id="organization-updates" className="mt-16 scroll-mt-24 border-t border-slate-200 pt-10">
-                <div className="mb-7 flex flex-wrap items-baseline justify-between gap-4"><div><p className="font-serif text-4xl font-semibold tracking-[-0.04em] text-[#142c48]">Organization updates</p><p className="mt-2 text-base text-slate-500">Perspectives and announcements from participating healthcare organizations.</p></div><Link className="text-sm font-semibold text-teal-600 hover:underline" href="#organization-updates">View all updates →</Link></div>
+                <div className="mb-7 flex flex-wrap items-baseline justify-between gap-4"><div><p className="text-4xl font-semibold tracking-[-0.055em] text-[#142c48]">Organization updates</p><p className="mt-2 text-base text-slate-500">Perspectives and announcements from participating healthcare organizations.</p></div><Link className="text-sm font-semibold text-teal-600 hover:underline" href="#organization-updates">View all updates →</Link></div>
                 {organizationPosts.length ? <div className="grid gap-7 md:grid-cols-2 lg:grid-cols-3">{organizationPosts.map((post) => (
                   <Card className="group overflow-hidden rounded-[1.5rem] border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl" key={post.id}>
                     {newsCoverSrc(post) && <div className="relative aspect-[16/10] overflow-hidden"><Image alt="" className="object-cover transition duration-500 group-hover:scale-[1.03]" fill sizes="(max-width: 768px) 100vw, 33vw" src={newsCoverSrc(post)!} /></div>}

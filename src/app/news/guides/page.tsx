@@ -34,10 +34,10 @@ export default async function CareerGuidesPage() {
             <p className="mt-8 text-xs font-bold tracking-[0.2em] text-sky-800/70 uppercase">
               SM VIA editorial
             </p>
-            <h1 className="mt-4 max-w-3xl font-serif text-5xl font-semibold leading-[0.98] tracking-[-0.05em] text-[#0c2340] sm:text-6xl">
+            <h1 className="mt-4 max-w-3xl text-5xl font-semibold leading-[0.98] tracking-[-0.065em] text-[#0c2340] sm:text-6xl">
               Career guides for U.S. healthcare.
             </h1>
-            <p className="mt-5 max-w-2xl font-serif text-xl leading-8 text-slate-600">
+            <p className="mt-5 max-w-2xl text-xl leading-8 text-slate-600">
               Practical, independently researched guidance for your next healthcare career decision.
             </p>
           </div>
@@ -66,7 +66,7 @@ export default async function CareerGuidesPage() {
                     <p className="mt-2 text-xs text-muted-foreground">
                       Published {formatNewsDate(guide.published_at)}
                     </p>
-                    <h2 className="mt-4 font-serif text-2xl font-semibold leading-[1.08] tracking-[-0.035em] text-[#142c48]">
+                    <h2 className="mt-4 text-2xl font-semibold leading-[1.08] tracking-[-0.045em] text-[#142c48]">
                       <Link className="hover:text-primary" href={`/news/${guide.slug}`}>
                         {guide.title}
                       </Link>
@@ -82,7 +82,7 @@ export default async function CareerGuidesPage() {
           ) : (
             <Card className="bg-white">
               <CardContent className="p-12 text-center">
-                <h2 className="font-serif text-3xl font-semibold">Career guides are coming soon.</h2>
+                <h2 className="text-3xl font-semibold tracking-[-0.055em]">Career guides are coming soon.</h2>
                 <p className="mt-3 text-muted-foreground">Please check back for practical healthcare career guidance.</p>
               </CardContent>
             </Card>

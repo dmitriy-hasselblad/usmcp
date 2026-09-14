@@ -213,20 +213,8 @@ export function getEditorialGuideSources(slug: string) {
 
 export function isSmviaCareerGuide(post: {
   slug: string
-  organizations?: { slug?: string | null; name?: string | null } | Array<{
-    slug?: string | null
-    name?: string | null
-  }> | null
 }) {
-  const organization = Array.isArray(post.organizations)
-    ? post.organizations[0]
-    : post.organizations
-
-  return Boolean(
-    editorialCoverBySlug[post.slug] ||
-      organization?.slug === "smvia-editorial" ||
-      organization?.name?.trim().toLowerCase() === "sm via",
-  )
+  return Boolean(editorialCoverBySlug[post.slug])
 }
 
 export function newsCoverSrc(post: {
