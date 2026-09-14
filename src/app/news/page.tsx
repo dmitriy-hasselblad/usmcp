@@ -71,7 +71,7 @@ export default async function PublicNewsPage({
     <div className="min-h-dvh bg-[#f4f8fb] text-slate-950">
       <SiteHeader />
       <main>
-        <section className="relative isolate min-h-[27rem] overflow-hidden border-b border-sky-100 bg-[#eaf6fc] lg:min-h-[31rem]">
+        <section className="relative isolate min-h-[27rem] overflow-hidden border-b border-sky-100 bg-[#eaf6fc] lg:h-[24rem] lg:min-h-0">
           <div className="absolute inset-y-0 left-0 right-0 mx-auto max-w-7xl px-5 lg:px-8">
             <div className="relative h-full">
               <div className="absolute inset-y-0 right-0 w-full lg:w-[60%]">
@@ -87,7 +87,7 @@ export default async function PublicNewsPage({
             </div>
           </div>
           <div className="absolute inset-0 bg-[linear-gradient(90deg,#eaf6fc_0%,#edf8fd_40%,rgba(234,246,252,0.82)_53%,rgba(234,246,252,0.08)_72%)]" />
-          <div className="relative mx-auto max-w-7xl px-5 py-16 lg:px-8 lg:py-24">
+          <div className="relative mx-auto max-w-7xl px-5 py-16 lg:flex lg:h-full lg:items-center lg:px-8 lg:py-0">
             <div className="max-w-4xl">
               <p className="text-xs font-bold tracking-[0.2em] text-sky-800/70 uppercase">Perspective for a stronger healthcare workforce</p>
               <h1 className="mt-6 max-w-4xl font-serif text-5xl font-semibold leading-[0.98] tracking-[-0.05em] text-[#0c2340] sm:text-6xl lg:text-7xl">
@@ -105,7 +105,7 @@ export default async function PublicNewsPage({
           </div>
         </section>
 
-        <section className="mx-auto max-w-7xl px-5 py-12 lg:px-8 lg:py-16">
+        <section className="mx-auto max-w-7xl px-5 pt-7 pb-12 lg:px-8 lg:pt-8 lg:pb-16">
           <div className="hidden">
               <div className="mb-5"><p className="text-xs font-bold tracking-[0.16em] text-primary uppercase">Browse insights</p><h2 className="mt-2 text-2xl font-semibold tracking-[-0.04em]">Find a published article</h2></div>
               <form
