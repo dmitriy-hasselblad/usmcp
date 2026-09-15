@@ -318,6 +318,27 @@ create table public.jobs (
     salary_period in ('hour', 'year')
   ),
   visa_support boolean not null default false,
+  employment_arrangement text not null default 'Not specified' check (
+    employment_arrangement in ('Not specified', 'W-2 direct hire', '1099 independent contractor', 'Agency placement', 'Other')
+  ),
+  new_graduates_welcome boolean not null default false,
+  licensure_requirement text not null default 'Not specified' check (
+    licensure_requirement in ('Not specified', 'Active state license required', 'Eligible to obtain a state license', 'Compact license preferred')
+  ),
+  care_settings text[] not null default '{}' check (
+    cardinality(care_settings) <= 8
+    and care_settings <@ array['Acute care', 'Ambulatory / outpatient', 'Rehabilitation', 'Home health', 'Long-term care', 'Behavioral health', 'Academic / research', 'Telehealth']::text[]
+  ),
+  relocation_support text not null default 'Not offered' check (
+    relocation_support in ('Not offered', 'May be available', 'Available')
+  ),
+  visa_sponsorship_status text not null default 'Not offered' check (
+    visa_sponsorship_status in ('Not offered', 'May be considered', 'Available')
+  ),
+  visa_pathways text[] not null default '{}' check (
+    cardinality(visa_pathways) <= 3
+    and visa_pathways <@ array['H-1B', 'Employment-based permanent residence', 'Other']::text[]
+  ),
   description text check (
     description is null or char_length(description) <= 10000
   ),
@@ -330,6 +351,7 @@ create table public.jobs (
     or salary_max is null
     or salary_max >= salary_min
   ),
+  check (visa_sponsorship_status <> 'Not offered' or cardinality(visa_pathways) = 0),
   check (
     (status = 'published' and published_at is not null)
     or status <> 'published'

@@ -18,6 +18,50 @@ export const experienceLevels = [
 
 export const salaryPeriods = ["year", "hour"] as const
 
+export const employmentArrangements = [
+  "Not specified",
+  "W-2 direct hire",
+  "1099 independent contractor",
+  "Agency placement",
+  "Other",
+] as const
+
+export const licensureRequirements = [
+  "Not specified",
+  "Active state license required",
+  "Eligible to obtain a state license",
+  "Compact license preferred",
+] as const
+
+export const careSettings = [
+  "Acute care",
+  "Ambulatory / outpatient",
+  "Rehabilitation",
+  "Home health",
+  "Long-term care",
+  "Behavioral health",
+  "Academic / research",
+  "Telehealth",
+] as const
+
+export const relocationSupportOptions = [
+  "Not offered",
+  "May be available",
+  "Available",
+] as const
+
+export const visaSponsorshipOptions = [
+  "Not offered",
+  "May be considered",
+  "Available",
+] as const
+
+export const visaPathways = [
+  "H-1B",
+  "Employment-based permanent residence",
+  "Other",
+] as const
+
 export const jobPostingDurations = [30, 60, 90] as const
 
 export const jobStatuses = ["draft", "published", "paused", "closed"] as const
@@ -51,6 +95,30 @@ export function isExperienceLevel(value: string) {
 
 export function isSalaryPeriod(value: string) {
   return salaryPeriods.some((option) => option === value)
+}
+
+export function isEmploymentArrangement(value: string) {
+  return employmentArrangements.some((option) => option === value)
+}
+
+export function isLicensureRequirement(value: string) {
+  return licensureRequirements.some((option) => option === value)
+}
+
+export function isRelocationSupport(value: string) {
+  return relocationSupportOptions.some((option) => option === value)
+}
+
+export function isVisaSponsorship(value: string) {
+  return visaSponsorshipOptions.some((option) => option === value)
+}
+
+export function isCareSetting(value: string) {
+  return careSettings.some((option) => option === value)
+}
+
+export function isVisaPathway(value: string) {
+  return visaPathways.some((option) => option === value)
 }
 
 export function isJobPostingDuration(

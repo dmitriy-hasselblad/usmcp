@@ -14,11 +14,17 @@ import {
 import {
   canManageJobs,
   canManageOrganization,
+  isCareSetting,
+  isEmploymentArrangement,
   isExperienceLevel,
   isEmploymentType,
   isJobPostingDuration,
   isJobStatus,
+  isLicensureRequirement,
+  isRelocationSupport,
   isSalaryPeriod,
+  isVisaPathway,
+  isVisaSponsorship,
   isWorkplaceType,
   type JobStatus,
 } from "@/lib/employer/constants"
@@ -208,7 +214,14 @@ export async function createJobDraft(formData: FormData) {
   )
   const openPositions = Number(formString(formData, "openPositions"))
   const requiredSkills = [...new Set(formString(formData, "requiredSkills").split(",").map((skill) => skill.trim()).filter((skill) => skill.length >= 2 && skill.length <= 80))].slice(0, 20)
-  const visaSupport = formData.get("visaSupport") === "on"
+  const employmentArrangement = formString(formData, "employmentArrangement")
+  const licensureRequirement = formString(formData, "licensureRequirement")
+  const careSettings = [...new Set(formData.getAll("careSettings").map(String))].filter(isCareSetting).slice(0, 8)
+  const relocationSupport = formString(formData, "relocationSupport")
+  const visaSponsorship = formString(formData, "visaSponsorship")
+  const visaPathways = [...new Set(formData.getAll("visaPathways").map(String))].filter(isVisaPathway).slice(0, 3)
+  const newGraduatesWelcome = formData.get("newGraduatesWelcome") === "on"
+  const visaSupport = visaSponsorship !== "Not offered"
 
   const salaryIsInvalid =
     Number.isNaN(salaryMin) ||
@@ -227,6 +240,11 @@ export async function createJobDraft(formData: FormData) {
     !isEmploymentType(employmentType) ||
     !isWorkplaceType(workplaceType) ||
     !isSalaryPeriod(salaryPeriod) ||
+    !isEmploymentArrangement(employmentArrangement) ||
+    !isLicensureRequirement(licensureRequirement) ||
+    !isRelocationSupport(relocationSupport) ||
+    !isVisaSponsorship(visaSponsorship) ||
+    (visaSponsorship === "Not offered" && visaPathways.length > 0) ||
     !isJobPostingDuration(postingDurationDays) ||
     !Number.isSafeInteger(openPositions) ||
     openPositions < 1 ||
@@ -259,6 +277,13 @@ export async function createJobDraft(formData: FormData) {
     salary_max: salaryMax,
     salary_period: salaryPeriod,
     visa_support: visaSupport,
+    employment_arrangement: employmentArrangement,
+    new_graduates_welcome: newGraduatesWelcome,
+    licensure_requirement: licensureRequirement,
+    care_settings: careSettings,
+    relocation_support: relocationSupport,
+    visa_sponsorship_status: visaSponsorship,
+    visa_pathways: visaPathways,
     description: description || null,
     required_skills: requiredSkills,
     posting_duration_days: postingDurationDays,

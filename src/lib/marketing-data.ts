@@ -28,6 +28,13 @@ export type Job = {
   qualifications: string[]
   benefits: string[]
   visaSupport?: boolean
+  employmentArrangement?: string
+  newGraduatesWelcome?: boolean
+  licensureRequirement?: string
+  careSettings?: string[]
+  relocationSupport?: string
+  visaSponsorshipStatus?: string
+  visaPathways?: string[]
   featured?: boolean
   source?: "preview" | "live" | "usajobs" | "greenhouse" | "lever" | "ashby"
   externalUrl?: string

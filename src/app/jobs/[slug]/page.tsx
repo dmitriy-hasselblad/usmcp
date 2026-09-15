@@ -226,6 +226,30 @@ export default async function JobPage({ params }: JobPageProps) {
               </Card>
             )}
 
+            {hasHiringDetails(job) && (
+              <Card className="border-border/80 bg-white">
+                <CardHeader>
+                  <CardTitle>Hiring, licensure & mobility</CardTitle>
+                </CardHeader>
+                <CardContent className="grid gap-4 sm:grid-cols-2">
+                  <HiringDetail label="Employment arrangement" value={job.employmentArrangement} />
+                  <HiringDetail label="License requirement" value={job.licensureRequirement} />
+                  {job.newGraduatesWelcome && <HiringDetail label="Early-career eligibility" value="New graduates welcome" />}
+                  {job.careSettings && job.careSettings.length > 0 && <HiringDetail label="Care settings" value={job.careSettings.join(" · ")} />}
+                  {job.relocationSupport && job.relocationSupport !== "Not offered" && <HiringDetail label="Relocation assistance" value={job.relocationSupport} />}
+                  {job.visaSponsorshipStatus && job.visaSponsorshipStatus !== "Not offered" && (
+                    <HiringDetail label="Visa sponsorship" value={job.visaSponsorshipStatus} />
+                  )}
+                  {job.visaPathways && job.visaPathways.length > 0 && <HiringDetail label="Possible pathways" value={job.visaPathways.join(" · ")} />}
+                  {job.visaSponsorshipStatus && job.visaSponsorshipStatus !== "Not offered" && (
+                    <p className="sm:col-span-2 rounded-xl bg-amber-50 px-4 py-3 text-sm leading-6 text-amber-950">
+                      Sponsorship is evaluated case by case. This listing does not promise a visa, permanent residence, or any immigration outcome.
+                    </p>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+
             {job.responsibilities.length > 0 && (
               <JobSection items={job.responsibilities} title="What you will do" />
             )}
@@ -485,5 +509,27 @@ function JobSection({ items, title }: { items: string[]; title: string }) {
         </ul>
       </CardContent>
     </Card>
+  )
+}
+
+function hasHiringDetails(job: Job) {
+  return Boolean(
+    (job.employmentArrangement && job.employmentArrangement !== "Not specified") ||
+      (job.licensureRequirement && job.licensureRequirement !== "Not specified") ||
+      job.newGraduatesWelcome ||
+      job.careSettings?.length ||
+      (job.relocationSupport && job.relocationSupport !== "Not offered") ||
+      (job.visaSponsorshipStatus && job.visaSponsorshipStatus !== "Not offered"),
+  )
+}
+
+function HiringDetail({ label, value }: { label: string; value: string | undefined }) {
+  if (!value || value === "Not specified") return null
+
+  return (
+    <div className="rounded-xl border border-border bg-muted/25 p-4">
+      <p className="text-xs font-bold tracking-[0.1em] text-primary uppercase">{label}</p>
+      <p className="mt-2 text-sm font-medium leading-6 text-foreground">{value}</p>
+    </div>
   )
 }

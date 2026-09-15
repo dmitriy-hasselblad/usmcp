@@ -15,10 +15,16 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import {
   canManageJobs,
+  careSettings,
+  employmentArrangements,
   employmentTypes,
   experienceLevels,
   jobPostingDurations,
+  licensureRequirements,
+  relocationSupportOptions,
   salaryPeriods,
+  visaPathways,
+  visaSponsorshipOptions,
   workplaceTypes,
 } from "@/lib/employer/constants"
 import { requireEmployerWorkspace } from "@/lib/employer/session"
@@ -188,6 +194,78 @@ export default async function NewJobPage({
                   <span className="text-xs font-normal text-muted-foreground">Separate skills with commas. These power transparent candidate recommendations.</span>
                 </label>
 
+                <fieldset className="grid gap-4 rounded-2xl border border-primary/15 bg-primary/[0.025] p-5">
+                  <div>
+                    <legend className="text-base font-semibold">Hiring, licensure & mobility</legend>
+                    <p className="mt-1 text-sm leading-6 text-muted-foreground">
+                      Help candidates understand the employment arrangement and eligibility before they apply.
+                    </p>
+                  </div>
+
+                  <div className="grid gap-5 sm:grid-cols-2">
+                    <label className="grid gap-2 text-sm font-medium">
+                      Employment arrangement
+                      <select className={selectClassName} defaultValue="Not specified" name="employmentArrangement">
+                        {employmentArrangements.map((option) => <option key={option} value={option}>{option}</option>)}
+                      </select>
+                    </label>
+                    <label className="grid gap-2 text-sm font-medium">
+                      License requirement
+                      <select className={selectClassName} defaultValue="Not specified" name="licensureRequirement">
+                        {licensureRequirements.map((option) => <option key={option} value={option}>{option}</option>)}
+                      </select>
+                    </label>
+                  </div>
+
+                  <fieldset className="grid gap-2">
+                    <legend className="text-sm font-medium">Care settings <span className="font-normal text-muted-foreground">Optional</span></legend>
+                    <div className="grid gap-2 sm:grid-cols-2">
+                      {careSettings.map((setting) => (
+                        <label className="flex items-center gap-2 rounded-lg bg-white px-3 py-2 text-sm" key={setting}>
+                          <input className="size-4 accent-primary" name="careSettings" type="checkbox" value={setting} />
+                          {setting}
+                        </label>
+                      ))}
+                    </div>
+                  </fieldset>
+
+                  <label className="flex items-start gap-3 rounded-xl border border-border bg-white p-4 text-sm">
+                    <input className="mt-0.5 size-4 accent-primary" name="newGraduatesWelcome" type="checkbox" />
+                    <span>
+                      <span className="font-semibold">New graduates welcome</span>
+                      <span className="mt-1 block leading-5 text-muted-foreground">Select only when candidates without prior post-licensure experience can be considered.</span>
+                    </span>
+                  </label>
+
+                  <div className="grid gap-5 sm:grid-cols-2">
+                    <label className="grid gap-2 text-sm font-medium">
+                      Relocation assistance
+                      <select className={selectClassName} defaultValue="Not offered" name="relocationSupport">
+                        {relocationSupportOptions.map((option) => <option key={option} value={option}>{option}</option>)}
+                      </select>
+                    </label>
+                    <label className="grid gap-2 text-sm font-medium">
+                      Visa sponsorship
+                      <select className={selectClassName} defaultValue="Not offered" name="visaSponsorship">
+                        {visaSponsorshipOptions.map((option) => <option key={option} value={option}>{option}</option>)}
+                      </select>
+                    </label>
+                  </div>
+
+                  <fieldset className="grid gap-2">
+                    <legend className="text-sm font-medium">Possible visa pathways <span className="font-normal text-muted-foreground">Optional</span></legend>
+                    <div className="flex flex-wrap gap-2">
+                      {visaPathways.map((pathway) => (
+                        <label className="flex items-center gap-2 rounded-full border border-border bg-white px-3 py-2 text-sm" key={pathway}>
+                          <input className="size-4 accent-primary" name="visaPathways" type="checkbox" value={pathway} />
+                          {pathway}
+                        </label>
+                      ))}
+                    </div>
+                    <p className="text-xs leading-5 text-muted-foreground">Sponsorship must be evaluated individually. Do not use this field to promise a visa or immigration outcome.</p>
+                  </fieldset>
+                </fieldset>
+
                 <fieldset className="grid gap-3">
                   <legend className="text-sm font-medium">
                     Compensation range
@@ -227,24 +305,6 @@ export default async function NewJobPage({
                 <label className="grid gap-2 text-sm font-medium">
                   Job description
                   <JobDescriptionEditor name="description" />
-                </label>
-
-                <label className="flex items-start gap-3 rounded-xl border border-border bg-muted/35 p-4 text-sm">
-                  <input
-                    className="mt-0.5 size-4 accent-primary"
-                    name="visaSupport"
-                    type="checkbox"
-                  />
-                  <span>
-                    <span className="font-semibold">
-                      Visa support may be available
-                    </span>
-                    <span className="mt-1 block leading-5 text-muted-foreground">
-                      Mark this only when your organization can evaluate
-                      sponsorship or immigration support for qualified
-                      candidates.
-                    </span>
-                  </span>
                 </label>
 
                 <AuthSubmitButton pendingLabel="Saving draft...">
