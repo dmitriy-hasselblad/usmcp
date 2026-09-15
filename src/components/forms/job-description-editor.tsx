@@ -110,7 +110,7 @@ export function JobDescriptionEditor({
         aria-describedby={`${name}-help`}
         aria-label="Job description editor"
         className="min-h-64 px-4 py-3 text-sm leading-6 outline-none empty:before:pointer-events-none empty:before:text-muted-foreground empty:before:content-[attr(data-placeholder)] [&_h2]:my-3 [&_h2]:text-xl [&_h2]:font-semibold [&_h3]:my-3 [&_h3]:text-base [&_h3]:font-semibold [&_ol]:my-3 [&_ol]:list-decimal [&_ol]:pl-5 [&_ul]:my-3 [&_ul]:list-disc [&_ul]:pl-5"
-        contentEditable
+        contentEditable="true"
         data-placeholder="Describe the role, responsibilities, qualifications, schedule, and benefits."
         onInput={syncValue}
         onKeyDown={handleKeyDown}
@@ -119,6 +119,7 @@ export function JobDescriptionEditor({
         ref={editorRef}
         role="textbox"
         suppressContentEditableWarning
+        tabIndex={0}
       />
       <p className="border-t border-border px-4 py-2 text-xs text-muted-foreground" id={`${name}-help`}>
         Use headings and lists from the toolbar. Typing <strong>*</strong>, <strong>-</strong>, <strong>1.</strong>, or <strong>1)</strong> followed by a space starts a list automatically.

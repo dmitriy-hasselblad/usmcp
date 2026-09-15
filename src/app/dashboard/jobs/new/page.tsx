@@ -302,10 +302,10 @@ export default async function NewJobPage({
                   </div>
                 </fieldset>
 
-                <label className="grid gap-2 text-sm font-medium">
-                  Job description
+                <fieldset className="grid gap-2">
+                  <legend className="text-sm font-medium">Job description</legend>
                   <JobDescriptionEditor name="description" />
-                </label>
+                </fieldset>
 
                 <AuthSubmitButton pendingLabel="Saving draft...">
                   Save job draft
