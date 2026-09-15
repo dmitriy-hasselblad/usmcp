@@ -39,6 +39,8 @@ storage.
 - `/dashboard/documents/[id]/download` - authorized short-lived document access
 - `/dashboard/jobs` - employer job management
 - `/dashboard/jobs/new` - private employer job-draft creation
+- `/dashboard/jobs/[id]/edit` - authorized employer editing for draft and published jobs
+- `/guides/create-job-draft-guide.pdf` - field-by-field employer guide for creating a job draft
 - `/dashboard/organization` - employer organization settings
 - `/dashboard/applications` - role-aware candidate and employer application list
 - `/dashboard/applications/[id]` - protected application review and status page
@@ -69,6 +71,41 @@ The ten initial SM VIA Career Guides, including their distinct cover imagery and
 official-source reading lists, are published in both staging and production.
 Existing production organization news remains intact and appears alongside the
 guides; no publication data is overwritten by an interface deployment.
+
+## Employer job creation and guidance
+
+Authorized organization owners, administrators, and recruiters can create a
+private job draft, review it, publish it, pause it, close it, and edit it after
+publication. Editing a published job does not reset its original publication
+date or posting duration. The public job detail page displays the employer logo
+when one has been uploaded.
+
+Job creation now includes structured hiring information that candidates can
+understand before applying: employment arrangement, state-license expectation,
+care settings, early-career eligibility, relocation support, visa sponsorship,
+and possible visa pathways. Visa fields describe employer policy only; they do
+not promise a visa or immigration outcome. The rich-text description editor
+preserves headings and ordered or unordered lists in the public job view.
+
+The employer workspace links to the English PDF guide
+`/guides/create-job-draft-guide.pdf` directly under **Publishing status**. It
+explains every field in Create a job draft, includes examples and data-quality
+guidance, and ends with a pre-publication checklist. The editable generator is
+kept at `scripts/build_job_draft_guide.py` so future revisions stay consistent.
+
+## Staging and production data isolation
+
+Preview deployments use the separate `smvia-staging` Supabase project; production
+deployments use the production project. A GitHub or Vercel deployment moves code
+and static assets only. It does not copy organizations, jobs, applications,
+articles, accounts, or Storage files between the two databases.
+
+The staging demonstration organization, Harborline Community Health, and its
+DEMO job are therefore not production content. Before the September 15, 2026
+production release, production was checked for both records and had zero
+matches. The release contained only useful application code, the PDF guide, and
+the two production schema changes needed for the new job fields and employer
+editing permissions.
 
 ## Homepage focus
 
