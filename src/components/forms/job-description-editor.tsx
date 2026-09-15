@@ -100,7 +100,14 @@ export function JobDescriptionEditor({
 
 function ToolbarButton({ children, label, onClick }: { children: React.ReactNode; label: string; onClick: () => void }) {
   return (
-    <Button aria-label={label} onClick={onClick} size="icon-sm" type="button" variant="ghost">
+    <Button
+      aria-label={label}
+      onClick={onClick}
+      onMouseDown={(event) => event.preventDefault()}
+      size="icon-sm"
+      type="button"
+      variant="ghost"
+    >
       {children}
     </Button>
   )
