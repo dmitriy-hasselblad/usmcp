@@ -1,21 +1,30 @@
 "use client"
 
 import { Bold, Heading2, Heading3, List, ListOrdered } from "lucide-react"
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 import { Button } from "@/components/ui/button"
 
 type JobDescriptionEditorProps = {
   name: string
   maxLength?: number
+  initialValue?: string | null
 }
 
 export function JobDescriptionEditor({
   name,
   maxLength = 10000,
+  initialValue = "",
 }: JobDescriptionEditorProps) {
   const editorRef = useRef<HTMLDivElement>(null)
-  const [value, setValue] = useState("")
+  const selectionRef = useRef<Range | null>(null)
+  const [value, setValue] = useState(initialValue ?? "")
+
+  useEffect(() => {
+    const editor = editorRef.current
+    if (!editor || editor.innerHTML) return
+    editor.innerHTML = markdownToEditorHtml(initialValue ?? "")
+  }, [initialValue])
 
   const syncValue = () => {
     const editor = editorRef.current
@@ -23,9 +32,27 @@ export function JobDescriptionEditor({
     setValue(serializeEditor(editor).slice(0, maxLength))
   }
 
+  const rememberSelection = () => {
+    const editor = editorRef.current
+    const selection = window.getSelection()
+    if (!editor || !selection?.rangeCount) return
+    const range = selection.getRangeAt(0)
+    if (editor.contains(range.commonAncestorContainer)) {
+      selectionRef.current = range.cloneRange()
+    }
+  }
+
   const applyCommand = (command: string, commandValue?: string) => {
-    editorRef.current?.focus()
+    const editor = editorRef.current
+    if (!editor) return
+    editor.focus()
+    const selection = window.getSelection()
+    if (selectionRef.current) {
+      selection?.removeAllRanges()
+      selection?.addRange(selectionRef.current)
+    }
     document.execCommand(command, false, commandValue)
+    rememberSelection()
     syncValue()
   }
 
@@ -63,19 +90,19 @@ export function JobDescriptionEditor({
     <div className="overflow-hidden rounded-xl border border-input bg-background focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/20">
       <input name={name} type="hidden" value={value} />
       <div className="flex flex-wrap gap-1 border-b border-border bg-muted/35 p-2">
-        <ToolbarButton label="Bold" onClick={() => applyCommand("bold")}>
+        <ToolbarButton label="Bold" onMouseDown={() => applyCommand("bold")}>
           <Bold className="size-4" />
         </ToolbarButton>
-        <ToolbarButton label="Heading" onClick={() => applyCommand("formatBlock", "h2")}>
+        <ToolbarButton label="Heading" onMouseDown={() => applyCommand("formatBlock", "h2")}>
           <Heading2 className="size-4" />
         </ToolbarButton>
-        <ToolbarButton label="Subheading" onClick={() => applyCommand("formatBlock", "h3")}>
+        <ToolbarButton label="Subheading" onMouseDown={() => applyCommand("formatBlock", "h3")}>
           <Heading3 className="size-4" />
         </ToolbarButton>
-        <ToolbarButton label="Bulleted list" onClick={() => applyCommand("insertUnorderedList")}>
+        <ToolbarButton label="Bulleted list" onMouseDown={() => applyCommand("insertUnorderedList")}>
           <List className="size-4" />
         </ToolbarButton>
-        <ToolbarButton label="Numbered list" onClick={() => applyCommand("insertOrderedList")}>
+        <ToolbarButton label="Numbered list" onMouseDown={() => applyCommand("insertOrderedList")}>
           <ListOrdered className="size-4" />
         </ToolbarButton>
       </div>
@@ -87,6 +114,8 @@ export function JobDescriptionEditor({
         data-placeholder="Describe the role, responsibilities, qualifications, schedule, and benefits."
         onInput={syncValue}
         onKeyDown={handleKeyDown}
+        onKeyUp={rememberSelection}
+        onMouseUp={rememberSelection}
         ref={editorRef}
         role="textbox"
         suppressContentEditableWarning
@@ -98,12 +127,14 @@ export function JobDescriptionEditor({
   )
 }
 
-function ToolbarButton({ children, label, onClick }: { children: React.ReactNode; label: string; onClick: () => void }) {
+function ToolbarButton({ children, label, onMouseDown }: { children: React.ReactNode; label: string; onMouseDown: () => void }) {
   return (
     <Button
       aria-label={label}
-      onClick={onClick}
-      onMouseDown={(event) => event.preventDefault()}
+      onMouseDown={(event) => {
+        event.preventDefault()
+        onMouseDown()
+      }}
       size="icon-sm"
       type="button"
       variant="ghost"
@@ -111,6 +142,41 @@ function ToolbarButton({ children, label, onClick }: { children: React.ReactNode
       {children}
     </Button>
   )
+}
+
+function markdownToEditorHtml(value: string) {
+  const escapeHtml = (text: string) => text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+  const inline = (text: string) => escapeHtml(text).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+  const lines = value.replace(/\r\n?/g, "\n").split("\n")
+  const parts: string[] = []
+  let list: { tag: "ol" | "ul"; items: string[] } | null = null
+  const flushList = () => {
+    if (!list) return
+    parts.push(`<${list.tag}>${list.items.map((item) => `<li>${inline(item)}</li>`).join("")}</${list.tag}>`)
+    list = null
+  }
+  for (const line of lines) {
+    const heading = line.match(/^(#{2,3})\s+(.+)$/)
+    const unordered = line.match(/^[-*+]\s+(.+)$/)
+    const ordered = line.match(/^\d+[.)]\s+(.+)$/)
+    if (heading) {
+      flushList()
+      const tag = heading[1].length === 2 ? "h2" : "h3"
+      parts.push(`<${tag}>${inline(heading[2])}</${tag}>`)
+    } else if (unordered || ordered) {
+      const tag = unordered ? "ul" : "ol"
+      if (!list || list.tag !== tag) {
+        flushList()
+        list = { tag, items: [] }
+      }
+      list.items.push((unordered ?? ordered)![1])
+    } else {
+      flushList()
+      if (line.trim()) parts.push(`<div>${inline(line)}</div>`)
+    }
+  }
+  flushList()
+  return parts.join("")
 }
 
 function serializeEditor(element: HTMLElement) {

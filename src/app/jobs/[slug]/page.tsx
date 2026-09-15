@@ -35,6 +35,7 @@ import {
 import { featuredJobs, getJobBySlug, type Job } from "@/lib/marketing-data"
 import { getAbsoluteUrl, serializeJsonLd } from "@/lib/seo"
 import { socialImageMetadata } from "@/components/seo/social-card"
+import { publicOrganizationLogoUrl } from "@/lib/employer/organization-logo"
 
 type JobPageProps = {
   params: Promise<{ slug: string }>
@@ -86,6 +87,7 @@ export default async function JobPage({ params }: JobPageProps) {
   }
 
   const isLive = job.source === "live" && !job.isPlatformDemo
+  const organizationLogoUrl = publicOrganizationLogoUrl(job.organizationLogoPath)
   const jobPosting = isLive && job.publishedAt ? getJobPosting(job) : null
   const [liveJobs, latestOrganizationPost] = await Promise.all([
     getPublishedJobs(),
@@ -149,18 +151,20 @@ export default async function JobPage({ params }: JobPageProps) {
                 <h1 className="mt-5 max-w-4xl text-4xl font-semibold tracking-[-0.055em] sm:text-5xl">
                   {job.title}
                 </h1>
-                <p className="mt-3 text-lg font-semibold text-primary">
-                  {isLive && job.employerSlug ? (
-                    <Link
-                      className="hover:underline"
-                      href={`/companies/${job.employerSlug}`}
-                    >
-                      {job.employer}
-                    </Link>
-                  ) : (
-                    job.employer
-                  )}
-                </p>
+                <div className="mt-4 flex items-center gap-3">
+                  <div className="grid size-12 shrink-0 place-items-center overflow-hidden rounded-xl border border-border bg-white">
+                    {organizationLogoUrl ? (
+                      <Image alt={`${job.employer} logo`} className="size-full object-contain p-1" height={48} src={organizationLogoUrl} width={48} />
+                    ) : (
+                      <Building2 className="size-5 text-primary" />
+                    )}
+                  </div>
+                  <p className="text-lg font-semibold text-primary">
+                    {isLive && job.employerSlug ? (
+                      <Link className="hover:underline" href={`/companies/${job.employerSlug}`}>{job.employer}</Link>
+                    ) : job.employer}
+                  </p>
+                </div>
                 <div className="mt-5 flex flex-wrap gap-x-5 gap-y-3 text-sm text-muted-foreground">
                   <span className="inline-flex items-center gap-2">
                     <MapPin className="size-4" />

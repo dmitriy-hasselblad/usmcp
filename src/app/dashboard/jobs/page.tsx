@@ -162,6 +162,9 @@ export default async function EmployerJobsPage({
                   )}
                   {canEdit && (
                     <>
+                      <Button asChild variant="outline">
+                        <Link href={`/dashboard/jobs/${job.id}/edit`}>Edit</Link>
+                      </Button>
                       <StatusActions
                         jobId={job.id}
                         status={job.status as JobStatus}

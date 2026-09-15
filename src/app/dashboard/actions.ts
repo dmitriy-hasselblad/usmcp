@@ -313,6 +313,89 @@ export async function createJobDraft(formData: FormData) {
   )
 }
 
+export async function updateJob(formData: FormData) {
+  const workspace = await requireEmployerWorkspace("/dashboard/jobs")
+  if (!canManageJobs(workspace.membership.role)) {
+    redirect(messagePath("/dashboard/jobs", "error", "Your workspace role cannot edit jobs."))
+  }
+
+  const jobId = formString(formData, "jobId")
+  if (!uuidPattern.test(jobId)) {
+    redirect(messagePath("/dashboard/jobs", "error", "The job update is invalid."))
+  }
+
+  const title = formString(formData, "title")
+  const profession = formString(formData, "profession")
+  const specialty = formString(formData, "specialty")
+  const experienceLevel = formString(formData, "experienceLevel")
+  const city = formString(formData, "city")
+  const stateCode = formString(formData, "stateCode")
+  const employmentType = formString(formData, "employmentType")
+  const workplaceType = formString(formData, "workplaceType")
+  const salaryPeriod = formString(formData, "salaryPeriod")
+  const salaryMin = optionalSalary(formData, "salaryMin")
+  const salaryMax = optionalSalary(formData, "salaryMax")
+  const description = formString(formData, "description")
+  const openPositions = Number(formString(formData, "openPositions"))
+  const requiredSkills = [...new Set(formString(formData, "requiredSkills").split(",").map((skill) => skill.trim()).filter((skill) => skill.length >= 2 && skill.length <= 80))].slice(0, 20)
+  const employmentArrangement = formString(formData, "employmentArrangement")
+  const licensureRequirement = formString(formData, "licensureRequirement")
+  const careSettings = [...new Set(formData.getAll("careSettings").map(String))].filter(isCareSetting).slice(0, 8)
+  const relocationSupport = formString(formData, "relocationSupport")
+  const visaSponsorship = formString(formData, "visaSponsorship")
+  const visaPathways = [...new Set(formData.getAll("visaPathways").map(String))].filter(isVisaPathway).slice(0, 3)
+  const newGraduatesWelcome = formData.get("newGraduatesWelcome") === "on"
+  const salaryIsInvalid = Number.isNaN(salaryMin) || Number.isNaN(salaryMax) || (salaryMin !== null && salaryMax !== null && salaryMax < salaryMin)
+
+  if (
+    title.length < 3 || title.length > 160 || !isHealthcareProfession(profession) || specialty.length > 120 ||
+    !isExperienceLevel(experienceLevel) || city.length < 2 || city.length > 120 || !isUsState(stateCode) ||
+    !isEmploymentType(employmentType) || !isWorkplaceType(workplaceType) || !isSalaryPeriod(salaryPeriod) ||
+    !isEmploymentArrangement(employmentArrangement) || !isLicensureRequirement(licensureRequirement) ||
+    !isRelocationSupport(relocationSupport) || !isVisaSponsorship(visaSponsorship) ||
+    (visaSponsorship === "Not offered" && visaPathways.length > 0) || !Number.isSafeInteger(openPositions) ||
+    openPositions < 1 || openPositions > 250 || salaryIsInvalid || description.length > 10000
+  ) {
+    redirect(messagePath(`/dashboard/jobs/${jobId}/edit`, "error", "Review the job details and try again."))
+  }
+
+  const { data: existingJob } = await workspace.supabase
+    .from("jobs")
+    .select("slug")
+    .eq("id", jobId)
+    .eq("organization_id", workspace.organization.id)
+    .maybeSingle()
+  if (!existingJob) {
+    redirect(messagePath("/dashboard/jobs", "error", "This job is unavailable."))
+  }
+
+  const { data: updatedJob, error } = await workspace.supabase
+    .from("jobs")
+    .update({
+      title, profession, specialty: specialty || null, experience_level: experienceLevel, city, state_code: stateCode,
+      employment_type: employmentType, workplace_type: workplaceType, salary_min: salaryMin, salary_max: salaryMax,
+      salary_period: salaryPeriod, visa_support: visaSponsorship !== "Not offered", employment_arrangement: employmentArrangement,
+      new_graduates_welcome: newGraduatesWelcome, licensure_requirement: licensureRequirement, care_settings: careSettings,
+      relocation_support: relocationSupport, visa_sponsorship_status: visaSponsorship, visa_pathways: visaPathways,
+      description: description || null, required_skills: requiredSkills, open_positions: openPositions,
+    })
+    .eq("id", jobId)
+    .eq("organization_id", workspace.organization.id)
+    .select("id")
+    .maybeSingle()
+
+  if (error || !updatedJob) {
+    redirect(messagePath(`/dashboard/jobs/${jobId}/edit`, "error", "We could not save your job changes."))
+  }
+
+  revalidatePath("/dashboard")
+  revalidatePath("/dashboard/jobs")
+  revalidatePath("/")
+  revalidatePath("/jobs")
+  revalidatePath(`/jobs/${existingJob.slug}`)
+  redirect(messagePath("/dashboard/jobs", "success", "Job details updated."))
+}
+
 export async function changeJobStatus(formData: FormData) {
   const workspace = await requireEmployerWorkspace("/dashboard/jobs")
 
