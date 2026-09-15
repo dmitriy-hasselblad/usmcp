@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { ArrowLeft, BriefcaseBusiness, ShieldCheck } from "lucide-react"
+import { ArrowLeft, BriefcaseBusiness, FileText, ShieldCheck } from "lucide-react"
 
 import { createJobDraft } from "@/app/dashboard/actions"
 import { AuthNotice } from "@/components/auth/auth-notice"
@@ -340,6 +340,27 @@ export default async function NewJobPage({
                 Publishing currently marks the job ready inside your workspace.
                 Public marketplace delivery is the next integration stage.
               </p>
+              <div className="mt-5 border-t border-border pt-4">
+                <div className="flex items-start gap-3">
+                  <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-primary/10 text-primary">
+                    <FileText className="size-4" />
+                  </span>
+                  <div>
+                    <p className="text-sm font-semibold">Need help completing the form?</p>
+                    <p className="mt-1 text-xs leading-5 text-muted-foreground">
+                      Learn what every job field means before you save or publish.
+                    </p>
+                    <Link
+                      className="mt-2 inline-flex text-sm font-semibold text-primary hover:underline"
+                      href="/guides/create-job-draft-guide.pdf"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      Open the PDF guide →
+                    </Link>
+                  </div>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </div>
