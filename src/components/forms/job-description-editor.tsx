@@ -208,6 +208,18 @@ function serializeNode(node: Node): string {
       .map((child, index) => `${index + 1}. ${serializeInline(child).trim()}`)
       .join("\n")
   }
+  if (node.tagName === "DIV" || node.tagName === "P") {
+    const children = Array.from(node.childNodes)
+    const containsBlocks = children.some(
+      (child) => child instanceof HTMLElement && isBlockElement(child),
+    )
+    if (containsBlocks) {
+      return children
+        .map((child) => serializeNode(child))
+        .filter(Boolean)
+        .join("\n\n")
+    }
+  }
   return text()
 }
 
@@ -216,6 +228,16 @@ function serializeInline(node: Node): string {
   if (!(node instanceof HTMLElement)) return ""
   if (node.tagName === "BR") return "\n"
 
-  const content = Array.from(node.childNodes).map(serializeInline).join("")
+  const content = Array.from(node.childNodes)
+    .map((child) =>
+      child instanceof HTMLElement && isBlockElement(child)
+        ? `\n${serializeNode(child)}\n`
+        : serializeInline(child),
+    )
+    .join("")
   return node.tagName === "STRONG" || node.tagName === "B" ? `**${content}**` : content
+}
+
+function isBlockElement(node: HTMLElement) {
+  return ["DIV", "P", "H2", "H3", "UL", "OL", "LI"].includes(node.tagName)
 }

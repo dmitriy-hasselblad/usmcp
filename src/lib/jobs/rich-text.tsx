@@ -9,6 +9,7 @@ type Block =
 const headingPattern = /^(#{2,3})\s+(.+)$/
 const unorderedPattern = /^[-*+]\s+(.+)$/
 const orderedPattern = /^\d+[.)]\s+(.+)$/
+const legacyHeadingPattern = /^(responsibilities|requirements|qualifications|what we offer|benefits|about this role)$/i
 
 export function plainTextFromJobDescription(value: string) {
   return value
@@ -29,7 +30,20 @@ function parseBlocks(value: string): Block[] {
 
   const flushParagraph = () => {
     const text = paragraph.join("\n").trim()
-    if (text) blocks.push({ type: "paragraph", text })
+    const previous = blocks.at(-1)
+    const followsLegacyListHeading =
+      previous?.type === "heading" && legacyHeadingPattern.test(previous.text)
+    const legacyItems = followsLegacyListHeading
+      ? text
+          .split(/(?<=[.!?])(?=[A-Z])|\n+/)
+          .map((item) => item.trim())
+          .filter(Boolean)
+      : []
+    if (legacyItems.length > 1) {
+      blocks.push({ type: "unordered", items: legacyItems })
+    } else if (text) {
+      blocks.push({ type: "paragraph", text })
+    }
     paragraph = []
   }
   const flushList = () => {
@@ -72,6 +86,11 @@ function parseBlocks(value: string): Block[] {
     }
 
     flushList()
+    if (legacyHeadingPattern.test(line.trim())) {
+      flushParagraph()
+      blocks.push({ type: "heading", level: 2, text: line.trim() })
+      continue
+    }
     paragraph.push(line)
   }
 
