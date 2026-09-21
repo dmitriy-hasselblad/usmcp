@@ -47,6 +47,20 @@ export function SiteFooter() {
                 src="https://maidensail.com/badge/sm-via.svg"
               />
             </a>
+            <a
+              aria-label="Launched on StartupBase"
+              className="inline-flex rounded-lg opacity-80 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+              href="https://startupbase.io/products/sm-via-is-a-u-s-healthcare-platform?utm_source=startupbase&utm_medium=badge&utm_campaign=launch-badge-light"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <img
+                alt="Launched on StartupBase"
+                height={55}
+                src="https://statics.startupbase.io/site/badges/launched-on-sb.svg"
+                style={{ height: 55, width: "auto" }}
+              />
+            </a>
           </div>
         </div>
         <div className="grid grid-cols-2 gap-x-6 gap-y-3 text-sm sm:grid-cols-3">
