@@ -27,7 +27,7 @@ import { socialImageMetadata } from "@/components/seo/social-card"
 export const metadata: Metadata = {
   title: "Healthcare Jobs",
   description:
-    "Search U.S. healthcare jobs by profession, specialty, location, experience, and compensation.",
+    "Explore U.S. healthcare opportunities by profession, specialty, and location after reviewing the career context that matters to you.",
   alternates: { canonical: "/jobs" },
   openGraph: {
     images: socialImageMetadata("/jobs/opengraph-image"),
@@ -98,8 +98,9 @@ export default async function JobsPage({
                   Healthcare jobs
                 </h1>
                 <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
-                  Search U.S. healthcare opportunities by profession,
-                  specialty, location, work setting, experience, and pay.
+                  Explore U.S. healthcare opportunities by profession, specialty,
+                  location, work setting, experience, and pay — one practical part
+                  of a well-informed career plan.
                 </p>
                 {(usaJobs.length > 0 || officialAtsJobs.length > 0) && (
                   <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">
@@ -114,6 +115,9 @@ export default async function JobsPage({
                   </Button>
                   {showPreviews ? <p className="self-center text-sm text-muted-foreground">Product previews are demonstrations and are not active vacancies.</p> : null}
                 </div>
+                <p className="mt-4 text-sm leading-6 text-muted-foreground">
+                  Need context first? <Link className="font-semibold text-primary hover:underline" href="/resources/licensure">Research licensure</Link> or <Link className="font-semibold text-primary hover:underline" href="/salary">compare salary context</Link> before you search.
+                </p>
               </div>
               <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
                 <BriefcaseBusiness className="size-4 text-primary" />

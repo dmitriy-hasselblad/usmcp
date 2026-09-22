@@ -18,7 +18,6 @@ import { SiteHeader } from "@/components/layout/site-header"
 import { CareerNavigator } from "@/components/marketing/career-navigator"
 import { EarlyAccessNotice } from "@/components/marketing/early-access-notice"
 import { UsOpportunityMap } from "@/components/marketing/us-opportunity-map"
-import { HeroSearch } from "@/components/marketing/hero-search"
 import { SectionHeading } from "@/components/marketing/section-heading"
 import { OrganizationCard } from "@/components/organizations/organization-card"
 import { Button } from "@/components/ui/button"
@@ -29,7 +28,6 @@ import { getOfficialAtsHealthcareOpportunities } from "@/lib/jobs/official-ats"
 import { getUsaJobsHealthcareOpportunities } from "@/lib/jobs/usajobs"
 import { getPublicOrganizations } from "@/lib/organizations/public-organizations"
 import healthcareTeamImage from "../../public/images/ushce-healthcare-team.png"
-import { popularSpecialties } from "@/lib/marketing-data"
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
@@ -87,45 +85,57 @@ export default async function Home() {
                 Built for U.S. healthcare careers
               </div>
               <h1 className="mt-6 max-w-3xl text-5xl font-semibold tracking-[-0.065em] text-foreground sm:text-6xl lg:text-7xl">
-                Build your healthcare career in the U.S.
+                Make your next healthcare career decision with clarity.
               </h1>
               <p className="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground sm:text-xl">
-                Search focused healthcare opportunities, learn about employers,
-                and plan your next professional step in one clear ecosystem.
+                Use career guidance, state licensure context, salary information,
+                and opportunities to plan your next move with more confidence.
               </p>
-              <div className="mt-8 max-w-2xl">
-                <HeroSearch />
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Button asChild className="h-11 rounded-xl px-5">
+                  <Link href="/resources">Explore career resources <ArrowRight /></Link>
+                </Button>
+                <Button asChild className="h-11 rounded-xl bg-white/85 px-5 text-primary hover:bg-white" variant="outline">
+                  <Link href="/resources/licensure">Explore licensure by state</Link>
+                </Button>
               </div>
-              <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-muted-foreground">
-                <span className="font-medium text-foreground">Popular:</span>
-                {popularSpecialties.map((specialty) => (
-                  <Link
-                    className="transition-colors hover:text-primary hover:underline"
-                    href={`/jobs?query=${encodeURIComponent(specialty)}`}
-                    key={specialty}
-                  >
-                    {specialty}
-                  </Link>
-                ))}
-              </div>
-              <div className="mt-5 flex flex-wrap gap-2">
-                {[
-                  ["Specialty", "/jobs"],
-                  ["License state", "/jobs"],
-                  ["Visa support", "/jobs?visa=true"],
-                  ["Salary", "/jobs"],
-                  ["Residency", "/resources#residency"],
-                ].map(([label, href]) => (
-                  <Link className="rounded-full border border-primary/15 bg-white/70 px-3 py-1.5 text-xs font-semibold text-primary transition hover:border-primary/35 hover:bg-white" href={href} key={label}>
-                    {label}
-                  </Link>
-                ))}
+              <div className="mt-6 text-sm text-muted-foreground">
+                Looking for a role now? <Link className="font-semibold text-primary hover:underline" href="/jobs">Explore healthcare opportunities →</Link>
               </div>
             </div>
 
             <div className="relative mx-auto w-full max-w-lg lg:mx-0 lg:justify-self-end">
               <div className="absolute -inset-4 -z-10 rounded-[2.5rem] bg-primary/10 blur-2xl" />
               <CareerNavigator />
+            </div>
+          </div>
+        </section>
+
+        <section className="border-b border-border bg-white">
+          <div className="mx-auto max-w-7xl px-5 py-16 lg:px-8 lg:py-20">
+            <SectionHeading
+              eyebrow="Start with the decision in front of you"
+              title="A healthcare career is more than the next job search."
+              description="Use SM VIA to understand the practical pieces that shape a move — before, during, and after you explore opportunities."
+            />
+            <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {[
+                { title: "Explore your career path", description: "Start with profession-specific guides, career moves, and practical questions.", href: "/resources", icon: HeartPulse, label: "Career resources" },
+                { title: "Understand licensure", description: "Find the right official starting point for your state and professional pathway.", href: "/resources/licensure", icon: ShieldCheck, label: "Licensure by state" },
+                { title: "Compare salary context", description: "Use state-level wage data as context for the role and location you are considering.", href: "/salary", icon: MapPinned, label: "Salary hub" },
+                { title: "Stay informed", description: "Read career guides and updates that help you make a better-informed next decision.", href: "/news", icon: Route, label: "Guides & insights" },
+              ].map((item) => {
+                const Icon = item.icon
+                return (
+                  <Link className="group rounded-2xl border border-border bg-slate-50 p-6 transition hover:-translate-y-1 hover:border-primary/25 hover:bg-white hover:shadow-lg" href={item.href} key={item.title}>
+                    <span className="grid size-11 place-items-center rounded-xl bg-primary/10 text-primary"><Icon className="size-5" /></span>
+                    <p className="mt-5 text-xs font-bold tracking-[0.12em] text-primary uppercase">{item.label}</p>
+                    <h2 className="mt-2 text-xl font-semibold tracking-[-0.035em] text-foreground">{item.title}</h2>
+                    <p className="mt-3 text-sm leading-6 text-muted-foreground">{item.description}</p>
+                    <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-teal-700 group-hover:underline">Explore <ArrowRight className="size-4" /></span>
+                  </Link>
+                )
+              })}
             </div>
           </div>
         </section>
@@ -143,9 +153,9 @@ export default async function Home() {
           <div className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28">
             <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
               <SectionHeading
-                eyebrow="Live opportunities"
-                title="Explore newly published healthcare opportunities."
-                description="Browse employer-published roles on SM VIA, current federal healthcare opportunities from USAJOBS, and selected official employer career boards."
+                eyebrow="Opportunity search"
+                title="When you are ready, explore healthcare opportunities."
+                description="The job search is one part of your plan: browse roles from verified employers, USAJOBS, and official employer career boards after you have the context you need."
               />
               <Button asChild className="h-10 w-fit rounded-xl" variant="outline">
                 <Link href="/jobs">
@@ -175,7 +185,7 @@ export default async function Home() {
         </section>
 
         <section className="border-y border-border bg-slate-50">
-          <div className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-24"><SectionHeading eyebrow="U.S. opportunity map" title="Explore healthcare opportunities by state." description="Select a state to view current SM VIA, federal USAJOBS, and official employer opportunities." /><UsOpportunityMap states={stateSummaries} /></div>
+          <div className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-24"><SectionHeading eyebrow="U.S. opportunity map" title="Use location to make a more informed search." description="Select a state to view current SM VIA, federal USAJOBS, and official employer opportunities alongside your licensure research." /><UsOpportunityMap states={stateSummaries} /></div>
         </section>
 
         <section className="border-b border-border bg-[linear-gradient(135deg,#e1f5ee_0%,#eaf5ff_54%,#f8fcff_100%)]">
@@ -203,9 +213,9 @@ export default async function Home() {
           <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
             <div>
               <SectionHeading
-                eyebrow="Organization profiles"
+                eyebrow="Organization context"
                 title="Understand the workplace before you apply."
-                description="SM VIA employer profiles are designed to bring together culture, care settings, locations, benefits, and open roles."
+                description="SM VIA organization profiles help bring together care settings, locations, hiring context, and open roles — not just a job title."
               />
               <Button asChild className="mt-7 h-11 rounded-xl px-5">
                 <Link href="/companies">

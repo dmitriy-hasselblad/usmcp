@@ -17,7 +17,7 @@ import { Card, CardContent } from "@/components/ui/card"
 export const metadata: Metadata = {
   title: "For Healthcare Employers",
   description:
-    "Use SM VIA Early Access tools to publish healthcare opportunities, review applicants, and coordinate hiring.",
+    "Present clearer healthcare opportunities, build an organization profile, and manage hiring in a healthcare-focused workspace.",
   alternates: { canonical: "/for-employers" },
 }
 
@@ -60,12 +60,12 @@ export default function ForEmployersPage() {
                 Employer Early Access
               </Badge>
               <h1 className="mt-6 max-w-3xl text-4xl font-semibold tracking-[-0.055em] sm:text-5xl lg:text-6xl">
-                Build a stronger healthcare hiring experience.
+                Make your healthcare hiring information easier to trust.
               </h1>
               <p className="mt-6 max-w-2xl text-lg leading-8 text-blue-100/85">
-                SM VIA supports hospitals, clinics, medical groups, academic
-                centers, staffing teams, and healthcare recruiters with a
-                secure, healthcare-focused hiring workspace.
+                Give professionals the context they need before they apply — then
+                manage roles, organization information, and hiring activity in one
+                healthcare-focused workspace.
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Button
@@ -88,14 +88,14 @@ export default function ForEmployersPage() {
 
             <div className="rounded-[2rem] border border-white/15 bg-white/[0.07] p-5 backdrop-blur sm:p-7">
               <p className="text-sm font-semibold text-teal-100">
-                Available hiring workflow
+                A clearer employer presence
               </p>
               <ol className="mt-6 grid gap-4">
                 {[
-                  "Create and verify your organization",
+                  "Create an organization profile professionals can recognize",
                   "Publish structured healthcare opportunities",
-                  "Review qualified candidate profiles",
-                  "Coordinate interviews and hiring decisions",
+                  "Keep requirements, support, and details current",
+                  "Review candidates and coordinate hiring decisions",
                 ].map((item, index) => (
                   <li
                     className="flex items-center gap-4 rounded-xl border border-white/10 bg-white/[0.05] p-4"
@@ -115,10 +115,10 @@ export default function ForEmployersPage() {
         <section className="mx-auto max-w-7xl px-5 py-16 lg:px-8 lg:py-24">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-xs font-bold tracking-[0.14em] text-primary uppercase">
-              Purpose-built foundation
+              Beyond a job posting
             </p>
             <h2 className="mt-3 text-3xl font-semibold tracking-[-0.05em] sm:text-4xl">
-              Hiring tools shaped around healthcare.
+              Employer tools shaped around healthcare decisions.
             </h2>
           </div>
           <div className="mt-10 grid gap-5 sm:grid-cols-2">

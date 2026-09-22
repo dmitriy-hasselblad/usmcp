@@ -13,7 +13,7 @@ import { socialImageMetadata } from "@/components/seo/social-card"
 export const metadata: Metadata = {
   title: "Healthcare Career Resources",
   description:
-            "Explore the growing SM VIA library for residency planning, employer research, and international healthcare careers.",
+    "Use practical U.S. healthcare career guidance for licensure, salary research, employer evaluation, residency planning, and career transitions.",
   alternates: { canonical: "/resources" },
   openGraph: {
     images: socialImageMetadata("/resources/opengraph-image"),
@@ -31,14 +31,14 @@ export default function ResourcesPage() {
       <main>
         <section className="border-b border-border bg-[linear-gradient(135deg,#f7fbff_0%,#eff9f7_52%,#f8fcff_100%)]">
           <div className="mx-auto max-w-7xl px-5 py-16 lg:px-8 lg:py-20">
-            <Badge variant="outline">Growing resource library</Badge>
+            <Badge variant="outline">SM VIA career intelligence</Badge>
             <h1 className="mt-5 max-w-4xl text-4xl font-semibold tracking-[-0.055em] sm:text-5xl">
-              Practical guidance for healthcare career decisions.
+              Practical guidance for the healthcare career decision in front of you.
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground">
-              Start with clear, U.S.-focused guidance for professionals,
-              residency candidates, and international applicants. New practical
-              resources will be added throughout Early Access.
+              Research licensure, salary context, employers, residency, and career
+              transitions with U.S.-focused resources built to make the next step
+              easier to evaluate.
             </p>
           </div>
         </section>
@@ -115,14 +115,15 @@ export default function ResourcesPage() {
 
         <section className="mx-auto max-w-7xl px-5 py-16 text-center lg:px-8 lg:py-20">
           <h2 className="text-3xl font-semibold tracking-[-0.05em]">
-            Ready to explore opportunities?
+            Ready to bring your research into a job search?
           </h2>
           <p className="mt-3 text-muted-foreground">
-            Try the first working version of the SM VIA healthcare job search.
+            Explore opportunities with more context about your specialty, location,
+            licensure, and priorities.
           </p>
           <Button asChild className="mt-6 h-11 rounded-xl px-5">
             <Link href="/jobs">
-              Search preview roles <ArrowRight />
+              Explore opportunities <ArrowRight />
             </Link>
           </Button>
         </section>
