@@ -97,8 +97,8 @@ export function SiteFooter() {
             <PrivacyChoicesButton />
           </div>
           <div className="flex flex-wrap items-center gap-3">
-            <a aria-label="Featured on Maidensail" className="inline-flex rounded-md bg-white px-2 py-1.5 opacity-85 transition hover:opacity-100" href="https://maidensail.com/startup/sm-via" rel="dofollow">
-              <img alt="Featured on Maidensail" height={28} src="https://maidensail.com/badge/sm-via.svg" />
+            <a aria-label="Featured on Maidensail" className="inline-flex rounded-md bg-white px-2 py-1 opacity-85 transition hover:opacity-100" href="https://maidensail.com/startup/sm-via" rel="dofollow">
+              <img alt="Featured on Maidensail" height={22} src="https://maidensail.com/badge/sm-via.svg" style={{ height: 22, width: "auto" }} />
             </a>
             <a aria-label="Launched on StartupBase" className="inline-flex rounded-md bg-white px-2 py-1 opacity-85 transition hover:opacity-100" href="https://startupbase.io/products/sm-via-is-a-u-s-healthcare-platform?utm_source=startupbase&utm_medium=badge&utm_campaign=launch-badge-light" rel="noopener noreferrer" target="_blank">
               <img alt="Launched on StartupBase" height={31} src="https://statics.startupbase.io/site/badges/launched-on-sb.svg" style={{ height: 31, width: "auto" }} />
