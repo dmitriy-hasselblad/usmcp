@@ -57,6 +57,9 @@ export function SiteFooter() {
           <div>
             <p className="text-xs font-bold tracking-[0.14em] text-teal-200 uppercase">Follow SM VIA</p>
             <div className="mt-3 flex items-center gap-2">
+              <SocialLink href="https://www.facebook.com/profile.php?id=61593952664356" label="Follow SM VIA on Facebook">
+                <svg aria-hidden="true" className="size-3.5" viewBox="0 0 24 24"><path d="M13.6 21v-8h2.7l.4-3.1h-3.1V7.92c0-.9.25-1.52 1.55-1.52h1.66V3.63A22.2 22.2 0 0 0 14.4 3.5c-2.38 0-4 1.45-4 4.1v2.3H7.7V13h2.7v8h3.2Z" fill="currentColor" /></svg>
+              </SocialLink>
               <SocialLink href="https://www.linkedin.com/company/smvia/" label="Follow SM VIA on LinkedIn">
                 <svg aria-hidden="true" className="size-3.5" viewBox="0 0 24 24"><path d="M6.27 8.15H3.16V21h3.11V8.15ZM4.71 3C3.72 3 3 3.71 3 4.65c0 .92.71 1.65 1.68 1.65h.02c1 0 1.7-.73 1.7-1.65C6.38 3.71 5.7 3 4.71 3ZM21 13.63c0-3.62-1.94-5.31-4.53-5.31-2.09 0-3.03 1.15-3.55 1.96V8.15H9.81c.04 1.41 0 12.85 0 12.85h3.11v-7.18c0-.38.03-.76.14-1.03.22-.77.74-1.57 1.61-1.57 1.14 0 1.59.87 1.59 2.14V21h3.1v-7.37c0-3.95-2.1-5.79-4.89-5.79Z" fill="currentColor" /></svg>
               </SocialLink>
