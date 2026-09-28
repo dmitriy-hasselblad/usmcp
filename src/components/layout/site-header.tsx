@@ -15,12 +15,12 @@ import { isAuthEnabled } from "@/lib/supabase/env"
 import { createClient } from "@/lib/supabase/server"
 
 const navigation = [
-  { href: "/jobs", label: "Jobs" },
-  { href: "/companies", label: "Organizations" },
-  { href: "/news", label: "News & insights" },
-  { href: "/resources", label: "Career resources" },
+  { href: "/resources", label: "Explore careers" },
+  { href: "/resources/licensure", label: "Licensure" },
+  { href: "/salary", label: "Salary" },
+  { href: "/news", label: "Guides & insights" },
+  { href: "/jobs", label: "Opportunities" },
   { href: "/for-employers", label: "For employers" },
-  { href: "/for-associations", label: "For associations" },
 ]
 
 async function getHeaderIdentity() {
