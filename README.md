@@ -93,28 +93,40 @@ explains every field in Create a job draft, includes examples and data-quality
 guidance, and ends with a pre-publication checklist. The editable generator is
 kept at `scripts/build_job_draft_guide.py` so future revisions stay consistent.
 
-## Staging and production data isolation
+## Preview and production data
 
-Preview deployments use the separate `smvia-staging` Supabase project; production
-deployments use the production project. A GitHub or Vercel deployment moves code
-and static assets only. It does not copy organizations, jobs, applications,
-articles, accounts, or Storage files between the two databases.
+Preview and production deployments now use the same primary Supabase project.
+This keeps public content and authenticated workflows consistent when a preview
+is being reviewed. A GitHub or Vercel deployment moves code and static assets;
+it does not create, copy, or delete organizations, jobs, applications, articles,
+accounts, or Storage files.
 
-The staging demonstration organization, Harborline Community Health, and its
-DEMO job are therefore not production content. Before the September 15, 2026
-production release, production was checked for both records and had zero
-matches. The release contained only useful application code, the PDF guide, and
-the two production schema changes needed for the new job fields and employer
-editing permissions.
+Because data is shared, demonstrations must use clearly marked test records and
+be removed before a production-facing review. The Harborline Community Health
+demo organization and its DEMO job are not production content.
 
 ## Homepage focus
 
-The homepage intentionally prioritizes search, current opportunities, the U.S.
-opportunity map, state licensure, organization discovery, and the SM VIA product
-story. The large **Explore healthcare careers** taxonomy grid and **Career
-resources** card gallery were removed from the homepage to reduce visual
-overload. Their destination pages remain available in the header, footer, and
-relevant in-page links.
+SM VIA is positioned as a U.S. healthcare career-intelligence platform rather
+than a job board alone. The homepage prioritizes career paths, state licensure,
+salary context, practical guidance, employer context, and opportunities. Job
+search remains available as a supporting tool for the point at which a visitor
+is ready to explore roles.
+
+The large **Explore healthcare careers** taxonomy grid and **Career resources**
+card gallery were removed from the homepage to reduce visual overload. Their
+destination pages remain available through the streamlined navigation, footer,
+and relevant in-page links.
+
+## Navigation and footer
+
+The public header groups the product around **Explore careers**, **Licensure**,
+**Salary**, **Guides & insights**, **Opportunities**, and **For employers**.
+
+The compact dark footer provides clear pathways for healthcare professionals,
+employers, resources, and SM VIA information. It includes LinkedIn, X,
+Instagram, and Facebook, plus Maidensail and StartupBase recognition badges in
+the final footer row. Partner badges are presented at a consistent visual size.
 
 ## Current public opportunity data
 
